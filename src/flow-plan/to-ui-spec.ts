@@ -1,4 +1,12 @@
-import type { FlowPlanDraft, FlowPlanInteraction } from "./draft.ts";
+import type {
+  FlowPlanDraft as LegacyFlowPlanDraft,
+  FlowPlanInteraction as LegacyFlowPlanInteraction,
+} from "./draft.ts";
+import type {
+  FlowPlan,
+  FlowPlanDraft,
+  FlowPlanInteraction,
+} from "./schema.ts";
 import {
   uiSpecDraftSchema,
   type UISpec,
@@ -13,7 +21,9 @@ export interface ApplyFlowPlanResult {
   readonly uiSpec: UISpecDraft;
   readonly convertedActionIds: string[];
   readonly behaviorFixtureIds: string[];
-  readonly unresolvedInteractions: FlowPlanInteraction[];
+  readonly unresolvedInteractions: Array<
+    FlowPlanInteraction | LegacyFlowPlanInteraction
+  >;
 }
 
 function safeId(value: string): string {
@@ -64,10 +74,13 @@ function scalarMatchesState(
 
 export function applyFlowPlanToUISpec(
   uiSpec: UISpec | UISpecDraft,
-  draft: FlowPlanDraft,
+  draft: FlowPlanDraft | FlowPlan | LegacyFlowPlanDraft,
   options: ApplyFlowPlanOptions = {},
 ): ApplyFlowPlanResult {
   const next = draftFromSpec(uiSpec);
+  if ("revision" in draft) {
+    next.sourceFlowPlanRevision = draft.revision;
+  }
   const nodeById = new Map(next.nodes.map((node) => [node.id, node]));
   const stateByKey = new Map(
     next.state.map((state) => [state.key, state]),
@@ -75,7 +88,9 @@ export function applyFlowPlanToUISpec(
   const actionIds = new Set(next.actions.map((action) => action.id));
   const convertedActionIds: string[] = [];
   const behaviorFixtureIds: string[] = [];
-  const unresolvedInteractions: FlowPlanInteraction[] = [];
+  const unresolvedInteractions: Array<
+    FlowPlanInteraction | LegacyFlowPlanInteraction
+  > = [];
   const viewportId = options.viewportId ?? next.viewports[0]?.id;
   if (!viewportId) {
     throw new Error("flow_plan_viewport_missing");

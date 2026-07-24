@@ -5,6 +5,11 @@ import { generateConfirmationQuestions } from "../../../src/flow-plan/confirmati
 import { buildFlowPlanDraft } from "../../../src/flow-plan/interaction-candidates.ts";
 import { applyFlowPlanToUISpec } from "../../../src/flow-plan/to-ui-spec.ts";
 import {
+  applyFlowConfirmations,
+  buildFlowPlan,
+  generateFlowConfirmationQuestions as generateFormalFlowConfirmationQuestions,
+} from "../../../src/flow-plan/service.ts";
+import {
   createStoredMultipageFlowDesignBundle,
   createStoredMultipageFlowUISpec,
 } from "../../fixtures/flow-plan/multipage-flow.ts";
@@ -234,5 +239,37 @@ describe("applyFlowPlanToUISpec", () => {
       { kind: "click", nodeId: "set-status" },
       { kind: "expect_visible", nodeId: "status-text" },
     ]);
+  });
+
+  it("正式 FlowPlan 写入 sourceFlowPlanRevision 且只转换已确认 interaction", () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const draft = generateFormalFlowConfirmationQuestions(
+      buildFlowPlan({
+        bundle: createStoredMultipageFlowDesignBundle(),
+        uiSpec,
+      }),
+    );
+    const confirmed = applyFlowConfirmations(draft, [
+      {
+        questionId: draft.confirmationQuestions[0]!.id,
+        value: "target:quote",
+      },
+    ]);
+    const result = applyFlowPlanToUISpec(uiSpec, {
+      ...confirmed,
+      revision: 7,
+    });
+
+    expect(result.uiSpec.sourceFlowPlanRevision).toBe(7);
+    expect(result.convertedActionIds).toHaveLength(1);
+    expect(result.unresolvedInteractions).toHaveLength(1);
+    expect(
+      result.unresolvedInteractions.every(
+        (interaction) =>
+          interaction.source === "inferred" ||
+          interaction.source === "missing" ||
+          Boolean(interaction.blockedReason),
+      ),
+    ).toBe(true);
   });
 });

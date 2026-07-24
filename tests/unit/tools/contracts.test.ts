@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   inspectFigmaInputSchema,
+  inspectFigmaOutputSchema,
   inspectFigmaParameters,
   loadUISpecParameters,
   loadUISpecOutputSchema,
@@ -75,6 +76,85 @@ describe("四工具 Zod 契约", () => {
         reason: "错误项目",
       }),
     ).toThrow("工具输入与 UISpec 的 projectId 不一致");
+  });
+
+  it("inspect_figma 接受 FlowPlan 确认输入并输出结构化摘要", () => {
+    expect(
+      inspectFigmaInputSchema.parse({
+        schemaVersion: "1",
+        projectId: "demo-project",
+        figmaUrl: FLOW_URL,
+        flowConfirmations: [
+          {
+            questionId: "confirm-continue",
+            value: "target:quote",
+            reason: "用户确认",
+          },
+          {
+            questionId: "confirm-dialog",
+            answer: "static",
+          },
+        ],
+      }).flowConfirmations,
+    ).toEqual([
+      {
+        questionId: "confirm-continue",
+        value: "target:quote",
+        reason: "用户确认",
+      },
+      {
+        questionId: "confirm-dialog",
+        value: "static",
+      },
+    ]);
+
+    expect(
+      inspectFigmaOutputSchema.parse({
+        schemaVersion: "1",
+        projectId: "demo-project",
+        designBundleRevision: 1,
+        pages: [],
+        variables: {
+          status: "unavailable_optional",
+          reasonCode: "plan_limited",
+        },
+        warnings: [],
+        flowPlanRevision: 2,
+        flowPlanSummary: {
+          interactionCount: 2,
+          confirmationQuestionCount: 1,
+          confirmationCount: 1,
+          bySource: {
+            figma: 1,
+            inferred: 0,
+            user_confirmed: 1,
+            missing: 0,
+          },
+          unsupportedCount: 0,
+          unresolvedInteractionCount: 0,
+          convertedActionCount: 1,
+          behaviorFixtureCount: 1,
+        },
+        confirmationQuestions: [
+          {
+            id: "confirm-continue",
+            interactionId: "continue-to-quote",
+            question: "继续按钮是否跳转报价页？",
+            options: [
+              {
+                label: "跳转报价页",
+                value: "target:quote",
+              },
+            ],
+            required: true,
+          },
+        ],
+        unresolvedInteractionCount: 0,
+      }),
+    ).toMatchObject({
+      flowPlanRevision: 2,
+      unresolvedInteractionCount: 0,
+    });
   });
 
   it("save_ui_spec 输出兼容 optional unsupportedFeatures", () => {
@@ -222,6 +302,9 @@ describe("Extension provider 参数 Schema", () => {
     expect(inspectFigmaParameters.properties.targetNodes).toMatchObject({
       description: expect.stringContaining("仅当用户明确提供目标节点"),
     });
+    expect(inspectFigmaParameters.properties).toHaveProperty(
+      "flowConfirmations",
+    );
     expect(loadUISpecParameters.properties).not.toHaveProperty("pageId");
     expect(saveUISpecParameters.properties.uiSpec).toMatchObject({
       type: "object",

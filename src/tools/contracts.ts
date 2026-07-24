@@ -18,6 +18,10 @@ import {
   uiSpecSchema,
 } from "../ui-spec/schema.ts";
 import { variablesCapabilitySchema } from "../design-bundle/schema.ts";
+import {
+  flowConfirmationInputSchema,
+  flowConfirmationQuestionSchema,
+} from "../flow-plan/schema.ts";
 
 const idSchema = z.string().min(1).max(256);
 const idListSchema = z.array(idSchema).max(1_000);
@@ -41,6 +45,10 @@ export const inspectFigmaInputSchema = z
     behaviorNotes: z
       .array(z.string().min(1).max(2_000))
       .max(100)
+      .optional(),
+    flowConfirmations: z
+      .array(flowConfirmationInputSchema)
+      .max(1_000)
       .optional(),
   })
   .strict()
@@ -120,6 +128,26 @@ const unsupportedFeaturesSchema = z
   .array(unsupportedFeatureSchema)
   .max(10_000);
 
+const flowPlanSummarySchema = z
+  .object({
+    interactionCount: z.number().int().nonnegative(),
+    confirmationQuestionCount: z.number().int().nonnegative(),
+    confirmationCount: z.number().int().nonnegative(),
+    bySource: z
+      .object({
+        figma: z.number().int().nonnegative(),
+        inferred: z.number().int().nonnegative(),
+        user_confirmed: z.number().int().nonnegative(),
+        missing: z.number().int().nonnegative(),
+      })
+      .strict(),
+    unsupportedCount: z.number().int().nonnegative(),
+    unresolvedInteractionCount: z.number().int().nonnegative(),
+    convertedActionCount: z.number().int().nonnegative(),
+    behaviorFixtureCount: z.number().int().nonnegative(),
+  })
+  .strict();
+
 export const inspectFigmaOutputSchema = z
   .object({
     schemaVersion: z.literal(SCHEMA_VERSION),
@@ -128,6 +156,13 @@ export const inspectFigmaOutputSchema = z
     pages: z.array(pageSummarySchema).max(1_000),
     variables: variablesCapabilitySchema,
     warnings: z.array(toolWarningSchema).max(10_000),
+    flowPlanRevision: z.number().int().positive().optional(),
+    flowPlanSummary: flowPlanSummarySchema.optional(),
+    confirmationQuestions: z
+      .array(flowConfirmationQuestionSchema)
+      .max(1_000)
+      .optional(),
+    unresolvedInteractionCount: z.number().int().nonnegative().optional(),
   })
   .strict();
 
@@ -367,6 +402,25 @@ export const inspectFigmaParameters = Type.Object(
       Type.Array(Type.String({ minLength: 1, maxLength: 2_000 }), {
         maxItems: 100,
       }),
+    ),
+    flowConfirmations: Type.Optional(
+      Type.Array(
+        Type.Object(
+          {
+            questionId: Type.String({ minLength: 1, maxLength: 256 }),
+            value: Type.String({ minLength: 1, maxLength: 512 }),
+            reason: Type.Optional(
+              Type.String({ minLength: 1, maxLength: 2_000 }),
+            ),
+          },
+          { additionalProperties: false },
+        ),
+        {
+          maxItems: 1_000,
+          description:
+            "可选 FlowPlan 确认答案。只在用户明确回答 inspect_figma 返回的 confirmationQuestions 时填写。",
+        },
+      ),
     ),
   },
   { additionalProperties: false },

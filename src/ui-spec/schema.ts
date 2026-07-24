@@ -485,6 +485,7 @@ const uiSpecShape = {
   projectId: projectIdSchema,
   revision: z.number().int().positive(),
   sourceDesignBundleRevision: z.number().int().positive(),
+  sourceFlowPlanRevision: z.number().int().positive().optional(),
   designValueRefs: idListSchema,
   pages: z.array(uiPageSchema).min(1).max(1_000),
   nodes: z.array(uiNodeSchema).min(1).max(100_000),

@@ -5,6 +5,7 @@ import { FigmaImageDownloader } from "../figma/assets.ts";
 import { FigmaInspector } from "../figma/inspector.ts";
 import { FigmaRestClient } from "../figma/rest-client.ts";
 import { ProjectStore } from "../project-store/store.ts";
+import { ProjectStoreError } from "../project-store/store.ts";
 import {
   assertManagedFilePath,
   ensureProjectLayout,
@@ -21,6 +22,16 @@ import type {
   SaveUISpecOutput,
 } from "../tools/contracts.ts";
 import { UISpecToolService } from "../tools/ui-spec-service.ts";
+import {
+  applyFlowConfirmations,
+  buildFlowPlan,
+  flowPlanServiceSummary,
+  generateFlowConfirmationQuestions,
+} from "../flow-plan/service.ts";
+import type {
+  FlowPlan,
+  FlowPlanDraft,
+} from "../flow-plan/schema.ts";
 import { RenderAndCompareService } from "../validation/render-and-compare.ts";
 import {
   buildInspectAgentContext,
@@ -79,7 +90,8 @@ export class LocalExtensionToolServices
     input: InspectFigmaInput,
     signal?: AbortSignal,
   ): Promise<InspectFigmaOutput> {
-    return await this.getInspector().inspect(input, signal);
+    const output = await this.getInspector().inspect(input, signal);
+    return await this.attachFlowPlan(input, output);
   }
 
   async load(input: LoadUISpecInput): Promise<LoadUISpecOutput> {
@@ -162,5 +174,83 @@ export class LocalExtensionToolServices
       projectStore: this.store,
     });
     return this.inspector;
+  }
+
+  private async attachFlowPlan(
+    input: InspectFigmaInput,
+    output: InspectFigmaOutput,
+  ): Promise<InspectFigmaOutput> {
+    let uiSpec;
+    try {
+      uiSpec = await this.store.loadUISpec(output.projectId);
+    } catch (error) {
+      if (
+        !(error instanceof ProjectStoreError) ||
+        error.code !== "not_found"
+      ) {
+        throw error;
+      }
+    }
+
+    let currentFlowPlan;
+    try {
+      currentFlowPlan = await this.store.loadFlowPlan(output.projectId);
+    } catch (error) {
+      if (
+        !(error instanceof ProjectStoreError) ||
+        error.code !== "not_found"
+      ) {
+        throw error;
+      }
+    }
+
+    const bundle = await this.store.loadDesignBundle(
+      output.projectId,
+      output.designBundleRevision,
+    );
+    const flowConfirmations = input.flowConfirmations ?? [];
+    const canReuseCurrent = Boolean(
+      currentFlowPlan &&
+      currentFlowPlan.sourceDesignBundleRevision ===
+        output.designBundleRevision &&
+        currentFlowPlan.sourceUISpecRevision === uiSpec?.revision,
+    );
+
+    let flowPlan: FlowPlan | FlowPlanDraft;
+    if (canReuseCurrent && currentFlowPlan) {
+      flowPlan = currentFlowPlan;
+    } else {
+      flowPlan = generateFlowConfirmationQuestions(
+        buildFlowPlan({
+          bundle,
+          uiSpec,
+          figmaInteractionSource: "absent",
+        }),
+      );
+    }
+
+    if (flowConfirmations.length > 0) {
+      flowPlan = applyFlowConfirmations(flowPlan, flowConfirmations);
+    }
+
+    let storedFlowPlan: FlowPlan;
+    if (!canReuseCurrent || flowConfirmations.length > 0) {
+      storedFlowPlan = await this.store.saveFlowPlan({
+        projectId: output.projectId,
+        baseRevision: currentFlowPlan?.revision ?? 0,
+        draft: flowPlan,
+      });
+    } else if (currentFlowPlan) {
+      storedFlowPlan = currentFlowPlan;
+    } else {
+      throw new Error("flow_plan_reuse_state_invalid");
+    }
+
+    const summary = flowPlanServiceSummary(storedFlowPlan);
+    return {
+      ...output,
+      flowPlanRevision: storedFlowPlan.revision,
+      ...summary,
+    };
   }
 }

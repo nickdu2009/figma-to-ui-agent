@@ -19,6 +19,24 @@ describe("UISpec Schema", () => {
     ).not.toHaveProperty("disabled");
   });
 
+  it("sourceFlowPlanRevision 是可选追溯字段且必须为正整数", () => {
+    expect(
+      uiSpecDraftSchema.parse(createUISpecDraft()),
+    ).not.toHaveProperty("sourceFlowPlanRevision");
+
+    const traced = createUISpecDraft();
+    traced.sourceFlowPlanRevision = 3;
+    expect(uiSpecDraftSchema.parse(traced)).toMatchObject({
+      sourceFlowPlanRevision: 3,
+    });
+
+    const invalid = createUISpecDraft() as unknown as {
+      sourceFlowPlanRevision: number;
+    };
+    invalid.sourceFlowPlanRevision = 0;
+    expect(() => uiSpecDraftSchema.parse(invalid)).toThrow();
+  });
+
   it("支持三类交互控件的可选静态禁用状态", () => {
     const draft = createUISpecDraft();
     const button = draft.nodes.find(

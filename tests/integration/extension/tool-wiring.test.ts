@@ -265,6 +265,32 @@ describe("Pi 四工具接线", () => {
         pages: [],
         variables,
         warnings: [],
+        flowPlanRevision: 1,
+        flowPlanSummary: {
+          interactionCount: 1,
+          confirmationQuestionCount: 1,
+          confirmationCount: 0,
+          bySource: {
+            figma: 0,
+            inferred: 1,
+            user_confirmed: 0,
+            missing: 0,
+          },
+          unsupportedCount: 0,
+          unresolvedInteractionCount: 1,
+          convertedActionCount: 0,
+          behaviorFixtureCount: 0,
+        },
+        confirmationQuestions: [
+          {
+            id: "confirm-continue",
+            interactionId: "continue",
+            question: "继续按钮是否跳转？",
+            options: [{ label: "保持静态", value: "static" }],
+            required: true,
+          },
+        ],
+        unresolvedInteractionCount: 1,
       })),
       inspectSupplement: vi.fn(async () => ({
         context: buildInspectAgentContext(designBundle),
@@ -322,6 +348,8 @@ describe("Pi 四工具接线", () => {
       context,
     );
     expect(inspectResult.details.designBundleRevision).toBe(1);
+    expect(inspectResult.details.flowPlanRevision).toBe(1);
+    expect(inspectResult.details.confirmationQuestions).toHaveLength(1);
     expect([
       inspectResult.content[0].type,
       inspectResult.content[1].type,

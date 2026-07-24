@@ -24,6 +24,12 @@ import {
   designBundleSchema,
   localImageRefSchema,
 } from "../design-bundle/schema.ts";
+import {
+  type FlowPlan,
+  type FlowPlanDraft,
+  flowPlanDraftSchema,
+  flowPlanSchema,
+} from "../flow-plan/schema.ts";
 import { inspectImageBytes } from "../media/image-format.ts";
 import {
   type UISpec,
@@ -506,6 +512,39 @@ export class ProjectStore {
     );
   }
 
+  async saveFlowPlan(input: {
+    projectId: string;
+    baseRevision: number;
+    draft: unknown;
+  }): Promise<FlowPlan> {
+    return await this.saveArtifact(input, {
+      draftSchema: flowPlanDraftSchema,
+      storedSchema: flowPlanSchema,
+      getPaths: (layout) => ({
+        current: join(layout.flowRoot, "current.json"),
+        historyRoot: layout.flowHistoryRoot,
+      }),
+      validateWithinLock: async (layout, draft) => {
+        await this.validateFlowPlanReferences(layout, draft);
+      },
+    });
+  }
+
+  async loadFlowPlan(
+    projectIdInput: unknown,
+    revision?: number,
+  ): Promise<FlowPlan> {
+    return await this.loadArtifact(
+      projectIdInput,
+      revision,
+      flowPlanSchema,
+      (layout) => ({
+        current: join(layout.flowRoot, "current.json"),
+        historyRoot: layout.flowHistoryRoot,
+      }),
+    );
+  }
+
   async saveUISpec(input: {
     projectId: string;
     baseRevision: number;
@@ -850,6 +889,24 @@ export class ProjectStore {
       );
     }
 
+    if (draft.sourceFlowPlanRevision !== undefined) {
+      const flowPlan = await readValidatedJson(
+        layout,
+        join(
+          layout.flowHistoryRoot,
+          `${draft.sourceFlowPlanRevision}.json`,
+        ),
+        flowPlanSchema,
+        true,
+      );
+      if (!flowPlan || flowPlan.projectId !== draft.projectId) {
+        throw new ProjectStoreError(
+          "cross_reference_invalid",
+          "UISpec 引用的 FlowPlan 修订不存在或项目不一致",
+        );
+      }
+    }
+
     const designValueIds = new Set(
       designBundle.designValues.map((item) => item.id),
     );
@@ -904,6 +961,51 @@ export class ProjectStore {
         throw new ProjectStoreError(
           "cross_reference_invalid",
           `full_page_screenshot_fallback_rejected: 页面 ${page.id} 不能以 root 单截图交付，必须保留真实 text/input/button 节点；仅允许局部图片兜底：${screenshot.assetRef}`,
+        );
+      }
+    }
+  }
+
+  private async validateFlowPlanReferences(
+    layout: ProjectLayout,
+    draft: FlowPlanDraft,
+  ): Promise<void> {
+    const designBundle = await readValidatedJson(
+      layout,
+      join(layout.figmaRoot, "current.json"),
+      designBundleSchema,
+      true,
+    );
+    if (!designBundle) {
+      throw new ProjectStoreError(
+        "cross_reference_invalid",
+        "保存 FlowPlan 前必须存在当前 DesignBundle",
+      );
+    }
+    if (
+      draft.projectId !== designBundle.projectId ||
+      draft.sourceDesignBundleRevision !== designBundle.revision
+    ) {
+      throw new ProjectStoreError(
+        "cross_reference_invalid",
+        "FlowPlan 必须引用同一项目的当前 DesignBundle 修订",
+      );
+    }
+
+    if (draft.sourceUISpecRevision !== undefined) {
+      const uiSpec = await readValidatedJson(
+        layout,
+        join(
+          layout.specsHistoryRoot,
+          `${draft.sourceUISpecRevision}.json`,
+        ),
+        uiSpecSchema,
+        true,
+      );
+      if (!uiSpec || uiSpec.projectId !== draft.projectId) {
+        throw new ProjectStoreError(
+          "cross_reference_invalid",
+          "FlowPlan 引用的 UISpec 修订不存在或项目不一致",
         );
       }
     }

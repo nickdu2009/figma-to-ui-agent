@@ -42,7 +42,7 @@ async function createReferencePng(
   }
 }
 
-describe("M4 FlowPlan spike runner", () => {
+describe("M4 正式 FlowPlan runner", () => {
   afterEach(async () => {
     await Promise.all(
       roots.splice(0).map((root) =>
@@ -51,8 +51,8 @@ describe("M4 FlowPlan spike runner", () => {
     );
   });
 
-  it("将 Figma supplement 转为行为夹具并通过 Preview/Playwright 验证", async () => {
-    const tempRoot = await mkdtemp(join(tmpdir(), "m4-flow-"));
+  it("持久化正式 FlowPlan，转换行为夹具并通过 Preview/Playwright 验证", async () => {
+    const tempRoot = await mkdtemp(join(tmpdir(), "m4-flow-formal-"));
     roots.push(tempRoot);
     const dataRoot = join(tempRoot, "data");
     const reportRoot = join(tempRoot, "reports");
@@ -109,7 +109,7 @@ describe("M4 FlowPlan spike runner", () => {
     const noSupplement = await execFileAsync(
       process.execPath,
       [
-        "scripts/run-m4-flowplan-spike.mjs",
+        "scripts/run-m4-flowplan.mjs",
         "--project-id",
         projectId,
         "--data-root",
@@ -126,9 +126,11 @@ describe("M4 FlowPlan spike runner", () => {
     );
     const noSupplementReport = JSON.parse(noSupplement.stdout);
     expect(noSupplementReport).toMatchObject({
+      schemaVersion: "1",
       status: "partial",
       figmaInteractionSource: "absent",
       satisfiesMultipage: true,
+      flowPlanRevision: 1,
     });
     expect(noSupplementReport.convertedActionIds).toEqual([]);
     expect(noSupplementReport.confirmationQuestions).toHaveLength(2);
@@ -143,7 +145,7 @@ describe("M4 FlowPlan spike runner", () => {
     const { stdout } = await execFileAsync(
       process.execPath,
       [
-        "scripts/run-m4-flowplan-spike.mjs",
+        "scripts/run-m4-flowplan.mjs",
         "--project-id",
         projectId,
         "--data-root",
@@ -172,7 +174,13 @@ describe("M4 FlowPlan spike runner", () => {
     );
 
     const report = JSON.parse(stdout);
-    expect(report.status).toBe("passed");
+    expect(report).toMatchObject({
+      schemaVersion: "1",
+      status: "passed",
+      figmaInteractionSource: "present",
+      flowPlanRevision: 2,
+      savedUISpecRevision: 2,
+    });
     expect(report.convertedActionIds).toHaveLength(1);
     expect(report.behaviorFixtureIds).toHaveLength(1);
     expect(report.validation.passed).toBe(true);
@@ -181,6 +189,15 @@ describe("M4 FlowPlan spike runner", () => {
         (check: { passed: boolean }) => !check.passed,
       ),
     ).toEqual([]);
+
+    const savedFlowPlan = await store.loadFlowPlan(projectId);
+    expect(savedFlowPlan).toMatchObject({
+      revision: 2,
+      schemaVersion: "1",
+      figmaInteractionSource: "present",
+    });
+    const savedUISpec = await store.loadUISpec(projectId);
+    expect(savedUISpec.sourceFlowPlanRevision).toBe(2);
 
     const savedReport = JSON.parse(
       await readFile(
@@ -191,5 +208,6 @@ describe("M4 FlowPlan spike runner", () => {
     expect(savedReport.behaviorFixtureIds).toEqual(
       report.behaviorFixtureIds,
     );
+    expect(savedReport.residualRisk).toContain("M5/M6/M7");
   }, 30_000);
 });
