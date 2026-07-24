@@ -476,6 +476,7 @@ describe("RenderAndCompareService", () => {
         width: 100,
         height: 50,
         frame: { x: 10, y: 10, width: 100, height: 50 },
+        style: { pointerEvents: "auto" },
         childIds: [],
         designValueRefs: [],
       },
