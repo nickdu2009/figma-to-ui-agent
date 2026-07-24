@@ -1,0 +1,213 @@
+:root {
+  --catalog-bg: #f5f7fa;
+  --catalog-text: #1f2937;
+  --catalog-muted: #6b7280;
+  --catalog-border: #e5e7eb;
+  --catalog-card-bg: #ffffff;
+  --catalog-preview-bg: #fafafa;
+  --catalog-accent: #1677ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  background: var(--catalog-bg);
+  color: var(--catalog-text);
+}
+
+.catalog-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.catalog-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.catalog-header-title h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.catalog-header-title p {
+  margin: 4px 0 0;
+  color: var(--catalog-muted);
+  font-size: 14px;
+}
+
+.catalog-search {
+  width: 280px;
+  padding: 8px 12px;
+  border: 1px solid var(--catalog-border);
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.catalog-search:focus {
+  border-color: var(--catalog-accent);
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.15);
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 24px;
+}
+
+.catalog-empty {
+  margin-top: 48px;
+  text-align: center;
+  color: var(--catalog-muted);
+}
+
+.component-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--catalog-card-bg);
+  border: 1px solid var(--catalog-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.component-card-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--catalog-border);
+}
+
+.component-card-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.component-card-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--catalog-muted);
+}
+
+.component-card-preview {
+  position: relative;
+  flex: 1;
+  min-height: 120px;
+  padding: 16px;
+  background: var(--catalog-preview-bg);
+  overflow: auto;
+}
+
+/* Button / Link 点击反馈 Dialog 以 Toast 样式浮在卡片右上角 */
+.component-card-preview [data-ui-node-id="button-feedback-dialog"],
+.component-card-preview [data-ui-node-id="link-feedback-dialog"] {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  min-width: 140px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid var(--catalog-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.component-card-preview [data-ui-node-id="button-feedback-dialog"] h2,
+.component-card-preview [data-ui-node-id="link-feedback-dialog"] h2 {
+  display: none;
+}
+
+.component-card-preview [data-ui-node-id="button-feedback-dialog"] p,
+.component-card-preview [data-ui-node-id="link-feedback-dialog"] p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--catalog-accent);
+}
+
+/* Nav 纵向布局 */
+.component-card-preview .ui-nav-vertical {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.component-card-controls {
+  padding: 12px 16px;
+  border-top: 1px solid var(--catalog-border);
+  background: var(--catalog-card-bg);
+}
+
+.prop-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.prop-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.prop-control-name {
+  color: var(--catalog-muted);
+  white-space: nowrap;
+}
+
+.prop-control input[type="text"],
+.prop-control input[type="number"],
+.prop-control select {
+  padding: 4px 8px;
+  border: 1px solid var(--catalog-border);
+  border-radius: 6px;
+  font-size: 13px;
+  min-width: 80px;
+}
+
+.prop-control input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.prop-control.is-invalid input,
+.prop-control.is-invalid select {
+  border-color: #ff4d4f;
+  background-color: #fff2f0;
+}
+
+.component-card-error {
+  padding: 16px;
+  color: #ff4d4f;
+  font-size: 13px;
+  text-align: center;
+}
+
+.component-card-reset {
+  display: block;
+  margin: 8px auto 0;
+  padding: 4px 12px;
+  border: 1px solid #ff4d4f;
+  border-radius: 6px;
+  background: #fff;
+  color: #ff4d4f;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.component-card-reset:hover {
+  background: #fff2f0;
+}

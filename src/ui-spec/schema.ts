@@ -51,21 +51,36 @@ const uiStyleSchema = z
   .object({
     backgroundColor: uiColorSchema.optional(),
     textColor: uiColorSchema.optional(),
+    fontFamily: z.string().min(1).max(256).optional(),
     fontSize: z.number().finite().positive().max(512).optional(),
     fontWeight: z
       .enum(["regular", "medium", "semibold", "bold"])
       .optional(),
     lineHeight: z.number().finite().positive().max(10).optional(),
+    letterSpacing: z.number().finite().min(-1_000).max(1_000).optional(),
+    textAlign: z
+      .enum(["left", "center", "right", "justify"])
+      .optional(),
+    whiteSpace: z
+      .enum(["normal", "nowrap", "pre-line", "pre-wrap"])
+      .optional(),
     borderRadius: z.number().finite().nonnegative().max(10_000).optional(),
     borderColor: uiColorSchema.optional(),
     borderWidth: z.number().finite().nonnegative().max(1_000).optional(),
     boxShadow: z.enum(["none", "sm", "md", "lg"]).optional(),
+    opacity: z.number().finite().min(0).max(1).optional(),
+    objectPosition: z.string().min(1).max(128).optional(),
+    pointerEvents: z.enum(["auto", "none"]).optional(),
     width: z.number().finite().positive().max(100_000).optional(),
     height: z.number().finite().positive().max(100_000).optional(),
     minWidth: z.number().finite().positive().max(100_000).optional(),
     minHeight: z.number().finite().positive().max(100_000).optional(),
     maxWidth: z.number().finite().positive().max(100_000).optional(),
     maxHeight: z.number().finite().positive().max(100_000).optional(),
+    position: z.enum(["relative", "absolute"]).optional(),
+    left: z.number().finite().min(-100_000).max(100_000).optional(),
+    top: z.number().finite().min(-100_000).max(100_000).optional(),
+    zIndex: z.number().int().min(-1_000).max(1_000).optional(),
   })
   .strict();
 
@@ -138,6 +153,7 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       alt: z.string().min(1).max(1_000),
       width: z.number().finite().positive().max(100_000),
       height: z.number().finite().positive().max(100_000),
+      frame: overlayFrameSchema.optional(),
       childIds: idListSchema,
     })
     .strict(),
@@ -174,6 +190,166 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       stateKey: idSchema,
       disabled: z.boolean().optional(),
       frame: overlayFrameSchema.optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("link"),
+      label: z.string().min(1).max(512),
+      actionId: idSchema.optional(),
+      disabled: z.boolean().optional(),
+      frame: overlayFrameSchema.optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("radio"),
+      label: z.string().min(1).max(512),
+      stateKey: idSchema,
+      value: z.string().min(1).max(1_000),
+      disabled: z.boolean().optional(),
+      frame: overlayFrameSchema.optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("switch"),
+      label: z.string().min(1).max(512),
+      stateKey: idSchema,
+      disabled: z.boolean().optional(),
+      frame: overlayFrameSchema.optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("select"),
+      label: z.string().min(1).max(512),
+      stateKey: idSchema,
+      options: z
+        .array(
+          z
+            .object({
+              value: z.string().min(1).max(1_000),
+              label: z.string().min(1).max(1_000),
+            })
+            .strict(),
+        )
+        .min(1)
+        .max(1_000),
+      placeholder: z.string().max(1_000).optional(),
+      disabled: z.boolean().optional(),
+      frame: overlayFrameSchema.optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("textarea"),
+      label: z.string().min(1).max(512),
+      stateKey: idSchema,
+      placeholder: z.string().max(1_000).optional(),
+      disabled: z.boolean().optional(),
+      frame: overlayFrameSchema.optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("form_field"),
+      label: z.string().min(1).max(512),
+      helpText: z.string().max(2_000).optional(),
+      errorText: z.string().max(2_000).optional(),
+      required: z.boolean().optional(),
+      childIds: idListSchema,
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("icon"),
+      assetRef: uiImagePathSchema,
+      alt: z.string().min(1).max(1_000).optional(),
+      decorative: z.boolean().optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("spacer"),
+      width: z.number().finite().positive().max(100_000).optional(),
+      height: z.number().finite().positive().max(100_000).optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("card"),
+      childIds: idListSchema,
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("list"),
+      ordered: z.boolean().optional(),
+      childIds: idListSchema,
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("list_item"),
+      childIds: idListSchema,
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("badge"),
+      label: z.string().min(1).max(512),
+      tone: z
+        .enum(["neutral", "success", "warning", "danger", "info"])
+        .optional(),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("avatar"),
+      assetRef: uiImagePathSchema.optional(),
+      initials: z.string().max(8).optional(),
+      alt: z.string().min(1).max(1_000),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("tabs"),
+      stateKey: idSchema,
+      tabs: z
+        .array(
+          z
+            .object({
+              value: z.string().min(1).max(1_000),
+              label: z.string().min(1).max(1_000),
+              childIds: idListSchema,
+            })
+            .strict(),
+        )
+        .min(1)
+        .max(100),
+    })
+    .strict(),
+  z
+    .object({
+      ...nodeBaseShape,
+      kind: z.literal("nav"),
+      orientation: z.enum(["horizontal", "vertical"]),
+      childIds: idListSchema,
     })
     .strict(),
   z
@@ -422,13 +598,19 @@ function validateUISpecReferences(
       }
     });
 
-    if ("childIds" in node) {
+    const directChildIds = "childIds" in node ? node.childIds : [];
+    const tabChildIds =
+      node.kind === "tabs"
+        ? node.tabs.flatMap((tab) => tab.childIds)
+        : [];
+    const allChildIds = [...directChildIds, ...tabChildIds];
+    if (allChildIds.length > 0) {
       addDuplicateIssues(
-        node.childIds,
+        allChildIds,
         ["nodes", nodeIndex, "childIds"],
         ctx,
       );
-      node.childIds.forEach((childId, childIndex) => {
+      allChildIds.forEach((childId, childIndex) => {
         if (!nodeById.has(childId)) {
           ctx.addIssue({
             code: "custom",
@@ -450,7 +632,7 @@ function validateUISpecReferences(
     }
 
     if (
-      node.kind === "button" &&
+      (node.kind === "button" || node.kind === "link") &&
       node.actionId &&
       !actionIds.has(node.actionId)
     ) {
@@ -460,17 +642,24 @@ function validateUISpecReferences(
         message: `悬空动作引用：${node.actionId}`,
       });
     }
-    if (node.kind === "input") {
+
+    if (
+      node.kind === "input" ||
+      node.kind === "radio" ||
+      node.kind === "select" ||
+      node.kind === "textarea" ||
+      node.kind === "tabs"
+    ) {
       const stateEntry = stateByKey.get(node.stateKey);
       if (!stateEntry || stateEntry.valueType !== "string") {
         ctx.addIssue({
           code: "custom",
           path: ["nodes", nodeIndex, "stateKey"],
-          message: "输入框必须引用字符串状态",
+          message: `${node.kind} 必须引用字符串状态`,
         });
       }
     }
-    if (node.kind === "checkbox" || node.kind === "dialog") {
+    if (node.kind === "checkbox" || node.kind === "switch" || node.kind === "dialog") {
       const stateKey =
         node.kind === "dialog" ? node.openStateKey : node.stateKey;
       if (stateByKey.get(stateKey)?.valueType === "boolean") {
@@ -483,8 +672,41 @@ function validateUISpecReferences(
           nodeIndex,
           node.kind === "dialog" ? "openStateKey" : "stateKey",
         ],
-        message: "复选框和对话框必须引用布尔状态",
+        message: "复选框、开关和对话框必须引用布尔状态",
       });
+    }
+
+    if (node.kind === "select") {
+      addDuplicateIssues(
+        node.options.map((option) => option.value),
+        ["nodes", nodeIndex, "options"],
+        ctx,
+      );
+    }
+    if (node.kind === "tabs") {
+      addDuplicateIssues(
+        node.tabs.map((tab) => tab.value),
+        ["nodes", nodeIndex, "tabs"],
+        ctx,
+      );
+    }
+    if (node.kind === "avatar") {
+      if (!node.assetRef && !node.initials) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["nodes", nodeIndex],
+          message: "avatar 必须提供 assetRef 或 initials",
+        });
+      }
+    }
+    if (node.kind === "spacer") {
+      if (node.width === undefined && node.height === undefined) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["nodes", nodeIndex],
+          message: "spacer 必须提供 width 或 height",
+        });
+      }
     }
   });
 
@@ -535,12 +757,18 @@ function validateUISpecReferences(
       return;
     }
     reachedFromPage.set(nodeId, pageId);
-    if (!("childIds" in node)) {
+    const directChildIds = "childIds" in node ? node.childIds : [];
+    const tabChildIds =
+      node.kind === "tabs"
+        ? node.tabs.flatMap((tab) => tab.childIds)
+        : [];
+    const allChildIds = [...directChildIds, ...tabChildIds];
+    if (allChildIds.length === 0) {
       return;
     }
     const nextPath = new Set(activePath);
     nextPath.add(nodeId);
-    node.childIds.forEach((childId) => visit(childId, pageId, nextPath));
+    allChildIds.forEach((childId) => visit(childId, pageId, nextPath));
   };
 
   value.pages.forEach((page) => {
@@ -622,15 +850,21 @@ function validateUISpecReferences(
         } else {
           const validTarget =
             step.kind === "fill"
-              ? target.kind === "input"
+              ? target.kind === "input" || target.kind === "textarea"
               : step.kind === "toggle"
-                ? target.kind === "checkbox"
+                ? target.kind === "checkbox" || target.kind === "switch"
                 : step.kind === "click"
                   ? target.kind === "button" ||
-                    target.kind === "checkbox"
+                    target.kind === "link" ||
+                    target.kind === "checkbox" ||
+                    target.kind === "radio" ||
+                    target.kind === "switch" ||
+                    target.kind === "select"
                   : step.kind === "expect_text"
                     ? target.kind === "text" ||
-                      target.kind === "button"
+                      target.kind === "button" ||
+                      target.kind === "badge" ||
+                      target.kind === "link"
                     : true;
           if (!validTarget) {
             ctx.addIssue({

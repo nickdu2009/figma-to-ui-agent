@@ -37,7 +37,7 @@ import {
   renderAndCompareInputSchema,
   renderAndCompareOutputSchema,
 } from "../tools/contracts.ts";
-import { collectScreenshotFallbackFeatures } from "../tools/unsupported-features.ts";
+import { collectUnsupportedFeatures } from "../tools/unsupported-features.ts";
 import type { UISpec } from "../ui-spec/schema.ts";
 import {
   type ValidationRecord,
@@ -76,8 +76,35 @@ export interface RenderAndCompareServiceOptions {
 interface PixelComparison {
   diffPixelCount: number;
   diffPixelRatio: number;
+  regionDiffs: PixelRegionComparison[];
   diffBytes?: Uint8Array;
   message?: string;
+}
+
+interface PixelBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+type PixelRegionId =
+  | "visual_assets"
+  | "text_regions"
+  | "form_controls"
+  | "button_icon_controls";
+
+interface PixelRegion extends PixelBounds {
+  id: PixelRegionId;
+  label: string;
+}
+
+interface PixelRegionComparison {
+  id: PixelRegionId;
+  label: string;
+  bounds: PixelBounds;
+  diffPixelCount: number;
+  diffPixelRatio: number;
 }
 
 function stableHash(value: string): string {
@@ -174,6 +201,8 @@ function previewUrl(
     designBundleRevision: number;
     runId?: string;
     canvasOnly?: boolean;
+    canvasWidth?: number;
+    canvasHeight?: number;
   },
 ): string {
   const url = new URL(baseUrl);
@@ -194,6 +223,12 @@ function previewUrl(
   if (input.canvasOnly) {
     url.searchParams.set("renderMode", "canvas");
   }
+  if (input.canvasWidth) {
+    url.searchParams.set("canvasWidth", String(input.canvasWidth));
+  }
+  if (input.canvasHeight) {
+    url.searchParams.set("canvasHeight", String(input.canvasHeight));
+  }
   return url.href;
 }
 
@@ -204,6 +239,7 @@ async function comparePixels(
   expected: LocalImageRef,
   actualWidth: number,
   actualHeight: number,
+  regions: readonly PixelRegion[],
 ): Promise<PixelComparison> {
   const width = actualWidth;
   const height = actualHeight;
@@ -212,6 +248,7 @@ async function comparePixels(
     return {
       diffPixelCount: totalPixels,
       diffPixelRatio: 1,
+      regionDiffs: [],
       message: "比较画布超过像素上限",
     };
   }
@@ -280,6 +317,20 @@ async function comparePixels(
       diffCanvas.height = height;
       const diffContext = diffCanvas.getContext("2d")!;
       const diff = diffContext.createImageData(width, height);
+      const regions = input.regions.map((region) => {
+        const x = Math.max(0, Math.floor(region.x));
+        const y = Math.max(0, Math.floor(region.y));
+        const right = Math.min(width, Math.ceil(region.x + region.width));
+        const bottom = Math.min(height, Math.ceil(region.y + region.height));
+        return {
+          ...region,
+          x,
+          y,
+          width: Math.max(0, right - x),
+          height: Math.max(0, bottom - y),
+          diffPixelCount: 0,
+        };
+      });
       let diffPixelCount = 0;
       for (let index = 0; index < left.data.length; index += 4) {
         const channelDelta = Math.max(
@@ -292,6 +343,19 @@ async function comparePixels(
           channelDelta > input.maxChannelDelta;
         if (changed) {
           diffPixelCount += 1;
+          const pixel = index / 4;
+          const x = pixel % width;
+          const y = Math.floor(pixel / width);
+          for (const region of regions) {
+            if (
+              x >= region.x &&
+              x < region.x + region.width &&
+              y >= region.y &&
+              y < region.y + region.height
+            ) {
+              region.diffPixelCount += 1;
+            }
+          }
           diff.data[index] = 214;
           diff.data[index + 1] = 55;
           diff.data[index + 2] = 55;
@@ -305,6 +369,22 @@ async function comparePixels(
           width * height === 0
             ? 0
             : diffPixelCount / (width * height),
+        regionDiffs: regions.map((region) => {
+          const total = region.width * region.height;
+          return {
+            id: region.id,
+            label: region.label,
+            bounds: {
+              x: region.x,
+              y: region.y,
+              width: region.width,
+              height: region.height,
+            },
+            diffPixelCount: region.diffPixelCount,
+            diffPixelRatio:
+              total === 0 ? 0 : region.diffPixelCount / total,
+          };
+        }),
         diffDataUrl: diffCanvas.toDataURL("image/png"),
       };
     },
@@ -313,15 +393,183 @@ async function comparePixels(
       expectedMime: expected.mimeType,
       actualBase64: Buffer.from(actualBytes).toString("base64"),
       maxChannelDelta: VALIDATION_BASELINE.maxChannelDelta,
+      regions,
     },
   );
   return {
     diffPixelCount: result.diffPixelCount,
     diffPixelRatio: result.diffPixelRatio,
+    regionDiffs: result.regionDiffs,
     diffBytes: Uint8Array.from(
       Buffer.from(result.diffDataUrl.split(",", 2)[1]!, "base64"),
     ),
   };
+}
+
+function nodeBounds(
+  node: UISpec["nodes"][number],
+): PixelBounds | undefined {
+  const style = node.style;
+  const frame =
+    "frame" in node && node.frame ? node.frame : undefined;
+  const left = style?.left ?? frame?.x;
+  const top = style?.top ?? frame?.y;
+  const width =
+    style?.width ??
+    frame?.width ??
+    ("width" in node ? node.width : undefined);
+  const height =
+    style?.height ??
+    frame?.height ??
+    ("height" in node ? node.height : undefined);
+  const impliedOrigin =
+    (style?.position === "relative" || style?.position === "absolute") &&
+    typeof width === "number" &&
+    typeof height === "number";
+  if (
+    (!impliedOrigin && typeof left !== "number") ||
+    (!impliedOrigin && typeof top !== "number") ||
+    typeof width !== "number" ||
+    typeof height !== "number"
+  ) {
+    return undefined;
+  }
+  return { x: left ?? 0, y: top ?? 0, width, height };
+}
+
+function unionBounds(
+  regions: readonly PixelBounds[],
+): PixelBounds | undefined {
+  if (regions.length === 0) {
+    return undefined;
+  }
+  const left = Math.min(...regions.map((region) => region.x));
+  const top = Math.min(...regions.map((region) => region.y));
+  const right = Math.max(
+    ...regions.map((region) => region.x + region.width),
+  );
+  const bottom = Math.max(
+    ...regions.map((region) => region.y + region.height),
+  );
+  return { x: left, y: top, width: right - left, height: bottom - top };
+}
+
+function collectDiagnosticRegions(
+  uiSpec: UISpec,
+  uiPage: UISpec["pages"][number],
+  _viewport: UISpec["viewports"][number],
+): PixelRegion[] {
+  const nodesById = new Map(uiSpec.nodes.map((node) => [node.id, node]));
+  const boundsById = new Map<string, PixelBounds>();
+  const visited = new Set<string>();
+  const visit = (nodeId: string, offsetX: number, offsetY: number) => {
+    if (visited.has(nodeId)) {
+      return;
+    }
+    visited.add(nodeId);
+    const node = nodesById.get(nodeId);
+    if (!node) {
+      return;
+    }
+    const localBounds = nodeBounds(node);
+    const nextOffset = localBounds
+      ? {
+          x: offsetX + localBounds.x,
+          y: offsetY + localBounds.y,
+        }
+      : { x: offsetX, y: offsetY };
+    if (localBounds) {
+      boundsById.set(node.id, {
+        x: nextOffset.x,
+        y: nextOffset.y,
+        width: localBounds.width,
+        height: localBounds.height,
+      });
+    }
+    if ("childIds" in node) {
+      for (const childId of node.childIds) {
+        visit(childId, nextOffset.x, nextOffset.y);
+      }
+    }
+  };
+  visit(uiPage.rootNodeId, 0, 0);
+
+  const pageNodes = uiSpec.nodes.filter((node) => visited.has(node.id));
+  const byKind = (predicate: (node: UISpec["nodes"][number]) => boolean) =>
+    pageNodes
+      .filter(predicate)
+      .map((node) => boundsById.get(node.id))
+      .filter((bounds): bounds is PixelBounds => !!bounds);
+  const addRegion = (
+    regions: PixelRegion[],
+    id: PixelRegionId,
+    label: string,
+    bounds: PixelBounds | undefined,
+  ) => {
+    if (!bounds || bounds.width <= 0 || bounds.height <= 0) {
+      return;
+    }
+    regions.push({ id, label, ...bounds });
+  };
+  const isFormControl = (node: UISpec["nodes"][number]) =>
+    node.kind === "input" ||
+    node.kind === "checkbox" ||
+    node.kind === "radio" ||
+    node.kind === "switch" ||
+    node.kind === "select" ||
+    node.kind === "textarea" ||
+    node.kind === "form_field";
+  const isButtonIconControl = (node: UISpec["nodes"][number]) =>
+    node.kind === "button" || node.kind === "link" || node.kind === "icon";
+
+  const regions: PixelRegion[] = [];
+  addRegion(
+    regions,
+    "visual_assets",
+    "visual assets",
+    unionBounds(
+      byKind(
+        (node) =>
+          (node.kind === "pixel_overlay" || node.kind === "image") &&
+          (!("childIds" in node) || node.childIds.length === 0),
+      ),
+    ),
+  );
+  addRegion(
+    regions,
+    "text_regions",
+    "text regions",
+    unionBounds(byKind((node) => node.kind === "text")),
+  );
+  addRegion(
+    regions,
+    "form_controls",
+    "form controls",
+    unionBounds(byKind(isFormControl)),
+  );
+  addRegion(
+    regions,
+    "button_icon_controls",
+    "button and icon controls",
+    unionBounds(byKind(isButtonIconControl)),
+  );
+  return regions;
+}
+
+function scaleDiagnosticRegions(
+  regions: readonly PixelRegion[],
+  scale: number,
+): PixelRegion[] {
+  if (scale === 1) {
+    return [...regions];
+  }
+  return regions.map((region) => ({
+    ...region,
+    x: region.x * scale,
+    y: region.y * scale,
+    width: region.width * scale,
+    height: region.height * scale,
+  }));
 }
 
 function targetForStep(
@@ -346,12 +594,16 @@ async function executeBehaviorFixture(
       if (step.kind === "click") {
         await targetForStep(page, step.nodeId).click();
       } else if (step.kind === "fill") {
-        await targetForStep(page, step.nodeId)
-          .locator("input")
-          .fill(step.value);
+        const target = targetForStep(page, step.nodeId);
+        const nestedField = target.locator("input,textarea").first();
+        if ((await nestedField.count()) > 0) {
+          await nestedField.fill(step.value);
+        } else {
+          await target.fill(step.value);
+        }
       } else if (step.kind === "toggle") {
         await targetForStep(page, step.nodeId)
-          .locator('input[type="checkbox"]')
+          .locator('input[type="checkbox"],input[type="radio"],[role="switch"]')
           .click();
       } else if (step.kind === "expect_visible") {
         if (!(await targetForStep(page, step.nodeId).isVisible())) {
@@ -606,10 +858,15 @@ export class RenderAndCompareService {
           const viewport = uiSpec.viewports.find(
             (candidate) => candidate.id === viewportId,
           )!;
+          const canvasWidth = Math.min(viewport.width, expectedRef.width);
+          const canvasHeight = Math.min(
+            viewport.height,
+            expectedRef.height,
+          );
           const context: BrowserContext = await browser.newContext({
             viewport: {
-              width: viewport.width + 32,
-              height: viewport.height + 32,
+              width: canvasWidth + 32,
+              height: canvasHeight + 32,
             },
             deviceScaleFactor: viewport.deviceScaleFactor,
             colorScheme: VALIDATION_BASELINE.colorScheme,
@@ -663,6 +920,8 @@ export class RenderAndCompareService {
                 uiSpecRevision: uiSpec.revision,
                 designBundleRevision: bundle.revision,
                 canvasOnly: true,
+                canvasWidth,
+                canvasHeight,
               }),
               { waitUntil: "networkidle" },
             );
@@ -692,8 +951,12 @@ export class RenderAndCompareService {
               expectedBytes,
               actualBytes,
               expectedRef,
-              viewport.width * viewport.deviceScaleFactor,
-              viewport.height * viewport.deviceScaleFactor,
+              canvasWidth * viewport.deviceScaleFactor,
+              canvasHeight * viewport.deviceScaleFactor,
+              scaleDiagnosticRegions(
+                collectDiagnosticRegions(uiSpec, uiPage, viewport),
+                viewport.deviceScaleFactor,
+              ),
             );
             if (comparison.diffBytes) {
               await writeAtomic(
@@ -757,6 +1020,7 @@ export class RenderAndCompareService {
                 : undefined,
               diffPixelCount: comparison.diffPixelCount,
               diffPixelRatio: comparison.diffPixelRatio,
+              regionDiffs: comparison.regionDiffs,
             });
           } finally {
             await context.close();
@@ -767,7 +1031,7 @@ export class RenderAndCompareService {
       await comparisonPage.close();
     }
 
-    const unsupportedFeatures = collectScreenshotFallbackFeatures(
+    const unsupportedFeatures = collectUnsupportedFeatures(
       uiSpec,
       "validation_artifact",
     );

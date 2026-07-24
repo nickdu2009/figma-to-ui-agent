@@ -52,7 +52,7 @@ import {
 } from "./tools/contracts.ts";
 
 const AUDIT_RELATIVE_PATH = "data/audit/m0-boundary.jsonl";
-const PROMPT_VERSION = "m2-bounded-loop-v2";
+const PROMPT_VERSION = "p2-visual-layers-v4";
 const MAX_ITERATIONS_PER_TURN = 3;
 const MAX_AGENT_AUDIT_ERROR_LENGTH = 1000;
 
@@ -63,7 +63,12 @@ const CONTROLLED_SYSTEM_PROMPT = [
   "调用 inspect_figma 时，figmaUrl 必须逐字符复制用户提供的完整 https://www.figma.com/design/... URL；不要改写、缩短、翻译、移除查询参数或替换为文件名。",
   "targetNodes 只在用户明确提供目标节点时填写为字符串数组；如果 URL 已包含 node-id 且用户没有额外目标节点，不要填冲突节点。",
   "必须以 Figma 参考截图和 inspect_agent_context 作为视觉校验锚点；不得把 figma/screenshots/... 作为覆盖整页或页面主体的普通 image 交付通过。复杂插画、图标和装饰优先使用局部 figma/assets/...；局部 figma/screenshots/... 只能作为受审计 fallback，并且表单、按钮、文本必须保持结构化节点。",
-  "登录、注册、搜索、设置等表单界面必须使用真实 input/button/checkbox/text 节点表达；email/password/search 字段要使用对应 inputType；Google/GitHub 等社交登录入口也必须保留真实 button 语义，可用 leadingIconAssetRef/trailingIconAssetRef 承载图标。",
+  "生成 UISpec 时必须读取 inspect_agent_context.pages[].visualLayers；大面积矢量、图片填充、局部截图、logo/icon/illustration/background 等视觉层是关键视觉信号，必须优先映射为局部 image 或 pixel_overlay，并保留 pageRelativeBounds、zOrder、layerRole、visual 元数据和推荐用途。名称只能作为弱提示，最终以节点类型、面积比例、资产引用、层级、opacity/blend/mask/clip/vectorPathCount、overlapContentNodeCount、nearbyContentNodeCount 和坐标为准。所有定位应以 pageRelativeBounds 为准，不要根据负数全局 bounds 猜测位置。",
+  "需要精确复原 Figma canvas 时，可以在受控 style 中使用 position:'relative'|'absolute'、left、top、width、height、zIndex。根画布或局部舞台应设置 position:'relative'，视觉层和关键控件可按 pageRelativeBounds 绝对定位。",
+  "pixel_overlay.frame 只表示从更大源图内部裁剪的区域；如果引用的是 visualLayers[].renderedAssetPath 这种局部节点截图，不要把 pageRelativeBounds 填入 frame，应省略 frame 并用 style.left/top/width/height 放置节点。",
+  "visualLayers[].layerRole 为 container_background 时，只能作为对应结构化内容的背景层使用，children 必须包含真实 input/button/link/text 等结构化节点并显示在 overlay 上方；不得用整块 ContentFrame/Panel 截图覆盖或替代表单内容。",
+  "当 visualLayers 提供 renderedAssetPath 时，优先引用该局部渲染图；当只提供 localImageRefs 时，优先引用局部资产。不得忽略大面积背景、品牌色块、插画或 logo 后只交付表单结构。",
+  "登录、注册、搜索、设置等表单界面必须使用真实 input/button/checkbox/text 节点表达；email/password/search 字段要使用对应 inputType；第三方登录、带图标 CTA、导航动作等入口也必须保留真实 button/link 语义，可用 leadingIconAssetRef/trailingIconAssetRef 承载图标。",
   "不得猜测 Figma 未提供且 behaviorNotes 未声明的业务行为；未声明行为只能报告为 missingBehaviorNotes 或未建模动作，不能归类为 unsupportedFeatures。",
   "unsupportedFeatures 只用于报告 Catalog、UISpec schema、renderer 或工具链无法表达/验证的真实能力缺口；不要把三轮内未调准、未实现动作或缺少业务说明称为不支持。",
   "报告 unsupportedFeatures 时必须同时说明证据来源：inspect warning、Schema 限制、渲染器限制或验证产物。",

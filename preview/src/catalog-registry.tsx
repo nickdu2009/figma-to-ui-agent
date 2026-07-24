@@ -10,17 +10,31 @@ import {
   Grid,
   Section,
   Stack,
+  Spacer,
+  Card,
+  List,
+  ListItem,
+  Badge,
 } from "./components/layout.tsx";
 import {
   Image,
   PixelOverlay,
+  Icon,
+  Avatar,
 } from "./components/media.tsx";
 import {
   Button,
   Checkbox,
   Input,
+  Link,
+  Radio,
+  Switch,
+  Select,
+  Textarea,
+  FormField,
 } from "./components/form-controls.tsx";
 import { Text } from "./components/typography.tsx";
+import { Nav, Tabs, TabPanel } from "./components/navigation.tsx";
 
 const components = {
   Stack,
@@ -33,6 +47,22 @@ const components = {
   Button,
   Input,
   Checkbox,
+  Link,
+  Radio,
+  Switch,
+  Select,
+  Textarea,
+  FormField,
+  Icon,
+  Avatar,
+  Spacer,
+  Card,
+  List,
+  ListItem,
+  Badge,
+  Tabs,
+  TabPanel,
+  Nav,
   Divider,
 } satisfies Components<typeof previewCatalog>;
 

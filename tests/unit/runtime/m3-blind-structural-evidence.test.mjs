@@ -47,4 +47,23 @@ describe("M3 blind 结构化证据", () => {
       screenshotFallbackNodeCount: 1,
     });
   });
+
+  it("把新增 P1 交互节点计入 interactiveNodeCount", () => {
+    const draft = createUISpecDraft("blind-case");
+    draft.nodes.push(
+      { id: "link", kind: "link", label: "条款", designValueRefs: [] },
+      { id: "radio", kind: "radio", label: "A", stateKey: "x", value: "a", designValueRefs: [] },
+      { id: "switch", kind: "switch", label: "S", stateKey: "y", designValueRefs: [] },
+      { id: "select", kind: "select", label: "C", stateKey: "z", options: [{ value: "a", label: "A" }], designValueRefs: [] },
+      { id: "textarea", kind: "textarea", label: "T", stateKey: "w", designValueRefs: [] },
+      { id: "tabs", kind: "tabs", stateKey: "tab", tabs: [{ value: "a", label: "A", childIds: [] }], designValueRefs: [] },
+    );
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("link", "radio", "switch", "select", "textarea", "tabs");
+    }
+
+    const evidence = collectUISpecStructuralEvidence(draft);
+    expect(evidence.interactiveNodeCount).toBe(7);
+  });
 });

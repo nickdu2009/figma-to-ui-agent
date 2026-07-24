@@ -121,50 +121,29 @@ function isFigmaScreenshotPath(value: string): boolean {
 }
 
 function childIdsForNode(node: UINode | undefined): string[] {
-  return node && "childIds" in node ? node.childIds : [];
-}
-
-function reachableNodes(
-  rootNodeId: string,
-  nodeById: ReadonlyMap<string, UINode>,
-): UINode[] {
-  const output: UINode[] = [];
-  const queue = [rootNodeId];
-  const visited = new Set<string>();
-  while (queue.length > 0) {
-    const nodeId = queue.shift()!;
-    if (visited.has(nodeId)) {
-      continue;
-    }
-    visited.add(nodeId);
-    const node = nodeById.get(nodeId);
-    if (!node) {
-      continue;
-    }
-    output.push(node);
-    queue.push(...childIdsForNode(node));
+  if (!node) {
+    return [];
   }
-  return output;
+  if ("childIds" in node) {
+    return node.childIds;
+  }
+  if (node.kind === "tabs") {
+    return node.tabs.flatMap((tab) => tab.childIds);
+  }
+  return [];
 }
 
-function structuredNodeCount(nodes: readonly UINode[]): number {
-  return nodes.filter(
-    (node) =>
-      node.kind === "text" ||
-      node.kind === "input" ||
-      node.kind === "button" ||
-      node.kind === "checkbox",
-  ).length;
-}
-
-type ScreenshotImageNode = Extract<UINode, { kind: "image" }>;
+type ScreenshotFallbackNode = Extract<
+  UINode,
+  { kind: "image" | "pixel_overlay" }
+>;
 
 function rootScreenshotImage(
   rootNode: UINode | undefined,
   nodeById: ReadonlyMap<string, UINode>,
-): ScreenshotImageNode | undefined {
+): ScreenshotFallbackNode | undefined {
   if (
-    rootNode?.kind === "image" &&
+    (rootNode?.kind === "image" || rootNode?.kind === "pixel_overlay") &&
     isFigmaScreenshotPath(rootNode.assetRef)
   ) {
     return rootNode;
@@ -174,10 +153,34 @@ function rootScreenshotImage(
     return undefined;
   }
   const onlyChild = nodeById.get(childIds[0]!);
-  return onlyChild?.kind === "image" &&
+  return (onlyChild?.kind === "image" ||
+    onlyChild?.kind === "pixel_overlay") &&
     isFigmaScreenshotPath(onlyChild.assetRef)
     ? onlyChild
     : undefined;
+}
+
+function imageRefsForUINode(node: UINode): string[] {
+  const refs: string[] = [];
+  if (
+    node.kind === "image" ||
+    node.kind === "pixel_overlay" ||
+    node.kind === "icon" ||
+    node.kind === "avatar"
+  ) {
+    if ("assetRef" in node && node.assetRef) {
+      refs.push(node.assetRef);
+    }
+  }
+  if (node.kind === "button") {
+    if (node.leadingIconAssetRef) {
+      refs.push(node.leadingIconAssetRef);
+    }
+    if (node.trailingIconAssetRef) {
+      refs.push(node.trailingIconAssetRef);
+    }
+  }
+  return refs;
 }
 
 async function syncDirectory(path: string): Promise<void> {
@@ -876,11 +879,15 @@ export class ProjectStore {
         `UISpec 引用了 DesignBundle 中不存在的来源页面：${missingSourcePage.sourcePageId}`,
       );
     }
-    const missingImage = draft.nodes.find(
-      (node) =>
-        node.kind === "image" && !imagePaths.has(node.assetRef),
-    );
-    if (missingImage?.kind === "image") {
+    const missingImage = draft.nodes
+      .flatMap((node) =>
+        imageRefsForUINode(node).map((assetRef) => ({
+          node,
+          assetRef,
+        })),
+      )
+      .find((entry) => !imagePaths.has(entry.assetRef));
+    if (missingImage) {
       throw new ProjectStoreError(
         "cross_reference_invalid",
         `UISpec 引用了 DesignBundle 中不存在的图片：${missingImage.assetRef}`,
@@ -889,12 +896,11 @@ export class ProjectStore {
 
     const nodeById = new Map(draft.nodes.map((node) => [node.id, node]));
     for (const page of draft.pages) {
-      const reachable = reachableNodes(page.rootNodeId, nodeById);
       const screenshot = rootScreenshotImage(
         nodeById.get(page.rootNodeId),
         nodeById,
       );
-      if (screenshot && structuredNodeCount(reachable) === 0) {
+      if (screenshot) {
         throw new ProjectStoreError(
           "cross_reference_invalid",
           `full_page_screenshot_fallback_rejected: 页面 ${page.id} 不能以 root 单截图交付，必须保留真实 text/input/button 节点；仅允许局部图片兜底：${screenshot.assetRef}`,

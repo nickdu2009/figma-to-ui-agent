@@ -8,6 +8,7 @@ const browserExecutablePath = resolve(
 export default defineConfig({
   testDir: "./tests/e2e",
   testMatch: "**/*.spec.ts",
+  testIgnore: "**/catalog.spec.ts",
   globalSetup: "./tests/e2e/global-setup.ts",
   outputDir: "./data/e2e/test-results",
   fullyParallel: false,

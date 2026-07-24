@@ -95,6 +95,72 @@ export const Dialog: ComponentFn<
   </section>
 );
 
+export const Spacer: ComponentFn<typeof previewCatalog, "Spacer"> = ({
+  props,
+}) => (
+  <div
+    className="ui-spacer"
+    data-ui-node-id={props.nodeId}
+    style={{
+      width: props.width ?? undefined,
+      height: props.height ?? undefined,
+      ...controlledStyle(props.style),
+    }}
+  />
+);
+
+export const Card: ComponentFn<typeof previewCatalog, "Card"> = ({
+  props,
+  children,
+}) => (
+  <div
+    className="ui-card"
+    data-ui-node-id={props.nodeId}
+    style={controlledStyle(props.style)}
+  >
+    {children}
+  </div>
+);
+
+export const List: ComponentFn<typeof previewCatalog, "List"> = ({
+  props,
+  children,
+}) =>
+  createElement(
+    props.ordered ? "ol" : "ul",
+    {
+      className: "ui-list",
+      "data-ui-node-id": props.nodeId,
+      style: controlledStyle(props.style),
+    },
+    children,
+  );
+
+export const ListItem: ComponentFn<typeof previewCatalog, "ListItem"> = ({
+  props,
+  children,
+}) => (
+  <li
+    className="ui-list-item"
+    data-ui-node-id={props.nodeId}
+    style={controlledStyle(props.style)}
+  >
+    {children}
+  </li>
+);
+
+export const Badge: ComponentFn<typeof previewCatalog, "Badge"> = ({
+  props,
+}) => (
+  <span
+    className={`ui-badge ui-badge-${props.tone ?? "neutral"}`}
+    data-ui-node-id={props.nodeId}
+    style={controlledStyle(props.style)}
+  >
+    {props.label}
+  </span>
+);
+
 export const Divider: ComponentFn<
   typeof previewCatalog,
   "Divider"

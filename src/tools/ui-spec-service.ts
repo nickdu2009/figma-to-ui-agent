@@ -8,7 +8,7 @@ import {
   saveUISpecInputSchema,
   saveUISpecOutputSchema,
 } from "./contracts.ts";
-import { collectScreenshotFallbackFeatures } from "./unsupported-features.ts";
+import { collectUnsupportedFeatures } from "./unsupported-features.ts";
 
 export class UISpecToolService {
   private readonly projectStore: ProjectStore;
@@ -38,7 +38,7 @@ export class UISpecToolService {
       baseRevision: input.baseRevision,
       draft: input.uiSpec,
     });
-    const unsupportedFeatures = collectScreenshotFallbackFeatures(
+    const unsupportedFeatures = collectUnsupportedFeatures(
       input.uiSpec,
       "schema_limit",
     );

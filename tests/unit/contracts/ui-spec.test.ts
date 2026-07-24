@@ -117,23 +117,45 @@ describe("UISpec Schema", () => {
     draft.nodes[1]!.style = {
       backgroundColor: "#ffffff",
       textColor: "#123456",
+      fontFamily: "Inter, Arial, sans-serif",
       fontSize: 24,
       fontWeight: "semibold",
       lineHeight: 1.4,
+      letterSpacing: 0.4,
+      textAlign: "center",
+      whiteSpace: "nowrap",
       borderRadius: 8,
       borderColor: "#abcdef",
       borderWidth: 1,
       boxShadow: "md",
+      opacity: 0.85,
+      objectPosition: "50% 50%",
+      pointerEvents: "none",
       width: 320,
       minHeight: 40,
       maxWidth: 640,
+      position: "absolute",
+      left: 24,
+      top: 48,
+      zIndex: 2,
     };
 
     expect(uiSpecDraftSchema.parse(draft).nodes[1]).toMatchObject({
       style: {
         backgroundColor: "#ffffff",
         textColor: "#123456",
+        fontFamily: "Inter, Arial, sans-serif",
+        letterSpacing: 0.4,
+        textAlign: "center",
+        whiteSpace: "nowrap",
         boxShadow: "md",
+        opacity: 0.85,
+        objectPosition: "50% 50%",
+        pointerEvents: "none",
+        position: "absolute",
+        left: 24,
+        top: 48,
+        zIndex: 2,
       },
     });
 
@@ -293,7 +315,7 @@ describe("UISpec Schema", () => {
     }
 
     expect(() => uiSpecDraftSchema.parse(draft)).toThrow(
-      "复选框和对话框必须引用布尔状态",
+      "复选框、开关和对话框必须引用布尔状态",
     );
   });
 
@@ -305,6 +327,209 @@ describe("UISpec Schema", () => {
 
     expect(() => uiSpecDraftSchema.parse(draft)).toThrow(
       "行为 fill 与目标组件 text 不兼容",
+    );
+  });
+
+  it("支持 P1 表单与内容/导航组件", () => {
+    const draft = createUISpecDraft();
+    draft.state.push(
+      { key: "plan", valueType: "string", initialValue: "basic" },
+      { key: "notify", valueType: "boolean", initialValue: false },
+      { key: "bio", valueType: "string", initialValue: "" },
+      { key: "country", valueType: "string", initialValue: "" },
+      { key: "activeTab", valueType: "string", initialValue: "general" },
+    );
+    draft.actions.push({
+      id: "go-home",
+      kind: "navigate",
+      pageId: "home",
+    });
+    draft.nodes.push(
+      {
+        id: "terms-link",
+        kind: "link",
+        label: "条款",
+        actionId: "go-home",
+        designValueRefs: [],
+      },
+      {
+        id: "plan-radio",
+        kind: "radio",
+        label: "基础版",
+        stateKey: "plan",
+        value: "basic",
+        designValueRefs: [],
+      },
+      {
+        id: "notify-switch",
+        kind: "switch",
+        label: "通知",
+        stateKey: "notify",
+        designValueRefs: [],
+      },
+      {
+        id: "country-select",
+        kind: "select",
+        label: "国家",
+        stateKey: "country",
+        options: [{ value: "cn", label: "中国" }],
+        designValueRefs: [],
+      },
+      {
+        id: "bio-textarea",
+        kind: "textarea",
+        label: "简介",
+        stateKey: "bio",
+        designValueRefs: [],
+      },
+      {
+        id: "name-field",
+        kind: "form_field",
+        label: "姓名",
+        required: true,
+        childIds: ["bio-textarea"],
+        designValueRefs: [],
+      },
+      {
+        id: "avatar",
+        kind: "avatar",
+        initials: "JD",
+        alt: "用户头像",
+        designValueRefs: [],
+      },
+      {
+        id: "icon",
+        kind: "icon",
+        assetRef: FIXTURE_ASSET_PATH,
+        decorative: true,
+        designValueRefs: [],
+      },
+      {
+        id: "spacer",
+        kind: "spacer",
+        width: 16,
+        designValueRefs: [],
+      },
+      {
+        id: "card",
+        kind: "card",
+        childIds: ["avatar"],
+        designValueRefs: [],
+      },
+      {
+        id: "list",
+        kind: "list",
+        childIds: [],
+        designValueRefs: [],
+      },
+      {
+        id: "badge",
+        kind: "badge",
+        label: "新",
+        tone: "success",
+        designValueRefs: [],
+      },
+      {
+        id: "tabs",
+        kind: "tabs",
+        stateKey: "activeTab",
+        tabs: [
+          { value: "general", label: "常规", childIds: [] },
+          { value: "advanced", label: "高级", childIds: [] },
+        ],
+        designValueRefs: [],
+      },
+      {
+        id: "nav",
+        kind: "nav",
+        orientation: "horizontal",
+        childIds: [],
+        designValueRefs: [],
+      },
+    );
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push(
+        "terms-link",
+        "plan-radio",
+        "notify-switch",
+        "country-select",
+        "name-field",
+        "card",
+        "list",
+        "badge",
+        "tabs",
+        "nav",
+        "icon",
+        "spacer",
+      );
+    }
+
+    const parsed = uiSpecDraftSchema.parse(draft);
+    expect(parsed.nodes.find((node) => node.kind === "tabs")?.tabs).toHaveLength(
+      2,
+    );
+    expect(
+      parsed.nodes.find((node) => node.kind === "select")?.options,
+    ).toHaveLength(1);
+  });
+
+  it("拒绝 P1 组件必填约束和重复 value", () => {
+    const draft = createUISpecDraft();
+    draft.state.push({ key: "activeTab", valueType: "string", initialValue: "a" });
+
+    const noAvatar = structuredClone(draft);
+    noAvatar.nodes.push({
+      id: "avatar",
+      kind: "avatar",
+      alt: "头像",
+      designValueRefs: [],
+    } as unknown as (typeof noAvatar.nodes)[number]);
+    expect(() => uiSpecDraftSchema.parse(noAvatar)).toThrow(
+      "avatar 必须提供 assetRef 或 initials",
+    );
+
+    const noSpacer = structuredClone(draft);
+    noSpacer.nodes.push({
+      id: "spacer",
+      kind: "spacer",
+      designValueRefs: [],
+    } as unknown as (typeof noSpacer.nodes)[number]);
+    expect(() => uiSpecDraftSchema.parse(noSpacer)).toThrow(
+      "spacer 必须提供 width 或 height",
+    );
+
+    const duplicateTab = structuredClone(draft);
+    duplicateTab.nodes.push({
+      id: "tabs",
+      kind: "tabs",
+      stateKey: "activeTab",
+      tabs: [
+        { value: "a", label: "A", childIds: [] },
+        { value: "a", label: "B", childIds: [] },
+      ],
+      designValueRefs: [],
+    } as unknown as (typeof duplicateTab.nodes)[number]);
+    expect(() => uiSpecDraftSchema.parse(duplicateTab)).toThrow("重复标识");
+  });
+
+  it("拒绝 P1 交互组件状态类型不匹配", () => {
+    const draft = createUISpecDraft();
+    draft.state.push({ key: "notify", valueType: "string", initialValue: "no" });
+    draft.nodes.push({
+      id: "notify-switch",
+      kind: "switch",
+      label: "通知",
+      stateKey: "notify",
+      designValueRefs: [],
+    });
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("notify-switch");
+    }
+
+    expect(() => uiSpecDraftSchema.parse(draft)).toThrow(
+      "复选框、开关和对话框必须引用布尔状态",
     );
   });
 });

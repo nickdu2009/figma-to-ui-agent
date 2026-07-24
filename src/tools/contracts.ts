@@ -246,6 +246,28 @@ const validationCheckSchema = z
   })
   .strict();
 
+const regionDiffSchema = z
+  .object({
+    id: z.enum([
+      "visual_assets",
+      "text_regions",
+      "form_controls",
+      "button_icon_controls",
+    ]),
+    label: z.string().min(1).max(128),
+    bounds: z
+      .object({
+        x: z.number().finite().nonnegative(),
+        y: z.number().finite().nonnegative(),
+        width: z.number().finite().nonnegative(),
+        height: z.number().finite().nonnegative(),
+      })
+      .strict(),
+    diffPixelCount: z.number().int().nonnegative(),
+    diffPixelRatio: z.number().min(0).max(1),
+  })
+  .strict();
+
 export const renderAndCompareOutputSchema = z
   .object({
     schemaVersion: z.literal(SCHEMA_VERSION),
@@ -265,6 +287,7 @@ export const renderAndCompareOutputSchema = z
             diffImage: runArtifactPathSchema.optional(),
             diffPixelCount: z.number().int().nonnegative(),
             diffPixelRatio: z.number().min(0).max(1),
+            regionDiffs: z.array(regionDiffSchema).max(20).optional(),
           })
           .strict(),
       )

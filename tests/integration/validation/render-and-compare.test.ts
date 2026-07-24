@@ -115,6 +115,49 @@ async function createTallReferencePng(): Promise<Uint8Array> {
   }
 }
 
+async function createTwoBandSourcePng(): Promise<Uint8Array> {
+  const browser = await chromium.launch({
+    executablePath,
+    headless: true,
+  });
+  try {
+    const page = await browser.newPage({
+      viewport: { width: 240, height: 480 },
+    });
+    await page.setContent(
+      [
+        '<body style="margin:0">',
+        '<main style="width:240px;height:480px;margin:0">',
+        '<section style="height:240px;background:#d33f49"></section>',
+        '<section style="height:240px;background:#33aa66"></section>',
+        "</main>",
+        "</body>",
+      ].join(""),
+    );
+    return await page.screenshot({ type: "png" });
+  } finally {
+    await browser.close();
+  }
+}
+
+async function createBottomBandReferencePng(): Promise<Uint8Array> {
+  const browser = await chromium.launch({
+    executablePath,
+    headless: true,
+  });
+  try {
+    const page = await browser.newPage({
+      viewport: { width: 240, height: 240 },
+    });
+    await page.setContent(
+      '<body style="margin:0"><main style="width:240px;height:240px;margin:0;background:#33aa66"></main></body>',
+    );
+    return await page.screenshot({ type: "png" });
+  } finally {
+    await browser.close();
+  }
+}
+
 afterEach(async () => {
   await Promise.all(
     roots.splice(0).map((root) =>
@@ -124,6 +167,127 @@ afterEach(async () => {
 });
 
 describe("RenderAndCompareService", () => {
+  it("pixel_overlay 使用 DesignBundle 源图尺寸解释裁剪 frame", async () => {
+    const dataRoot = await mkdtemp(join(tmpdir(), "render-compare-"));
+    roots.push(dataRoot);
+    const store = new ProjectStore(dataRoot);
+    const sourceBytes = await createTwoBandSourcePng();
+    const referenceBytes = await createBottomBandReferencePng();
+    const asset = await store.saveLocalImage({
+      projectId: "demo-project",
+      kind: "assets",
+      bytes: sourceBytes,
+    });
+    const screenshot = await store.saveLocalImage({
+      projectId: "demo-project",
+      kind: "screenshots",
+      bytes: referenceBytes,
+    });
+    const pageSourceHash = createHash("sha256")
+      .update("page-crop")
+      .digest("hex");
+    const bundleDraft = createDesignBundleDraft();
+    bundleDraft.pages[0]!.id = "page-crop";
+    bundleDraft.pages[0]!.name = "裁剪页";
+    bundleDraft.pages[0]!.width = 240;
+    bundleDraft.pages[0]!.height = 240;
+    bundleDraft.pages[0]!.nodes[1]!.imageRefs = [asset.path];
+    bundleDraft.assets = [asset];
+    bundleDraft.screenshots = [screenshot];
+    bundleDraft.provenance = [
+      {
+        entityKind: "page",
+        entityId: "page-crop",
+        origin: "figma_node",
+        sourceIdHash: pageSourceHash,
+      },
+      {
+        entityKind: "screenshot",
+        entityId: screenshot.path,
+        origin: "figma_node",
+        sourceIdHash: pageSourceHash,
+      },
+    ];
+    await store.saveDesignBundle({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: bundleDraft,
+    });
+    const uiSpecDraft = createUISpecDraft();
+    uiSpecDraft.pages = [
+      {
+        id: "home",
+        sourcePageId: "page-crop",
+        path: "/",
+        title: "裁剪页",
+        rootNodeId: "root",
+      },
+    ];
+    uiSpecDraft.nodes = [
+      {
+        id: "root",
+        kind: "section",
+        semantic: "main",
+        childIds: ["bottom-overlay"],
+        style: { width: 240, height: 240 },
+        designValueRefs: [],
+      },
+      {
+        id: "bottom-overlay",
+        kind: "pixel_overlay",
+        assetRef: asset.path,
+        alt: "下半部分裁剪",
+        width: 240,
+        height: 240,
+        frame: { x: 0, y: 240, width: 240, height: 240 },
+        childIds: [],
+        designValueRefs: [],
+      },
+    ];
+    uiSpecDraft.actions = [];
+    uiSpecDraft.behaviorFixtures = [];
+    uiSpecDraft.viewports = [
+      {
+        id: "crop",
+        width: 320,
+        height: 480,
+        deviceScaleFactor: 1,
+      },
+    ];
+    await store.saveUISpec({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: uiSpecDraft,
+    });
+
+    const service = new RenderAndCompareService({
+      dataRoot,
+      projectStore: store,
+      browserExecutablePath: executablePath,
+      runId: () => "crop-run",
+      now: () => new Date("2026-07-24T10:00:00.000Z"),
+    });
+    try {
+      const output = await service.render({
+        schemaVersion: "1",
+        projectId: "demo-project",
+        pageIds: ["home"],
+        viewportIds: ["crop"],
+        comparison: {
+          maxDiffPixelRatio: 0.001,
+          maxDiffPixels: 10,
+          timeoutMs: 10_000,
+        },
+      });
+      expect(output.passed).toBe(true);
+      expect(output.results[0]!.diffPixelRatio).toBeLessThanOrEqual(
+        0.001,
+      );
+    } finally {
+      await service.close();
+    }
+  });
+
   it("按实现视口对长参考截图做等宽顶部裁切比较", async () => {
     const dataRoot = await mkdtemp(join(tmpdir(), "render-compare-"));
     roots.push(dataRoot);
@@ -244,6 +408,271 @@ describe("RenderAndCompareService", () => {
           recommendedAction: "allow_local_fallback",
         },
       ]);
+    } finally {
+      await service.close();
+    }
+  });
+
+  it("输出 overlay 与交互控件碰撞的 unsupported feature", async () => {
+    const dataRoot = await mkdtemp(join(tmpdir(), "render-compare-"));
+    roots.push(dataRoot);
+    const store = new ProjectStore(dataRoot);
+    const referenceBytes = await createReferencePng();
+    const screenshot = await store.saveLocalImage({
+      projectId: "demo-project",
+      kind: "screenshots",
+      bytes: referenceBytes,
+    });
+    const pageSourceHash = createHash("sha256")
+      .update("page-home")
+      .digest("hex");
+    const bundleDraft = createDesignBundleDraft();
+    bundleDraft.pages[0]!.width = 320;
+    bundleDraft.pages[0]!.height = 240;
+    bundleDraft.screenshots = [screenshot];
+    bundleDraft.provenance = [
+      {
+        entityKind: "page",
+        entityId: "page-home",
+        origin: "figma_node",
+        sourceIdHash: pageSourceHash,
+      },
+      {
+        entityKind: "screenshot",
+        entityId: screenshot.path,
+        origin: "figma_node",
+        sourceIdHash: pageSourceHash,
+      },
+    ];
+    await store.saveDesignBundle({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: bundleDraft,
+    });
+
+    const uiSpecDraft = createUISpecDraft();
+    uiSpecDraft.pages = [
+      {
+        id: "home",
+        sourcePageId: "page-home",
+        path: "/",
+        title: "首页",
+        rootNodeId: "root",
+      },
+    ];
+    uiSpecDraft.nodes = [
+      {
+        id: "root",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["overlay", "submit"],
+        designValueRefs: [],
+      },
+      {
+        id: "overlay",
+        kind: "pixel_overlay",
+        assetRef: screenshot.path,
+        alt: "覆盖层",
+        width: 100,
+        height: 50,
+        frame: { x: 10, y: 10, width: 100, height: 50 },
+        childIds: [],
+        designValueRefs: [],
+      },
+      {
+        id: "submit",
+        kind: "button",
+        label: "提交",
+        variant: "primary",
+        frame: { x: 80, y: 30, width: 80, height: 40 },
+        designValueRefs: [],
+      },
+    ];
+    uiSpecDraft.actions = [];
+    uiSpecDraft.behaviorFixtures = [];
+    await store.saveUISpec({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: uiSpecDraft,
+    });
+
+    const service = new RenderAndCompareService({
+      dataRoot,
+      projectStore: store,
+      browserExecutablePath: executablePath,
+      runId: () => "overlay-run",
+      now: () => new Date("2026-07-24T10:00:00.000Z"),
+    });
+    try {
+      const output = await service.render({
+        schemaVersion: "1",
+        projectId: "demo-project",
+        pageIds: ["home"],
+        viewportIds: ["desktop"],
+        comparison: {
+          maxDiffPixelRatio: 1,
+          maxDiffPixels: 1_000_000,
+          timeoutMs: 10_000,
+        },
+      });
+      expect(output.unsupportedFeatures).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            code: "renderer_limit_overlay_collision",
+            severity: "must_support",
+            uiSpecNodeRefs: ["overlay"],
+          }),
+        ]),
+      );
+      expect(output.results[0]!.regionDiffs).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "visual_assets",
+            label: "visual assets",
+            bounds: expect.objectContaining({
+              x: 10,
+              y: 10,
+              width: 100,
+              height: 50,
+            }),
+          }),
+        ]),
+      );
+    } finally {
+      await service.close();
+    }
+  });
+
+  it("行为 fixture 可以填写 data-ui-node-id 位于自身的输入控件", async () => {
+    const dataRoot = await mkdtemp(join(tmpdir(), "render-compare-"));
+    roots.push(dataRoot);
+    const store = new ProjectStore(dataRoot);
+    const referenceBytes = await createReferencePng();
+    const screenshot = await store.saveLocalImage({
+      projectId: "demo-project",
+      kind: "screenshots",
+      bytes: referenceBytes,
+    });
+    const pageSourceHash = createHash("sha256")
+      .update("page-home")
+      .digest("hex");
+    const bundleDraft = createDesignBundleDraft();
+    bundleDraft.pages[0]!.width = 320;
+    bundleDraft.pages[0]!.height = 240;
+    bundleDraft.screenshots = [screenshot];
+    bundleDraft.provenance = [
+      {
+        entityKind: "page",
+        entityId: "page-home",
+        origin: "figma_node",
+        sourceIdHash: pageSourceHash,
+      },
+      {
+        entityKind: "screenshot",
+        entityId: screenshot.path,
+        origin: "figma_node",
+        sourceIdHash: pageSourceHash,
+      },
+    ];
+    await store.saveDesignBundle({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: bundleDraft,
+    });
+
+    const uiSpecDraft = createUISpecDraft();
+    uiSpecDraft.nodes = [
+      {
+        id: "root",
+        kind: "section",
+        semantic: "main",
+        childIds: ["email-input"],
+        style: {
+          position: "relative",
+          width: 320,
+          height: 240,
+        },
+        designValueRefs: [],
+      },
+      {
+        id: "email-input",
+        kind: "input",
+        label: "Email",
+        stateKey: "email",
+        inputType: "email",
+        placeholder: "email@example.com",
+        style: {
+          position: "absolute",
+          left: 16,
+          top: 16,
+          width: 180,
+          height: 48,
+        },
+        designValueRefs: [],
+      },
+    ];
+    uiSpecDraft.state = [
+      {
+        key: "email",
+        valueType: "string",
+        initialValue: "",
+      },
+    ];
+    uiSpecDraft.actions = [];
+    uiSpecDraft.behaviorFixtures = [
+      {
+        id: "direct-input-fill",
+        name: "直接输入控件填写",
+        viewportId: "desktop",
+        initialPageId: "home",
+        steps: [
+          {
+            kind: "fill",
+            nodeId: "email-input",
+            value: "alex@example.com",
+          },
+        ],
+      },
+    ];
+    uiSpecDraft.viewports = [
+      {
+        id: "desktop",
+        width: 320,
+        height: 240,
+        deviceScaleFactor: 1,
+      },
+    ];
+    await store.saveUISpec({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: uiSpecDraft,
+    });
+
+    const service = new RenderAndCompareService({
+      dataRoot,
+      projectStore: store,
+      browserExecutablePath: executablePath,
+      runId: () => "direct-input-fill-run",
+      now: () => new Date("2026-07-24T10:00:00.000Z"),
+    });
+    try {
+      const output = await service.render({
+        schemaVersion: "1",
+        projectId: "demo-project",
+        pageIds: ["home"],
+        viewportIds: ["desktop"],
+        behaviorFixtureIds: ["direct-input-fill"],
+        comparison: {
+          maxDiffPixelRatio: 1,
+          maxDiffPixels: 1_000_000,
+          timeoutMs: 10_000,
+        },
+      });
+      expect(output.results[0]!.checks).toContainEqual({
+        kind: "functional",
+        passed: true,
+        message: "direct-input-fill:fill",
+      });
     } finally {
       await service.close();
     }

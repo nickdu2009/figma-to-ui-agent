@@ -22,7 +22,11 @@ import {
   FigmaImageDownloader,
   type FigmaRemoteImage,
 } from "./assets.ts";
-import { normalizeFigmaDocument } from "./normalize.ts";
+import {
+  type FigmaVisualLayerReference,
+  type NormalizedFigmaDocument,
+  normalizeFigmaDocument,
+} from "./normalize.ts";
 import { FigmaRestClient } from "./rest-client.ts";
 import {
   parseFigmaDesignUrl,
@@ -55,6 +59,7 @@ const imageFillResponseSchema = z
 
 const TARGETED_NODES_CANVAS_ID =
   "__figma_to_ui_agent_targeted_nodes_canvas__";
+const MAX_VISUAL_LAYER_RENDERS = 80;
 
 export type FigmaInspectionErrorCode =
   | "invalid_response"
@@ -110,6 +115,60 @@ function boundedWarnings(
       detail: `另有 ${warnings.length - 9_999} 条告警未写入`,
     },
   ];
+}
+
+function visualLayerReasonPriority(
+  reason: FigmaVisualLayerReference["reason"],
+): number {
+  if (reason === "image_visual") {
+    return 4;
+  }
+  if (reason === "large_visual") {
+    return 3;
+  }
+  if (reason === "structural_visual") {
+    return 2;
+  }
+  return 1;
+}
+
+function visualLayerRenderIds(
+  normalized: NormalizedFigmaDocument,
+  excludedNodeIds: ReadonlySet<string>,
+): string[] {
+  const nodes = normalized.pages.flatMap((page) => page.nodes);
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const zOrderById = new Map(nodes.map((node, index) => [node.id, index]));
+  return [
+    ...new Map(
+      normalized.visualLayerRefs
+        .filter((layer) => !excludedNodeIds.has(layer.nodeId))
+        .map((layer) => [layer.nodeId, layer]),
+    ).values(),
+  ]
+    .sort((left, right) => {
+      const priorityDelta =
+        visualLayerReasonPriority(right.reason) -
+        visualLayerReasonPriority(left.reason);
+      if (priorityDelta !== 0) {
+        return priorityDelta;
+      }
+      const leftNode = nodeById.get(left.nodeId);
+      const rightNode = nodeById.get(right.nodeId);
+      const leftArea = leftNode?.bounds
+        ? leftNode.bounds.width * leftNode.bounds.height
+        : 0;
+      const rightArea = rightNode?.bounds
+        ? rightNode.bounds.width * rightNode.bounds.height
+        : 0;
+      if (leftArea !== rightArea) {
+        return rightArea - leftArea;
+      }
+      return (zOrderById.get(right.nodeId) ?? 0) -
+        (zOrderById.get(left.nodeId) ?? 0);
+    })
+    .slice(0, MAX_VISUAL_LAYER_RENDERS)
+    .map((layer) => layer.nodeId);
 }
 
 function addUnavailableWarning(
@@ -336,6 +395,33 @@ export class FigmaInspector {
         });
       }
     }
+    const visualLayerIds = visualLayerRenderIds(
+      initial,
+      new Set(screenshotRequestRefByPage.keys()),
+    );
+    const screenshotRequestRefByVisualLayer = new Map<string, string>();
+    for (const layerIds of chunks(visualLayerIds, 100)) {
+      const renderUrls = parseImageRenders(
+        await this.restClient.getImageRenders(
+          parsedUrl.fileKey,
+          layerIds,
+          { format: "png", scale: 1, signal },
+        ),
+      );
+      for (const layerId of layerIds) {
+        const url = renderUrls[layerId];
+        if (!url) {
+          continue;
+        }
+        const requestRef = `visual.${stableHash(layerId)}`;
+        screenshotRequestRefByVisualLayer.set(layerId, requestRef);
+        remoteImages.push({
+          sourceRef: requestRef,
+          url,
+          kind: "screenshots",
+        });
+      }
+    }
 
     const localImages = await this.imageDownloader.downloadAll(
       input.projectId,
@@ -401,12 +487,13 @@ export class FigmaInspector {
       }),
     );
     const screenshots = uniqueImageRefs(
-      [...screenshotRequestRefByPage.values()].flatMap(
-        (requestRef) => {
-          const local = localImages.get(requestRef);
-          return local ? [local] : [];
-        },
-      ),
+      [
+        ...screenshotRequestRefByPage.values(),
+        ...screenshotRequestRefByVisualLayer.values(),
+      ].flatMap((requestRef) => {
+        const local = localImages.get(requestRef);
+        return local ? [local] : [];
+      }),
     );
     const draft: DesignBundleDraft = {
       schemaVersion: SCHEMA_VERSION,
@@ -421,7 +508,10 @@ export class FigmaInspector {
       pages,
       components: normalized.components,
       styles: normalized.styles,
-      designValues: values.designValues,
+      designValues: [
+        ...normalized.designValues,
+        ...values.designValues,
+      ],
       screenshots,
       assets,
       provenance: [
@@ -447,6 +537,21 @@ export class FigmaInspector {
                     entityId: screenshot.path,
                     origin: "figma_node" as const,
                     sourceIdHash: stableHash(pageId),
+                  },
+                ]
+              : [];
+          },
+        ),
+        ...[...screenshotRequestRefByVisualLayer.entries()].flatMap(
+          ([nodeId, requestRef]) => {
+            const screenshot = localImages.get(requestRef);
+            return screenshot
+              ? [
+                  {
+                    entityKind: "screenshot" as const,
+                    entityId: screenshot.path,
+                    origin: "figma_node" as const,
+                    sourceIdHash: stableHash(nodeId),
                   },
                 ]
               : [];

@@ -3,19 +3,30 @@ import type { CSSProperties } from "react";
 export interface ControlledStyle {
   backgroundColor?: string;
   textColor?: string;
+  fontFamily?: string;
   fontSize?: number;
   fontWeight?: "regular" | "medium" | "semibold" | "bold";
   lineHeight?: number;
+  letterSpacing?: number;
+  textAlign?: "left" | "center" | "right" | "justify";
+  whiteSpace?: "normal" | "nowrap" | "pre-line" | "pre-wrap";
   borderRadius?: number;
   borderColor?: string;
   borderWidth?: number;
   boxShadow?: "none" | "sm" | "md" | "lg";
+  opacity?: number;
+  objectPosition?: string;
+  pointerEvents?: "auto" | "none";
   width?: number;
   height?: number;
   minWidth?: number;
   minHeight?: number;
   maxWidth?: number;
   maxHeight?: number;
+  position?: "relative" | "absolute";
+  left?: number;
+  top?: number;
+  zIndex?: number;
 }
 
 const fontWeights: Record<
@@ -47,11 +58,15 @@ export function controlledStyle(
   return {
     backgroundColor: style.backgroundColor,
     color: style.textColor,
+    fontFamily: style.fontFamily,
     fontSize: style.fontSize,
     fontWeight: style.fontWeight
       ? fontWeights[style.fontWeight]
       : undefined,
     lineHeight: style.lineHeight,
+    letterSpacing: style.letterSpacing,
+    textAlign: style.textAlign,
+    whiteSpace: style.whiteSpace,
     borderRadius: style.borderRadius,
     borderColor: style.borderColor,
     borderWidth: style.borderWidth,
@@ -60,11 +75,18 @@ export function controlledStyle(
         ? "solid"
         : undefined,
     boxShadow: style.boxShadow ? boxShadows[style.boxShadow] : undefined,
+    opacity: style.opacity,
+    objectPosition: style.objectPosition,
+    pointerEvents: style.pointerEvents,
     width: style.width,
     height: style.height,
     minWidth: style.minWidth,
     minHeight: style.minHeight,
     maxWidth: style.maxWidth,
     maxHeight: style.maxHeight,
+    position: style.position,
+    left: style.left,
+    top: style.top,
+    zIndex: style.zIndex,
   };
 }

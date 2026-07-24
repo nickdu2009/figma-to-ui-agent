@@ -29,7 +29,10 @@
     "manifest:m3": "node scripts/m3-source-manifest.mjs",
     "blind:m3": "node scripts/run-m3-blind.mjs",
     "finalize:m3": "node scripts/finalize-m3.mjs",
-    "preview:dev": "vite --config vite.config.ts"
+    "preview:dev": "vite --config vite.config.ts",
+    "dev:catalog": "vite --config catalog/vite.config.ts",
+    "build:catalog": "vite build --config catalog/vite.config.ts",
+    "preview:catalog": "vite preview --config catalog/vite.config.ts"
   },
   "dependencies": {
     "@earendil-works/pi-coding-agent": "0.81.1",

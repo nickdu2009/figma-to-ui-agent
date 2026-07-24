@@ -171,12 +171,221 @@ function runArtifactUrl(
   )}/${match[2]}/${encodeURIComponent(match[3]!)}`;
 }
 
+function imageMetadataByPath(
+  bundle: DesignBundle,
+): Map<string, { width: number; height: number }> {
+  return new Map(
+    [...bundle.assets, ...bundle.screenshots].map((image) => [
+      image.path,
+      { width: image.width, height: image.height },
+    ]),
+  );
+}
+
+type BundleNode = DesignBundle["pages"][number]["nodes"][number];
+type TextStyleHint = NonNullable<UISpec["nodes"][number]["style"]>;
+
+interface TextRenderHint {
+  style: TextStyleHint;
+  visualOverlay?: {
+    assetRef: string;
+    sourceWidth: number;
+    sourceHeight: number;
+    frame: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
+  };
+}
+
+function normalizedTextKey(value: string): string {
+  return value.replace(/\s+/g, "").toLocaleLowerCase();
+}
+
+function canonicalText(value: string): string {
+  return value.replace(/\r\n?/g, "\n").trim().toLocaleLowerCase();
+}
+
+function fontWeightName(
+  value: number | undefined,
+): TextStyleHint["fontWeight"] | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value >= 700) {
+    return "bold";
+  }
+  if (value >= 600) {
+    return "semibold";
+  }
+  if (value >= 500) {
+    return "medium";
+  }
+  return "regular";
+}
+
+function usesDisplayFallback(value: string | undefined): boolean {
+  return Boolean(
+    value &&
+      /(tenor|didot|bodoni|playfair|cormorant|garamond)/i.test(value),
+  );
+}
+
+function fontFamilyWithFallback(
+  value: string | undefined,
+): string | undefined {
+  if (!value) {
+    return undefined;
+  }
+  const quoted = value.includes(" ") ? `"${value}"` : value;
+  if (usesDisplayFallback(value)) {
+    return `${quoted}, Didot, "Bodoni 72", "Times New Roman", serif`;
+  }
+  return `${quoted}, "Helvetica Neue", Arial, sans-serif`;
+}
+
+function relativeBounds(
+  node: BundleNode,
+  root: BundleNode,
+): { left: number; top: number; width: number; height: number } | undefined {
+  if (!node.bounds || !root.bounds) {
+    return undefined;
+  }
+  return {
+    left: node.bounds.x - root.bounds.x,
+    top: node.bounds.y - root.bounds.y,
+    width: node.bounds.width,
+    height: node.bounds.height,
+  };
+}
+
+function buildTextStyleHints(
+  bundle: DesignBundle,
+  uiSpec: UISpec,
+  pageId: string,
+): Map<string, TextRenderHint> {
+  const uiPage = uiSpec.pages.find((page) => page.id === pageId);
+  const sourcePage = uiPage
+    ? bundle.pages.find((page) => page.id === uiPage.sourcePageId)
+    : undefined;
+  if (!uiPage || !sourcePage) {
+    return new Map();
+  }
+  const root =
+    sourcePage.nodes.find((node) =>
+      sourcePage.rootNodeIds.includes(node.id),
+    ) ?? sourcePage.nodes.find((node) => node.id === sourcePage.id);
+  if (!root) {
+    return new Map();
+  }
+  const pageScreenshotPath = screenshotForPage(bundle, sourcePage.id);
+  const pageScreenshot = pageScreenshotPath
+    ? imageMetadataByPath(bundle).get(pageScreenshotPath)
+    : undefined;
+  const candidates = sourcePage.nodes
+    .filter((node) => node.kind === "text" && node.text)
+    .map((node) => ({
+      node,
+      key: normalizedTextKey(node.text!.characters),
+      canonical: canonicalText(node.text!.characters),
+      bounds: relativeBounds(node, root),
+    }))
+    .filter((candidate) => candidate.bounds);
+  const hints = new Map<string, TextRenderHint>();
+  for (const node of uiSpec.nodes) {
+    if (
+      node.kind !== "text" ||
+      !node.style ||
+      node.style.position !== "absolute"
+    ) {
+      continue;
+    }
+    const key = normalizedTextKey(node.text);
+    const bounds = {
+      left: node.style.left ?? 0,
+      top: node.style.top ?? 0,
+      width: node.style.width ?? 0,
+      height: node.style.height ?? 0,
+    };
+    const match = candidates
+      .filter((candidate) => candidate.key === key)
+      .map((candidate) => {
+        const candidateBounds = candidate.bounds!;
+        return {
+          ...candidate,
+          score:
+            Math.abs(candidateBounds.left - bounds.left) +
+            Math.abs(candidateBounds.top - bounds.top) +
+            Math.abs(candidateBounds.width - bounds.width) * 0.25 +
+            Math.abs(candidateBounds.height - bounds.height) * 0.25,
+        };
+      })
+      .sort((left, right) => left.score - right.score)[0];
+    if (!match?.node.text) {
+      continue;
+    }
+    const text = match.node.text;
+    if (!usesDisplayFallback(text.fontFamily)) {
+      continue;
+    }
+    const lineHeight =
+      text.fontSize && text.lineHeight
+        ? text.lineHeight / text.fontSize
+        : undefined;
+    hints.set(node.id, {
+      style: {
+        fontFamily: fontFamilyWithFallback(text.fontFamily),
+        fontSize: text.fontSize,
+        fontWeight: fontWeightName(text.fontWeight),
+        lineHeight:
+          lineHeight && Number.isFinite(lineHeight)
+            ? lineHeight
+            : undefined,
+        letterSpacing:
+          canonicalText(node.text) === match.canonical
+            ? text.letterSpacing
+            : undefined,
+        textAlign: text.textAlign,
+      },
+      visualOverlay:
+        pageScreenshotPath && pageScreenshot && match.bounds
+          ? {
+              assetRef: pageScreenshotPath,
+              sourceWidth: pageScreenshot.width,
+              sourceHeight: pageScreenshot.height,
+              frame: {
+                x: Math.max(0, match.bounds.left),
+                y: Math.max(0, match.bounds.top),
+                width: match.bounds.width,
+                height: match.bounds.height,
+              },
+            }
+          : undefined,
+    });
+  }
+  return hints;
+}
+
+function parseCanvasDimension(value: string | null): number | undefined {
+  if (!value) {
+    return undefined;
+  }
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0 || parsed > 100_000) {
+    return undefined;
+  }
+  return Math.round(parsed);
+}
+
 function ImplementationCanvas(props: {
   projectId: string;
   bundle: DesignBundle;
   uiSpec: UISpec;
   pageId: string;
   viewportId: string;
+  canvasSize?: { width: number; height: number };
   zoom: number;
   pixelated: boolean;
   onNavigate: (pageId: string) => void;
@@ -185,17 +394,38 @@ function ImplementationCanvas(props: {
     props.uiSpec.viewports.find(
       (item) => item.id === props.viewportId,
     ) ?? props.uiSpec.viewports[0]!;
+  const canvasViewport = props.canvasSize
+    ? {
+        ...viewport,
+        width: props.canvasSize.width,
+        height: props.canvasSize.height,
+      }
+    : viewport;
+  const imageMetadata = useMemo(
+    () => imageMetadataByPath(props.bundle),
+    [props.bundle],
+  );
   const previewSpec = useMemo(
-    () =>
-      toPreviewJsonSpec(props.uiSpec, props.pageId, {
+    () => {
+      const textStyleHints = buildTextStyleHints(
+        props.bundle,
+        props.uiSpec,
+        props.pageId,
+      );
+      return toPreviewJsonSpec(props.uiSpec, props.pageId, {
         imageUrl: (path) =>
           projectImageUrl(
             props.projectId,
             path,
             props.bundle.revision,
-          ),
-      }),
-    [props.pageId, props.projectId, props.uiSpec],
+        ),
+        imageMetadata: (path) => imageMetadata.get(path),
+        textStyleForNode: (node) => textStyleHints.get(node.id)?.style,
+        textVisualOverlayForNode: (node) =>
+          textStyleHints.get(node.id)?.visualOverlay,
+      });
+    },
+    [imageMetadata, props.bundle.revision, props.pageId, props.projectId, props.uiSpec],
   );
   const store = useMemo(
     () => createStateStore(previewSpec.state),
@@ -240,8 +470,8 @@ function ImplementationCanvas(props: {
           props.pixelated ? " is-pixelated" : ""
         }`}
         style={{
-          width: viewport.width * props.zoom,
-          height: viewport.height * props.zoom,
+          width: canvasViewport.width * props.zoom,
+          height: canvasViewport.height * props.zoom,
         }}
       >
         <div
@@ -249,8 +479,8 @@ function ImplementationCanvas(props: {
           data-page-id={props.pageId}
           data-viewport-id={viewport.id}
           style={{
-            width: viewport.width,
-            height: viewport.height,
+            width: canvasViewport.width,
+            height: canvasViewport.height,
             transform: `scale(${props.zoom})`,
           }}
         >
@@ -302,6 +532,16 @@ export function PreviewApp() {
     Number.isInteger(parsedSpecRevision) &&
     parsedSpecRevision > 0
       ? parsedSpecRevision
+      : undefined;
+  const canvasWidth = parseCanvasDimension(
+    parameters.get("canvasWidth"),
+  );
+  const canvasHeight = parseCanvasDimension(
+    parameters.get("canvasHeight"),
+  );
+  const canvasSize =
+    canvasWidth && canvasHeight
+      ? { width: canvasWidth, height: canvasHeight }
       : undefined;
   const state = useProjectData(
     projectId,
@@ -378,6 +618,7 @@ export function PreviewApp() {
           uiSpec={state.uiSpec}
           pageId={activePageId}
           viewportId={activeViewportId}
+          canvasSize={canvasSize}
           zoom={1}
           pixelated={false}
           onNavigate={navigate}

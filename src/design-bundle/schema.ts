@@ -125,6 +125,19 @@ const textSchema = z
   })
   .strict();
 
+const visualMetadataSchema = z
+  .object({
+    opacity: z.number().min(0).max(1).optional(),
+    blendMode: z.string().min(1).max(128).optional(),
+    fillCount: z.number().int().nonnegative().max(10_000),
+    strokeCount: z.number().int().nonnegative().max(10_000),
+    effectCount: z.number().int().nonnegative().max(10_000),
+    vectorPathCount: z.number().int().nonnegative().max(100_000),
+    isMask: z.boolean().optional(),
+    clipsContent: z.boolean().optional(),
+  })
+  .strict();
+
 export const normalizedNodeSchema = z
   .object({
     id: idSchema,
@@ -143,6 +156,7 @@ export const normalizedNodeSchema = z
     bounds: boundsSchema.optional(),
     layout: layoutSchema.optional(),
     text: textSchema.optional(),
+    visual: visualMetadataSchema.optional(),
     componentRef: idSchema.optional(),
     styleRefs: idListSchema,
     imageRefs: z.array(safeRelativePathSchema).max(1_000),

@@ -76,7 +76,18 @@ function isFullPageScreenshotFallback(uiSpec, page) {
   const nodeById = new Map(nodes.map((node) => [node.id, node]));
   const root = nodeById.get(page.rootNodeId);
   const structuredNodeCount = nodes.filter((node) =>
-    ["button", "checkbox", "input", "text"].includes(node.kind),
+    [
+      "button",
+      "checkbox",
+      "input",
+      "link",
+      "radio",
+      "switch",
+      "select",
+      "textarea",
+      "tabs",
+      "text",
+    ].includes(node.kind),
   ).length;
   if (structuredNodeCount > 0 || !root) {
     return false;
@@ -109,7 +120,17 @@ export function collectUISpecStructuralEvidence(uiSpec) {
   return {
     fullPageScreenshotFallback,
     interactiveNodeCount: uiSpec.nodes.filter((node) =>
-      ["button", "checkbox", "input"].includes(node.kind),
+      [
+        "button",
+        "checkbox",
+        "input",
+        "link",
+        "radio",
+        "switch",
+        "select",
+        "textarea",
+        "tabs",
+      ].includes(node.kind),
     ).length,
     textNodeCount: uiSpec.nodes.filter(
       (node) => node.kind === "text",

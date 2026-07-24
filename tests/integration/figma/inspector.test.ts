@@ -102,6 +102,12 @@ describe("FigmaInspector mock REST 纵向切片", () => {
       if (url.pathname === "/screenshots/2-1.png") {
         return imageResponse(createPngBytes(1024, 768));
       }
+      if (url.pathname === "/screenshots/1-3.png") {
+        return imageResponse(createPngBytes(640, 480));
+      }
+      if (url.pathname === "/screenshots/1-6.png") {
+        return imageResponse(createPngBytes(520, 460));
+      }
       return new Response("unexpected", { status: 404 });
     });
     const restClient = new FigmaRestClient({
@@ -150,18 +156,47 @@ describe("FigmaInspector mock REST 纵向切片", () => {
     const saved = await store.loadDesignBundle("demo-project");
     expect(saved.revision).toBe(1);
     expect(saved.assets).toHaveLength(1);
-    expect(saved.screenshots).toHaveLength(2);
-    expect(saved.designValues).toEqual([
+    expect(saved.screenshots).toHaveLength(4);
+    const blob = saved.pages[0]!.nodes.find(
+      (node) => node.id === "1:6",
+    );
+    const blobSourceHash = saved.provenance.find(
+      (entry) =>
+        entry.entityKind === "node" &&
+        entry.entityId === blob?.id,
+    )?.sourceIdHash;
+    expect(blob).toMatchObject({
+      kind: "vector",
+      name: "Vector layer",
+    });
+    expect(saved.provenance).toContainEqual(
       expect.objectContaining({
-        name: "number.binding.1",
-        value: 32,
-        origin: "inferred_from_binding",
+        entityKind: "screenshot",
+        origin: "figma_node",
+        sourceIdHash: blobSourceHash,
       }),
-    ]);
+    );
+    expect(saved.designValues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: expect.stringMatching(/^color\.fill\.[a-f0-9]{8}$/),
+          origin: "inferred",
+          kind: "color",
+        }),
+        expect.objectContaining({
+          name: "number.binding.1",
+          value: 32,
+          origin: "inferred_from_binding",
+        }),
+      ]),
+    );
+    const bindingValue = saved.designValues.find(
+      (value) => value.name === "number.binding.1",
+    );
     expect(
       saved.pages[0]!.nodes.find((node) => node.id === "1:2")
         ?.designValueRefs,
-    ).toEqual([saved.designValues[0]!.id]);
+    ).toEqual([bindingValue?.id]);
     const serialized = JSON.stringify(saved);
     expect(serialized).not.toContain(FILE_KEY);
     expect(serialized).not.toContain("VariableID:");
@@ -333,8 +368,8 @@ describe("FigmaInspector mock REST 纵向切片", () => {
         if (url.pathname === `/v1/images/${FILE_KEY}`) {
           return jsonResponse({
             images: {
-              "0:1":
-                "https://s3-alpha.figma.com/screenshots/0-1.png?signature=private",
+              "1:1":
+                "https://s3-alpha.figma.com/screenshots/1-1.png?signature=private",
             },
           });
         }
@@ -350,7 +385,7 @@ describe("FigmaInspector mock REST 纵向切片", () => {
       if (url.pathname === "/assets/hero.png") {
         return imageResponse(createPngBytes(640, 480));
       }
-      if (url.pathname === "/screenshots/0-1.png") {
+      if (url.pathname === "/screenshots/1-1.png") {
         return imageResponse(createPngBytes(1440, 900));
       }
       return new Response("unexpected", { status: 404 });
@@ -376,15 +411,180 @@ describe("FigmaInspector mock REST 纵向切片", () => {
     });
 
     expect(output.pages).toEqual([
-      { id: "0:1", name: "Product", width: 0, height: 0 },
+      { id: "1:1", name: "Home", width: 1440, height: 900 },
     ]);
     const saved = await store.loadDesignBundle(
       "targeted-canvas-project",
     );
     expect(saved.source.targetNodeIds).toEqual(["0:1"]);
+    expect(saved.pages[0]!.id).toBe("1:1");
     expect(saved.pages[0]!.rootNodeIds).toEqual(["1:1"]);
     expect(saved.pages[0]!.nodes.map((node) => node.id)).toContain(
       "1:1",
+    );
+    expect(saved.warnings).toContainEqual({
+      code: "canvas_target_expanded_to_child_pages",
+      entityId: "0:1",
+      detail:
+        "显式 CANVAS 目标已展开为可见顶层子节点，避免把整张 Figma 说明画布当作单页参考图",
+    });
+  });
+
+  it("视觉层渲染按结构优先级选择而不是按文档顺序截断", async () => {
+    const root = await mkdtemp(join(tmpdir(), "figma-inspector-"));
+    temporaryRoots.push(root);
+    const store = new ProjectStore(root);
+    const fixture = createFigmaFileResponseFixture();
+    const document = fixture.document as {
+      children: Array<{
+        children: Array<{
+          children?: unknown[];
+        }>;
+      }>;
+    };
+    const frameChildren = document.children[0]!.children[0]!.children!;
+    for (let index = 0; index < 85; index += 1) {
+      frameChildren.push({
+        id: `1:${100 + index}`,
+        name: "Decorative background",
+        type: "VECTOR",
+        absoluteBoundingBox: {
+          x: index,
+          y: index,
+          width: 72,
+          height: 72,
+        },
+        fills: [
+          {
+            type: "SOLID",
+            color: { r: 0.9, g: 0.9, b: 0.9 },
+          },
+        ],
+      });
+    }
+    frameChildren.push({
+      id: "1:999",
+      name: "Layer 99",
+      type: "VECTOR",
+      absoluteBoundingBox: {
+        x: 240,
+        y: 160,
+        width: 96,
+        height: 96,
+      },
+      opacity: 0.7,
+      blendMode: "MULTIPLY",
+      effects: [{ type: "DROP_SHADOW", visible: true }],
+      fills: [
+        {
+          type: "SOLID",
+          color: { r: 0.2, g: 0.3, b: 0.4 },
+        },
+      ],
+    });
+
+    const imageRenderIds: string[][] = [];
+    const fetchImpl = vi.fn<FigmaFetch>(async (input) => {
+      const url = new URL(String(input));
+      if (url.hostname === "api.figma.com") {
+        if (url.pathname === `/v1/files/${FILE_KEY}`) {
+          return jsonResponse(fixture);
+        }
+        if (url.pathname === `/v1/files/${FILE_KEY}/nodes`) {
+          expect(url.searchParams.get("ids")).toBe("1:1");
+          const target = document.children[0]!.children[0]!;
+          return jsonResponse({
+            nodes: {
+              "1:1": {
+                document: target,
+                components: fixture.components,
+                componentSets: fixture.componentSets,
+                styles: fixture.styles,
+              },
+            },
+          });
+        }
+        if (url.pathname === `/v1/files/${FILE_KEY}/images`) {
+          return jsonResponse({
+            meta: {
+              images: {
+                "image-source-1":
+                  "https://s3-alpha.figma.com/assets/hero.png?signature=private",
+              },
+            },
+          });
+        }
+        if (url.pathname === `/v1/images/${FILE_KEY}`) {
+          const ids = url.searchParams.get("ids")?.split(",") ?? [];
+          imageRenderIds.push(ids);
+          return jsonResponse({
+            images: Object.fromEntries(
+              ids.map((id) => [
+                id,
+                `https://s3-alpha.figma.com/screenshots/${id.replaceAll(
+                  ":",
+                  "-",
+                )}.png?signature=private`,
+              ]),
+            ),
+          });
+        }
+        if (
+          url.pathname ===
+          `/v1/files/${FILE_KEY}/variables/local`
+        ) {
+          return new Response("scope details must stay private", {
+            status: 403,
+          });
+        }
+      }
+      if (url.pathname === "/assets/hero.png") {
+        return imageResponse(createPngBytes(640, 480));
+      }
+      if (url.pathname.startsWith("/screenshots/")) {
+        return imageResponse(createPngBytes(144, 144));
+      }
+      return new Response("unexpected", { status: 404 });
+    });
+    const inspector = new FigmaInspector({
+      restClient: new FigmaRestClient({
+        token: "private-token",
+        fetchImpl,
+        maxRetries: 0,
+      }),
+      imageDownloader: new FigmaImageDownloader({
+        projectStore: store,
+        fetchImpl,
+      }),
+      projectStore: store,
+      now: () => new Date("2026-07-24T11:30:00.000Z"),
+    });
+
+    await inspector.inspect({
+      schemaVersion: "1",
+      projectId: "visual-priority-project",
+      figmaUrl: `https://www.figma.com/design/${FILE_KEY}/Fixture?node-id=1-1`,
+      targetNodes: ["1:1"],
+    });
+
+    const visualRenderIds = imageRenderIds.find((ids) =>
+      ids.includes("1:999"),
+    );
+    expect(visualRenderIds).toBeDefined();
+    expect(visualRenderIds).toHaveLength(80);
+    expect(visualRenderIds).toContain("1:999");
+    expect(visualRenderIds).not.toContain("1:100");
+    const saved = await store.loadDesignBundle("visual-priority-project");
+    const criticalSourceHash = saved.provenance.find(
+      (entry) =>
+        entry.entityKind === "node" &&
+        entry.entityId === "1:999",
+    )?.sourceIdHash;
+    expect(saved.provenance).toContainEqual(
+      expect.objectContaining({
+        entityKind: "screenshot",
+        sourceIdHash: criticalSourceHash,
+      }),
     );
   });
 });

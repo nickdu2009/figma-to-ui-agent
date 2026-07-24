@@ -66,7 +66,7 @@ export function createFigmaFileResponseFixture(): Record<string, unknown> {
                 },
                 {
                   id: "1:3",
-                  name: "Hero",
+                  name: "Layer 1",
                   type: "RECTANGLE",
                   absoluteBoundingBox: {
                     x: 32,
@@ -86,6 +86,28 @@ export function createFigmaFileResponseFixture(): Record<string, unknown> {
                   name: "Continue",
                   type: "INSTANCE",
                   componentId: "component-main",
+                },
+                {
+                  id: "1:6",
+                  name: "Vector layer",
+                  type: "VECTOR",
+                  absoluteBoundingBox: {
+                    x: 40,
+                    y: 120,
+                    width: 520,
+                    height: 460,
+                  },
+                  fills: [
+                    {
+                      type: "SOLID",
+                      color: {
+                        r: 0.9,
+                        g: 0.95,
+                        b: 1,
+                      },
+                      opacity: 0.75,
+                    },
+                  ],
                 },
                 {
                   id: "1:5",

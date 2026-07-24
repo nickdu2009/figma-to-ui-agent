@@ -18,6 +18,7 @@ import {
   ProjectStoreError,
 } from "../../../src/project-store/store.ts";
 import {
+  FIXTURE_SCREENSHOT_PATH,
   createDesignBundleDraft,
   createDesignBundleDraftWithScreenshot,
   createRootScreenshotUISpecDraft,
@@ -381,6 +382,44 @@ describe("ProjectStore", () => {
     );
   });
 
+  it("UISpec 的 pixel_overlay 必须引用已登记图片", async () => {
+    const { store } = await createStore();
+    await store.saveDesignBundle({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: createDesignBundleDraft(),
+    });
+    const draft = createUISpecDraft();
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("overlay");
+    }
+    draft.nodes.push({
+      id: "overlay",
+      kind: "pixel_overlay",
+      assetRef: FIXTURE_SCREENSHOT_PATH,
+      alt: "未登记覆盖层",
+      width: 120,
+      height: 80,
+      childIds: [],
+      designValueRefs: [],
+    });
+
+    await expect(
+      store.saveUISpec({
+        projectId: "demo-project",
+        baseRevision: 0,
+        draft,
+      }),
+    ).rejects.toEqual(
+      expect.objectContaining({
+        name: "ProjectStoreError",
+        code: "cross_reference_invalid",
+        message: expect.stringContaining(FIXTURE_SCREENSHOT_PATH),
+      }),
+    );
+  });
+
   it("拒绝 root 单截图作为 UISpec 交付", async () => {
     const { store } = await createStore();
     await store.saveDesignBundle({
@@ -407,6 +446,46 @@ describe("ProjectStore", () => {
     await expect(
       store.loadUISpec("demo-project"),
     ).rejects.toEqual(expectStoreCode("not_found"));
+  });
+
+  it("拒绝 pixel_overlay 作为 root 单截图交付", async () => {
+    const { store } = await createStore();
+    await store.saveDesignBundle({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: createDesignBundleDraftWithScreenshot(),
+    });
+    const draft = createRootScreenshotUISpecDraft();
+    draft.nodes = draft.nodes.map((node) =>
+      node.id === "screenshot"
+        ? {
+            id: "screenshot",
+            kind: "pixel_overlay",
+            assetRef: FIXTURE_SCREENSHOT_PATH,
+            alt: "整页截图覆盖层",
+            width: 1440,
+            height: 900,
+            childIds: [],
+            designValueRefs: [],
+          }
+        : node,
+    );
+
+    await expect(
+      store.saveUISpec({
+        projectId: "demo-project",
+        baseRevision: 0,
+        draft,
+      }),
+    ).rejects.toEqual(
+      expect.objectContaining({
+        name: "ProjectStoreError",
+        code: "cross_reference_invalid",
+        message: expect.stringContaining(
+          "full_page_screenshot_fallback_rejected",
+        ),
+      }),
+    );
   });
 
   it("拒绝项目目录符号链接逃逸", async () => {
