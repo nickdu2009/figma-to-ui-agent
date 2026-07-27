@@ -187,6 +187,12 @@ export function createVisualAssetBackfillManifest(input: {
         continue;
       }
       if (
+        !unsupportedIds.has(candidate.sourceNodeId) &&
+        renderedLayerIds.has(candidate.sourceNodeId)
+      ) {
+        continue;
+      }
+      if (
         node &&
         !unsupportedIds.has(candidate.sourceNodeId) &&
         hasRenderedVisualLayerAncestor(node, nodeById, renderedLayerIds)

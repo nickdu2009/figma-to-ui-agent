@@ -184,4 +184,30 @@ describe("createVisualAssetBackfillManifest", () => {
       manifest.entries.map((entry) => entry.sourceNodeId),
     ).not.toContain("combined-child");
   });
+
+  it("排除自身已经 rendered 的 visual layer", () => {
+    const manifest = createVisualAssetBackfillManifest({
+      bundle: bundleWithVisualNodes(),
+      report: {
+        unsupportedFeatures: [],
+        visualLayers: [
+          {
+            sourceNodeId: "combined-parent",
+            sourcePageId: "page-dashboard",
+            reason: "structural_visual",
+            layerRole: "decorative_background",
+            zOrder: 1,
+            bounds: { x: 64, y: 72, width: 220, height: 180 },
+            pageRelativeBounds: { x: 64, y: 72, width: 220, height: 180 },
+            uiSpecNodeId: "vl-dashboard-combined-parent",
+            rendered: true,
+          },
+        ],
+      },
+    });
+
+    expect(
+      manifest.entries.map((entry) => entry.sourceNodeId),
+    ).not.toContain("combined-parent");
+  });
 });

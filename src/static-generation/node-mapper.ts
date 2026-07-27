@@ -767,6 +767,23 @@ export function mapPageNodes(
     return false;
   }
 
+  function isIgnorableVectorPath(sourceNode: NormalizedNode): boolean {
+    if (sourceNode.kind !== "vector" || !sourceNode.bounds) {
+      return false;
+    }
+    if (
+      (sourceNode.visual?.fillCount ?? 0) === 0 &&
+      (sourceNode.visual?.strokeCount ?? 0) === 0 &&
+      (sourceNode.visual?.effectCount ?? 0) === 0 &&
+      sourceNode.imageRefs.length === 0
+    ) {
+      return true;
+    }
+    const area = sourceNode.bounds.width * sourceNode.bounds.height;
+    const maxDim = Math.max(sourceNode.bounds.width, sourceNode.bounds.height);
+    return area < 256 && maxDim <= 64;
+  }
+
   function hasControlLikeAncestor(
     sourceNodeId: string,
     predicate: (node: NormalizedNode) => boolean,
@@ -1307,7 +1324,8 @@ export function mapPageNodes(
       sourceNode.kind === "unsupported" ||
       (sourceNode.kind === "vector" &&
         !isVisualLayer &&
-        !isCoveredByVisualLayerAncestor)
+        !isCoveredByVisualLayerAncestor &&
+        !isIgnorableVectorPath(sourceNode))
     ) {
       sourceToUiNodeId.delete(sourceNode.id);
       warnings.push({

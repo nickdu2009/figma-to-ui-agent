@@ -21,7 +21,9 @@ type IconSymbol =
   | "plus"
   | "users"
   | "cursor-arrow"
-  | "battery";
+  | "battery"
+  | "edit"
+  | "generic";
 
 export type VisualLayerReason =
   | "large_visual"
@@ -279,12 +281,15 @@ function isSimpleShapeFallbackCandidate(
   if (!node?.bounds || node.kind !== "vector") {
     return false;
   }
-  if ((node.visual?.fillCount ?? 0) <= 0) {
+  if (
+    (node.visual?.fillCount ?? 0) <= 0 &&
+    (node.visual?.strokeCount ?? 0) <= 0
+  ) {
     return false;
   }
   const name = node.name ?? "";
   const simpleName =
-    /(?:bg|background|rect|rectangle|ellipse|oval|circle|line|divider|separator)/i.test(
+    /(?:bg|background|rect|rectangle|ellipse|oval|circle|line|divider|separator|input|field|buttonframe|button frame)/i.test(
       name,
     );
   if (!simpleName) {
@@ -296,13 +301,17 @@ function isSimpleShapeFallbackCandidate(
   const maxDim = Math.max(width, height);
   const isSmallShape = area <= 1_600 && maxDim <= 64;
   const isThinShape = minDim <= 8 && maxDim >= 16;
-  return isSmallShape || isThinShape;
+  const isMediumControlShape =
+    /(?:input|field|buttonframe|button frame)/i.test(name) &&
+    area <= 80_000 &&
+    maxDim <= 640;
+  return isSmallShape || isThinShape || isMediumControlShape;
 }
 
 function isSmallPaintedVectorFallbackCandidate(
   candidate: VisualAssetCandidate,
   node: NormalizedNode | undefined,
-): node is NormalizedNode {
+): boolean {
   if (!node?.bounds || node.kind !== "vector") {
     return false;
   }
@@ -313,6 +322,73 @@ function isSmallPaintedVectorFallbackCandidate(
   const area = width * height;
   const maxDim = Math.max(width, height);
   return area >= 16 && area <= 4_096 && maxDim <= 64;
+}
+
+function isCssPaintedVectorFallbackCandidate(
+  candidate: VisualAssetCandidate,
+  node: NormalizedNode | undefined,
+): boolean {
+  if (isSmallPaintedVectorFallbackCandidate(candidate, node)) {
+    return true;
+  }
+  if (!node?.bounds || node.kind !== "vector") {
+    return false;
+  }
+  if ((node.visual?.fillCount ?? 0) <= 0) {
+    return false;
+  }
+  if (
+    candidate.reasonCode !== "structural_visual" &&
+    candidate.reasonCode !== "named_decorative"
+  ) {
+    return false;
+  }
+  const { width, height } = candidate.pageRelativeBounds;
+  const area = width * height;
+  return area <= 80_000 && Math.max(width, height) <= 640;
+}
+
+function isPageScreenshotCropFallbackCandidate(
+  candidate: VisualAssetCandidate,
+  node: NormalizedNode | undefined,
+  pageArea: number,
+  screenshotSize: { width: number; height: number } | undefined,
+): node is NormalizedNode {
+  if (!node?.bounds || !node.visible) {
+    return false;
+  }
+  if (
+    candidate.reasonCode !== "structural_visual" &&
+    candidate.reasonCode !== "named_decorative" &&
+    candidate.reasonCode !== "large_visual"
+  ) {
+    return false;
+  }
+  if (
+    (node.visual?.fillCount ?? 0) <= 0 &&
+    (node.visual?.strokeCount ?? 0) <= 0 &&
+    (node.visual?.effectCount ?? 0) <= 0
+  ) {
+    return false;
+  }
+  const { x, y, width, height } = candidate.pageRelativeBounds;
+  const area = width * height;
+  if (
+    x < 0 ||
+    y < 0 ||
+    width <= 0 ||
+    height <= 0 ||
+    area < 16 ||
+    area > Math.min(80_000, pageArea * 0.12) ||
+    Math.max(width, height) > 640
+  ) {
+    return false;
+  }
+  if (!screenshotSize) {
+    return false;
+  }
+  return x + width <= screenshotSize.width + 0.5 &&
+    y + height <= screenshotSize.height + 0.5;
 }
 
 function buildSimpleShapeUINode(
@@ -366,6 +442,8 @@ const STROKE_ICON_ANCESTOR_PATTERN =
 const CHEVRON_ICON_ANCESTOR_PATTERN =
   /(?:trailing icon|chevron|caret|select|dropdown|arrow down)/i;
 const INFO_ICON_ANCESTOR_PATTERN = /(?:^|\b)(?:info|information)(?:\b|$)/i;
+const GENERIC_ICON_ANCESTOR_PATTERN =
+  /(?:icon|arrow|back|forward|search|cart|settings?|files?|folders?|shopping|overview|dashboard|home|notification|bell|calendar|mail|message|wallet|card|profile|user|menu|close|check|star|heart|status|facebook|google|github|apple|twitter|microsoft|linkedin|slack|loading|calculate)/i;
 const SYMBOL_ICON_ANCESTOR_MATCHERS: ReadonlyArray<{
   readonly symbol: Exclude<IconSymbol, "chevron-down" | "info">;
   readonly pattern: RegExp;
@@ -374,6 +452,14 @@ const SYMBOL_ICON_ANCESTOR_MATCHERS: ReadonlyArray<{
   readonly minHeight: number;
   readonly maxHeight: number;
 }> = [
+  {
+    symbol: "edit",
+    pattern: /(?:^|\b)(?:edit|pencil)(?:\b|$)/i,
+    minWidth: 8,
+    maxWidth: 64,
+    minHeight: 8,
+    maxHeight: 64,
+  },
   {
     symbol: "plus",
     pattern: /(?:^|\b)(?:plus|add)(?:\b|$)/i,
@@ -463,6 +549,17 @@ function matchingIconAncestor(
   return undefined;
 }
 
+function matchingIconSource(
+  node: NormalizedNode,
+  nodeById: ReadonlyMap<string, NormalizedNode>,
+  pattern: RegExp,
+): NormalizedNode | undefined {
+  if (pattern.test(node.name ?? "") && node.bounds) {
+    return node;
+  }
+  return matchingIconAncestor(node, nodeById, pattern);
+}
+
 function assetlessSymbolIconFallback(
   bundle: DesignBundle,
   node: NormalizedNode,
@@ -513,7 +610,7 @@ function assetlessSymbolIconFallback(
     };
   }
   for (const matcher of SYMBOL_ICON_ANCESTOR_MATCHERS) {
-    const ancestor = matchingIconAncestor(node, nodeById, matcher.pattern);
+    const ancestor = matchingIconSource(node, nodeById, matcher.pattern);
     if (
       ancestor?.bounds &&
       ancestor.bounds.width >= matcher.minWidth &&
@@ -528,6 +625,25 @@ function assetlessSymbolIconFallback(
         bounds: ancestor.bounds,
       };
     }
+  }
+  const genericAncestor = matchingIconSource(
+    node,
+    nodeById,
+    GENERIC_ICON_ANCESTOR_PATTERN,
+  );
+  if (
+    genericAncestor?.bounds &&
+    genericAncestor.bounds.width >= 4 &&
+    genericAncestor.bounds.width <= 64 &&
+    genericAncestor.bounds.height >= 4 &&
+    genericAncestor.bounds.height <= 64
+  ) {
+    return {
+      sourceNode: genericAncestor,
+      styleSourceNode: node,
+      symbol: "generic",
+      bounds: genericAncestor.bounds,
+    };
   }
   return undefined;
 }
@@ -874,6 +990,10 @@ export function planVisualLayers(
   );
   const plan = planVisualAssetExports(candidates);
   const nodeById = new Map(page.nodes.map((node) => [node.id, node]));
+  const pageScreenshot = screenshotPathForPage(input.bundle, input.sourcePageId);
+  const pageScreenshotSize = pageScreenshot
+    ? input.bundle.screenshots.find((screenshot) => screenshot.path === pageScreenshot)
+    : undefined;
 
   const unsupportedFeatures: M5StaticReport["unsupportedFeatures"] = [];
   const warnings: M5StaticReport["warnings"] = [];
@@ -882,6 +1002,16 @@ export function planVisualLayers(
   for (const candidate of plan.selected) {
     const reason = candidateReasonToLayerReason(candidate);
     const node = page.nodes.find((n) => n.id === candidate.sourceNodeId);
+    if (
+      node?.visual?.opacity === 0 ||
+      ((node?.visual?.fillCount ?? 0) === 0 &&
+        (node?.visual?.strokeCount ?? 0) === 0 &&
+        (node?.visual?.effectCount ?? 0) === 0 &&
+        !node?.imageRefs[0] &&
+        !screenshotPathForNode(input.bundle, candidate.sourceNodeId))
+    ) {
+      continue;
+    }
 
     // 结构化 image 节点已在 UISpec 中作为独立 image 节点输出，避免再生成 overlay 重复
     if (candidate.reasonCode === "image_fill" && node?.kind === "image") {
@@ -932,7 +1062,7 @@ export function planVisualLayers(
         !!node &&
         (candidate.reasonCode === "button_icon" ||
           candidate.reasonCode === "line_or_divider" ||
-          isSmallPaintedVectorFallbackCandidate(candidate, node));
+          isCssPaintedVectorFallbackCandidate(candidate, node));
       const shapeNode = canUseShapeFallback
         ? buildSimpleShapeUINode(
             candidate,
@@ -954,6 +1084,38 @@ export function planVisualLayers(
           opacity: node?.visual?.opacity,
           uiNodeId: shapeNode.id,
           uiNode: shapeNode,
+          rendered: true,
+        });
+        continue;
+      }
+      if (
+        pageScreenshot &&
+        isPageScreenshotCropFallbackCandidate(
+          candidate,
+          node,
+          input.pageArea,
+          pageScreenshotSize,
+        )
+      ) {
+        const cropNode = buildCropOverlayUINode(
+          node,
+          input.pagePlanId,
+          pageScreenshot,
+          candidate.pageRelativeBounds,
+          candidate.zOrder,
+        );
+        layers.push({
+          sourceNodeId: candidate.sourceNodeId,
+          sourcePageId: input.sourcePageId,
+          reason,
+          layerRole: layerRole(reason),
+          zOrder: candidate.zOrder,
+          bounds: candidate.bounds,
+          pageRelativeBounds: candidate.pageRelativeBounds,
+          opacity: node.visual?.opacity,
+          assetRef: pageScreenshot,
+          uiNodeId: cropNode.id,
+          uiNode: cropNode,
           rendered: true,
         });
         continue;
@@ -1014,7 +1176,7 @@ export function planVisualLayers(
   for (const candidate of plan.exceeded) {
     const node = page.nodes.find((item) => item.id === candidate.sourceNodeId);
     const shapeNode =
-      isSmallPaintedVectorFallbackCandidate(candidate, node)
+      node && isCssPaintedVectorFallbackCandidate(candidate, node)
         ? buildSimpleShapeUINode(
             candidate,
             input.pagePlanId,

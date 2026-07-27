@@ -644,6 +644,47 @@ describe("mapPageNodes", () => {
     );
   });
 
+  it("does not warn for assetless vector paths without visible paint", () => {
+    const bundle = createM5StaticDesignBundle();
+    const page = bundle.pages[0]!;
+    page.nodes.push({
+      id: "figma-empty-rectangle-path",
+      parentId: "figma-login-root",
+      kind: "vector",
+      name: "Rectangle",
+      visible: true,
+      bounds: { x: 120, y: 120, width: 24, height: 24 },
+      visual: {
+        fillCount: 0,
+        strokeCount: 0,
+        effectCount: 0,
+        vectorPathCount: 0,
+      },
+      styleRefs: [],
+      imageRefs: [],
+      boundVariableRefs: [],
+      designValueRefs: [],
+      warningCodes: [],
+    });
+
+    const result = mapPageNodes({
+      bundle,
+      pagePlanId: "login",
+      sourcePageId: "page-login",
+      pagePath: "/login",
+      visualLayers: [],
+    });
+
+    expect(result.warnings).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "unmapped_node_vector",
+          detail: expect.stringContaining("figma-empty-rectangle-path"),
+        }),
+      ]),
+    );
+  });
+
   it("maps descendant text metrics onto input control overlays", () => {
     const bundle = createM5StaticDesignBundle();
     const page = bundle.pages[0]!;

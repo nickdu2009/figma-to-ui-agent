@@ -47,6 +47,30 @@ describe("mapStaticPages", () => {
     ]);
   });
 
+  it("uses root bounds when page dimensions are missing", () => {
+    const bundle = createM5StaticDesignBundle();
+    bundle.pages[0]!.width = 0;
+    bundle.pages[0]!.height = 0;
+
+    const result = mapStaticPages(bundle);
+    const login = result.pages.find(
+      (page) => page.sourcePageId === "page-login",
+    );
+
+    expect(login?.bounds).toEqual({
+      x: 0,
+      y: 0,
+      width: 1440,
+      height: 900,
+    });
+    expect(login?.viewportRole).toBe("desktop");
+    expect(result.warnings).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: "page_dimensions_missing" }),
+      ]),
+    );
+  });
+
   it("skips hidden root pages", () => {
     const bundle = createM5StaticDesignBundle();
     const root = bundle.pages[0]!.nodes.find(

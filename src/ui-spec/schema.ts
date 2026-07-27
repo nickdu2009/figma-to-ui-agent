@@ -58,6 +58,8 @@ const uiIconSymbolSchema = z.enum([
   "users",
   "cursor-arrow",
   "battery",
+  "edit",
+  "generic",
 ]);
 
 export const uiFontWeightSchema = z.union([

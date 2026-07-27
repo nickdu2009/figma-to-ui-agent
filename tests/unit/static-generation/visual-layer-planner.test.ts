@@ -82,6 +82,68 @@ describe("planVisualLayers", () => {
     expect(layer?.blockedReason).toBeDefined();
   });
 
+  it("renders medium assetless structural vectors as cropped page overlays", () => {
+    const bundle = createM5StaticDesignBundle();
+    const page = bundle.pages.find((p) => p.id === "page-dashboard")!;
+    page.nodes.push({
+      id: "assetless-card-strip",
+      parentId: "figma-dashboard-root",
+      kind: "vector",
+      name: "Rectangle 23",
+      visible: true,
+      bounds: { x: 24, y: 280, width: 265, height: 51 },
+      visual: {
+        fillCount: 1,
+        strokeCount: 0,
+        effectCount: 0,
+        vectorPathCount: 0,
+      },
+      styleRefs: [],
+      imageRefs: [],
+      boundVariableRefs: [],
+      designValueRefs: [],
+      warningCodes: [],
+    });
+
+    const result = planVisualLayers({
+      bundle,
+      pagePlanId: "dashboard",
+      sourcePageId: "page-dashboard",
+      pageOrigin: { x: 0, y: 0 },
+      pageArea: 1440 * 900,
+    });
+
+    const layer = result.layers.find(
+      (candidate) => candidate.sourceNodeId === "assetless-card-strip",
+    );
+    expect(layer).toMatchObject({
+      reason: "structural_visual",
+      rendered: true,
+      assetRef: expect.stringMatching(/^figma\/screenshots\//),
+      pageRelativeBounds: {
+        x: 24,
+        y: 280,
+        width: 265,
+        height: 51,
+      },
+    });
+    expect(layer?.uiNode).toMatchObject({
+      kind: "pixel_overlay",
+      frame: {
+        x: 24,
+        y: 280,
+        width: 265,
+        height: 51,
+      },
+      style: {
+        left: 24,
+        top: 280,
+        width: 265,
+        height: 51,
+      },
+    });
+  });
+
   it("clamps zero-sized stroke screenshot overlays to a renderable pixel", () => {
     const bundle = createM5StaticDesignBundle();
     const page = bundle.pages.find((p) => p.id === "page-dashboard")!;
@@ -287,7 +349,7 @@ describe("planVisualLayers", () => {
     );
   });
 
-  it("diagnoses assetless stroke-only icon parts without consuming visual layer budget", () => {
+  it("renders assetless edit icon groups as controlled symbol icons", () => {
     const bundle = createM5StaticDesignBundle();
     const page = bundle.pages.find((p) => p.id === "page-dashboard")!;
     page.nodes.push(
@@ -339,12 +401,15 @@ describe("planVisualLayers", () => {
       pageArea: 1440 * 900,
     });
 
-    expect(
-      result.layers.some(
-        (candidate) => candidate.sourceNodeId === "edit-icon-stroke",
-      ),
-    ).toBe(false);
-    expect(result.unsupportedFeatures).toEqual(
+    expect(result.layers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          sourceNodeId: "edit-icon",
+          uiNode: expect.objectContaining({ kind: "icon", symbol: "edit" }),
+        }),
+      ]),
+    );
+    expect(result.unsupportedFeatures).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           code: "visual_stroke_icon_no_asset",
@@ -703,6 +768,45 @@ describe("planVisualLayers", () => {
         designValueRefs: [],
         warningCodes: [],
       },
+      {
+        id: "files-icon",
+        parentId: "figma-dashboard-root",
+        kind: "container",
+        name: "Files",
+        visible: true,
+        bounds: { x: 470, y: 128, width: 18, height: 18 },
+        visual: {
+          fillCount: 0,
+          strokeCount: 0,
+          effectCount: 0,
+          vectorPathCount: 0,
+          clipsContent: true,
+        },
+        styleRefs: [],
+        imageRefs: [],
+        boundVariableRefs: [],
+        designValueRefs: [],
+        warningCodes: [],
+      },
+      {
+        id: "files-icon-path",
+        parentId: "files-icon",
+        kind: "vector",
+        name: "Fill 417",
+        visible: true,
+        bounds: { x: 474, y: 132, width: 9, height: 10 },
+        visual: {
+          fillCount: 1,
+          strokeCount: 0,
+          effectCount: 0,
+          vectorPathCount: 1,
+        },
+        styleRefs: [],
+        imageRefs: [],
+        boundVariableRefs: [],
+        designValueRefs: [],
+        warningCodes: [],
+      },
     );
 
     const result = planVisualLayers({
@@ -733,6 +837,10 @@ describe("planVisualLayers", () => {
         expect.objectContaining({
           sourceNodeId: "battery-icon",
           uiNode: expect.objectContaining({ kind: "icon", symbol: "battery" }),
+        }),
+        expect.objectContaining({
+          sourceNodeId: "files-icon",
+          uiNode: expect.objectContaining({ kind: "icon", symbol: "generic" }),
         }),
       ]),
     );

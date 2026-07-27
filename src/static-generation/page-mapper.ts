@@ -101,15 +101,6 @@ export function mapStaticPages(
   for (const page of bundle.pages) {
     const pageWarnings: Array<{ code: string; detail: string }> = [];
 
-    if (!page.width || !page.height) {
-      pageWarnings.push({
-        code: "page_dimensions_missing",
-        detail: `页面 ${page.id} 缺少有效尺寸，跳过`,
-      });
-      warnings.push(...pageWarnings);
-      continue;
-    }
-
     if (page.rootNodeIds.length === 0) {
       pageWarnings.push({
         code: "page_root_missing",

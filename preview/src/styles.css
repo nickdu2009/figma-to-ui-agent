@@ -849,6 +849,54 @@ input:focus-visible {
   opacity: 0.72;
 }
 
+.ui-icon-symbol-edit::before,
+.ui-icon-symbol-edit::after {
+  position: absolute;
+  content: "";
+}
+
+.ui-icon-symbol-edit::before {
+  top: 18%;
+  left: 45%;
+  width: 18%;
+  height: 70%;
+  border-radius: 999px;
+  background: currentColor;
+  transform: rotate(42deg);
+  transform-origin: center;
+}
+
+.ui-icon-symbol-edit::after {
+  right: 18%;
+  bottom: 16%;
+  width: 34%;
+  border-top: 1.6px solid currentColor;
+  border-radius: 999px;
+  transform: rotate(-8deg);
+}
+
+.ui-icon-symbol-generic {
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+}
+
+.ui-icon-symbol-generic::before,
+.ui-icon-symbol-generic::after {
+  position: absolute;
+  background: currentColor;
+  content: "";
+}
+
+.ui-icon-symbol-generic::before {
+  inset: 24% 24% 56% 24%;
+  border-radius: 999px;
+}
+
+.ui-icon-symbol-generic::after {
+  inset: 54% 24% 24% 24%;
+  border-radius: 999px;
+}
+
 .ui-avatar {
   display: inline-flex;
   width: 40px;

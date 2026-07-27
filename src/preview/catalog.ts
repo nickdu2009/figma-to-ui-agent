@@ -22,6 +22,8 @@ const iconSymbol = z.enum([
   "users",
   "cursor-arrow",
   "battery",
+  "edit",
+  "generic",
 ]);
 const controlledStyle = z
   .object({
