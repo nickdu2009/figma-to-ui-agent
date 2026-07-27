@@ -454,6 +454,13 @@ describe("toPreviewJsonSpec", () => {
       type: "Textarea",
       props: { value: { $bindState: "/bio" } },
     });
+    expect(preview.elements.icon).toMatchObject({
+      type: "Icon",
+      props: {
+        src: expect.stringMatching(/^\/project-image\//),
+        symbol: null,
+      },
+    });
     expect(preview.elements.tabs).toMatchObject({
       type: "Tabs",
       props: { selectedTab: { $bindState: "/activeTab" } },

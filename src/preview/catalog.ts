@@ -10,14 +10,31 @@ const stateBinding = z
 const color = z
   .string()
   .regex(/^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$/);
+const backgroundImage = z
+  .string()
+  .regex(
+    /^linear-gradient\(180deg, #[0-9a-fA-F]{6} 0%, #[0-9a-fA-F]{6} 100%\)$/,
+  );
+const iconSymbol = z.enum([
+  "chevron-down",
+  "info",
+  "plus",
+  "users",
+  "cursor-arrow",
+  "battery",
+]);
 const controlledStyle = z
   .object({
     backgroundColor: color.optional(),
+    backgroundImage: backgroundImage.optional(),
     textColor: color.optional(),
     fontFamily: z.string().min(1).max(256).optional(),
     fontSize: z.number().positive().max(512).optional(),
     fontWeight: z
-      .enum(["regular", "medium", "semibold", "bold"])
+      .union([
+        z.enum(["regular", "medium", "semibold", "bold"]),
+        z.number().int().min(1).max(1_000),
+      ])
       .optional(),
     lineHeight: z.number().positive().max(10).optional(),
     letterSpacing: z.number().min(-1_000).max(1_000).optional(),
@@ -33,6 +50,7 @@ const controlledStyle = z
     boxShadow: z.enum(["none", "sm", "md", "lg"]).optional(),
     opacity: z.number().min(0).max(1).optional(),
     objectPosition: z.string().min(1).max(128).optional(),
+    overflow: z.enum(["visible", "hidden", "auto"]).optional(),
     pointerEvents: z.enum(["auto", "none"]).optional(),
     width: z.number().positive().max(100_000).optional(),
     height: z.number().positive().max(100_000).optional(),
@@ -296,12 +314,16 @@ export const previewCatalog = defineCatalog(schema, {
       props: z
         .object({
           ...common,
-          src: z.string().min(1).max(2_048),
+          src: z.string().min(1).max(2_048).nullable(),
+          symbol: iconSymbol.nullable(),
           alt: z.string().min(1).max(1_000),
           decorative: z.boolean(),
         })
+        .refine((props) => props.src !== null || props.symbol !== null, {
+          message: "Icon requires src or symbol",
+        })
         .strict(),
-      description: "项目内图标图片",
+      description: "项目内图标图片或受控符号图标",
     },
     Spacer: {
       props: z

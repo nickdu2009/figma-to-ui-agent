@@ -303,6 +303,49 @@ const regionDiffSchema = z
   })
   .strict();
 
+const canvasMappingSchema = z
+  .object({
+    sourcePageId: idSchema,
+    pageId: idSchema,
+    artboard: z
+      .object({
+        width: z.number().finite().nonnegative(),
+        height: z.number().finite().nonnegative(),
+      })
+      .strict(),
+    viewport: z
+      .object({
+        id: idSchema,
+        width: z.number().int().min(240).max(8_192),
+        height: z.number().int().min(240).max(8_192),
+        deviceScaleFactor: z.number().min(1).max(4),
+      })
+      .strict(),
+    scale: z.number().positive(),
+    origin: z
+      .object({
+        x: z.number().finite(),
+        y: z.number().finite(),
+      })
+      .strict(),
+    renderMode: z.enum([
+      "native_artboard",
+      "scroll_canvas",
+      "viewport_crop",
+      "fit_artboard",
+    ]),
+    crop: z
+      .object({
+        x: z.number().finite().nonnegative(),
+        y: z.number().finite().nonnegative(),
+        width: z.number().finite().nonnegative(),
+        height: z.number().finite().nonnegative(),
+      })
+      .strict()
+      .optional(),
+  })
+  .strict();
+
 export const renderAndCompareOutputSchema = z
   .object({
     schemaVersion: z.literal(SCHEMA_VERSION),
@@ -323,6 +366,7 @@ export const renderAndCompareOutputSchema = z
             diffPixelCount: z.number().int().nonnegative(),
             diffPixelRatio: z.number().min(0).max(1),
             regionDiffs: z.array(regionDiffSchema).max(20).optional(),
+            canvasMapping: canvasMappingSchema.optional(),
           })
           .strict(),
       )

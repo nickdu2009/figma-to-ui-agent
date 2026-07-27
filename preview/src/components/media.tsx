@@ -5,15 +5,28 @@ import { controlledStyle } from "./controlled-style.ts";
 
 export const Image: ComponentFn<typeof previewCatalog, "Image"> = ({
   props,
-}) => (
-  <img
-    className="ui-image"
-    data-ui-node-id={props.nodeId}
-    src={props.src}
-    alt={props.alt}
-    style={{ objectFit: props.fit, ...controlledStyle(props.style) }}
-  />
-);
+}) => {
+  const framedImageStyle =
+    props.style?.position === "absolute"
+      ? ({
+          maxWidth: "none",
+          minHeight: 0,
+        } as const)
+      : undefined;
+  return (
+    <img
+      className="ui-image"
+      data-ui-node-id={props.nodeId}
+      src={props.src}
+      alt={props.alt}
+      style={{
+        objectFit: props.fit,
+        ...controlledStyle(props.style),
+        ...framedImageStyle,
+      }}
+    />
+  );
+};
 
 export const PixelOverlay: ComponentFn<
   typeof previewCatalog,
@@ -42,6 +55,7 @@ export const PixelOverlay: ComponentFn<
         ...controlledStyle(props.style),
         width: frame ? frame.width : props.width,
         height: frame ? frame.height : props.height,
+        maxWidth: props.style?.position === "absolute" ? "none" : undefined,
         pointerEvents: props.style?.pointerEvents ?? "none",
       }}
     >
@@ -60,16 +74,30 @@ export const PixelOverlay: ComponentFn<
 
 export const Icon: ComponentFn<typeof previewCatalog, "Icon"> = ({
   props,
-}) => (
-  <img
-    className="ui-icon"
-    data-ui-node-id={props.nodeId}
-    src={props.src}
-    alt={props.decorative ? "" : props.alt}
-    aria-hidden={props.decorative}
-    style={controlledStyle(props.style)}
-  />
-);
+}) => {
+  if (props.src) {
+    return (
+      <img
+        className="ui-icon"
+        data-ui-node-id={props.nodeId}
+        src={props.src}
+        alt={props.decorative ? "" : props.alt}
+        aria-hidden={props.decorative}
+        style={controlledStyle(props.style)}
+      />
+    );
+  }
+  return (
+    <span
+      className={`ui-icon ui-icon-symbol ui-icon-symbol-${props.symbol}`}
+      data-ui-node-id={props.nodeId}
+      aria-hidden={props.decorative}
+      role={props.decorative ? undefined : "img"}
+      aria-label={props.decorative ? undefined : props.alt}
+      style={controlledStyle(props.style)}
+    />
+  );
+};
 
 export const Avatar: ComponentFn<typeof previewCatalog, "Avatar"> = ({
   props,

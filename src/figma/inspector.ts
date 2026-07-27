@@ -59,7 +59,7 @@ const imageFillResponseSchema = z
 
 const TARGETED_NODES_CANVAS_ID =
   "__figma_to_ui_agent_targeted_nodes_canvas__";
-const MAX_VISUAL_LAYER_RENDERS = 80;
+const MAX_VISUAL_LAYER_RENDERS = 160;
 
 export type FigmaInspectionErrorCode =
   | "invalid_response"
@@ -120,16 +120,27 @@ function boundedWarnings(
 function visualLayerReasonPriority(
   reason: FigmaVisualLayerReference["reason"],
 ): number {
-  if (reason === "image_visual") {
-    return 4;
+  switch (reason) {
+    case "image_fill":
+      return 9;
+    case "button_icon":
+      return 8;
+    case "named_logo":
+      return 7;
+    case "nav_header_icon":
+    case "named_icon":
+      return 6;
+    case "line_or_divider":
+      return 5;
+    case "large_visual":
+      return 4;
+    case "structural_visual":
+      return 3;
+    case "named_decorative":
+      return 2;
+    default:
+      return 1;
   }
-  if (reason === "large_visual") {
-    return 3;
-  }
-  if (reason === "structural_visual") {
-    return 2;
-  }
-  return 1;
 }
 
 function visualLayerRenderIds(
@@ -316,7 +327,11 @@ export class FigmaInspector {
   async inspect(
     rawInput: unknown,
     signal?: AbortSignal,
+    options?: {
+      variablesMode?: "default_optional" | "disabled_restricted_live";
+    },
   ): Promise<InspectFigmaOutput> {
+    const variablesMode = options?.variablesMode ?? "default_optional";
     const input = inspectFigmaInputSchema.parse(rawInput);
     const parsedUrl = parseFigmaDesignUrl(input.figmaUrl);
     const targetNodeIds = resolveFigmaTargetNodes(
@@ -446,24 +461,11 @@ export class FigmaInspector {
 
     let capability: VariablesCapability;
     let values: DesignValueExtraction;
-    try {
-      const variablesPayload =
-        await this.restClient.getLocalVariables(
-          parsedUrl.fileKey,
-          signal,
-        );
-      const extracted = extractFigmaVariables(
-        variablesPayload,
-        normalized.bindingObservations,
-      );
-      capability = extracted.capability;
-      values = extracted;
-    } catch (error) {
-      const unavailable = classifyVariablesUnavailable(error);
-      if (!unavailable) {
-        throw error;
-      }
-      capability = unavailable;
+    if (variablesMode === "disabled_restricted_live") {
+      capability = {
+        status: "unavailable_optional",
+        reasonCode: "restricted_mode",
+      };
       values = inferDesignValuesFromBindings(
         normalized.bindingObservations,
       );
@@ -473,7 +475,37 @@ export class FigmaInspector {
           normalized.styles,
         );
       }
-      addUnavailableWarning(values.warnings, unavailable);
+      addUnavailableWarning(values.warnings, capability);
+    } else {
+      try {
+        const variablesPayload =
+          await this.restClient.getLocalVariables(
+            parsedUrl.fileKey,
+            signal,
+          );
+        const extracted = extractFigmaVariables(
+          variablesPayload,
+          normalized.bindingObservations,
+        );
+        capability = extracted.capability;
+        values = extracted;
+      } catch (error) {
+        const unavailable = classifyVariablesUnavailable(error);
+        if (!unavailable) {
+          throw error;
+        }
+        capability = unavailable;
+        values = inferDesignValuesFromBindings(
+          normalized.bindingObservations,
+        );
+        if (values.designValues.length < 1) {
+          values = inferRepeatedDesignValues(
+            normalized.pages,
+            normalized.styles,
+          );
+        }
+        addUnavailableWarning(values.warnings, unavailable);
+      }
     }
 
     const pages = applyNodeDesignValueRefs(
@@ -514,6 +546,7 @@ export class FigmaInspector {
       ],
       screenshots,
       assets,
+      fonts: [],
       provenance: [
         ...normalized.provenance,
         ...values.provenance,

@@ -19,6 +19,7 @@ interface FixtureParts {
 interface ComponentBuilder {
   title: string;
   description: string;
+  category: import("./fixture-types.ts").ComponentCategory;
   build: () => FixtureParts;
 }
 
@@ -139,6 +140,7 @@ const builders: Record<string, ComponentBuilder> = {
   Stack: {
     title: "Stack",
     description: "水平或垂直布局容器",
+    category: "layout",
     build: () => ({
       node: {
         ...baseNode,
@@ -163,6 +165,7 @@ const builders: Record<string, ComponentBuilder> = {
   Grid: {
     title: "Grid",
     description: "网格布局容器",
+    category: "layout",
     build: () => ({
       node: {
         ...baseNode,
@@ -184,6 +187,7 @@ const builders: Record<string, ComponentBuilder> = {
   Section: {
     title: "Section",
     description: "带语义标签的页面区域",
+    category: "layout",
     build: () => ({
       node: {
         ...baseNode,
@@ -203,6 +207,7 @@ const builders: Record<string, ComponentBuilder> = {
   Dialog: {
     title: "Dialog",
     description: "由布尔状态控制可见性的对话框",
+    category: "overlay",
     build: () => ({
       node: {
         ...baseNode,
@@ -227,6 +232,7 @@ const builders: Record<string, ComponentBuilder> = {
   Text: {
     title: "Text",
     description: "受控文本节点",
+    category: "content",
     build: () => ({
       node: {
         ...baseNode,
@@ -247,6 +253,7 @@ const builders: Record<string, ComponentBuilder> = {
   Image: {
     title: "Image",
     description: "项目内 Figma 图片",
+    category: "content",
     build: () => ({
       node: {
         ...baseNode,
@@ -268,6 +275,7 @@ const builders: Record<string, ComponentBuilder> = {
   PixelOverlay: {
     title: "PixelOverlay",
     description: "受控局部像素覆盖层",
+    category: "overlay",
     build: () => ({
       node: {
         ...baseNode,
@@ -292,6 +300,7 @@ const builders: Record<string, ComponentBuilder> = {
   Button: {
     title: "Button",
     description: "受控按钮",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -344,6 +353,7 @@ const builders: Record<string, ComponentBuilder> = {
   Input: {
     title: "Input",
     description: "绑定字符串状态的输入框",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -374,6 +384,7 @@ const builders: Record<string, ComponentBuilder> = {
   Checkbox: {
     title: "Checkbox",
     description: "绑定布尔状态的复选框",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -400,6 +411,7 @@ const builders: Record<string, ComponentBuilder> = {
   Link: {
     title: "Link",
     description: "导航链接",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -450,6 +462,7 @@ const builders: Record<string, ComponentBuilder> = {
   Radio: {
     title: "Radio",
     description: "单选按钮",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -478,6 +491,7 @@ const builders: Record<string, ComponentBuilder> = {
   Switch: {
     title: "Switch",
     description: "绑定布尔状态的开关",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -504,6 +518,7 @@ const builders: Record<string, ComponentBuilder> = {
   Select: {
     title: "Select",
     description: "绑定字符串状态的下拉选择",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -536,6 +551,7 @@ const builders: Record<string, ComponentBuilder> = {
   Textarea: {
     title: "Textarea",
     description: "绑定字符串状态的多行文本框",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -564,6 +580,7 @@ const builders: Record<string, ComponentBuilder> = {
   FormField: {
     title: "FormField",
     description: "表单字段语义容器",
+    category: "form",
     build: () => ({
       node: {
         ...baseNode,
@@ -591,6 +608,7 @@ const builders: Record<string, ComponentBuilder> = {
   Icon: {
     title: "Icon",
     description: "项目内图标图片",
+    category: "content",
     build: () => ({
       node: {
         ...baseNode,
@@ -612,6 +630,7 @@ const builders: Record<string, ComponentBuilder> = {
   Spacer: {
     title: "Spacer",
     description: "固定间距占位",
+    category: "layout",
     build: () => ({
       node: {
         ...baseNode,
@@ -632,6 +651,7 @@ const builders: Record<string, ComponentBuilder> = {
   Card: {
     title: "Card",
     description: "卡片语义容器",
+    category: "layout",
     build: () => ({
       node: {
         ...baseNode,
@@ -648,6 +668,7 @@ const builders: Record<string, ComponentBuilder> = {
   List: {
     title: "List",
     description: "有序或无序列表",
+    category: "content",
     build: () => ({
       node: {
         ...baseNode,
@@ -665,6 +686,7 @@ const builders: Record<string, ComponentBuilder> = {
   ListItem: {
     title: "ListItem",
     description: "列表项",
+    category: "content",
     build: () => ({
       node: {
         ...baseNode,
@@ -681,6 +703,7 @@ const builders: Record<string, ComponentBuilder> = {
   Badge: {
     title: "Badge",
     description: "状态徽章",
+    category: "content",
     build: () => ({
       node: {
         ...baseNode,
@@ -701,6 +724,7 @@ const builders: Record<string, ComponentBuilder> = {
   Avatar: {
     title: "Avatar",
     description: "头像图片或缩写",
+    category: "content",
     build: () => ({
       node: {
         ...baseNode,
@@ -721,6 +745,7 @@ const builders: Record<string, ComponentBuilder> = {
   Tabs: {
     title: "Tabs",
     description: "选项卡",
+    category: "navigation",
     build: () => ({
       node: {
         ...baseNode,
@@ -755,6 +780,7 @@ const builders: Record<string, ComponentBuilder> = {
   Nav: {
     title: "Nav",
     description: "导航语义容器",
+    category: "navigation",
     build: () => ({
       node: {
         ...baseNode,
@@ -774,6 +800,7 @@ const builders: Record<string, ComponentBuilder> = {
   Divider: {
     title: "Divider",
     description: "分隔线",
+    category: "layout",
     build: () => ({
       node: {
         ...baseNode,
@@ -950,6 +977,7 @@ function makeSpecForComponent(
   return {
     kind,
     nodeKind: parts.node.kind,
+    category: builder.category,
     title: builder.title,
     description: builder.description,
     initialSpec: spec,

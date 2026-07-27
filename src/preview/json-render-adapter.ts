@@ -204,6 +204,7 @@ function toElement(
     };
   }
   if (node.kind === "input") {
+    const transparentControl = node.style?.textColor === "#FFFFFF00";
     return {
       element: {
         type: "Input",
@@ -214,7 +215,7 @@ function toElement(
           inputType: node.inputType,
           placeholder: node.placeholder ?? null,
           disabled: node.disabled ?? false,
-          hideLabel: false,
+          hideLabel: transparentControl,
         },
       },
     };
@@ -322,7 +323,8 @@ function toElement(
         type: "Icon",
         props: {
           ...common,
-          src: options.imageUrl(node.assetRef),
+          src: node.assetRef ? options.imageUrl(node.assetRef) : null,
+          symbol: node.symbol ?? null,
           alt: node.alt ?? "",
           decorative: node.decorative ?? false,
         },

@@ -134,10 +134,11 @@ describe("UISpec Schema", () => {
     const draft = createUISpecDraft();
     draft.nodes[1]!.style = {
       backgroundColor: "#ffffff",
+      backgroundImage: "linear-gradient(180deg, #ffffff 0%, #eeeeee 100%)",
       textColor: "#123456",
       fontFamily: "Inter, Arial, sans-serif",
       fontSize: 24,
-      fontWeight: "semibold",
+      fontWeight: 350,
       lineHeight: 1.4,
       letterSpacing: 0.4,
       textAlign: "center",
@@ -161,8 +162,10 @@ describe("UISpec Schema", () => {
     expect(uiSpecDraftSchema.parse(draft).nodes[1]).toMatchObject({
       style: {
         backgroundColor: "#ffffff",
+        backgroundImage: "linear-gradient(180deg, #ffffff 0%, #eeeeee 100%)",
         textColor: "#123456",
         fontFamily: "Inter, Arial, sans-serif",
+        fontWeight: 350,
         letterSpacing: 0.4,
         textAlign: "center",
         whiteSpace: "nowrap",
@@ -199,6 +202,20 @@ describe("UISpec Schema", () => {
     };
     invalidShadow.nodes[1]!.style = { boxShadow: "xl" };
     expect(() => uiSpecDraftSchema.parse(invalidShadow)).toThrow();
+
+    const invalidBackgroundImage = createUISpecDraft() as unknown as {
+      nodes: Array<Record<string, unknown>>;
+    };
+    invalidBackgroundImage.nodes[1]!.style = {
+      backgroundImage: "url(https://example.com/image.png)",
+    };
+    expect(() => uiSpecDraftSchema.parse(invalidBackgroundImage)).toThrow();
+
+    const invalidWeight = createUISpecDraft() as unknown as {
+      nodes: Array<Record<string, unknown>>;
+    };
+    invalidWeight.nodes[1]!.style = { fontWeight: 0 };
+    expect(() => uiSpecDraftSchema.parse(invalidWeight)).toThrow();
   });
 
   it("拒绝非法禁用值和非交互节点上的禁用字段", () => {
@@ -391,6 +408,15 @@ describe("UISpec Schema", () => {
         label: "国家",
         stateKey: "country",
         options: [{ value: "cn", label: "中国" }],
+        sourceComponent: {
+          componentRef: "figma-component-select",
+          family: "select",
+          state: "selected",
+          variantProperties: {
+            State: "Selected",
+            Size: "Medium",
+          },
+        },
         designValueRefs: [],
       },
       {
@@ -490,6 +516,37 @@ describe("UISpec Schema", () => {
     expect(
       parsed.nodes.find((node) => node.kind === "select")?.options,
     ).toHaveLength(1);
+  });
+
+  it("支持受控 symbol icon 且拒绝缺少视觉来源的 icon", () => {
+    const draft = createUISpecDraft();
+    draft.nodes.push({
+      id: "chevron",
+      kind: "icon",
+      symbol: "plus",
+      decorative: true,
+      designValueRefs: [],
+    });
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("chevron");
+    }
+    const parsed = uiSpecDraftSchema.parse(draft);
+    expect(parsed.nodes.find((node) => node.id === "chevron")).toMatchObject({
+      kind: "icon",
+      symbol: "plus",
+    });
+
+    const invalid = createUISpecDraft();
+    invalid.nodes.push({
+      id: "empty-icon",
+      kind: "icon",
+      decorative: true,
+      designValueRefs: [],
+    } as never);
+    expect(() => uiSpecDraftSchema.parse(invalid)).toThrow(
+      "icon 必须提供 assetRef 或 symbol",
+    );
   });
 
   it("拒绝 P1 组件必填约束和重复 value", () => {

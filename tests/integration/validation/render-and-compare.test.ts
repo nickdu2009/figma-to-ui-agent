@@ -158,6 +158,31 @@ async function createBottomBandReferencePng(): Promise<Uint8Array> {
   }
 }
 
+async function createPaddedReferencePng(): Promise<Uint8Array> {
+  const browser = await chromium.launch({
+    executablePath,
+    headless: true,
+  });
+  try {
+    const page = await browser.newPage({
+      viewport: { width: 321, height: 300 },
+    });
+    await page.setContent(
+      [
+        '<body style="margin:0">',
+        '<main style="width:321px;height:300px;margin:0">',
+        '<section style="height:240px;background:#ffffff"></section>',
+        '<section style="height:60px;background:#d33f49"></section>',
+        "</main>",
+        "</body>",
+      ].join(""),
+    );
+    return await page.screenshot({ type: "png" });
+  } finally {
+    await browser.close();
+  }
+}
+
 afterEach(async () => {
   await Promise.all(
     roots.splice(0).map((root) =>
@@ -167,6 +192,115 @@ afterEach(async () => {
 });
 
 describe("RenderAndCompareService", () => {
+  it("使用 DesignBundle page bounds 作为 canvas 尺寸而不是 reference screenshot 尺寸", async () => {
+    const dataRoot = await mkdtemp(join(tmpdir(), "render-compare-"));
+    roots.push(dataRoot);
+    const store = new ProjectStore(dataRoot);
+    const referenceBytes = await createPaddedReferencePng();
+    const screenshot = await store.saveLocalImage({
+      projectId: "demo-project",
+      kind: "screenshots",
+      bytes: referenceBytes,
+    });
+    const pageSourceHash = createHash("sha256")
+      .update("page-padded")
+      .digest("hex");
+    const bundleDraft = createDesignBundleDraft();
+    bundleDraft.pages[0]!.id = "page-padded";
+    bundleDraft.pages[0]!.name = "Reference padded";
+    bundleDraft.pages[0]!.width = 320;
+    bundleDraft.pages[0]!.height = 240;
+    bundleDraft.screenshots = [screenshot];
+    bundleDraft.provenance = [
+      {
+        entityKind: "page",
+        entityId: "page-padded",
+        origin: "figma_node",
+        sourceIdHash: pageSourceHash,
+      },
+      {
+        entityKind: "screenshot",
+        entityId: screenshot.path,
+        origin: "figma_node",
+        sourceIdHash: pageSourceHash,
+      },
+    ];
+    await store.saveDesignBundle({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: bundleDraft,
+    });
+    const uiSpecDraft = createUISpecDraft();
+    uiSpecDraft.pages = [
+      {
+        id: "home",
+        sourcePageId: "page-padded",
+        path: "/",
+        title: "Reference padded",
+        rootNodeId: "root",
+      },
+    ];
+    uiSpecDraft.nodes = [
+      {
+        id: "root",
+        kind: "section",
+        semantic: "main",
+        childIds: [],
+        style: { width: 320, height: 240 },
+        designValueRefs: [],
+      },
+    ];
+    uiSpecDraft.actions = [];
+    uiSpecDraft.behaviorFixtures = [];
+    uiSpecDraft.viewports = [
+      {
+        id: "desktop",
+        width: 1440,
+        height: 900,
+        deviceScaleFactor: 1,
+      },
+    ];
+    await store.saveUISpec({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft: uiSpecDraft,
+    });
+
+    const service = new RenderAndCompareService({
+      dataRoot,
+      projectStore: store,
+      browserExecutablePath: executablePath,
+      runId: () => "padded-reference-run",
+      now: () => new Date("2026-07-26T10:00:00.000Z"),
+    });
+    try {
+      const output = await service.render({
+        schemaVersion: "1",
+        projectId: "demo-project",
+        pageIds: ["home"],
+        viewportIds: ["desktop"],
+        comparison: {
+          maxDiffPixelRatio: 0.001,
+          maxDiffPixels: 10,
+          timeoutMs: 10_000,
+        },
+      });
+      expect(output.passed).toBe(true);
+      expect(output.results[0]!.diffPixelCount).toBe(0);
+      expect(output.results[0]!.canvasMapping).toMatchObject({
+        sourcePageId: "page-padded",
+        pageId: "home",
+        artboard: {
+          width: 320,
+          height: 240,
+        },
+        renderMode: "native_artboard",
+      });
+    } finally {
+      await service.close();
+    }
+  });
+
   it("pixel_overlay 使用 DesignBundle 源图尺寸解释裁剪 frame", async () => {
     const dataRoot = await mkdtemp(join(tmpdir(), "render-compare-"));
     roots.push(dataRoot);
@@ -283,12 +417,29 @@ describe("RenderAndCompareService", () => {
       expect(output.results[0]!.diffPixelRatio).toBeLessThanOrEqual(
         0.001,
       );
+      expect(output.results[0]!.canvasMapping).toEqual({
+        sourcePageId: "page-crop",
+        pageId: "home",
+        artboard: {
+          width: 240,
+          height: 240,
+        },
+        viewport: {
+          id: "crop",
+          width: 320,
+          height: 480,
+          deviceScaleFactor: 1,
+        },
+        scale: 1,
+        origin: { x: 0, y: 0 },
+        renderMode: "native_artboard",
+      });
     } finally {
       await service.close();
     }
   });
 
-  it("按实现视口对长参考截图做等宽顶部裁切比较", async () => {
+  it("长页面按 full_page 策略完整比较", async () => {
     const dataRoot = await mkdtemp(join(tmpdir(), "render-compare-"));
     roots.push(dataRoot);
     const store = new ProjectStore(dataRoot);
@@ -379,7 +530,7 @@ describe("RenderAndCompareService", () => {
       dataRoot,
       projectStore: store,
       browserExecutablePath: executablePath,
-      runId: () => "crop-run",
+      runId: () => "full-page-run",
       now: () => new Date("2026-07-24T10:00:00.000Z"),
     });
     try {
@@ -395,9 +546,22 @@ describe("RenderAndCompareService", () => {
         },
       });
       expect(output.passed).toBe(true);
-      expect(output.results[0]!.diffPixelCount).toBeLessThanOrEqual(
-        1_000,
-      );
+      expect(output.results[0]!.diffPixelCount).toBe(0);
+      expect(output.results[0]!.canvasMapping).toMatchObject({
+        sourcePageId: "page-tall",
+        pageId: "home",
+        artboard: {
+          width: 300,
+          height: 600,
+        },
+        viewport: {
+          id: "mobile",
+          width: 320,
+          height: 240,
+          deviceScaleFactor: 1,
+        },
+        renderMode: "scroll_canvas",
+      });
       expect(output.unsupportedFeatures).toEqual([
         {
           code: "screenshot_fallback_used",

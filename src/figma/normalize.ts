@@ -12,6 +12,9 @@ import type {
   ProvenanceEntry,
 } from "../design-bundle/schema.ts";
 import { normalizeFigmaNodeId } from "./url.ts";
+import {
+  analyzeVisualAssetCandidates,
+} from "../static-generation/visual-asset-priority.ts";
 
 const DEFAULT_MAX_NODES = 50_000;
 const DEFAULT_MAX_DEPTH = 100;
@@ -46,14 +49,19 @@ const rawNodeSchema = z
     styles: z.record(z.string(), z.unknown()).optional(),
     fills: z.array(z.unknown()).optional(),
     strokes: z.array(z.unknown()).optional(),
+    strokeWeight: z.unknown().optional(),
     effects: z.array(z.unknown()).optional(),
     vectorPaths: z.array(z.unknown()).optional(),
+    cornerRadius: z.unknown().optional(),
+    rectangleCornerRadii: z.array(z.unknown()).optional(),
     opacity: z.number().min(0).max(1).optional(),
     blendMode: z.string().max(128).optional(),
     isMask: z.boolean().optional(),
     clipsContent: z.boolean().optional(),
     boundVariables: z.record(z.string(), z.unknown()).optional(),
     componentId: z.string().optional(),
+    componentProperties: z.record(z.string(), z.unknown()).optional(),
+    variantProperties: z.record(z.string(), z.unknown()).optional(),
   })
   .passthrough();
 
@@ -118,13 +126,20 @@ export interface FigmaImageSourceReference {
   sourceRef: string;
 }
 
+export type FigmaVisualLayerReason =
+  | "image_fill"
+  | "button_icon"
+  | "named_logo"
+  | "nav_header_icon"
+  | "line_or_divider"
+  | "large_visual"
+  | "named_icon"
+  | "named_decorative"
+  | "structural_visual";
+
 export interface FigmaVisualLayerReference {
   nodeId: string;
-  reason:
-    | "large_visual"
-    | "structural_visual"
-    | "named_visual"
-    | "image_visual";
+  reason: FigmaVisualLayerReason;
 }
 
 export interface FigmaBoundVariableSource {
@@ -173,6 +188,28 @@ function stableObservedValue(value: FigmaObservedDesignValue): string {
     b: value.b,
     a: value.a,
   });
+}
+
+function scalarValue(value: unknown): string | number | boolean | undefined {
+  if (
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
+    return value;
+  }
+  return undefined;
+}
+
+function normalizedComponentPropertyType(
+  value: unknown,
+): "BOOLEAN" | "INSTANCE_SWAP" | "TEXT" | "VARIANT" | "UNKNOWN" {
+  return value === "BOOLEAN" ||
+    value === "INSTANCE_SWAP" ||
+    value === "TEXT" ||
+    value === "VARIANT"
+    ? value
+    : "UNKNOWN";
 }
 
 function directFillDesignValue(
@@ -348,6 +385,56 @@ function normalizedText(node: RawNode): NormalizedNode["text"] {
   };
 }
 
+function normalizedComponentProperties(
+  node: RawNode,
+): NormalizedNode["componentProperties"] {
+  const properties = node.componentProperties;
+  if (!properties) {
+    return undefined;
+  }
+  const result = Object.entries(properties)
+    .flatMap(([name, raw]) => {
+      if (!raw || typeof raw !== "object") {
+        return [];
+      }
+      const value = scalarValue(Reflect.get(raw, "value"));
+      if (value === undefined) {
+        return [];
+      }
+      const rawName = Reflect.get(raw, "name");
+      return [
+        {
+          name:
+            typeof rawName === "string" && rawName.trim()
+              ? rawName.trim()
+              : name,
+          type: normalizedComponentPropertyType(Reflect.get(raw, "type")),
+          value,
+        },
+      ];
+    })
+    .sort((left, right) => left.name.localeCompare(right.name));
+  return result.length > 0 ? result : undefined;
+}
+
+function normalizedVariantProperties(
+  node: RawNode,
+): NormalizedNode["variantProperties"] {
+  const properties = node.variantProperties;
+  if (!properties) {
+    return undefined;
+  }
+  const result = Object.fromEntries(
+    Object.entries(properties)
+      .flatMap(([name, value]) => {
+        const scalar = scalarValue(value);
+        return scalar === undefined ? [] : [[name, scalar] as const];
+      })
+      .sort(([left], [right]) => left.localeCompare(right)),
+  );
+  return Object.keys(result).length > 0 ? result : undefined;
+}
+
 function nodeKind(node: RawNode, hasImageFill: boolean): NormalizedNode["kind"] {
   if (hasImageFill) {
     return "image";
@@ -384,22 +471,6 @@ function nodeKind(node: RawNode, hasImageFill: boolean): NormalizedNode["kind"] 
   return "unsupported";
 }
 
-const VISUAL_LAYER_TYPES = new Set([
-  "VECTOR",
-  "BOOLEAN_OPERATION",
-  "GROUP",
-  "RECTANGLE",
-  "ELLIPSE",
-  "POLYGON",
-  "STAR",
-]);
-const VISUAL_LAYER_NAME_HINT_PATTERN =
-  /(?:blob|blobs|image|illustration|logo|hero|background|bg|decor|decoration|shape)/i;
-const MIN_VISUAL_LAYER_AREA = 24_000;
-const MIN_PAGE_AREA_RATIO = 0.04;
-const MIN_IMAGE_VISUAL_AREA = 4_096;
-const MIN_NAMED_VISUAL_AREA = 4_096;
-
 function visibleCollectionCount(values: readonly unknown[] | undefined): number {
   return (values ?? []).filter((value) => {
     if (!value || typeof value !== "object") {
@@ -424,6 +495,66 @@ function visiblePaintCount(values: readonly unknown[] | undefined): number {
   }).length;
 }
 
+function firstSolidPaintColor(values: readonly unknown[] | undefined):
+  | { r: number; g: number; b: number; a: number }
+  | undefined {
+  for (const paint of values ?? []) {
+    if (
+      !paint ||
+      typeof paint !== "object" ||
+      Reflect.get(paint, "visible") === false ||
+      Reflect.get(paint, "type") !== "SOLID"
+    ) {
+      continue;
+    }
+    const color = Reflect.get(paint, "color");
+    if (!color || typeof color !== "object") {
+      continue;
+    }
+    const r = Reflect.get(color, "r");
+    const g = Reflect.get(color, "g");
+    const b = Reflect.get(color, "b");
+    const opacity = Reflect.get(paint, "opacity");
+    if (
+      typeof r === "number" &&
+      typeof g === "number" &&
+      typeof b === "number"
+    ) {
+      return {
+        r,
+        g,
+        b,
+        a: typeof opacity === "number" ? opacity : 1,
+      };
+    }
+  }
+  return undefined;
+}
+
+function normalizedCornerRadius(node: RawNode): number | undefined {
+  if (typeof node.cornerRadius === "number") {
+    return node.cornerRadius;
+  }
+  if (!node.rectangleCornerRadii) {
+    return undefined;
+  }
+  const [topLeft, topRight, bottomRight, bottomLeft] =
+    node.rectangleCornerRadii;
+  if (
+    typeof topLeft !== "number" ||
+    typeof topRight !== "number" ||
+    typeof bottomRight !== "number" ||
+    typeof bottomLeft !== "number"
+  ) {
+    return undefined;
+  }
+  return topLeft === topRight &&
+    topLeft === bottomRight &&
+    topLeft === bottomLeft
+    ? topLeft
+    : undefined;
+}
+
 function normalizedVisualMetadata(
   node: RawNode,
 ): NormalizedNode["visual"] | undefined {
@@ -434,17 +565,27 @@ function normalizedVisualMetadata(
       : undefined;
   const fillCount = visiblePaintCount(node.fills);
   const strokeCount = visiblePaintCount(node.strokes);
+  const strokeWeight =
+    strokeCount > 0 && typeof node.strokeWeight === "number"
+      ? node.strokeWeight
+      : undefined;
+  const strokeColor =
+    strokeCount > 0 ? firstSolidPaintColor(node.strokes) : undefined;
   const effectCount = visibleCollectionCount(node.effects);
   const vectorPathCount = Array.isArray(node.vectorPaths)
     ? node.vectorPaths.length
     : 0;
+  const cornerRadius = normalizedCornerRadius(node);
   const hasSignal =
     opacity !== undefined ||
     blendMode !== undefined ||
     fillCount > 0 ||
     strokeCount > 0 ||
+    strokeWeight !== undefined ||
+    strokeColor !== undefined ||
     effectCount > 0 ||
     vectorPathCount > 0 ||
+    cornerRadius !== undefined ||
     node.isMask !== undefined ||
     node.clipsContent !== undefined;
   if (!hasSignal) {
@@ -455,83 +596,16 @@ function normalizedVisualMetadata(
     ...(blendMode !== undefined ? { blendMode } : {}),
     fillCount,
     strokeCount,
+    ...(strokeWeight !== undefined ? { strokeWeight } : {}),
+    ...(strokeColor !== undefined ? { strokeColor } : {}),
     effectCount,
     vectorPathCount,
+    ...(cornerRadius !== undefined ? { cornerRadius } : {}),
     ...(node.isMask !== undefined ? { isMask: node.isMask } : {}),
     ...(node.clipsContent !== undefined
       ? { clipsContent: node.clipsContent }
       : {}),
   };
-}
-
-function hasStructuralVisualSignal(
-  visual: NormalizedNode["visual"] | undefined,
-): boolean {
-  if (!visual) {
-    return false;
-  }
-  return (
-    (visual.opacity !== undefined && visual.opacity < 1) ||
-    (visual.blendMode !== undefined &&
-      !["NORMAL", "PASS_THROUGH"].includes(visual.blendMode)) ||
-    visual.effectCount > 0 ||
-    visual.vectorPathCount > 1 ||
-    visual.isMask === true ||
-    visual.clipsContent === true
-  );
-}
-
-function visualLayerReason(
-  node: RawNode,
-  pageBounds: NormalizedNode["bounds"],
-  hasImageFill: boolean,
-): FigmaVisualLayerReference["reason"] | undefined {
-  const bounds = normalizedBounds(node);
-  if (!bounds || bounds.width < 8 || bounds.height < 8) {
-    return undefined;
-  }
-  const name = node.name ?? "";
-  const area = bounds.width * bounds.height;
-  const pageArea =
-    pageBounds && pageBounds.width > 0 && pageBounds.height > 0
-      ? pageBounds.width * pageBounds.height
-      : 0;
-  const areaRatio = pageArea === 0 ? 0 : area / pageArea;
-  const isVisualType = VISUAL_LAYER_TYPES.has(node.type);
-  const visual = normalizedVisualMetadata(node);
-  const hasVisiblePaint = (visual?.fillCount ?? 0) > 0 ||
-    (visual?.strokeCount ?? 0) > 0;
-  const hasNameHint = VISUAL_LAYER_NAME_HINT_PATTERN.test(name);
-  const hasStructuralSignal = hasStructuralVisualSignal(visual);
-  const isLargeVisualLayer =
-    area >= MIN_VISUAL_LAYER_AREA &&
-    (pageArea === 0 || areaRatio >= MIN_PAGE_AREA_RATIO);
-  if (hasImageFill && area >= MIN_IMAGE_VISUAL_AREA) {
-    return "image_visual";
-  }
-  if (isLargeVisualLayer && (isVisualType || hasImageFill)) {
-    return hasImageFill ? "image_visual" : "large_visual";
-  }
-  if (
-    hasStructuralSignal &&
-    area >= MIN_NAMED_VISUAL_AREA &&
-    (isVisualType || hasImageFill) &&
-    (hasVisiblePaint || hasImageFill)
-  ) {
-    return "structural_visual";
-  }
-  if (
-    hasNameHint &&
-    area >= MIN_NAMED_VISUAL_AREA &&
-    (isVisualType || hasImageFill) &&
-    (hasVisiblePaint || hasImageFill || areaRatio >= MIN_PAGE_AREA_RATIO)
-  ) {
-    return "named_visual";
-  }
-  if (!isVisualType && !hasImageFill) {
-    return undefined;
-  }
-  return undefined;
 }
 
 function imageSourceRefs(node: RawNode): string[] {
@@ -1006,17 +1080,6 @@ export function normalizeFigmaDocument(
       sourceImageRefs.forEach((sourceRef) => {
         imageSources.push({ nodeId: node.id, sourceRef });
       });
-      const visualReason = visualLayerReason(
-        node,
-        pageBounds,
-        sourceImageRefs.length > 0,
-      );
-      if (visualReason) {
-        visualLayerRefs.push({
-          nodeId: node.id,
-          reason: visualReason,
-        });
-      }
       const observations = bindingObservationsForNode(node);
       bindingObservations.push(...observations);
       const variableIds = new Set(
@@ -1088,6 +1151,8 @@ export function normalizeFigmaDocument(
         text: normalizedText(node),
         visual: normalizedVisualMetadata(node),
         componentRef,
+        componentProperties: normalizedComponentProperties(node),
+        variantProperties: normalizedVariantProperties(node),
         styleRefs,
         imageRefs: sourceImageRefs.flatMap((sourceRef) => {
           const path = options.imagePathBySourceRef?.get(sourceRef);
@@ -1105,14 +1170,32 @@ export function normalizeFigmaDocument(
 
     rootIds.forEach((rootId) => appendSubtree(rootId, undefined));
     const bounds = candidate.absoluteBoundingBox;
-    pages.push({
+    const pageWidth = bounds?.width ?? 0;
+    const pageHeight = bounds?.height ?? 0;
+    const pageOrigin = { x: bounds?.x ?? 0, y: bounds?.y ?? 0 };
+    const pageArea = pageWidth * pageHeight;
+    const page: NormalizedPage = {
       id: candidate.id,
       name: candidate.name ?? `page-${stableHash(candidate.id).slice(0, 8)}`,
-      width: bounds?.width ?? 0,
-      height: bounds?.height ?? 0,
+      width: pageWidth,
+      height: pageHeight,
       rootNodeIds: rootIds,
       nodes: pageNodes,
-    });
+    };
+    const candidates = analyzeVisualAssetCandidates(
+      page,
+      pageOrigin,
+      pageArea,
+    );
+    for (const visualCandidate of candidates) {
+      if (visualCandidate.eligible) {
+        visualLayerRefs.push({
+          nodeId: visualCandidate.sourceNodeId,
+          reason: visualCandidate.reasonCode as FigmaVisualLayerReason,
+        });
+      }
+    }
+    pages.push(page);
   }
 
   const normalizedComponents = [...components.values()].map((component) => {

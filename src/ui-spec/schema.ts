@@ -46,16 +46,33 @@ const overlayFrameSchema = z
 const uiColorSchema = z
   .string()
   .regex(/^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$/);
+const uiBackgroundImageSchema = z
+  .string()
+  .regex(
+    /^linear-gradient\(180deg, #[0-9a-fA-F]{6} 0%, #[0-9a-fA-F]{6} 100%\)$/,
+  );
+const uiIconSymbolSchema = z.enum([
+  "chevron-down",
+  "info",
+  "plus",
+  "users",
+  "cursor-arrow",
+  "battery",
+]);
+
+export const uiFontWeightSchema = z.union([
+  z.enum(["regular", "medium", "semibold", "bold"]),
+  z.number().int().min(1).max(1_000),
+]);
 
 const uiStyleSchema = z
   .object({
     backgroundColor: uiColorSchema.optional(),
+    backgroundImage: uiBackgroundImageSchema.optional(),
     textColor: uiColorSchema.optional(),
     fontFamily: z.string().min(1).max(256).optional(),
     fontSize: z.number().finite().positive().max(512).optional(),
-    fontWeight: z
-      .enum(["regular", "medium", "semibold", "bold"])
-      .optional(),
+    fontWeight: uiFontWeightSchema.optional(),
     lineHeight: z.number().finite().positive().max(10).optional(),
     letterSpacing: z.number().finite().min(-1_000).max(1_000).optional(),
     textAlign: z
@@ -70,6 +87,7 @@ const uiStyleSchema = z
     boxShadow: z.enum(["none", "sm", "md", "lg"]).optional(),
     opacity: z.number().finite().min(0).max(1).optional(),
     objectPosition: z.string().min(1).max(128).optional(),
+    overflow: z.enum(["visible", "hidden", "auto"]).optional(),
     pointerEvents: z.enum(["auto", "none"]).optional(),
     width: z.number().finite().positive().max(100_000).optional(),
     height: z.number().finite().positive().max(100_000).optional(),
@@ -88,6 +106,33 @@ const nodeBaseShape = {
   id: idSchema,
   designValueRefs: idListSchema,
   style: uiStyleSchema.optional(),
+  sourceComponent: z
+    .object({
+      componentRef: idSchema.optional(),
+      family: z
+        .enum([
+          "button",
+          "input",
+          "select",
+          "checkbox",
+          "radio",
+          "switch",
+          "modal",
+          "tag",
+          "avatar",
+          "icon",
+          "unknown",
+        ])
+        .optional(),
+      state: z
+        .enum(["default", "hover", "disabled", "error", "selected"])
+        .optional(),
+      variantProperties: z
+        .record(z.string().min(1).max(256), scalarSchema)
+        .optional(),
+    })
+    .strict()
+    .optional(),
 };
 
 export const uiNodeSchema = z.discriminatedUnion("kind", [
@@ -271,11 +316,15 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
     .object({
       ...nodeBaseShape,
       kind: z.literal("icon"),
-      assetRef: uiImagePathSchema,
+      assetRef: uiImagePathSchema.optional(),
+      symbol: uiIconSymbolSchema.optional(),
       alt: z.string().min(1).max(1_000).optional(),
       decorative: z.boolean().optional(),
     })
-    .strict(),
+    .strict()
+    .refine((node) => node.assetRef !== undefined || node.symbol !== undefined, {
+      message: "icon 必须提供 assetRef 或 symbol",
+    }),
   z
     .object({
       ...nodeBaseShape,

@@ -73,6 +73,7 @@ export const Section: ComponentFn<
     {
       className: "ui-section",
       "data-ui-node-id": props.nodeId,
+      "data-semantic": props.semantic,
       style: controlledStyle(props.style),
     },
     children,

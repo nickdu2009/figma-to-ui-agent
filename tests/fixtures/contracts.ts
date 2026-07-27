@@ -89,6 +89,7 @@ export function createDesignBundleDraft(
         height: 480,
       },
     ],
+    fonts: [],
     provenance: [],
     warnings: [],
   };

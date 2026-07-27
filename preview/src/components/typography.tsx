@@ -34,7 +34,13 @@ export const Text: ComponentFn<typeof previewCatalog, "Text"> = ({
     : isSingleLineFrame
       ? "nowrap"
       : undefined;
+  const framedSingleLineHeight =
+    isSingleLineFrame && typeof props.style?.height === "number"
+      ? `${props.style.height}px`
+      : undefined;
+  const framedText = props.style?.position === "absolute";
   const visualOverlay = props.visualOverlay ?? null;
+  const usePreciseTextRendering = usesDisplayFallback || framedText;
   const overlayImageStyle = visualOverlay
     ? {
         position: "absolute" as const,
@@ -54,13 +60,14 @@ export const Text: ComponentFn<typeof previewCatalog, "Text"> = ({
       data-ui-node-id={props.nodeId}
       style={{
         ...style,
-        overflow: visualOverlay ? "hidden" : style?.overflow,
-        WebkitFontSmoothing: usesDisplayFallback
+        overflow: visualOverlay || framedText ? "hidden" : style?.overflow,
+        WebkitFontSmoothing: usePreciseTextRendering
           ? "antialiased"
           : undefined,
-        textRendering: usesDisplayFallback
+        textRendering: usePreciseTextRendering
           ? "geometricPrecision"
           : undefined,
+        lineHeight: framedSingleLineHeight ?? style?.lineHeight,
         whiteSpace: style?.whiteSpace ?? inferredWhiteSpace,
         color: visualOverlay ? "transparent" : style?.color,
       }}

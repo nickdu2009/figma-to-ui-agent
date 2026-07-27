@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { CatalogApp } from "./catalog-app.tsx";
+import "../../preview/src/styles.css";
 import "./catalog.css";
 
 const root = document.getElementById("root");

@@ -25,6 +25,8 @@
     "prepare:m3": "node scripts/prepare-m3.mjs",
     "probe:m3:local": "node scripts/probe-m3-local.mjs",
     "run:m3:flow": "node scripts/run-m3-flow.mjs",
+    "run:m5:static": "node scripts/run-m5-static.mjs",
+    "run:m5:live-restricted": "node scripts/run-m5-live-restricted.mjs",
     "freeze:m3": "node scripts/freeze-m3.mjs",
     "manifest:m3": "node scripts/m3-source-manifest.mjs",
     "blind:m3": "node scripts/run-m3-blind.mjs",

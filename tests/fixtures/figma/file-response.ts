@@ -86,6 +86,24 @@ export function createFigmaFileResponseFixture(): Record<string, unknown> {
                   name: "Continue",
                   type: "INSTANCE",
                   componentId: "component-main",
+                  componentProperties: {
+                    State: {
+                      type: "VARIANT",
+                      value: "Disabled",
+                    },
+                    "Show icon": {
+                      type: "BOOLEAN",
+                      value: true,
+                    },
+                    Label: {
+                      type: "TEXT",
+                      value: "Continue",
+                    },
+                  },
+                  variantProperties: {
+                    State: "Disabled",
+                    Size: "Medium",
+                  },
                 },
                 {
                   id: "1:6",

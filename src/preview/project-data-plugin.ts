@@ -141,23 +141,27 @@ export function projectDataPlugin(dataRoot: string): Plugin {
               projectId,
               revision,
             );
-            const image = [...bundle.assets, ...bundle.screenshots].find(
+            const file = [
+              ...bundle.assets,
+              ...bundle.screenshots,
+              ...bundle.fonts,
+            ].find(
               (candidate) => candidate.path === relativePath,
             );
-            if (!image) {
+            if (!file) {
               sendJson(response, 404, {
-                code: "image_not_registered",
+                code: "file_not_registered",
               });
               return;
             }
             const absolutePath = resolveProjectPath(
               layout,
-              image.path,
+              file.path,
             );
             await assertManagedFilePath(layout, absolutePath);
             const bytes = await readFile(absolutePath);
             response.statusCode = 200;
-            response.setHeader("Content-Type", image.mimeType);
+            response.setHeader("Content-Type", file.mimeType);
             response.setHeader(
               "Content-Length",
               String(bytes.byteLength),

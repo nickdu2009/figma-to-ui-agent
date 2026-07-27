@@ -166,6 +166,13 @@ describe("ProjectStore", () => {
         )
       ).isDirectory(),
     ).toBe(true);
+    expect(
+      (
+        await stat(
+          join(root, "projects", "demo-project", "figma", "fonts"),
+        )
+      ).isDirectory(),
+    ).toBe(true);
   });
 
   it("陈旧 CAS 和无效草稿都不会覆盖 current", async () => {
@@ -239,6 +246,42 @@ describe("ProjectStore", () => {
       status: "rejected",
       reason: expectStoreCode("revision_conflict"),
     });
+  });
+
+  it("按内容哈希保存本地字体并拒绝同 face 不同内容", async () => {
+    const { root, store } = await createStore();
+    const font = await store.saveLocalFont({
+      projectId: "demo-project",
+      bytes: new Uint8Array([0x77, 0x4f, 0x46, 0x32]),
+      family: "League Spartan",
+      weight: 300,
+      style: "normal",
+      sourceKind: "user_provided",
+    });
+
+    expect(font.path).toMatch(/^figma\/fonts\/[a-f0-9]{64}\.woff2$/);
+    await expect(
+      readFile(join(root, "projects", "demo-project", font.path)),
+    ).resolves.toEqual(Buffer.from([0x77, 0x4f, 0x46, 0x32]));
+
+    const draft = createDesignBundleDraft();
+    draft.fonts.push(font);
+    await store.saveDesignBundle({
+      projectId: "demo-project",
+      baseRevision: 0,
+      draft,
+    });
+
+    await expect(
+      store.saveLocalFont({
+        projectId: "demo-project",
+        bytes: new Uint8Array([0x77, 0x4f, 0x46, 0x46]),
+        family: "League Spartan",
+        weight: 300,
+        style: "normal",
+        sourceKind: "user_provided",
+      }),
+    ).rejects.toEqual(expectStoreCode("invalid_input"));
   });
 
   it("复用崩溃后已发布的相同历史，并拒绝不同历史", async () => {

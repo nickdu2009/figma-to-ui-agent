@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   designBundleDraftSchema,
+  localFontRefSchema,
   localImageRefSchema,
   normalizedDesignValueSchema,
 } from "../../../src/design-bundle/schema.ts";
@@ -20,6 +21,16 @@ describe("DesignBundle Schema", () => {
       capabilities: {
         variables: { status: "unavailable_optional" },
       },
+      fonts: [],
+    });
+  });
+
+  it("兼容缺少 fonts 的旧 DesignBundle 草稿", () => {
+    const legacy = createDesignBundleDraft() as Record<string, unknown>;
+    delete legacy.fonts;
+
+    expect(designBundleDraftSchema.parse(legacy)).toMatchObject({
+      fonts: [],
     });
   });
 
@@ -79,6 +90,66 @@ describe("DesignBundle Schema", () => {
         height: 1,
       }),
     ).toThrow();
+  });
+
+  it("接受哈希命名字体并拒绝 MIME 或来源追溯不匹配", () => {
+    const fontSha = "d".repeat(64);
+    expect(
+      localFontRefSchema.parse({
+        path: `figma/fonts/${fontSha}.woff2`,
+        sha256: fontSha,
+        byteCount: 4,
+        mimeType: "font/woff2",
+        family: "League Spartan",
+        weight: 300,
+        style: "normal",
+        sourceKind: "user_provided",
+      }),
+    ).toMatchObject({
+      path: `figma/fonts/${fontSha}.woff2`,
+      weight: 300,
+    });
+
+    expect(() =>
+      localFontRefSchema.parse({
+        path: `figma/fonts/${fontSha}.woff2`,
+        sha256: fontSha,
+        byteCount: 4,
+        mimeType: "font/woff",
+        family: "League Spartan",
+        weight: 300,
+        style: "normal",
+        sourceKind: "user_provided",
+      }),
+    ).toThrow("字体 MIME 与扩展名不一致");
+
+    const draft = createDesignBundleDraft();
+    draft.fonts.push({
+      path: `figma/fonts/${fontSha}.woff2`,
+      sha256: fontSha,
+      byteCount: 4,
+      mimeType: "font/woff2",
+      family: "League Spartan",
+      weight: 300,
+      style: "normal",
+      sourceKind: "user_provided",
+    });
+    draft.provenance.push({
+      entityKind: "font",
+      entityId: `figma/fonts/${fontSha}.woff2`,
+      origin: "user_provided",
+    });
+    expect(designBundleDraftSchema.parse(draft).fonts).toHaveLength(1);
+
+    const invalidOrigin = createDesignBundleDraft();
+    invalidOrigin.provenance.push({
+      entityKind: "asset",
+      entityId: FIXTURE_ASSET_PATH,
+      origin: "user_provided",
+    });
+    expect(() => designBundleDraftSchema.parse(invalidOrigin)).toThrow(
+      "非 font 来源追溯不能使用字体来源 origin",
+    );
   });
 
   it("拒绝节点父链循环", () => {

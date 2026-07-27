@@ -131,12 +131,17 @@ export function ComponentCard({ fixture }: ComponentCardProps) {
   };
 
   return (
-    <article className="component-card">
+    <article className={`component-card category-${fixture.category}`}>
       <header className="component-card-header">
-        <h3>{fixture.title}</h3>
+        <div className="component-card-meta">
+          <span className={`component-card-category category-${fixture.category}`}>
+            {fixture.category}
+          </span>
+          <h3>{fixture.title}</h3>
+        </div>
         <p>{fixture.description}</p>
       </header>
-      <div className="component-card-preview">
+      <div className={`component-card-preview category-${fixture.category}`}>
         <ErrorBoundary
           key={errorKey}
           fallback={

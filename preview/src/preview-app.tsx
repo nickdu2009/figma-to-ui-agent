@@ -16,6 +16,10 @@ import { toPreviewJsonSpec } from "../../src/preview/json-render-adapter.ts";
 import type { UISpec } from "../../src/ui-spec/schema.ts";
 import type { ValidationRecord } from "../../src/validation/schema.ts";
 import { registry } from "./catalog-registry.tsx";
+import {
+  loadRegisteredFonts,
+  type FontAssetStatus,
+} from "./font-assets.ts";
 
 type LoadState =
   | { status: "loading" }
@@ -182,6 +186,34 @@ function imageMetadataByPath(
   );
 }
 
+function useRegisteredFonts(
+  bundle: DesignBundle,
+  projectId: string,
+): FontAssetStatus {
+  const [status, setStatus] = useState<FontAssetStatus>(() => ({
+    status: "loading",
+    registered: bundle.fonts.length,
+    loaded: 0,
+    failed: 0,
+    missing: 0,
+    errors: [],
+  }));
+  useEffect(() => {
+    let cancelled = false;
+    loadRegisteredFonts(bundle, (path) =>
+      projectImageUrl(projectId, path, bundle.revision),
+    ).then((nextStatus) => {
+      if (!cancelled) {
+        setStatus(nextStatus);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [bundle, projectId]);
+  return status;
+}
+
 type BundleNode = DesignBundle["pages"][number]["nodes"][number];
 type TextStyleHint = NonNullable<UISpec["nodes"][number]["style"]>;
 
@@ -214,16 +246,7 @@ function fontWeightName(
   if (value === undefined) {
     return undefined;
   }
-  if (value >= 700) {
-    return "bold";
-  }
-  if (value >= 600) {
-    return "semibold";
-  }
-  if (value >= 500) {
-    return "medium";
-  }
-  return "regular";
+  return value;
 }
 
 function usesDisplayFallback(value: string | undefined): boolean {
@@ -280,6 +303,8 @@ function buildTextStyleHints(
   if (!root) {
     return new Map();
   }
+  const usesCompactArtboardTextOverlay =
+    root.bounds !== undefined && root.bounds.width <= 600;
   const pageScreenshotPath = screenshotForPage(bundle, sourcePage.id);
   const pageScreenshot = pageScreenshotPath
     ? imageMetadataByPath(bundle).get(pageScreenshotPath)
@@ -327,7 +352,10 @@ function buildTextStyleHints(
       continue;
     }
     const text = match.node.text;
-    if (!usesDisplayFallback(text.fontFamily)) {
+    if (
+      !usesDisplayFallback(text.fontFamily) &&
+      !usesCompactArtboardTextOverlay
+    ) {
       continue;
     }
     const lineHeight =
@@ -404,6 +432,10 @@ function ImplementationCanvas(props: {
   const imageMetadata = useMemo(
     () => imageMetadataByPath(props.bundle),
     [props.bundle],
+  );
+  const fontStatus = useRegisteredFonts(
+    props.bundle,
+    props.projectId,
   );
   const previewSpec = useMemo(
     () => {
@@ -494,6 +526,14 @@ function ImplementationCanvas(props: {
               registry={registry}
             />
           </JSONUIProvider>
+          {fontStatus.status === "failed" ? (
+            <span
+              data-font-status="failed"
+              hidden
+            >
+              {fontStatus.errors.join("; ")}
+            </span>
+          ) : null}
         </div>
       </div>
     </div>

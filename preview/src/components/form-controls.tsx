@@ -41,6 +41,7 @@ function framedInputStyle(
     width: "100%",
     height,
     backgroundColor: style.backgroundColor,
+    backgroundImage: style.backgroundImage,
     color: style.color,
     fontFamily: style.fontFamily,
     fontSize: style.fontSize,
@@ -62,6 +63,15 @@ export const Button: ComponentFn<
   "Button"
 > = ({ props, emit }) => {
   const style = controlledStyle(props.style);
+  const framedButtonStyle =
+    props.style?.position === "absolute"
+      ? ({
+          padding: 0,
+          minHeight: 0,
+          whiteSpace: "nowrap",
+          lineHeight: style?.lineHeight,
+        } satisfies CSSProperties)
+      : undefined;
   const iconSize =
     typeof props.style?.height === "number"
       ? Math.min(42, Math.max(18, Math.round(props.style.height * 0.62)))
@@ -76,7 +86,7 @@ export const Button: ComponentFn<
       type="button"
       disabled={props.disabled}
       onClick={() => emit("press")}
-      style={style}
+      style={{ ...style, ...framedButtonStyle }}
     >
       {props.leadingIconSrc ? (
         <img
@@ -187,9 +197,12 @@ export const Checkbox: ComponentFn<
     bindings?.checked,
   );
   const inputChecked = typeof checked === "boolean" ? checked : false;
+  const overlayControl = props.style?.position === "absolute";
   return (
     <label
-      className={`ui-checkbox${props.disabled ? " is-disabled" : ""}`}
+      className={`ui-checkbox${
+        overlayControl ? " ui-control-overlay" : ""
+      }${props.disabled ? " is-disabled" : ""}`}
       data-ui-node-id={props.nodeId}
       style={controlledStyle(props.style)}
     >
@@ -245,9 +258,12 @@ export const Radio: ComponentFn<typeof previewCatalog, "Radio"> = ({
   const store = useStateStore();
   const currentValue = useStateValue<string>(`/${props.stateKey}`);
   const checked = currentValue === props.value;
+  const overlayControl = props.style?.position === "absolute";
   return (
     <label
-      className={`ui-radio${props.disabled ? " is-disabled" : ""}`}
+      className={`ui-radio${
+        overlayControl ? " ui-control-overlay" : ""
+      }${props.disabled ? " is-disabled" : ""}`}
       data-ui-node-id={props.nodeId}
       style={controlledStyle(props.style)}
     >
@@ -273,9 +289,12 @@ export const Switch: ComponentFn<typeof previewCatalog, "Switch"> = ({
     bindings?.checked,
   );
   const inputChecked = typeof checked === "boolean" ? checked : false;
+  const overlayControl = props.style?.position === "absolute";
   return (
     <label
-      className={`ui-switch${props.disabled ? " is-disabled" : ""}`}
+      className={`ui-switch${
+        overlayControl ? " ui-control-overlay" : ""
+      }${props.disabled ? " is-disabled" : ""}`}
       data-ui-node-id={props.nodeId}
       style={controlledStyle(props.style)}
     >
@@ -300,13 +319,42 @@ export const Select: ComponentFn<typeof previewCatalog, "Select"> = ({
     bindings?.value,
   );
   const selectValue = typeof value === "string" ? value : "";
+  const style = controlledStyle(props.style);
+  if (props.style?.position === "absolute") {
+    return (
+      <select
+        className={`ui-select-direct${
+          props.disabled ? " is-disabled" : ""
+        }`}
+        data-ui-node-id={props.nodeId}
+        aria-label={
+          props.label.trim() || props.placeholder || props.nodeId
+        }
+        value={selectValue}
+        disabled={props.disabled}
+        onChange={(event) => setValue(event.target.value)}
+        style={style}
+      >
+        {props.placeholder ? (
+          <option value="" disabled>
+            {props.placeholder}
+          </option>
+        ) : null}
+        {props.options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    );
+  }
   return (
     <label
       className={`ui-field ui-select${
         props.disabled ? " is-disabled" : ""
       }`}
       data-ui-node-id={props.nodeId}
-      style={controlledStyle(props.style)}
+      style={style}
     >
       <span>{props.label}</span>
       <select

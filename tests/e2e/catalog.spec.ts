@@ -1,5 +1,55 @@
 import { expect, test } from "@playwright/test";
 
+test("Stack card reacts to direction prop change", async ({ page }) => {
+  await page.goto("/");
+
+  const stackCard = page.locator(".component-card", {
+    hasText: "水平或垂直布局容器",
+  });
+  await expect(stackCard).toBeVisible();
+
+  const secondText = stackCard.locator('[data-ui-node-id="stack-text-2"]');
+  await expect(secondText).toBeVisible();
+  const before = await secondText.boundingBox();
+  if (!before) {
+    throw new Error("无法获取 Stack 文本的初始位置");
+  }
+
+  await stackCard
+    .locator('label:has-text("direction") select')
+    .selectOption("horizontal");
+
+  await expect(async () => {
+    const after = await secondText.boundingBox();
+    if (!after) {
+      throw new Error("无法获取 Stack 文本的新位置");
+    }
+    expect(after.x).toBeGreaterThan(before.x + 10);
+  }).toPass();
+});
+
+test("Section card reacts to semantic prop change", async ({ page }) => {
+  await page.goto("/");
+
+  const sectionCard = page.locator(".component-card", {
+    hasText: "带语义标签的页面区域",
+  });
+  await expect(sectionCard).toBeVisible();
+
+  const section = sectionCard.locator('[data-ui-node-id="section"]');
+  await expect
+    .poll(async () => section.evaluate((el) => el.tagName.toLowerCase()))
+    .toBe("section");
+
+  await sectionCard
+    .locator('label:has-text("semantic") select')
+    .selectOption("main");
+
+  await expect
+    .poll(async () => section.evaluate((el) => el.tagName.toLowerCase()))
+    .toBe("main");
+});
+
 test("renders catalog overview with component cards", async ({ page }) => {
   await page.goto("/");
 

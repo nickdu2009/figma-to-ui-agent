@@ -107,6 +107,10 @@ interface PixelRegionComparison {
   diffPixelRatio: number;
 }
 
+type CanvasMapping = NonNullable<
+  RenderAndCompareOutput["results"][number]["canvasMapping"]
+>;
+
 function stableHash(value: string): string {
   return createHash("sha256").update(value).digest("hex");
 }
@@ -149,6 +153,26 @@ function screenshotForSourcePage(
   return bundle.screenshots.find(
     (screenshot) => screenshot.path === path,
   );
+}
+
+function artboardSizeForSourcePage(
+  bundle: DesignBundle,
+  sourcePageId: string,
+  fallback: { width: number; height: number },
+): { width: number; height: number } {
+  const sourcePage = bundle.pages.find((page) => page.id === sourcePageId);
+  const width =
+    sourcePage && sourcePage.width > 0
+      ? Math.round(sourcePage.width)
+      : fallback.width;
+  const height =
+    sourcePage && sourcePage.height > 0
+      ? Math.round(sourcePage.height)
+      : fallback.height;
+  return {
+    width: Math.max(1, width),
+    height: Math.max(1, height),
+  };
 }
 
 async function syncDirectory(path: string): Promise<void> {
@@ -287,22 +311,39 @@ async function comparePixels(
         context.fillStyle = "#ffffff";
         context.fillRect(0, 0, width, height);
         if (mode === "reference") {
-          const scale = width / image.naturalWidth;
-          const sourceHeight = Math.min(
-            image.naturalHeight,
-            height / scale,
-          );
-          context.drawImage(
-            image,
-            0,
-            0,
-            image.naturalWidth,
-            sourceHeight,
-            0,
-            0,
-            width,
-            sourceHeight * scale,
-          );
+          if (
+            image.naturalWidth >= width &&
+            image.naturalHeight >= height
+          ) {
+            context.drawImage(
+              image,
+              0,
+              0,
+              width,
+              height,
+              0,
+              0,
+              width,
+              height,
+            );
+          } else {
+            const scale = width / image.naturalWidth;
+            const sourceHeight = Math.min(
+              image.naturalHeight,
+              height / scale,
+            );
+            context.drawImage(
+              image,
+              0,
+              0,
+              image.naturalWidth,
+              sourceHeight,
+              0,
+              0,
+              width,
+              sourceHeight * scale,
+            );
+          }
         } else {
           context.drawImage(image, 0, 0);
         }
@@ -570,6 +611,40 @@ function scaleDiagnosticRegions(
     width: region.width * scale,
     height: region.height * scale,
   }));
+}
+
+function createCanvasMapping(
+  input: {
+    sourcePageId: string;
+    pageId: string;
+    artboardWidth: number;
+    artboardHeight: number;
+    viewport: UISpec["viewports"][number];
+  },
+): CanvasMapping {
+  const deviceScaleFactor = input.viewport.deviceScaleFactor ?? 1;
+  const renderMode =
+    input.artboardWidth > input.viewport.width ||
+    input.artboardHeight > input.viewport.height
+      ? "scroll_canvas"
+      : "native_artboard";
+  return {
+    sourcePageId: input.sourcePageId,
+    pageId: input.pageId,
+    artboard: {
+      width: input.artboardWidth,
+      height: input.artboardHeight,
+    },
+    viewport: {
+      id: input.viewport.id,
+      width: input.viewport.width,
+      height: input.viewport.height,
+      deviceScaleFactor,
+    },
+    scale: 1,
+    origin: { x: 0, y: 0 },
+    renderMode,
+  };
 }
 
 function targetForStep(
@@ -858,11 +933,20 @@ export class RenderAndCompareService {
           const viewport = uiSpec.viewports.find(
             (candidate) => candidate.id === viewportId,
           )!;
-          const canvasWidth = Math.min(viewport.width, expectedRef.width);
-          const canvasHeight = Math.min(
-            viewport.height,
-            expectedRef.height,
+          const artboardSize = artboardSizeForSourcePage(
+            bundle,
+            uiPage.sourcePageId,
+            expectedRef,
           );
+          const canvasWidth = artboardSize.width;
+          const canvasHeight = artboardSize.height;
+          const canvasMapping = createCanvasMapping({
+            sourcePageId: uiPage.sourcePageId,
+            pageId,
+            artboardWidth: canvasWidth,
+            artboardHeight: canvasHeight,
+            viewport,
+          });
           const context: BrowserContext = await browser.newContext({
             viewport: {
               width: canvasWidth + 32,
@@ -911,6 +995,16 @@ export class RenderAndCompareService {
             "diffs",
             `${artifactName}-diff.png`,
           );
+          let fontStatus:
+            | {
+                status?: "loading" | "ready" | "failed";
+                registered?: number;
+                loaded?: number;
+                failed?: number;
+                missing?: number;
+                errors?: string[];
+              }
+            | undefined;
           try {
             await page.goto(
               previewUrl(server.url, {
@@ -929,6 +1023,19 @@ export class RenderAndCompareService {
               content:
                 "*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}",
             });
+            await page.waitForFunction(
+              () =>
+                window.__FIGMA_TO_UI_FONT_STATUS__?.status === "ready" ||
+                window.__FIGMA_TO_UI_FONT_STATUS__?.status === "failed",
+            );
+            fontStatus = await page.evaluate(
+              () => window.__FIGMA_TO_UI_FONT_STATUS__,
+            );
+            if (fontStatus?.status === "failed") {
+              throw new Error(
+                `font_asset_load_failed: ${(fontStatus.errors ?? []).join("; ")}`,
+              );
+            }
             await page.evaluate(async () => {
               await document.fonts.ready;
             });
@@ -972,6 +1079,15 @@ export class RenderAndCompareService {
                 message: "Preview 页面与实现画布加载成功",
               },
             ];
+            if (fontStatus) {
+              checks.push({
+                kind: "functional",
+                passed:
+                  (fontStatus.failed ?? 0) === 0 &&
+                  (fontStatus.missing ?? 0) === 0,
+                message: `字体资产 registered=${fontStatus.registered ?? 0} loaded=${fontStatus.loaded ?? 0} failed=${fontStatus.failed ?? 0} missing=${fontStatus.missing ?? 0}`,
+              });
+            }
             for (const fixture of fixtures.filter(
               (candidate) =>
                 candidate.initialPageId === pageId &&
@@ -1021,6 +1137,7 @@ export class RenderAndCompareService {
               diffPixelCount: comparison.diffPixelCount,
               diffPixelRatio: comparison.diffPixelRatio,
               regionDiffs: comparison.regionDiffs,
+              canvasMapping,
             });
           } finally {
             await context.close();

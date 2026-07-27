@@ -36,6 +36,7 @@ export interface ProjectLayout {
   figmaHistoryRoot: string;
   figmaAssetsRoot: string;
   figmaScreenshotsRoot: string;
+  figmaFontsRoot: string;
   flowRoot: string;
   flowHistoryRoot: string;
   specsRoot: string;
@@ -130,6 +131,7 @@ export async function ensureProjectLayout(
   const figmaHistoryRoot = join(figmaRoot, "history");
   const figmaAssetsRoot = join(figmaRoot, "assets");
   const figmaScreenshotsRoot = join(figmaRoot, "screenshots");
+  const figmaFontsRoot = join(figmaRoot, "fonts");
   const flowRoot = join(projectRoot, "flow");
   const flowHistoryRoot = join(flowRoot, "history");
   const specsRoot = join(projectRoot, "specs");
@@ -143,6 +145,7 @@ export async function ensureProjectLayout(
     figmaHistoryRoot,
     figmaAssetsRoot,
     figmaScreenshotsRoot,
+    figmaFontsRoot,
     flowRoot,
     flowHistoryRoot,
     specsRoot,
@@ -164,6 +167,7 @@ export async function ensureProjectLayout(
     figmaHistoryRoot,
     figmaAssetsRoot,
     figmaScreenshotsRoot,
+    figmaFontsRoot,
     flowRoot,
     flowHistoryRoot,
     specsRoot,

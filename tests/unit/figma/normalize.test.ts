@@ -78,6 +78,15 @@ describe("normalizeFigmaDocument", () => {
     ).toMatchObject({
       kind: "instance",
       componentRef: "component-main",
+      componentProperties: [
+        { name: "Label", type: "TEXT", value: "Continue" },
+        { name: "Show icon", type: "BOOLEAN", value: true },
+        { name: "State", type: "VARIANT", value: "Disabled" },
+      ],
+      variantProperties: {
+        Size: "Medium",
+        State: "Disabled",
+      },
     });
     expect(
       normalized.pages[0]!.nodes.find((node) => node.id === "1:6"),
@@ -116,7 +125,7 @@ describe("normalizeFigmaDocument", () => {
       { nodeId: "1:3", sourceRef: "image-source-1" },
     ]);
     expect(normalized.visualLayerRefs).toEqual([
-      { nodeId: "1:3", reason: "image_visual" },
+      { nodeId: "1:3", reason: "image_fill" },
       { nodeId: "1:6", reason: "large_visual" },
     ]);
     expect(normalized.boundVariableSources).toEqual([
@@ -233,7 +242,16 @@ describe("normalizeFigmaDocument", () => {
       },
       opacity: 0.64,
       blendMode: "MULTIPLY",
+      cornerRadius: 12,
+      strokeWeight: 2,
       vectorPaths: [{ windingRule: "NONZERO", data: "M0 0L1 1Z" }],
+      strokes: [
+        {
+          type: "SOLID",
+          color: { r: 0.8, g: 0.7, b: 0.6 },
+          opacity: 0.5,
+        },
+      ],
       effects: [{ type: "DROP_SHADOW", visible: true }],
       fills: [
         {
@@ -256,8 +274,12 @@ describe("normalizeFigmaDocument", () => {
         opacity: 0.64,
         blendMode: "MULTIPLY",
         fillCount: 1,
+        strokeCount: 1,
+        strokeWeight: 2,
+        strokeColor: { r: 0.8, g: 0.7, b: 0.6, a: 0.5 },
         effectCount: 1,
         vectorPathCount: 1,
+        cornerRadius: 12,
       },
     });
   });

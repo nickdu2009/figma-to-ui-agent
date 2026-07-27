@@ -13,6 +13,11 @@ import {
 const idSchema = z.string().min(1).max(256);
 const nameSchema = z.string().min(1).max(512);
 const idListSchema = z.array(idSchema).max(10_000);
+const scalarSchema = z.union([
+  z.string().max(10_000),
+  z.number().finite(),
+  z.boolean(),
+]);
 
 export const variablesCapabilitySchema = z.discriminatedUnion("status", [
   z
@@ -31,6 +36,7 @@ export const variablesCapabilitySchema = z.discriminatedUnion("status", [
         "invalid_scope",
         "file_unsupported",
         "unauthorized",
+        "restricted_mode",
         "unknown",
       ]),
     })
@@ -74,6 +80,56 @@ export const localImageRefSchema = z
         code: "custom",
         path: ["mimeType"],
         message: "图片 MIME 与扩展名不一致",
+      });
+    }
+  });
+
+export const localFontRefSchema = z
+  .object({
+    path: safeRelativePathSchema.refine(
+      (value) =>
+        /^figma\/fonts\/[a-f0-9]{64}\.(?:woff2?|ttf|otf)$/.test(
+          value,
+        ),
+      "字体路径必须位于项目 figma/fonts 目录并使用内容哈希命名",
+    ),
+    sha256: sha256Schema,
+    byteCount: z.number().int().positive().max(100 * 1024 * 1024),
+    mimeType: z.enum([
+      "font/woff2",
+      "font/woff",
+      "font/ttf",
+      "font/otf",
+    ]),
+    family: z.string().min(1).max(256),
+    weight: z.number().int().min(1).max(1_000),
+    style: z.enum(["normal", "italic"]),
+    sourceKind: z.enum(["user_provided", "authorized_download"]),
+  })
+  .strict()
+  .superRefine((value, ctx) => {
+    const extension = posix.extname(value.path).slice(1);
+    const expectedMime =
+      extension === "woff2"
+        ? "font/woff2"
+        : extension === "woff"
+          ? "font/woff"
+          : extension === "ttf"
+            ? "font/ttf"
+            : "font/otf";
+
+    if (posix.basename(value.path).split(".")[0] !== value.sha256) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["path"],
+        message: "字体文件名必须与 SHA-256 一致",
+      });
+    }
+    if (value.mimeType !== expectedMime) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["mimeType"],
+        message: "字体 MIME 与扩展名不一致",
       });
     }
   });
@@ -131,10 +187,27 @@ const visualMetadataSchema = z
     blendMode: z.string().min(1).max(128).optional(),
     fillCount: z.number().int().nonnegative().max(10_000),
     strokeCount: z.number().int().nonnegative().max(10_000),
+    strokeWeight: z.number().finite().positive().max(10_000).optional(),
+    strokeColor: colorSchema.optional(),
     effectCount: z.number().int().nonnegative().max(10_000),
     vectorPathCount: z.number().int().nonnegative().max(100_000),
+    cornerRadius: z.number().finite().nonnegative().max(10_000).optional(),
     isMask: z.boolean().optional(),
     clipsContent: z.boolean().optional(),
+  })
+  .strict();
+
+const componentPropertySchema = z
+  .object({
+    name: z.string().min(1).max(512),
+    type: z.enum([
+      "BOOLEAN",
+      "INSTANCE_SWAP",
+      "TEXT",
+      "VARIANT",
+      "UNKNOWN",
+    ]),
+    value: scalarSchema,
   })
   .strict();
 
@@ -158,6 +231,10 @@ export const normalizedNodeSchema = z
     text: textSchema.optional(),
     visual: visualMetadataSchema.optional(),
     componentRef: idSchema.optional(),
+    componentProperties: z.array(componentPropertySchema).max(1_000).optional(),
+    variantProperties: z
+      .record(z.string().min(1).max(256), scalarSchema)
+      .optional(),
     styleRefs: idListSchema,
     imageRefs: z.array(safeRelativePathSchema).max(1_000),
     boundVariableRefs: z.array(sha256Schema).max(1_000),
@@ -385,6 +462,7 @@ export const provenanceEntrySchema = z
       "design_value",
       "asset",
       "screenshot",
+      "font",
     ]),
     entityId: z.string().min(1).max(512),
     origin: z.enum([
@@ -393,6 +471,8 @@ export const provenanceEntrySchema = z
       "figma_variable",
       "inferred_from_binding",
       "inferred",
+      "user_provided",
+      "authorized_download",
     ]),
     sourceIdHash: sha256Schema.optional(),
   })
@@ -429,6 +509,7 @@ const designBundleShape = {
   designValues: z.array(normalizedDesignValueSchema).max(50_000),
   screenshots: z.array(localImageRefSchema).max(10_000),
   assets: z.array(localImageRefSchema).max(100_000),
+  fonts: z.array(localFontRefSchema).max(10_000).default([]),
   provenance: z.array(provenanceEntrySchema).max(500_000),
   warnings: z.array(designBundleWarningSchema).max(10_000),
 };
@@ -485,6 +566,11 @@ function validateDesignBundleReferences(
     ["assets"],
     ctx,
   );
+  addDuplicateIssues(
+    value.fonts.map((font) => font.path),
+    ["fonts"],
+    ctx,
+  );
 
   const componentIds = new Set(value.components.map((item) => item.id));
   const styleIds = new Set(value.styles.map((item) => item.id));
@@ -494,6 +580,20 @@ function validateDesignBundleReferences(
   const imagePaths = new Set(
     [...value.assets, ...value.screenshots].map((item) => item.path),
   );
+  const fontPaths = new Set(value.fonts.map((item) => item.path));
+  const fontFaces = new Map<string, string>();
+  value.fonts.forEach((font, index) => {
+    const faceKey = `${font.family}\u0000${font.weight}\u0000${font.style}`;
+    const existingPath = fontFaces.get(faceKey);
+    if (existingPath && existingPath !== font.path) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["fonts", index],
+        message: `字体 face 冲突：${font.family} ${font.weight} ${font.style}`,
+      });
+    }
+    fontFaces.set(faceKey, font.path);
+  });
   const allNodeIds = new Set<string>();
 
   value.pages.forEach((page, pageIndex) => {
@@ -646,8 +746,26 @@ function validateDesignBundleReferences(
     design_value: designValueIds,
     asset: new Set(value.assets.map((item) => item.path)),
     screenshot: new Set(value.screenshots.map((item) => item.path)),
+    font: fontPaths,
   };
   value.provenance.forEach((entry, index) => {
+    const isFontOrigin =
+      entry.origin === "user_provided" ||
+      entry.origin === "authorized_download";
+    if (entry.entityKind === "font" && !isFontOrigin) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["provenance", index, "origin"],
+        message: "font 来源追溯必须使用字体来源 origin",
+      });
+    }
+    if (entry.entityKind !== "font" && isFontOrigin) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["provenance", index, "origin"],
+        message: "非 font 来源追溯不能使用字体来源 origin",
+      });
+    }
     if (!provenanceTargets[entry.entityKind].has(entry.entityId)) {
       ctx.addIssue({
         code: "custom",
@@ -675,6 +793,7 @@ export type VariablesCapability = z.infer<
   typeof variablesCapabilitySchema
 >;
 export type LocalImageRef = z.infer<typeof localImageRefSchema>;
+export type LocalFontRef = z.infer<typeof localFontRefSchema>;
 export type NormalizedNode = z.infer<typeof normalizedNodeSchema>;
 export type NormalizedPage = z.infer<typeof normalizedPageSchema>;
 export type NormalizedComponent = z.infer<

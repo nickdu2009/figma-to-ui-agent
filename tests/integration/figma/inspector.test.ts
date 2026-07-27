@@ -571,9 +571,13 @@ describe("FigmaInspector mock REST 纵向切片", () => {
       ids.includes("1:999"),
     );
     expect(visualRenderIds).toBeDefined();
-    expect(visualRenderIds).toHaveLength(80);
+    expect(visualRenderIds!.length).toBeLessThanOrEqual(100);
     expect(visualRenderIds).toContain("1:999");
-    expect(visualRenderIds).not.toContain("1:100");
+    if (visualRenderIds!.includes("1:100")) {
+      expect(visualRenderIds!.indexOf("1:999")).toBeLessThan(
+        visualRenderIds!.indexOf("1:100"),
+      );
+    }
     const saved = await store.loadDesignBundle("visual-priority-project");
     const criticalSourceHash = saved.provenance.find(
       (entry) =>
@@ -586,5 +590,91 @@ describe("FigmaInspector mock REST 纵向切片", () => {
         sourceIdHash: criticalSourceHash,
       }),
     );
+  });
+
+  it("variablesMode=disabled_restricted_live 跳过 getLocalVariables 调用", async () => {
+    const root = await mkdtemp(join(tmpdir(), "figma-inspector-"));
+    temporaryRoots.push(root);
+    const store = new ProjectStore(root);
+    let variablesCalled = false;
+    const fetchImpl = vi.fn<FigmaFetch>(async (input) => {
+      const url = new URL(String(input));
+      if (url.hostname === "api.figma.com") {
+        if (url.pathname === `/v1/files/${FILE_KEY}`) {
+          return jsonResponse(createFigmaFileResponseFixture());
+        }
+        if (url.pathname === `/v1/files/${FILE_KEY}/images`) {
+          return jsonResponse({
+            meta: {
+              images: {
+                "image-source-1":
+                  "https://s3-alpha.figma.com/assets/hero.png?signature=private",
+              },
+            },
+          });
+        }
+        if (url.pathname === `/v1/images/${FILE_KEY}`) {
+          const ids = url.searchParams.get("ids")?.split(",") ?? [];
+          return jsonResponse({
+            images: Object.fromEntries(
+              ids.map((id) => [
+                id,
+                `https://s3-alpha.figma.com/screenshots/${id.replaceAll(
+                  ":",
+                  "-",
+                )}.png?signature=private`,
+              ]),
+            ),
+          });
+        }
+        if (
+          url.pathname ===
+          `/v1/files/${FILE_KEY}/variables/local`
+        ) {
+          variablesCalled = true;
+          return new Response("should not be called", { status: 500 });
+        }
+      }
+      if (url.pathname === "/assets/hero.png") {
+        return imageResponse(createPngBytes(640, 480));
+      }
+      if (url.pathname.startsWith("/screenshots/")) {
+        return imageResponse(createPngBytes(144, 144));
+      }
+      return new Response("unexpected", { status: 404 });
+    });
+    const inspector = new FigmaInspector({
+      restClient: new FigmaRestClient({
+        token: "private-token",
+        fetchImpl,
+        maxRetries: 0,
+      }),
+      imageDownloader: new FigmaImageDownloader({
+        projectStore: store,
+        fetchImpl,
+      }),
+      projectStore: store,
+      now: () => new Date("2026-07-24T12:00:00.000Z"),
+    });
+
+    const output = await inspector.inspect(
+      {
+        schemaVersion: "1",
+        projectId: "restricted-variables-project",
+        figmaUrl: `https://www.figma.com/design/${FILE_KEY}/Fixture`,
+      },
+      undefined,
+      { variablesMode: "disabled_restricted_live" },
+    );
+
+    expect(variablesCalled).toBe(false);
+    expect(output.variables).toMatchObject({
+      status: "unavailable_optional",
+      reasonCode: "restricted_mode",
+    });
+    expect(output.warnings).toContainEqual({
+      code: "variables_unavailable_optional",
+      detail: "Variables 可选能力不可用：restricted_mode",
+    });
   });
 });

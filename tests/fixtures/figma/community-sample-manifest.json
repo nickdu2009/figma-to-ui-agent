@@ -1,0 +1,248 @@
+{
+  "schemaVersion": "1",
+  "corpusId": "figma-community-v2-seed-20260726",
+  "source": "figma_community_search",
+  "collectedAt": "2026-07-26T06:47:00+08:00",
+  "collectionMode": "manual_browser_assisted",
+  "networkBoundary": {
+    "figmaCommunityPagesVisited": true,
+    "figmaRestCalled": true,
+    "openaiCalled": false,
+    "openInFigmaClicked": true,
+    "openInFigmaClickedSampleCount": 6,
+    "figmaRestCalledAt": "2026-07-26T00:55:48.881Z"
+  },
+  "selectionPolicy": {
+    "targetSampleCount": 12,
+    "preferFreeFiles": true,
+    "avoidPaidFilesForSeedCorpus": true,
+    "categories": [
+      "login-register",
+      "mobile-app",
+      "dashboard",
+      "ecommerce",
+      "landing-page",
+      "design-system"
+    ],
+    "nextAccessStep": "Use selected nodeId values to run coverage scanner and, after review, live/blind validation on the first Community corpus batch."
+  },
+  "samples": [
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "title": "20 Screen Login & Register Mobile App",
+      "communityUrl": "https://www.figma.com/community/file/1370757927948360864/20-screen-login-register-mobile-app",
+      "searchQuery": "login register mobile app",
+      "accessStatus": "rest_readable_node_selected",
+      "designUrl": "https://www.figma.com/design/jLjZfh0AntwoJ0Z7NjfKnY/20-Screen-Login---Register-Mobile-App--Community-",
+      "nodeId": "3:5123",
+      "expectedViewport": "mobile",
+      "selectedReason": "Large multi-screen login/register sample already used as a known comparable category.",
+      "restProbe": {
+        "probedAt": "2026-07-26T00:55:43.835Z",
+        "fileReadable": true,
+        "fileProbeDepth": 2,
+        "nodeReadable": true,
+        "selectedNodeName": "Login Version 1",
+        "selectedNodeType": "FRAME",
+        "selectedNodeBounds": {
+          "width": 375,
+          "height": 812
+        }
+      },
+      "fileKey": "jLjZfh0AntwoJ0Z7NjfKnY"
+    },
+    {
+      "sampleId": "community-login-002",
+      "category": "login-register",
+      "title": "Login & Register App UI Kit for Mobile App",
+      "communityUrl": "https://www.figma.com/community/file/1120322923829988306/login-register-app-ui-kit-for-mobile-app",
+      "searchQuery": "login register mobile app",
+      "accessStatus": "community_page_found",
+      "designUrl": null,
+      "nodeId": null,
+      "expectedViewport": "mobile",
+      "selectedReason": "Focused mobile auth UI kit for repeated form and social-auth coverage."
+    },
+    {
+      "sampleId": "community-login-003",
+      "category": "login-register",
+      "title": "UI Registration Sign up Login Onboarding EnTattoo Mobile App",
+      "communityUrl": "https://www.figma.com/community/file/1246041452225648081/ui-registration-sign-up-login-onboarding-entattoo-mobile-app",
+      "searchQuery": "login register mobile app",
+      "accessStatus": "community_page_found",
+      "designUrl": null,
+      "nodeId": null,
+      "expectedViewport": "mobile",
+      "selectedReason": "Auth plus onboarding flow for mixed text, illustration and navigation coverage."
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "title": "Fitness App UI Kit for Gym Workout App",
+      "communityUrl": "https://www.figma.com/community/file/1356281690251535631/fitness-app-ui-kit-for-gym-workout-app-fitness-tracker-mobile-app-gym-fitness-mobile-app-ui-kit",
+      "searchQuery": "mobile app UI kit",
+      "accessStatus": "rest_readable_node_selected",
+      "designUrl": "https://www.figma.com/design/NfIJDaLmWpNuVzugWT12xs/Fitness-App-UI-Kit-for-Gym-Workout-App-Fitness-Tracker-Mobile-App-Gym-Fitness-Mobile-App-UI-Kit--Community-",
+      "nodeId": "3186:4543",
+      "expectedViewport": "mobile",
+      "selectedReason": "High-visual mobile app sample with cards, imagery, icons and dashboards.",
+      "fileKey": "NfIJDaLmWpNuVzugWT12xs",
+      "restProbe": {
+        "probedAt": "2026-07-26T00:54:17.052Z",
+        "fileReadable": true,
+        "nodeReadable": true,
+        "selectedNodeName": "6.11 - A - Profile",
+        "selectedNodeType": "FRAME",
+        "selectedNodeBounds": {
+          "width": 393,
+          "height": 1029
+        }
+      }
+    },
+    {
+      "sampleId": "community-mobile-002",
+      "category": "mobile-app",
+      "title": "iBank Banking and E-Money Management App",
+      "communityUrl": "https://www.figma.com/community/file/1322236579213422290/ibank-banking-e-money-management-app-finpay-digital-finance-mobile-banking-app-ui-kit",
+      "searchQuery": "mobile app UI kit",
+      "accessStatus": "community_page_found",
+      "designUrl": null,
+      "nodeId": null,
+      "expectedViewport": "mobile",
+      "selectedReason": "Finance UI sample for charts, card surfaces, icons and dense numeric text."
+    },
+    {
+      "sampleId": "community-mobile-003",
+      "category": "mobile-app",
+      "title": "Food Delivery App UI Kit",
+      "communityUrl": "https://www.figma.com/community/file/1350568717710815378/food-delivery-app-ui-kit-food-app-design-food-mobile-app-delivery-ui",
+      "searchQuery": "mobile app UI kit",
+      "accessStatus": "community_page_found",
+      "designUrl": null,
+      "nodeId": null,
+      "expectedViewport": "mobile",
+      "selectedReason": "Image-heavy list/card mobile UI for image fit, clipping and icon coverage."
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "category": "dashboard",
+      "title": "Web Dashboard & Statistics UI Kit App Template",
+      "communityUrl": "https://www.figma.com/community/file/1047228016473609531/web-dashboard-statistics-ui-kit-app-template",
+      "searchQuery": "dashboard web app",
+      "accessStatus": "rest_readable_node_selected",
+      "designUrl": "https://www.figma.com/design/krSvKTElV3sqy0wbbrzsnM/Web-Dashboard---Statistics-UI-Kit-App-Template--Community-",
+      "nodeId": "0:2",
+      "expectedViewport": "desktop",
+      "selectedReason": "Desktop dashboard seed for charts, tables, cards and sidebar coverage.",
+      "fileKey": "krSvKTElV3sqy0wbbrzsnM",
+      "restProbe": {
+        "probedAt": "2026-07-26T00:54:26.344Z",
+        "fileReadable": true,
+        "nodeReadable": true,
+        "selectedNodeName": "Light - Dashboard - 1",
+        "selectedNodeType": "FRAME",
+        "selectedNodeBounds": {
+          "width": 1440,
+          "height": 1024
+        }
+      }
+    },
+    {
+      "sampleId": "community-dashboard-002",
+      "category": "dashboard",
+      "title": "Ecommerce app web Admin Dashboard Fully interactive",
+      "communityUrl": "https://www.figma.com/community/file/1334412889536093277/ecommerce-app-web-admin-dashboard-fully-interactive",
+      "searchQuery": "dashboard web app",
+      "accessStatus": "community_page_found",
+      "designUrl": null,
+      "nodeId": null,
+      "expectedViewport": "desktop",
+      "selectedReason": "Admin dashboard with ecommerce content and likely component-heavy layout."
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "category": "ecommerce",
+      "title": "Mobile Credit Card Check Out",
+      "communityUrl": "https://www.figma.com/community/file/822946671123677879/mobile-credit-card-check-out",
+      "searchQuery": "ecommerce mobile checkout",
+      "accessStatus": "rest_readable_node_selected",
+      "designUrl": "https://www.figma.com/design/pAd2NPLRFjI3eZ70IxYbTf/Mobile-Credit-Card-Check-Out--Community-",
+      "nodeId": "0:303",
+      "expectedViewport": "mobile",
+      "selectedReason": "Checkout/payment sample for card logos, form-like layout and payment icon coverage.",
+      "fileKey": "pAd2NPLRFjI3eZ70IxYbTf",
+      "restProbe": {
+        "probedAt": "2026-07-26T00:54:32.619Z",
+        "fileReadable": true,
+        "nodeReadable": true,
+        "selectedNodeName": "Featured",
+        "selectedNodeType": "FRAME",
+        "selectedNodeBounds": {
+          "width": 375,
+          "height": 812
+        }
+      }
+    },
+    {
+      "sampleId": "community-ecommerce-002",
+      "category": "ecommerce",
+      "title": "Shoppe eCommerce Clothing Fashion Store Mobile App Design",
+      "communityUrl": "https://www.figma.com/community/file/1321464360558173342/shoppe-ecommerce-clothing-fashion-store-multi-purpose-ui-mobile-app-design",
+      "searchQuery": "ecommerce mobile checkout",
+      "accessStatus": "community_page_found",
+      "designUrl": null,
+      "nodeId": null,
+      "expectedViewport": "mobile",
+      "selectedReason": "Fashion/ecommerce mobile sample for product imagery, CTA, nav icon and typography coverage."
+    },
+    {
+      "sampleId": "community-landing-001",
+      "category": "landing-page",
+      "title": "Minimal Landing Page Design Website Home Page Design",
+      "communityUrl": "https://www.figma.com/community/file/1222060007934600841/minimal-landing-page-design-website-home-page-design-agency-website-ui-design",
+      "searchQuery": "landing page website",
+      "accessStatus": "rest_readable_node_selected",
+      "designUrl": "https://www.figma.com/design/qXqo1OokdWnXvg0UjFaDX3/Minimal-Landing-Page-Design-%7C-Website-Home-Page-Design-%7C-Agency-Website-UI-Design--Community-",
+      "nodeId": "10:948",
+      "expectedViewport": "desktop",
+      "selectedReason": "High-download landing page sample for hero, decorative assets and responsive section coverage.",
+      "fileKey": "qXqo1OokdWnXvg0UjFaDX3",
+      "restProbe": {
+        "probedAt": "2026-07-26T00:54:39.383Z",
+        "fileReadable": true,
+        "nodeReadable": true,
+        "selectedNodeName": "Home",
+        "selectedNodeType": "FRAME",
+        "selectedNodeBounds": {
+          "width": 1440,
+          "height": 1285
+        }
+      }
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "title": "Dynamic components & Variants in design systems",
+      "communityUrl": "https://www.figma.com/community/file/1025879564243261729/dynamic-components-variants-in-design-systems",
+      "searchQuery": "design system components",
+      "accessStatus": "rest_readable_node_selected",
+      "designUrl": "https://www.figma.com/design/dgYDpEYe2yITqznx3e2hPw/Dynamic-components---Variants-in-design-systems--Community-",
+      "nodeId": "5:37426",
+      "expectedViewport": "desktop",
+      "selectedReason": "Component and variant-heavy sample for coverage scanner feature distribution.",
+      "fileKey": "dgYDpEYe2yITqznx3e2hPw",
+      "restProbe": {
+        "probedAt": "2026-07-26T00:54:46.686Z",
+        "fileReadable": true,
+        "nodeReadable": true,
+        "selectedNodeName": "In modals",
+        "selectedNodeType": "FRAME",
+        "selectedNodeBounds": {
+          "width": 1829,
+          "height": 924
+        }
+      }
+    }
+  ]
+}

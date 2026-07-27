@@ -67,7 +67,16 @@ describe("Preview Catalog", () => {
 
   it("接受 P1 内容与导航组件", () => {
     const components = [
-      ["Icon", { src: "/a.png", alt: "图标", decorative: false }],
+      ["Icon", { src: "/a.png", symbol: null, alt: "图标", decorative: false }],
+      [
+        "Icon",
+        {
+          src: null,
+          symbol: "cursor-arrow",
+          alt: "指针",
+          decorative: true,
+        },
+      ],
       ["Spacer", { width: 16, height: null }],
       ["Card", {}],
       ["List", { ordered: false }],
@@ -89,6 +98,27 @@ describe("Preview Catalog", () => {
       );
       expect(result.success).toBe(true);
     }
+  });
+
+  it("接受受控样式中的数值字重并继续接受旧 enum", () => {
+    expect(
+      previewCatalog.data.components.Text.props.safeParse({
+        ...baseProps("x"),
+        text: "标题",
+        variant: "heading",
+        visualOverlay: null,
+        style: { fontWeight: 300 },
+      }).success,
+    ).toBe(true);
+    expect(
+      previewCatalog.data.components.Text.props.safeParse({
+        ...baseProps("x"),
+        text: "标题",
+        variant: "heading",
+        visualOverlay: null,
+        style: { fontWeight: "bold" },
+      }).success,
+    ).toBe(true);
   });
 
   it("拒绝越界 enum 和非法 props", () => {

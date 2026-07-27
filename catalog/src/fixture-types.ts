@@ -12,9 +12,17 @@ export interface PropControl {
   isInt?: boolean;
 }
 
+export type ComponentCategory =
+  | "layout"
+  | "form"
+  | "content"
+  | "navigation"
+  | "overlay";
+
 export interface ComponentFixture {
   kind: string;
   nodeKind: string;
+  category: ComponentCategory;
   title: string;
   description: string;
   initialSpec: UISpec;

@@ -19,9 +19,11 @@ import { z } from "zod";
 
 import {
   type DesignBundle,
+  type LocalFontRef,
   type LocalImageRef,
   designBundleDraftSchema,
   designBundleSchema,
+  localFontRefSchema,
   localImageRefSchema,
 } from "../design-bundle/schema.ts";
 import {
@@ -31,6 +33,7 @@ import {
   flowPlanSchema,
 } from "../flow-plan/schema.ts";
 import { inspectImageBytes } from "../media/image-format.ts";
+import { inspectFontBytes } from "../media/font-format.ts";
 import {
   type UISpec,
   type UISpecDraft,
@@ -310,7 +313,7 @@ async function cleanupTemporaryFiles(directory: string): Promise<void> {
   const entries = await readdir(directory);
   for (const entry of entries) {
     if (
-      !/^\.(?:(?:project|current|\d+)\.json|[a-f0-9]{64}\.(?:png|jpg|webp))\.[a-f0-9-]+\.tmp$/.test(
+      !/^\.(?:(?:project|current|\d+)\.json|[a-f0-9]{64}\.(?:png|jpg|webp|woff2?|ttf|otf))\.[a-f0-9-]+\.tmp$/.test(
         entry,
       )
     ) {
@@ -670,6 +673,124 @@ export class ProjectStore {
         }
       }
       return imageRef;
+    } finally {
+      await release();
+    }
+  }
+
+  async saveLocalFont(input: {
+    projectId: string;
+    bytes: Uint8Array;
+    family: string;
+    weight: number;
+    style: "normal" | "italic";
+    sourceKind: "user_provided" | "authorized_download";
+  }): Promise<LocalFontRef> {
+    const projectId = parseProjectId(input.projectId);
+    if (
+      input.bytes.byteLength < 1 ||
+      input.bytes.byteLength > 100 * 1024 * 1024
+    ) {
+      throw new ProjectStoreError(
+        "invalid_input",
+        "字体字节数无效或超过上限",
+      );
+    }
+    let inspected;
+    try {
+      inspected = inspectFontBytes(input.bytes);
+    } catch {
+      throw new ProjectStoreError(
+        "invalid_input",
+        "字体格式无效",
+      );
+    }
+    const sha256 = createHash("sha256")
+      .update(input.bytes)
+      .digest("hex");
+    const relativePath = `figma/fonts/${sha256}.${inspected.extension}`;
+    const fontRef = localFontRefSchema.parse({
+      path: relativePath,
+      sha256,
+      byteCount: input.bytes.byteLength,
+      mimeType: inspected.mimeType,
+      family: input.family,
+      weight: input.weight,
+      style: input.style,
+      sourceKind: input.sourceKind,
+    });
+
+    const layout = await ensureProjectLayout(this.dataRoot, projectId);
+    const destination = join(
+      layout.figmaFontsRoot,
+      `${sha256}.${inspected.extension}`,
+    );
+    const release = await acquireProjectLock(layout);
+    try {
+      await cleanupTemporaryFiles(layout.projectRoot);
+      await cleanupTemporaryFiles(layout.figmaFontsRoot);
+      await this.ensureProjectMetadata(layout, projectId);
+
+      const current = await readValidatedJson(
+        layout,
+        join(layout.figmaRoot, "current.json"),
+        designBundleSchema,
+        true,
+      );
+      const conflictingFace = current?.fonts.find(
+        (font) =>
+          font.family === fontRef.family &&
+          font.weight === fontRef.weight &&
+          font.style === fontRef.style &&
+          font.sha256 !== fontRef.sha256,
+      );
+      if (conflictingFace) {
+        throw new ProjectStoreError(
+          "invalid_input",
+          `字体 face 已登记为不同内容：${fontRef.family} ${fontRef.weight} ${fontRef.style}`,
+        );
+      }
+
+      let existing: Uint8Array | undefined;
+      try {
+        await assertManagedFilePath(layout, destination);
+        existing = await readFile(destination);
+      } catch (error) {
+        if (nodeErrorCode(error) !== "ENOENT") {
+          throw error;
+        }
+      }
+      if (existing) {
+        const existingHash = createHash("sha256")
+          .update(existing)
+          .digest("hex");
+        if (existingHash !== sha256) {
+          throw new ProjectStoreError(
+            "invalid_stored_data",
+            "内容寻址字体与文件名哈希不一致",
+          );
+        }
+        return fontRef;
+      }
+
+      const result = await publishImmutableFile(
+        destination,
+        input.bytes,
+      );
+      if (result === "exists") {
+        await assertManagedFilePath(layout, destination);
+        const raced = await readFile(destination);
+        const racedHash = createHash("sha256")
+          .update(raced)
+          .digest("hex");
+        if (racedHash !== sha256) {
+          throw new ProjectStoreError(
+            "invalid_stored_data",
+            "并发发布的字体哈希不一致",
+          );
+        }
+      }
+      return fontRef;
     } finally {
       await release();
     }
