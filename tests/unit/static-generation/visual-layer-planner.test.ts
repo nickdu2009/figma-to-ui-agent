@@ -204,6 +204,89 @@ describe("planVisualLayers", () => {
     });
   });
 
+  it("renders budget-exceeded small painted vectors as CSS shapes", () => {
+    const bundle = createM5StaticDesignBundle();
+    const page = bundle.pages.find((p) => p.id === "page-dashboard")!;
+    bundle.designValues.push({
+      id: "white-fill",
+      name: "color.fill.white",
+      origin: "inferred",
+      kind: "color",
+      value: { r: 1, g: 1, b: 1, a: 1 },
+    });
+    for (let index = 0; index < 170; index += 1) {
+      page.nodes.push({
+        id: `large-shape-${index}`,
+        parentId: "figma-dashboard-root",
+        kind: "vector",
+        name: `Large shape ${index}`,
+        visible: true,
+        bounds: { x: 20, y: 20 + index, width: 120, height: 120 },
+        visual: {
+          fillCount: 1,
+          strokeCount: 0,
+          effectCount: 0,
+          vectorPathCount: 0,
+        },
+        styleRefs: [],
+        imageRefs: [],
+        boundVariableRefs: [],
+        designValueRefs: ["white-fill"],
+        warningCodes: [],
+      });
+    }
+    page.nodes.push({
+      id: "legend-ring",
+      parentId: "figma-dashboard-root",
+      kind: "vector",
+      name: "Rectangle 8",
+      visible: true,
+      bounds: { x: 360, y: 720, width: 20, height: 20 },
+      visual: {
+        fillCount: 1,
+        strokeCount: 1,
+        strokeWeight: 4,
+        strokeColor: { r: 0.25, g: 0.45, b: 0.93, a: 1 },
+        effectCount: 0,
+        vectorPathCount: 0,
+        cornerRadius: 10,
+      },
+      styleRefs: [],
+      imageRefs: [],
+      boundVariableRefs: [],
+      designValueRefs: ["white-fill"],
+      warningCodes: [],
+    });
+
+    const result = planVisualLayers({
+      bundle,
+      pagePlanId: "dashboard",
+      sourcePageId: "page-dashboard",
+      pageOrigin: { x: 0, y: 0 },
+      pageArea: 1440 * 900,
+    });
+
+    const layer = result.layers.find(
+      (candidate) => candidate.sourceNodeId === "legend-ring",
+    );
+    expect(layer?.rendered).toBe(true);
+    expect(layer?.uiNode?.kind).toBe("stack");
+    expect(layer?.uiNode?.style).toMatchObject({
+      backgroundColor: "#FFFFFF",
+      borderColor: "#4073ED",
+      borderWidth: 4,
+      borderRadius: 10,
+    });
+    expect(result.unsupportedFeatures).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "visual_asset_budget_exceeded",
+          figmaNodeRefs: ["legend-ring"],
+        }),
+      ]),
+    );
+  });
+
   it("diagnoses assetless stroke-only icon parts without consuming visual layer budget", () => {
     const bundle = createM5StaticDesignBundle();
     const page = bundle.pages.find((p) => p.id === "page-dashboard")!;

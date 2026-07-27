@@ -299,6 +299,22 @@ function isSimpleShapeFallbackCandidate(
   return isSmallShape || isThinShape;
 }
 
+function isSmallPaintedVectorFallbackCandidate(
+  candidate: VisualAssetCandidate,
+  node: NormalizedNode | undefined,
+): node is NormalizedNode {
+  if (!node?.bounds || node.kind !== "vector") {
+    return false;
+  }
+  if ((node.visual?.fillCount ?? 0) <= 0) {
+    return isSimpleShapeFallbackCandidate(candidate, node);
+  }
+  const { width, height } = candidate.pageRelativeBounds;
+  const area = width * height;
+  const maxDim = Math.max(width, height);
+  return area >= 16 && area <= 4_096 && maxDim <= 64;
+}
+
 function buildSimpleShapeUINode(
   candidate: VisualAssetCandidate,
   pagePlanId: string,
@@ -307,10 +323,12 @@ function buildSimpleShapeUINode(
   designValues: DesignBundle["designValues"],
 ): UINode | undefined {
   const mappedStyle = mapNodeStyle(node, styles, designValues);
-  const backgroundColor =
-    mappedStyle.backgroundColor ??
-    ((node.visual?.strokeCount ?? 0) > 0 ? "#EDF1F3" : undefined);
-  if (!backgroundColor) {
+  const hasFill = (node.visual?.fillCount ?? 0) > 0;
+  const backgroundColor = hasFill ? mappedStyle.backgroundColor : undefined;
+  if (
+    !backgroundColor &&
+    (!mappedStyle.borderColor || mappedStyle.borderWidth === undefined)
+  ) {
     return undefined;
   }
   const uiNodeId = stableUINodeId(pagePlanId, candidate.sourceNodeId);
@@ -328,6 +346,8 @@ function buildSimpleShapeUINode(
     designValueRefs: node.designValueRefs,
     style: {
       backgroundColor,
+      borderColor: mappedStyle.borderColor,
+      borderWidth: mappedStyle.borderWidth,
       borderRadius: mappedStyle.borderRadius ?? inferredRadius,
       opacity: mappedStyle.opacity,
       position: "absolute",
@@ -912,7 +932,7 @@ export function planVisualLayers(
         !!node &&
         (candidate.reasonCode === "button_icon" ||
           candidate.reasonCode === "line_or_divider" ||
-          isSimpleShapeFallbackCandidate(candidate, node));
+          isSmallPaintedVectorFallbackCandidate(candidate, node));
       const shapeNode = canUseShapeFallback
         ? buildSimpleShapeUINode(
             candidate,
@@ -992,6 +1012,33 @@ export function planVisualLayers(
   }
 
   for (const candidate of plan.exceeded) {
+    const node = page.nodes.find((item) => item.id === candidate.sourceNodeId);
+    const shapeNode =
+      isSmallPaintedVectorFallbackCandidate(candidate, node)
+        ? buildSimpleShapeUINode(
+            candidate,
+            input.pagePlanId,
+            node,
+            input.bundle.styles,
+            input.bundle.designValues,
+          )
+        : undefined;
+    if (shapeNode && node?.bounds) {
+      layers.push({
+        sourceNodeId: candidate.sourceNodeId,
+        sourcePageId: input.sourcePageId,
+        reason: "structural_visual",
+        layerRole: "decorative_shape",
+        zOrder: candidate.zOrder,
+        bounds: candidate.bounds,
+        pageRelativeBounds: candidate.pageRelativeBounds,
+        opacity: node.visual?.opacity,
+        uiNodeId: shapeNode.id,
+        uiNode: shapeNode,
+        rendered: true,
+      });
+      continue;
+    }
     unsupportedFeatures.push({
       code: "visual_asset_budget_exceeded",
       severity: "fallback_ok",

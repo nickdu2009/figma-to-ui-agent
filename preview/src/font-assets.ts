@@ -15,7 +15,7 @@ declare global {
   }
 }
 
-function setFontStatus(status: FontAssetStatus): void {
+export function setFontStatus(status: FontAssetStatus): void {
   window.__FIGMA_TO_UI_FONT_STATUS__ = status;
 }
 

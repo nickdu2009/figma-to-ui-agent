@@ -18,6 +18,7 @@ import type { ValidationRecord } from "../../src/validation/schema.ts";
 import { registry } from "./catalog-registry.tsx";
 import {
   loadRegisteredFonts,
+  setFontStatus,
   type FontAssetStatus,
 } from "./font-assets.ts";
 
@@ -190,16 +191,30 @@ function useRegisteredFonts(
   bundle: DesignBundle,
   projectId: string,
 ): FontAssetStatus {
-  const [status, setStatus] = useState<FontAssetStatus>(() => ({
-    status: "loading",
-    registered: bundle.fonts.length,
-    loaded: 0,
-    failed: 0,
-    missing: 0,
-    errors: [],
-  }));
+  const [status, setStatus] = useState<FontAssetStatus>(() => {
+    const initial = {
+      status: "loading",
+      registered: bundle.fonts.length,
+      loaded: 0,
+      failed: 0,
+      missing: 0,
+      errors: [],
+    } satisfies FontAssetStatus;
+    setFontStatus(initial);
+    return initial;
+  });
   useEffect(() => {
     let cancelled = false;
+    const loading = {
+      status: "loading",
+      registered: bundle.fonts.length,
+      loaded: 0,
+      failed: 0,
+      missing: 0,
+      errors: [],
+    } satisfies FontAssetStatus;
+    setFontStatus(loading);
+    setStatus(loading);
     loadRegisteredFonts(bundle, (path) =>
       projectImageUrl(projectId, path, bundle.revision),
     ).then((nextStatus) => {

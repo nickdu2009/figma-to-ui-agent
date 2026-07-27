@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "generator-fidelity.m6-live-aggregate.v1",
+  "runLabel": "20260727gf-v2-final-live",
+  "generatedAt": "2026-07-27T03:56:53Z",
+  "threshold": 0.05,
+  "apiBoundary": {
+    "figma": true,
+    "openai": false,
+    "figmaMe": false,
+    "variables": false
+  },
+  "aggregate": {
+    "resultCount": 6,
+    "comparableCount": 6,
+    "passed5PctCount": 6,
+    "failed5PctCount": 0,
+    "averageDiff": 0.027818830936659007,
+    "minDiff": 0.009188834154351396,
+    "maxDiff": 0.04967816091954023
+  },
+  "results": [
+    {
+      "sample": "LoginUIConcept",
+      "projectId": "m6-live-community-login-001",
+      "status": "passed",
+      "diffPixelRatio": 0.04967816091954023,
+      "warnings": 0,
+      "unsupportedFeatures": 0,
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-login-001/ms2mv70x-8c762fe8f04044c3/summary.json"
+    },
+    {
+      "sample": "Mobile Profile",
+      "projectId": "m6-live-community-mobile-001-final",
+      "status": "partial",
+      "diffPixelRatio": 0.011221646055732361,
+      "warnings": 6,
+      "unsupportedFeatures": 1,
+      "unsupportedCodes": ["visual_stroke_icon_no_asset"],
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-final-live/community-mobile-001/ms2p00gx-ae38c4085b154695/summary.json"
+    },
+    {
+      "sample": "Dashboard",
+      "projectId": "m6-live-community-dashboard-001-final",
+      "status": "partial",
+      "diffPixelRatio": 0.04832695855034722,
+      "warnings": 36,
+      "unsupportedFeatures": 1,
+      "unsupportedCodes": ["visual_layer_no_asset"],
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-final-live/community-dashboard-001/ms2p0f32-f8a860f8ce854ea6/summary.json"
+    },
+    {
+      "sample": "Ecommerce",
+      "projectId": "m6-live-community-ecommerce-001",
+      "status": "partial",
+      "diffPixelRatio": 0.009188834154351396,
+      "warnings": 6,
+      "unsupportedFeatures": 0,
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-ecommerce-001/ms2mx7vn-126119d3cf704938/summary.json"
+    },
+    {
+      "sample": "Landing",
+      "projectId": "m6-live-community-landing-001",
+      "status": "partial",
+      "diffPixelRatio": 0.035881971465629055,
+      "warnings": 33,
+      "unsupportedFeatures": 0,
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-landing-001/ms2mxq9v-9546627375924138/summary.json"
+    },
+    {
+      "sample": "Design System",
+      "projectId": "m6-live-community-design-system-001",
+      "status": "passed",
+      "diffPixelRatio": 0.012615414474353786,
+      "warnings": 0,
+      "unsupportedFeatures": 0,
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-design-system-001/ms2myaxr-0592a2cb60374839/summary.json"
+    }
+  ]
+}

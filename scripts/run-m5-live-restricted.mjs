@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { randomUUID } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -45,6 +45,7 @@ function parseArgs(argv) {
     runCompare: false,
     viewportIds: ["desktop"],
     m4ValidationStatus: "pending",
+    fontSourceDataRoot: undefined,
   };
 
   for (let index = 0; index < args.length; index += 1) {
@@ -85,6 +86,10 @@ function parseArgs(argv) {
         options.m4ValidationStatus = next;
         index += 1;
         break;
+      case "--fontSourceDataRoot":
+        options.fontSourceDataRoot = next;
+        index += 1;
+        break;
       default:
         break;
     }
@@ -103,6 +108,167 @@ function validateRunId(runId) {
       `Invalid runId: ${runId}. Must be 1-128 alphanumeric, hyphen or underscore characters.`,
     );
   }
+}
+
+function fontKey(face) {
+  return `${face.family}\u0000${face.weight}\u0000${face.style}`;
+}
+
+function collectTextFaces(bundle) {
+  const faces = new Map();
+  for (const page of bundle.pages) {
+    for (const node of page.nodes) {
+      if (node.kind !== "text" || !node.text?.fontFamily) {
+        continue;
+      }
+      const weight = node.text.fontWeight;
+      if (!Number.isInteger(weight)) {
+        continue;
+      }
+      const style = "normal";
+      faces.set(fontKey({ family: node.text.fontFamily, weight, style }), {
+        family: node.text.fontFamily,
+        weight,
+        style,
+      });
+    }
+  }
+  return [...faces.values()];
+}
+
+async function loadCachedFontCatalog(sourceDataRoot) {
+  const projectsRoot = join(resolve(sourceDataRoot), "projects");
+  let projectEntries;
+  try {
+    projectEntries = await readdir(projectsRoot, { withFileTypes: true });
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return new Map();
+    }
+    throw error;
+  }
+
+  const catalog = new Map();
+  for (const entry of projectEntries) {
+    if (!entry.isDirectory()) {
+      continue;
+    }
+    const bundlePath = join(projectsRoot, entry.name, "figma/current.json");
+    let bundle;
+    try {
+      bundle = JSON.parse(await readFile(bundlePath, "utf8"));
+    } catch (error) {
+      if (error?.code === "ENOENT") {
+        continue;
+      }
+      throw error;
+    }
+    for (const font of bundle.fonts ?? []) {
+      const key = fontKey(font);
+      if (catalog.has(key)) {
+        continue;
+      }
+      catalog.set(key, {
+        font,
+        sourcePath: join(projectsRoot, entry.name, font.path),
+      });
+    }
+  }
+  return catalog;
+}
+
+async function backfillFontsFromSource({
+  projectStore,
+  projectId,
+  designBundle,
+  sourceDataRoot,
+}) {
+  if (!sourceDataRoot) {
+    return {
+      designBundle,
+      status: { requested: 0, copied: 0, missing: 0 },
+    };
+  }
+  const requiredFaces = collectTextFaces(designBundle);
+  const existingFaces = new Set((designBundle.fonts ?? []).map(fontKey));
+  const missingFaces = requiredFaces.filter(
+    (face) => !existingFaces.has(fontKey(face)),
+  );
+  if (missingFaces.length === 0) {
+    return {
+      designBundle,
+      status: { requested: requiredFaces.length, copied: 0, missing: 0 },
+    };
+  }
+
+  const catalog = await loadCachedFontCatalog(sourceDataRoot);
+  const nextFonts = [...(designBundle.fonts ?? [])];
+  const nextProvenance = [...designBundle.provenance];
+  const unresolved = [];
+  let copied = 0;
+  for (const face of missingFaces) {
+    const cached = catalog.get(fontKey(face));
+    if (!cached) {
+      unresolved.push(face);
+      continue;
+    }
+    const saved = await projectStore.saveLocalFont({
+      projectId,
+      bytes: await readFile(cached.sourcePath),
+      family: face.family,
+      weight: face.weight,
+      style: face.style,
+      sourceKind: cached.font.sourceKind ?? "authorized_download",
+    });
+    if (!nextFonts.some((font) => font.path === saved.path)) {
+      nextFonts.push(saved);
+      copied += 1;
+    }
+    if (
+      !nextProvenance.some(
+        (entry) =>
+          entry.entityKind === "font" &&
+          entry.entityId === saved.path &&
+          entry.origin === saved.sourceKind,
+      )
+    ) {
+      nextProvenance.push({
+        entityKind: "font",
+        entityId: saved.path,
+        origin: saved.sourceKind,
+      });
+    }
+  }
+
+  if (copied === 0) {
+    return {
+      designBundle,
+      status: {
+        requested: requiredFaces.length,
+        copied,
+        missing: unresolved.length,
+      },
+    };
+  }
+
+  const { revision: _revision, ...draft } = designBundle;
+  const savedBundle = await projectStore.saveDesignBundle({
+    projectId,
+    baseRevision: designBundle.revision,
+    draft: {
+      ...draft,
+      fonts: nextFonts,
+      provenance: nextProvenance,
+    },
+  });
+  return {
+    designBundle: savedBundle,
+    status: {
+      requested: requiredFaces.length,
+      copied,
+      missing: unresolved.length,
+    },
+  };
 }
 
 async function main() {
@@ -162,9 +328,21 @@ async function main() {
     { variablesMode: "disabled_restricted_live" },
   );
 
-  const designBundle = await projectStore.loadDesignBundle(
+  let designBundle = await projectStore.loadDesignBundle(
     options.projectId,
   );
+  const fontBackfill = await backfillFontsFromSource({
+    projectStore,
+    projectId: options.projectId,
+    designBundle,
+    sourceDataRoot: options.fontSourceDataRoot,
+  });
+  designBundle = fontBackfill.designBundle;
+  if (options.fontSourceDataRoot) {
+    console.log(
+      `fontBackfill: requested=${fontBackfill.status.requested} copied=${fontBackfill.status.copied} missing=${fontBackfill.status.missing}`,
+    );
+  }
 
   const { uiSpecDraft, reportDraft } =
     buildStaticUISpecFromDesignBundle(designBundle, {

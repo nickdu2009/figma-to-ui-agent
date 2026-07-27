@@ -57,6 +57,15 @@ export function controlledStyle(
   if (!style) {
     return undefined;
   }
+  const visualBorder =
+    style.borderColor &&
+    style.borderWidth !== undefined &&
+    style.borderWidth > 0
+      ? `inset 0 0 0 ${style.borderWidth}px ${style.borderColor}`
+      : undefined;
+  const mappedShadow = style.boxShadow ? boxShadows[style.boxShadow] : undefined;
+  const boxShadow =
+    [mappedShadow, visualBorder].filter(Boolean).join(", ") || undefined;
   return {
     backgroundColor: style.backgroundColor,
     backgroundImage: style.backgroundImage,
@@ -73,13 +82,7 @@ export function controlledStyle(
     textAlign: style.textAlign,
     whiteSpace: style.whiteSpace,
     borderRadius: style.borderRadius,
-    borderColor: style.borderColor,
-    borderWidth: style.borderWidth,
-    borderStyle:
-      style.borderWidth !== undefined || style.borderColor
-        ? "solid"
-        : undefined,
-    boxShadow: style.boxShadow ? boxShadows[style.boxShadow] : undefined,
+    boxShadow,
     opacity: style.opacity,
     objectPosition: style.objectPosition,
     overflow: style.overflow,

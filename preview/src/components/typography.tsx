@@ -44,12 +44,11 @@ export const Text: ComponentFn<typeof previewCatalog, "Text"> = ({
   const overlayImageStyle = visualOverlay
     ? {
         position: "absolute" as const,
-        top: 0,
-        left: 0,
+        top: -visualOverlay.frame.y,
+        left: -visualOverlay.frame.x,
         width: visualOverlay.sourceWidth,
         height: visualOverlay.sourceHeight,
         maxWidth: "none",
-        transform: `translate(${-visualOverlay.frame.x}px, ${-visualOverlay.frame.y}px)`,
         pointerEvents: "none" as const,
       }
     : undefined;
