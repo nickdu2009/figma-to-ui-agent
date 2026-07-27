@@ -82,6 +82,73 @@ describe("planVisualLayers", () => {
     expect(layer?.blockedReason).toBeDefined();
   });
 
+  it("clamps zero-sized stroke screenshot overlays to a renderable pixel", () => {
+    const bundle = createM5StaticDesignBundle();
+    const page = bundle.pages.find((p) => p.id === "page-dashboard")!;
+    const screenshotPath = `figma/screenshots/${"1".repeat(64)}.png`;
+    page.nodes.push({
+      id: "zero-height-divider",
+      parentId: "figma-dashboard-root",
+      kind: "vector",
+      name: "Divider",
+      visible: true,
+      bounds: { x: 48, y: 144, width: 240, height: 0 },
+      visual: {
+        fillCount: 0,
+        strokeCount: 1,
+        strokeWeight: 1,
+        effectCount: 0,
+        vectorPathCount: 0,
+      },
+      styleRefs: [],
+      imageRefs: [],
+      boundVariableRefs: [],
+      designValueRefs: [],
+      warningCodes: [],
+    });
+    bundle.screenshots.push({
+      path: screenshotPath,
+      sha256: "1".repeat(64),
+      byteCount: 128,
+      mimeType: "image/png",
+      width: 240,
+      height: 1,
+    });
+    bundle.provenance.push(
+      {
+        entityKind: "node",
+        entityId: "zero-height-divider",
+        origin: "figma_node",
+        sourceIdHash: "zero-height-divider-hash",
+      },
+      {
+        entityKind: "screenshot",
+        entityId: screenshotPath,
+        origin: "figma_node",
+        sourceIdHash: "zero-height-divider-hash",
+      },
+    );
+
+    const result = planVisualLayers({
+      bundle,
+      pagePlanId: "dashboard",
+      sourcePageId: "page-dashboard",
+      pageOrigin: { x: 0, y: 0 },
+      pageArea: 1440 * 900,
+    });
+
+    const layer = result.layers.find(
+      (candidate) => candidate.sourceNodeId === "zero-height-divider",
+    );
+    expect(layer?.rendered).toBe(true);
+    expect(layer?.uiNode?.kind).toBe("pixel_overlay");
+    if (layer?.uiNode?.kind === "pixel_overlay") {
+      expect(layer.uiNode.height).toBe(1);
+      expect(layer.uiNode.style?.height).toBe(1);
+      expect(layer.uiNode.style?.width).toBe(240);
+    }
+  });
+
   it("renders simple assetless filled vectors as decorative shape layers", () => {
     const bundle = createM5StaticDesignBundle();
     const page = bundle.pages.find((p) => p.id === "page-dashboard")!;

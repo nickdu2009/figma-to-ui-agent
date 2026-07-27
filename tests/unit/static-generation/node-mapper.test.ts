@@ -477,6 +477,70 @@ describe("mapPageNodes", () => {
     }
   });
 
+  it("skips visible non-root nodes with zero-sized bounds", () => {
+    const bundle = createM5StaticDesignBundle();
+    const page = bundle.pages[0]!;
+    page.nodes.push(
+      {
+        id: "figma-zero-height-line",
+        parentId: "figma-login-root",
+        kind: "vector",
+        name: "Line",
+        visible: true,
+        bounds: { x: 120, y: 320, width: 180, height: 0 },
+        visual: {
+          fillCount: 0,
+          strokeCount: 1,
+          strokeWeight: 1,
+          effectCount: 0,
+          vectorPathCount: 0,
+        },
+        styleRefs: [],
+        imageRefs: [],
+        boundVariableRefs: [],
+        designValueRefs: [],
+        warningCodes: [],
+      },
+      {
+        id: "figma-zero-width-line",
+        parentId: "figma-login-root",
+        kind: "vector",
+        name: "Line",
+        visible: true,
+        bounds: { x: 220, y: 330, width: 0, height: 48 },
+        visual: {
+          fillCount: 0,
+          strokeCount: 1,
+          strokeWeight: 1,
+          effectCount: 0,
+          vectorPathCount: 0,
+        },
+        styleRefs: [],
+        imageRefs: [],
+        boundVariableRefs: [],
+        designValueRefs: [],
+        warningCodes: [],
+      },
+    );
+
+    const result = mapPageNodes({
+      bundle,
+      pagePlanId: "login",
+      sourcePageId: "page-login",
+      pagePath: "/login",
+      visualLayers: [],
+    });
+
+    expect(
+      result.nodes.some((node) =>
+        node.id.includes("figma-zero-height-line") ||
+        node.id.includes("figma-zero-width-line"),
+      ),
+    ).toBe(false);
+    expect(result.sourceToUiNodeId.has("figma-zero-height-line")).toBe(false);
+    expect(result.sourceToUiNodeId.has("figma-zero-width-line")).toBe(false);
+  });
+
   it("does not warn for vector children covered by an ancestor visual symbol layer", () => {
     const bundle = createM5StaticDesignBundle();
     const page = bundle.pages[0]!;

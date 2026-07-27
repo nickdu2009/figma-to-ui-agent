@@ -123,6 +123,10 @@ function nodeRelativeBounds(
   };
 }
 
+function positiveRenderDimension(value: number): number {
+  return value > 0 ? value : 1;
+}
+
 function buildOverlayUINode(
   candidate: VisualAssetCandidate,
   pagePlanId: string,
@@ -152,6 +156,12 @@ function buildOverlayUINode(
               Math.max(0, assetSize.height - pageRelative.height) / 2,
         }
       : undefined;
+  const renderFrame = {
+    left: effectOutset?.left ?? pageRelative.x,
+    top: effectOutset?.top ?? pageRelative.y,
+    width: positiveRenderDimension(effectOutset?.width ?? pageRelative.width),
+    height: positiveRenderDimension(effectOutset?.height ?? pageRelative.height),
+  };
 
   if (reason === "image_visual" || reason === "logo") {
     return {
@@ -163,10 +173,10 @@ function buildOverlayUINode(
       designValueRefs: [],
       style: {
         position: "absolute",
-        left: pageRelative.x,
-        top: pageRelative.y,
-        width: pageRelative.width,
-        height: pageRelative.height,
+        left: renderFrame.left,
+        top: renderFrame.top,
+        width: renderFrame.width,
+        height: renderFrame.height,
         zIndex: candidate.zOrder,
         opacity,
         pointerEvents: "none",
@@ -179,15 +189,15 @@ function buildOverlayUINode(
     kind: "pixel_overlay",
     assetRef,
     alt: candidate.name || "Visual overlay",
-    width: effectOutset?.width ?? pageRelative.width,
-    height: effectOutset?.height ?? pageRelative.height,
+    width: renderFrame.width,
+    height: renderFrame.height,
     designValueRefs: [],
     style: {
       position: "absolute",
-      left: effectOutset?.left ?? pageRelative.x,
-      top: effectOutset?.top ?? pageRelative.y,
-      width: effectOutset?.width ?? pageRelative.width,
-      height: effectOutset?.height ?? pageRelative.height,
+      left: renderFrame.left,
+      top: renderFrame.top,
+      width: renderFrame.width,
+      height: renderFrame.height,
       zIndex: candidate.zOrder,
       opacity,
       pointerEvents: "none",

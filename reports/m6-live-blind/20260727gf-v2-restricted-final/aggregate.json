@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1",
+  "runLabel": "20260727gf-v2-restricted-final",
+  "sourceRuns": [
+    "reports/m6-live-blind/20260727gf-v2-restricted-r1/aggregate.json",
+    "reports/m6-live-blind/20260727gf-v2-restricted-r3/community-mobile-001/ms2n98jw-f0a5017fa6de4276/summary.json"
+  ],
+  "resultCount": 6,
+  "comparableCount": 6,
+  "passed5PctCount": 4,
+  "failed5PctCount": 2,
+  "averageDiff": 0.04292384155695963,
+  "minDiff": 0.009188834154351396,
+  "maxDiff": 0.08877662297198051,
+  "apiBoundary": {
+    "openai": false,
+    "figmaMe": false,
+    "variables": false
+  },
+  "results": [
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "title": "20 Screen Login & Register Mobile App",
+      "projectId": "m6-live-community-login-001",
+      "status": "passed",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-login-001/ms2mv70x-8c762fe8f04044c3/summary.json",
+      "pageId": "login-version-1",
+      "diffPixelRatio": 0.04967816091954023,
+      "diffPixels": 15127,
+      "passed5Pct": true,
+      "unsupportedFeatures": 0,
+      "warnings": 0,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 22
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "title": "Fitness App UI Kit for Gym Workout App",
+      "projectId": "m6-live-community-mobile-001-r3",
+      "status": "partial",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r3/community-mobile-001/ms2n98jw-f0a5017fa6de4276/summary.json",
+      "pageId": "6-11---a---profile",
+      "diffPixelRatio": 0.08877662297198051,
+      "diffPixels": 35901,
+      "passed5Pct": false,
+      "unsupportedFeatures": 1,
+      "warnings": 6,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 17
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "category": "dashboard",
+      "title": "Web Dashboard & Statistics UI Kit App Template",
+      "projectId": "m6-live-community-dashboard-001",
+      "status": "partial",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-dashboard-001/ms2mwp4g-7c06090af7c44e14/summary.json",
+      "pageId": "light---dashboard---1",
+      "diffPixelRatio": 0.061402045355902775,
+      "diffPixels": 90541,
+      "passed5Pct": false,
+      "unsupportedFeatures": 9,
+      "warnings": 42,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 160
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "category": "ecommerce",
+      "title": "Mobile Credit Card Check Out",
+      "projectId": "m6-live-community-ecommerce-001",
+      "status": "partial",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-ecommerce-001/ms2mx7vn-126119d3cf704938/summary.json",
+      "pageId": "featured",
+      "diffPixelRatio": 0.009188834154351396,
+      "diffPixels": 2798,
+      "passed5Pct": true,
+      "unsupportedFeatures": 0,
+      "warnings": 6,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 17
+    },
+    {
+      "sampleId": "community-landing-001",
+      "category": "landing-page",
+      "title": "Minimal Landing Page Design Website Home Page Design",
+      "projectId": "m6-live-community-landing-001",
+      "status": "partial",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-landing-001/ms2mxq9v-9546627375924138/summary.json",
+      "pageId": "home",
+      "diffPixelRatio": 0.035881971465629055,
+      "diffPixels": 66396,
+      "passed5Pct": true,
+      "unsupportedFeatures": 0,
+      "warnings": 33,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 15
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "title": "Dynamic components & Variants in design systems",
+      "projectId": "m6-live-community-design-system-001",
+      "status": "passed",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-design-system-001/ms2myaxr-0592a2cb60374839/summary.json",
+      "pageId": "in-modals",
+      "diffPixelRatio": 0.012615414474353786,
+      "diffPixels": 21320,
+      "passed5Pct": true,
+      "unsupportedFeatures": 0,
+      "warnings": 0,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 45
+    }
+  ]
+}

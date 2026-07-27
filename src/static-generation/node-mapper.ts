@@ -1011,6 +1011,21 @@ export function mapPageNodes(
     sourceToUiNodeId.set(sourceNode.id, uiNodeId);
     const zIndex = pageNodes.findIndex((node) => node.id === sourceNode.id);
     const children = childrenByParent.get(sourceNode.id) ?? [];
+
+    if (!sourceNode.visible) {
+      sourceToUiNodeId.delete(sourceNode.id);
+      return undefined;
+    }
+
+    if (
+      parentNode &&
+      sourceNode.bounds &&
+      (sourceNode.bounds.width <= 0 || sourceNode.bounds.height <= 0)
+    ) {
+      sourceToUiNodeId.delete(sourceNode.id);
+      return undefined;
+    }
+
     const style = mappedStyleForNode(
       sourceNode,
       input.bundle.styles,
@@ -1020,11 +1035,6 @@ export function mapPageNodes(
       children,
     );
     const sourceComponent = sourceComponentForNode(sourceNode);
-
-    if (!sourceNode.visible) {
-      sourceToUiNodeId.delete(sourceNode.id);
-      return undefined;
-    }
 
     if (isTextNode(sourceNode)) {
       warnings.push(...typographyWarnings(sourceNode));
