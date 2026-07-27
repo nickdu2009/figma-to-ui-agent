@@ -25,6 +25,7 @@
     "prepare:m3": "node scripts/prepare-m3.mjs",
     "probe:m3:local": "node scripts/probe-m3-local.mjs",
     "run:m3:flow": "node scripts/run-m3-flow.mjs",
+    "run:m7:e2e": "node scripts/run-figma-to-ui.mjs",
     "run:m5:static": "node scripts/run-m5-static.mjs",
     "run:m5:live-restricted": "node scripts/run-m5-live-restricted.mjs",
     "freeze:m3": "node scripts/freeze-m3.mjs",
