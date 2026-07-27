@@ -222,6 +222,16 @@ function metricsFrom(input: {
   };
 }
 
+function successNextAction(mode: M7RunRequest["mode"]): string {
+  if (mode === "restricted-live") {
+    return "M7 restricted-live Figma 读取与本地生成完成；未调用 OpenAI。如需 full live 验证，请单独授权 OpenAI gate。";
+  }
+  if (mode === "live") {
+    return "M7 live 端到端流程完成；检查 summary 与 validation artifact 后进入下一阶段。";
+  }
+  return "M7 local 端到端流程完成；如需 live 验证，请单独授权 GATE-M7-LIVE-FIGMA。";
+}
+
 async function acquireDesignBundle(input: {
   normalized: NormalizedM7Request;
   projectStore: ProjectStore;
@@ -511,7 +521,7 @@ async function runM7E2EFlowInternal(
       error,
       nextAction: error
         ? error.nextAction
-        : "M7 local 端到端流程完成；如需 live 验证，请单独授权 GATE-M7-LIVE-FIGMA。",
+        : successNextAction(request.mode),
     });
     return await writeM7Report({ result, reportRoot, runId });
   } catch (error) {
