@@ -1,0 +1,3315 @@
+{
+  "schemaVersion": "1",
+  "runId": "20260727-residual-extended-smoke-r6-blind-case-b-r8",
+  "projectId": "blind-case-b-r8",
+  "designBundleRevision": 1,
+  "status": "passed",
+  "scope": "static_generation_only",
+  "behaviorFlowVerified": false,
+  "m4ValidationStatus": "pending",
+  "coverageVersion": "1",
+  "coverage": {
+    "coverageVersion": "1",
+    "pages": [
+      {
+        "sourceNodeCount": 75,
+        "visibleNodeCount": 75,
+        "byKind": {
+          "container": {
+            "total": 10,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 10,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "instance": {
+            "total": 11,
+            "structuredDom": 2,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 9,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "vector": {
+            "total": 41,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 20,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 21
+          },
+          "text": {
+            "total": 12,
+            "structuredDom": 12,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "image": {
+            "total": 1,
+            "structuredDom": 0,
+            "visualAsset": 1,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 41,
+          "rendered": 20,
+          "ignoredSafe": 0,
+          "unsupported": 21,
+          "unmapped": 0
+        },
+        "imageFill": {
+          "total": 1,
+          "rendered": 1,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 12,
+          "rendered": 12,
+          "styleComplete": 12
+        },
+        "pageId": "checkout",
+        "sourcePageId": "728:1889",
+        "pageSize": {
+          "expectedWidth": 375,
+          "expectedHeight": 797,
+          "actualWidth": 375,
+          "actualHeight": 797,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      }
+    ],
+    "records": [
+      {
+        "sourceNodeId": "728:1889",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Checkout",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6127,
+          "y": -550,
+          "width": 375,
+          "height": 797
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 797
+        },
+        "zOrder": 0,
+        "area": 298875,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1889",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1891",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Header",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6127,
+          "y": -550,
+          "width": 375,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 60
+        },
+        "zOrder": 1,
+        "area": 22500,
+        "areaRatio": 0.07528230865746549,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1891",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;544:734",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Rectangle 331",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": 6127,
+          "y": -550,
+          "width": 375,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 60
+        },
+        "zOrder": 2,
+        "area": 22500,
+        "areaRatio": 0.07528230865746549,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;424:630",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Menu",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6143,
+          "y": -527.246337890625,
+          "width": 24,
+          "height": 24
+        },
+        "pageRelativeBounds": {
+          "x": 16,
+          "y": 22.753662109375,
+          "width": 24,
+          "height": 24
+        },
+        "zOrder": 3,
+        "area": 576,
+        "areaRatio": 0.0019272271016311166,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1891-424-630",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;424:630;94:1862",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector 7",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6143.306640625,
+          "y": -515.246337890625,
+          "width": 15.675605773925781,
+          "height": 0
+        },
+        "pageRelativeBounds": {
+          "x": 16.306640625,
+          "y": 34.753662109375,
+          "width": 15.675605773925781,
+          "height": 0
+        },
+        "zOrder": 4,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1891;424:630;103:2",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector 10",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6143.306640625,
+          "y": -522.246337890625,
+          "width": 23.386497497558594,
+          "height": 0
+        },
+        "pageRelativeBounds": {
+          "x": 16.306640625,
+          "y": 27.753662109375,
+          "width": 23.386497497558594,
+          "height": 0
+        },
+        "zOrder": 5,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1891;424:630;94:1863",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector 9",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6143.306640625,
+          "y": -508.246337890625,
+          "width": 23.386497497558594,
+          "height": 0
+        },
+        "pageRelativeBounds": {
+          "x": 16.306640625,
+          "y": 41.753662109375,
+          "width": 23.386497497558594,
+          "height": 0
+        },
+        "zOrder": 6,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1891;424:634",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Search",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 6415,
+          "y": -526,
+          "width": 24,
+          "height": 24
+        },
+        "pageRelativeBounds": {
+          "x": 288,
+          "y": 24,
+          "width": 24,
+          "height": 24
+        },
+        "zOrder": 7,
+        "area": 576,
+        "areaRatio": 0.0019272271016311166,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1891-424-634",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;424:634;94:1726",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6417,
+          "y": -524,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 290,
+          "y": 26,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 8,
+        "area": 324,
+        "areaRatio": 0.0010840652446675032,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1891;424:634;94:1727",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6433.7822265625,
+          "y": -507.2177734375,
+          "width": 3.2176549434661865,
+          "height": 3.2176549434661865
+        },
+        "pageRelativeBounds": {
+          "x": 306.7822265625,
+          "y": 42.7822265625,
+          "width": 3.2176549434661865,
+          "height": 3.2176549434661865
+        },
+        "zOrder": 9,
+        "area": 10.353303335212388,
+        "areaRatio": 0.0000346409145469256,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1891;425:656",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "shopping bag",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6455,
+          "y": -526,
+          "width": 24,
+          "height": 24
+        },
+        "pageRelativeBounds": {
+          "x": 328,
+          "y": 24,
+          "width": 24,
+          "height": 24
+        },
+        "zOrder": 10,
+        "area": 576,
+        "areaRatio": 0.0019272271016311166,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1891-425-656",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;425:656;425:649",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Rectangle 319",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6457.970703125,
+          "y": -519.779296875,
+          "width": 19.029253005981445,
+          "height": 17.559267044067383
+        },
+        "pageRelativeBounds": {
+          "x": 330.970703125,
+          "y": 30.220703125,
+          "width": 19.029253005981445,
+          "height": 17.559267044067383
+        },
+        "zOrder": 11,
+        "area": 334.1397351811502,
+        "areaRatio": 0.0011179915857169392,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1891;425:656;425:650",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6463.16015625,
+          "y": -524.7734375,
+          "width": 8.64966106414795,
+          "height": 8.922504425048828
+        },
+        "pageRelativeBounds": {
+          "x": 336.16015625,
+          "y": 25.2265625,
+          "width": 8.64966106414795,
+          "height": 8.922504425048828
+        },
+        "zOrder": 12,
+        "area": 77.17663912003263,
+        "areaRatio": 0.00025822380299467214,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Logo",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6269,
+          "y": -531,
+          "width": 78.08494567871094,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 142,
+          "y": 19,
+          "width": 78.08494567871094,
+          "height": 32
+        },
+        "zOrder": 13,
+        "area": 2498.71826171875,
+        "areaRatio": 0.00836041241896696,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1891-658-707",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:886",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Group",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6269,
+          "y": -530.1350708007812,
+          "width": 78.34693145751953,
+          "height": 31.093875885009766
+        },
+        "pageRelativeBounds": {
+          "x": 142,
+          "y": 19.86492919921875,
+          "width": 78.34693145751953,
+          "height": 31.093875885009766
+        },
+        "zOrder": 14,
+        "area": 2436.1097627114796,
+        "areaRatio": 0.00815093187021825,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1891-658-707-651-886",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:887",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6269,
+          "y": -515.3912353515625,
+          "width": 10.954955101013184,
+          "height": 16.020591735839844
+        },
+        "pageRelativeBounds": {
+          "x": 142,
+          "y": 34.6087646484375,
+          "width": 10.954955101013184,
+          "height": 16.020591735839844
+        },
+        "zOrder": 15,
+        "area": 175.50486315778835,
+        "areaRatio": 0.0005872182790724829,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:888",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6278.14306640625,
+          "y": -511.0257568359375,
+          "width": 11.243241310119629,
+          "height": 11.94337272644043
+        },
+        "pageRelativeBounds": {
+          "x": 151.14306640625,
+          "y": 38.9742431640625,
+          "width": 11.243241310119629,
+          "height": 11.94337272644043
+        },
+        "zOrder": 16,
+        "area": 134.28222162007114,
+        "areaRatio": 0.00044929225134277256,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:889",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6291.60986328125,
+          "y": -511.0669250488281,
+          "width": 10.419557571411133,
+          "height": 11.94337272644043
+        },
+        "pageRelativeBounds": {
+          "x": 164.60986328125,
+          "y": 38.933074951171875,
+          "width": 10.419557571411133,
+          "height": 11.94337272644043
+        },
+        "zOrder": 17,
+        "area": 124.4446597199676,
+        "areaRatio": 0.000416376945947194,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:890",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6303.5947265625,
+          "y": -516.5032348632812,
+          "width": 11.119693756103516,
+          "height": 17.173749923706055
+        },
+        "pageRelativeBounds": {
+          "x": 176.5947265625,
+          "y": 33.49676513671875,
+          "width": 11.119693756103516,
+          "height": 17.173749923706055
+        },
+        "zOrder": 18,
+        "area": 190.96683979551744,
+        "areaRatio": 0.0006389522034145293,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:891",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6315.63134765625,
+          "y": -517.51611328125,
+          "width": 5.193595886230469,
+          "height": 18.14539337158203
+        },
+        "pageRelativeBounds": {
+          "x": 188.63134765625,
+          "y": 32.48388671875,
+          "width": 5.193595886230469,
+          "height": 18.14539337158203
+        },
+        "zOrder": 19,
+        "area": 94.23984036868205,
+        "areaRatio": 0.00031531523335401774,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:892",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6321.8583984375,
+          "y": -511.0669250488281,
+          "width": 12.643501281738281,
+          "height": 12.025735855102539
+        },
+        "pageRelativeBounds": {
+          "x": 194.8583984375,
+          "y": 38.933074951171875,
+          "width": 12.643501281738281,
+          "height": 12.025735855102539
+        },
+        "zOrder": 20,
+        "area": 152.04740669783496,
+        "areaRatio": 0.0005087324356263821,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:893",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6336.2685546875,
+          "y": -511.39642333984375,
+          "width": 11.078506469726562,
+          "height": 12.066925048828125
+        },
+        "pageRelativeBounds": {
+          "x": 209.2685546875,
+          "y": 38.60357666015625,
+          "width": 11.078506469726562,
+          "height": 12.066925048828125
+        },
+        "zOrder": 21,
+        "area": 133.6835072231479,
+        "areaRatio": 0.00044728902458602394,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:894",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6281.59716796875,
+          "y": -530.1350708007812,
+          "width": 19.76833724975586,
+          "height": 16.720720291137695
+        },
+        "pageRelativeBounds": {
+          "x": 154.59716796875,
+          "y": 19.86492919921875,
+          "width": 19.76833724975586,
+          "height": 16.720720291137695
+        },
+        "zOrder": 22,
+        "area": 330.54083777404594,
+        "areaRatio": 0.0011059501054756869,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:895",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6303.5947265625,
+          "y": -527.3757934570312,
+          "width": 12.190475463867188,
+          "height": 17.791505813598633
+        },
+        "pageRelativeBounds": {
+          "x": 176.5947265625,
+          "y": 22.62420654296875,
+          "width": 12.190475463867188,
+          "height": 17.791505813598633
+        },
+        "zOrder": 23,
+        "area": 216.88691508592456,
+        "areaRatio": 0.0007256776749006258,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:896",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6318.45361328125,
+          "y": -527.3757934570312,
+          "width": 12.231658935546875,
+          "height": 11.94337272644043
+        },
+        "pageRelativeBounds": {
+          "x": 191.45361328125,
+          "y": 22.62420654296875,
+          "width": 12.231658935546875,
+          "height": 11.94337272644043
+        },
+        "zOrder": 24,
+        "area": 146.08726172993192,
+        "areaRatio": 0.0004887905034878526,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1891;658:707;651:897",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6331.8037109375,
+          "y": -527.4993896484375,
+          "width": 11.11968994140625,
+          "height": 12.066923141479492
+        },
+        "pageRelativeBounds": {
+          "x": 204.8037109375,
+          "y": 22.5006103515625,
+          "width": 11.11968994140625,
+          "height": 12.066923141479492
+        },
+        "zOrder": 25,
+        "area": 134.18044388003182,
+        "areaRatio": 0.0004489517151987681,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1916",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Checkout",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6202.578125,
+          "y": -456.2526550292969,
+          "width": 225.5081329345703,
+          "height": 32.57585144042969
+        },
+        "pageRelativeBounds": {
+          "x": 75.578125,
+          "y": 93.74734497070312,
+          "width": 225.5081329345703,
+          "height": 32.57585144042969
+        },
+        "zOrder": 26,
+        "area": 7346.119437085232,
+        "areaRatio": 0.02457923692876698,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1916",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1917",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "3",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": 6252.8525390625,
+          "y": -423.6767272949219,
+          "width": 124.95879364013672,
+          "height": 9.254290580749512
+        },
+        "pageRelativeBounds": {
+          "x": 125.8525390625,
+          "y": 126.32327270507812,
+          "width": 124.95879364013672,
+          "height": 9.254290580749512
+        },
+        "zOrder": 27,
+        "area": 1156.4049869657392,
+        "areaRatio": 0.0038691927627460955,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1920",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "221b Baker St, Maryl",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6161.341796875,
+          "y": -366.158203125,
+          "width": 198,
+          "height": 44
+        },
+        "pageRelativeBounds": {
+          "x": 34.341796875,
+          "y": 183.841796875,
+          "width": 198,
+          "height": 44
+        },
+        "zOrder": 28,
+        "area": 8712,
+        "areaRatio": 0.02914930991217064,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1920",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1924",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "221b Baker St, Maryl",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6161.341796875,
+          "y": -319.2882080078125,
+          "width": 92,
+          "height": 22
+        },
+        "pageRelativeBounds": {
+          "x": 34.341796875,
+          "y": 230.7117919921875,
+          "width": 92,
+          "height": 22
+        },
+        "zOrder": 29,
+        "area": 2024,
+        "areaRatio": 0.006772061898787119,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1924",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1923",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Cassie Donk",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6161.341796875,
+          "y": -389,
+          "width": 101,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 34.341796875,
+          "y": 161,
+          "width": 101,
+          "height": 16
+        },
+        "zOrder": 30,
+        "area": 1616,
+        "areaRatio": 0.005406942701798411,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1923",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1926",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Forward",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6453,
+          "y": -352.158203125,
+          "width": 20,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 326,
+          "y": 197.841796875,
+          "width": 20,
+          "height": 20
+        },
+        "zOrder": 31,
+        "area": 400,
+        "areaRatio": 0.0013383521539104977,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1926",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1926;94:1742",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Forward",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6460.5,
+          "y": -347.9915466308594,
+          "width": 5.802644729614258,
+          "height": 11.60528564453125
+        },
+        "pageRelativeBounds": {
+          "x": 333.5,
+          "y": 202.00845336914062,
+          "width": 5.802644729614258,
+          "height": 11.60528564453125
+        },
+        "zOrder": 32,
+        "area": 67.34134958090726,
+        "areaRatio": 0.00022531610064711758,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1933",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Master Card ending •",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6223.97998046875,
+          "y": -250.257080078125,
+          "width": 188,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 96.97998046875,
+          "y": 299.742919921875,
+          "width": 188,
+          "height": 16
+        },
+        "zOrder": 33,
+        "area": 3008,
+        "areaRatio": 0.010064408197406942,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1933",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1934",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "MasterCard",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6160.8955078125,
+          "y": -257.6490478515625,
+          "width": 52.15129852294922,
+          "height": 32.0001335144043
+        },
+        "pageRelativeBounds": {
+          "x": 33.8955078125,
+          "y": 292.3509521484375,
+          "width": 52.15129852294922,
+          "height": 32.0001335144043
+        },
+        "zOrder": 34,
+        "area": 1668.8485156839306,
+        "areaRatio": 0.0055837675137898135,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1934",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "728:2176",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Mastercard",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6160.8955078125,
+          "y": -257.6490478515625,
+          "width": 52.15129852294922,
+          "height": 32.0001335144043
+        },
+        "pageRelativeBounds": {
+          "x": 33.8955078125,
+          "y": 292.3509521484375,
+          "width": 52.15129852294922,
+          "height": 32.0001335144043
+        },
+        "zOrder": 35,
+        "area": 1668.8485156839306,
+        "areaRatio": 0.0055837675137898135,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-2176",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "728:2177",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Left",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6160.8955078125,
+          "y": -257.6490478515625,
+          "width": 52.1513557434082,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 33.8955078125,
+          "y": 292.3509521484375,
+          "width": 52.1513557434082,
+          "height": 32
+        },
+        "zOrder": 36,
+        "area": 1668.8433837890625,
+        "areaRatio": 0.005583750343083438,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:2178",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Oval",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6160.8955078125,
+          "y": -257.6490478515625,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 33.8955078125,
+          "y": 292.3509521484375,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "zOrder": 37,
+        "area": 1012.2493286132812,
+        "areaRatio": 0.0033868651731101002,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:2179",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Oval Copy",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6181.4140625,
+          "y": -257.6490478515625,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 54.4140625,
+          "y": 292.3509521484375,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "zOrder": 38,
+        "area": 1012.2493286132812,
+        "areaRatio": 0.0033868651731101002,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:2180",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Right",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6186.97119140625,
+          "y": -257.64892578125,
+          "width": 26.0756778717041,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 59.97119140625,
+          "y": 292.35107421875,
+          "width": 26.0756778717041,
+          "height": 32
+        },
+        "zOrder": 39,
+        "area": 834.4216918945312,
+        "areaRatio": 0.002791875171541719,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:2181",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Oval",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6181.4140625,
+          "y": -257.64892578125,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 54.4140625,
+          "y": 292.35107421875,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "zOrder": 40,
+        "area": 1012.2493286132812,
+        "areaRatio": 0.0033868651731101002,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:2182",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Oval",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6160.8955078125,
+          "y": -257.64892578125,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 33.8955078125,
+          "y": 292.35107421875,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "zOrder": 41,
+        "area": 1012.2493286132812,
+        "areaRatio": 0.0033868651731101002,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:2183",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Middle",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6181.4140625,
+          "y": -253.82676696777344,
+          "width": 11.114089965820312,
+          "height": 24.355514526367188
+        },
+        "pageRelativeBounds": {
+          "x": 54.4140625,
+          "y": 296.17323303222656,
+          "width": 11.114089965820312,
+          "height": 24.355514526367188
+        },
+        "zOrder": 42,
+        "area": 270.6893796098884,
+        "areaRatio": 0.0009056942856039763,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:2184",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Oval",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6160.8955078125,
+          "y": -257.6490478515625,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 33.8955078125,
+          "y": 292.3509521484375,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "zOrder": 43,
+        "area": 1012.2493286132812,
+        "areaRatio": 0.0033868651731101002,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:2185",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Oval",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6181.4140625,
+          "y": -257.6490478515625,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 54.4140625,
+          "y": 292.3509521484375,
+          "width": 31.63279151916504,
+          "height": 32
+        },
+        "zOrder": 44,
+        "area": 1012.2493286132812,
+        "areaRatio": 0.0033868651731101002,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "728:1940",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Forward",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6453,
+          "y": -250.257080078125,
+          "width": 20,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 326,
+          "y": 299.742919921875,
+          "width": 20,
+          "height": 20
+        },
+        "zOrder": 45,
+        "area": 400,
+        "areaRatio": 0.0013383521539104977,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1940",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1940;94:1742",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Forward",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6460.5,
+          "y": -246.0904083251953,
+          "width": 5.802644729614258,
+          "height": 11.60528564453125
+        },
+        "pageRelativeBounds": {
+          "x": 333.5,
+          "y": 303.9095916748047,
+          "width": 5.802644729614258,
+          "height": 11.60528564453125
+        },
+        "zOrder": 46,
+        "area": 67.34134958090726,
+        "areaRatio": 0.00022531610064711758,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1947",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Line 19",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6143,
+          "y": -275,
+          "width": 343,
+          "height": 0
+        },
+        "pageRelativeBounds": {
+          "x": 16,
+          "y": 275,
+          "width": 343,
+          "height": 0
+        },
+        "zOrder": 47,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1951",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Line 21",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6143,
+          "y": -202.420654296875,
+          "width": 343,
+          "height": 0
+        },
+        "pageRelativeBounds": {
+          "x": 16,
+          "y": 347.579345703125,
+          "width": 343,
+          "height": 0
+        },
+        "zOrder": 48,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1969",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Total",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6143,
+          "y": 133.7265625,
+          "width": 58,
+          "height": 35
+        },
+        "pageRelativeBounds": {
+          "x": 16,
+          "y": 683.7265625,
+          "width": 58,
+          "height": 35
+        },
+        "zOrder": 49,
+        "area": 2030,
+        "areaRatio": 0.006792137181095776,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1969",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1970",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "$240",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6440,
+          "y": 133.7265625,
+          "width": 46,
+          "height": 35
+        },
+        "pageRelativeBounds": {
+          "x": 313,
+          "y": 683.7265625,
+          "width": 46,
+          "height": 35
+        },
+        "zOrder": 50,
+        "area": 1610,
+        "areaRatio": 0.005386867419489753,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1970",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "728:1971",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Cart",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6143,
+          "y": -188.479248046875,
+          "width": 313.43280029296875,
+          "height": 134
+        },
+        "pageRelativeBounds": {
+          "x": 16,
+          "y": 361.520751953125,
+          "width": 313.43280029296875,
+          "height": 134
+        },
+        "zOrder": 51,
+        "area": 41999.99523925781,
+        "areaRatio": 0.14052696023172837,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-728-1971",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1439",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Frame 18",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6143,
+          "y": -188.479248046875,
+          "width": 100,
+          "height": 134
+        },
+        "pageRelativeBounds": {
+          "x": 16,
+          "y": 361.520751953125,
+          "width": 100,
+          "height": 134
+        },
+        "zOrder": 52,
+        "area": 13400,
+        "areaRatio": 0.04483479715600167,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1439",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1440",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Rectangle 344",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": 6143,
+          "y": -188.479248046875,
+          "width": 100,
+          "height": 133.3333282470703
+        },
+        "pageRelativeBounds": {
+          "x": 16,
+          "y": 361.520751953125,
+          "width": 100,
+          "height": 133.3333282470703
+        },
+        "zOrder": 53,
+        "area": 13333.332824707031,
+        "areaRatio": 0.04461173676188049,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1440",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1476",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Frame 27",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6253.71630859375,
+          "y": -181.479248046875,
+          "width": 201,
+          "height": 116
+        },
+        "pageRelativeBounds": {
+          "x": 126.71630859375,
+          "y": 368.520751953125,
+          "width": 201,
+          "height": 116
+        },
+        "zOrder": 54,
+        "area": 23316,
+        "areaRatio": 0.07801254705144291,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1476",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1444",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Frame 14",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6253.71630859375,
+          "y": -181.479248046875,
+          "width": 201,
+          "height": 44
+        },
+        "pageRelativeBounds": {
+          "x": 126.71630859375,
+          "y": 368.520751953125,
+          "width": 201,
+          "height": 44
+        },
+        "zOrder": 55,
+        "area": 8844,
+        "areaRatio": 0.029590966122961103,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1444",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1445",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "lamerei",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6253.71630859375,
+          "y": -181.479248046875,
+          "width": 78,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 126.71630859375,
+          "y": 368.520751953125,
+          "width": 78,
+          "height": 20
+        },
+        "zOrder": 56,
+        "area": 1560,
+        "areaRatio": 0.005219573400250941,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1445",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1446",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Recycle Boucle Knit Cardigan Pink",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6253.71630859375,
+          "y": -155.479248046875,
+          "width": 201,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 126.71630859375,
+          "y": 394.520751953125,
+          "width": 201,
+          "height": 18
+        },
+        "zOrder": 57,
+        "area": 3618,
+        "areaRatio": 0.012105395232120451,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1446",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1475",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Group 212",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6253.71630859375,
+          "y": -125.479248046875,
+          "width": 78,
+          "height": 24
+        },
+        "pageRelativeBounds": {
+          "x": 126.71630859375,
+          "y": 424.520751953125,
+          "width": 78,
+          "height": 24
+        },
+        "zOrder": 58,
+        "area": 1872,
+        "areaRatio": 0.006263488080301129,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1475",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1463",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Ellipse 68",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": 6253.71630859375,
+          "y": -125.479248046875,
+          "width": 24,
+          "height": 24
+        },
+        "pageRelativeBounds": {
+          "x": 126.71630859375,
+          "y": 424.520751953125,
+          "width": 24,
+          "height": 24
+        },
+        "zOrder": 59,
+        "area": 576,
+        "areaRatio": 0.0019272271016311166,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1467",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Ellipse 69",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": 6307.71630859375,
+          "y": -125.479248046875,
+          "width": 24,
+          "height": 24
+        },
+        "pageRelativeBounds": {
+          "x": 180.71630859375,
+          "y": 424.520751953125,
+          "width": 24,
+          "height": 24
+        },
+        "zOrder": 60,
+        "area": 576,
+        "areaRatio": 0.0019272271016311166,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1471",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Plus",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6257.71630859375,
+          "y": -121.479248046875,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 130.71630859375,
+          "y": 428.520751953125,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 61,
+        "area": 256,
+        "areaRatio": 0.0008565453785027185,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1471",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1473",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector 5",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6259.71630859375,
+          "y": -113.479248046875,
+          "width": 12,
+          "height": 0
+        },
+        "pageRelativeBounds": {
+          "x": 132.71630859375,
+          "y": 436.520751953125,
+          "width": 12,
+          "height": 0
+        },
+        "zOrder": 62,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1468",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Plus",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6311.71630859375,
+          "y": -121.479248046875,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 184.71630859375,
+          "y": 428.520751953125,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 63,
+        "area": 256,
+        "areaRatio": 0.0008565453785027185,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1468",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1468;94:1750",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector 4",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6319.71630859375,
+          "y": -119.479248046875,
+          "width": 0,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 192.71630859375,
+          "y": 430.520751953125,
+          "width": 0,
+          "height": 12
+        },
+        "zOrder": 64,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1468;94:1751",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector 5",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6313.71630859375,
+          "y": -113.479248046875,
+          "width": 12,
+          "height": 0
+        },
+        "pageRelativeBounds": {
+          "x": 186.71630859375,
+          "y": 436.520751953125,
+          "width": 12,
+          "height": 0
+        },
+        "zOrder": 65,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1474",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "1",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6290.7724609375,
+          "y": -120.711669921875,
+          "width": 5,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 163.7724609375,
+          "y": 429.288330078125,
+          "width": 5,
+          "height": 14
+        },
+        "zOrder": 66,
+        "area": 70,
+        "areaRatio": 0.0002342116269343371,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1474",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I728:1971;700:1447",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "$120",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6253.71630859375,
+          "y": -89.479248046875,
+          "width": 32,
+          "height": 24
+        },
+        "pageRelativeBounds": {
+          "x": 126.71630859375,
+          "y": 460.520751953125,
+          "width": 32,
+          "height": 24
+        },
+        "zOrder": 67,
+        "area": 768,
+        "areaRatio": 0.0025696361355081556,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I728-1971-700-1447",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "861:3037",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Button",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": 6127,
+          "y": 191,
+          "width": 375,
+          "height": 56
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 741,
+          "width": 375,
+          "height": 56
+        },
+        "zOrder": 68,
+        "area": 21000,
+        "areaRatio": 0.07026348808030113,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-861-3037-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I861:3037;835:3093",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "BG",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 6127,
+          "y": 191,
+          "width": 375,
+          "height": 56
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 741,
+          "width": 375,
+          "height": 56
+        },
+        "zOrder": 69,
+        "area": 21000,
+        "areaRatio": 0.07026348808030113,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/86d6593d08c408933372f6b77b9c3e5aab4ace1e1456ce6a461e8ada3dcaea11.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I861:3037;861:2997",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Content",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6244,
+          "y": 207.91485595703125,
+          "width": 141,
+          "height": 26
+        },
+        "pageRelativeBounds": {
+          "x": 117,
+          "y": 757.9148559570312,
+          "width": 141,
+          "height": 26
+        },
+        "zOrder": 70,
+        "area": 3666,
+        "areaRatio": 0.012265997490589712,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I861-3037-861-2997",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I861:3037;835:3097",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "shopping bag",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 6244,
+          "y": 210.91485595703125,
+          "width": 20,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 117,
+          "y": 760.9148559570312,
+          "width": 20,
+          "height": 20
+        },
+        "zOrder": 71,
+        "area": 400,
+        "areaRatio": 0.0013383521539104977,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I861-3037-835-3097",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I861:3037;835:3097;425:649",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Rectangle 319",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6246.4755859375,
+          "y": 216.09877014160156,
+          "width": 15.857711791992188,
+          "height": 14.632723808288574
+        },
+        "pageRelativeBounds": {
+          "x": 119.4755859375,
+          "y": 766.0987701416016,
+          "width": 15.857711791992188,
+          "height": 14.632723808288574
+        },
+        "zOrder": 72,
+        "area": 232.04151688366255,
+        "areaRatio": 0.0007763831597947722,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I861:3037;835:3097;425:650",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 6250.80029296875,
+          "y": 211.93699645996094,
+          "width": 7.208049774169922,
+          "height": 7.435420513153076
+        },
+        "pageRelativeBounds": {
+          "x": 123.80029296875,
+          "y": 761.9369964599609,
+          "width": 7.208049774169922,
+          "height": 7.435420513153076
+        },
+        "zOrder": 73,
+        "area": 53.594881150691435,
+        "areaRatio": 0.00017932206156651254,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I861:3037;835:3096",
+        "sourcePageId": "728:1889",
+        "sourceNodeName": "Checkout",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 6288,
+          "y": 207.91485595703125,
+          "width": 97,
+          "height": 26
+        },
+        "pageRelativeBounds": {
+          "x": 161,
+          "y": 757.9148559570312,
+          "width": 97,
+          "height": 26
+        },
+        "zOrder": 74,
+        "area": 2522,
+        "areaRatio": 0.008438310330405688,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-checkout-I861-3037-835-3096",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      }
+    ],
+    "aggregate": {
+      "sourceNodeCount": 75,
+      "visibleNodeCount": 75,
+      "unsupportedCount": 21,
+      "unmappedCount": 0
+    },
+    "diagnostics": {
+      "unsupportedByReason": {
+        "unsupported_renderer_limit": 21
+      },
+      "unsupportedByKind": {
+        "vector": 21
+      },
+      "topUnsupported": [
+        {
+          "sourceNodeId": "728:2177",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Left",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 1668.8433837890625,
+          "bounds": {
+            "x": 6160.8955078125,
+            "y": -257.6490478515625,
+            "width": 52.1513557434082,
+            "height": 32
+          }
+        },
+        {
+          "sourceNodeId": "728:2178",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Oval",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 1012.2493286132812,
+          "bounds": {
+            "x": 6160.8955078125,
+            "y": -257.6490478515625,
+            "width": 31.63279151916504,
+            "height": 32
+          }
+        },
+        {
+          "sourceNodeId": "728:2179",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Oval Copy",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 1012.2493286132812,
+          "bounds": {
+            "x": 6181.4140625,
+            "y": -257.6490478515625,
+            "width": 31.63279151916504,
+            "height": 32
+          }
+        },
+        {
+          "sourceNodeId": "728:2181",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Oval",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 1012.2493286132812,
+          "bounds": {
+            "x": 6181.4140625,
+            "y": -257.64892578125,
+            "width": 31.63279151916504,
+            "height": 32
+          }
+        },
+        {
+          "sourceNodeId": "728:2182",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Oval",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 1012.2493286132812,
+          "bounds": {
+            "x": 6160.8955078125,
+            "y": -257.64892578125,
+            "width": 31.63279151916504,
+            "height": 32
+          }
+        },
+        {
+          "sourceNodeId": "728:2184",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Oval",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 1012.2493286132812,
+          "bounds": {
+            "x": 6160.8955078125,
+            "y": -257.6490478515625,
+            "width": 31.63279151916504,
+            "height": 32
+          }
+        },
+        {
+          "sourceNodeId": "728:2185",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Oval",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 1012.2493286132812,
+          "bounds": {
+            "x": 6181.4140625,
+            "y": -257.6490478515625,
+            "width": 31.63279151916504,
+            "height": 32
+          }
+        },
+        {
+          "sourceNodeId": "728:2180",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Right",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 834.4216918945312,
+          "bounds": {
+            "x": 6186.97119140625,
+            "y": -257.64892578125,
+            "width": 26.0756778717041,
+            "height": 32
+          }
+        },
+        {
+          "sourceNodeId": "I728:1891;425:656;425:649",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Rectangle 319",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 334.1397351811502,
+          "bounds": {
+            "x": 6457.970703125,
+            "y": -519.779296875,
+            "width": 19.029253005981445,
+            "height": 17.559267044067383
+          }
+        },
+        {
+          "sourceNodeId": "I728:1891;424:634;94:1726",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 324,
+          "bounds": {
+            "x": 6417,
+            "y": -524,
+            "width": 18,
+            "height": 18
+          }
+        },
+        {
+          "sourceNodeId": "728:2183",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Middle",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 270.6893796098884,
+          "bounds": {
+            "x": 6181.4140625,
+            "y": -253.82676696777344,
+            "width": 11.114089965820312,
+            "height": 24.355514526367188
+          }
+        },
+        {
+          "sourceNodeId": "I861:3037;835:3097;425:649",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Rectangle 319",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 232.04151688366255,
+          "bounds": {
+            "x": 6246.4755859375,
+            "y": 216.09877014160156,
+            "width": 15.857711791992188,
+            "height": 14.632723808288574
+          }
+        },
+        {
+          "sourceNodeId": "I728:1891;425:656;425:650",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 77.17663912003263,
+          "bounds": {
+            "x": 6463.16015625,
+            "y": -524.7734375,
+            "width": 8.64966106414795,
+            "height": 8.922504425048828
+          }
+        },
+        {
+          "sourceNodeId": "I861:3037;835:3097;425:650",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 53.594881150691435,
+          "bounds": {
+            "x": 6250.80029296875,
+            "y": 211.93699645996094,
+            "width": 7.208049774169922,
+            "height": 7.435420513153076
+          }
+        },
+        {
+          "sourceNodeId": "I728:1891;424:634;94:1727",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 10.353303335212388,
+          "bounds": {
+            "x": 6433.7822265625,
+            "y": -507.2177734375,
+            "width": 3.2176549434661865,
+            "height": 3.2176549434661865
+          }
+        },
+        {
+          "sourceNodeId": "I728:1891;424:630;94:1862",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector 7",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": 6143.306640625,
+            "y": -515.246337890625,
+            "width": 15.675605773925781,
+            "height": 0
+          }
+        },
+        {
+          "sourceNodeId": "I728:1891;424:630;103:2",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector 10",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": 6143.306640625,
+            "y": -522.246337890625,
+            "width": 23.386497497558594,
+            "height": 0
+          }
+        },
+        {
+          "sourceNodeId": "I728:1891;424:630;94:1863",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector 9",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": 6143.306640625,
+            "y": -508.246337890625,
+            "width": 23.386497497558594,
+            "height": 0
+          }
+        },
+        {
+          "sourceNodeId": "I728:1971;700:1473",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector 5",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": 6259.71630859375,
+            "y": -113.479248046875,
+            "width": 12,
+            "height": 0
+          }
+        },
+        {
+          "sourceNodeId": "I728:1971;700:1468;94:1750",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector 4",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": 6319.71630859375,
+            "y": -119.479248046875,
+            "width": 0,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I728:1971;700:1468;94:1751",
+          "sourcePageId": "728:1889",
+          "sourceNodeName": "Vector 5",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": 6313.71630859375,
+            "y": -113.479248046875,
+            "width": 12,
+            "height": 0
+          }
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "pageId": "checkout",
+      "sourcePageId": "728:1889",
+      "sourceRootNodeId": "728:1889",
+      "path": "/checkout",
+      "viewportRole": "mobile",
+      "nodeCounts": {
+        "text": 12,
+        "input": 0,
+        "select": 0,
+        "button": 1,
+        "image": 1,
+        "pixelOverlay": 1,
+        "total": 62
+      },
+      "structuredCoverage": {
+        "textNodeCount": 12,
+        "interactiveNodeCount": 1,
+        "fullPageScreenshotFallback": false
+      },
+      "componentFidelity": {
+        "sourceComponentNodeCount": 12,
+        "byFamily": {
+          "unknown": 9,
+          "icon": 1,
+          "button": 2
+        },
+        "byState": {
+          "default": 12
+        }
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 37,
+        "renderedCount": 37,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualLayers": [
+    {
+      "sourceNodeId": "I861:3037;835:3097",
+      "uiSpecNodeId": "vl-checkout-I861-3037-835-3097",
+      "sourcePageId": "728:1889",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 72,
+      "bounds": {
+        "x": 6244,
+        "y": 210.91485595703125,
+        "width": 20,
+        "height": 20
+      },
+      "pageRelativeBounds": {
+        "x": 117,
+        "y": 760.9148559570312,
+        "width": 20,
+        "height": 20
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;425:656",
+      "uiSpecNodeId": "vl-checkout-I728-1891-425-656",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 11,
+      "bounds": {
+        "x": 6455,
+        "y": -526,
+        "width": 24,
+        "height": 24
+      },
+      "pageRelativeBounds": {
+        "x": 328,
+        "y": 24,
+        "width": 24,
+        "height": 24
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:894",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-894",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 22,
+      "bounds": {
+        "x": 6281.59716796875,
+        "y": -530.1350708007812,
+        "width": 19.76833724975586,
+        "height": 16.720720291137695
+      },
+      "pageRelativeBounds": {
+        "x": 154.59716796875,
+        "y": 19.86492919921875,
+        "width": 19.76833724975586,
+        "height": 16.720720291137695
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;424:634",
+      "uiSpecNodeId": "vl-checkout-I728-1891-424-634",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 8,
+      "bounds": {
+        "x": 6415,
+        "y": -526,
+        "width": 24,
+        "height": 24
+      },
+      "pageRelativeBounds": {
+        "x": 288,
+        "y": 24,
+        "width": 24,
+        "height": 24
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:895",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-895",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 23,
+      "bounds": {
+        "x": 6303.5947265625,
+        "y": -527.3757934570312,
+        "width": 12.190475463867188,
+        "height": 17.791505813598633
+      },
+      "pageRelativeBounds": {
+        "x": 176.5947265625,
+        "y": 22.62420654296875,
+        "width": 12.190475463867188,
+        "height": 17.791505813598633
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:890",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-890",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 18,
+      "bounds": {
+        "x": 6303.5947265625,
+        "y": -516.5032348632812,
+        "width": 11.119693756103516,
+        "height": 17.173749923706055
+      },
+      "pageRelativeBounds": {
+        "x": 176.5947265625,
+        "y": 33.49676513671875,
+        "width": 11.119693756103516,
+        "height": 17.173749923706055
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:887",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-887",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 15,
+      "bounds": {
+        "x": 6269,
+        "y": -515.3912353515625,
+        "width": 10.954955101013184,
+        "height": 16.020591735839844
+      },
+      "pageRelativeBounds": {
+        "x": 142,
+        "y": 34.6087646484375,
+        "width": 10.954955101013184,
+        "height": 16.020591735839844
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:892",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-892",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 20,
+      "bounds": {
+        "x": 6321.8583984375,
+        "y": -511.0669250488281,
+        "width": 12.643501281738281,
+        "height": 12.025735855102539
+      },
+      "pageRelativeBounds": {
+        "x": 194.8583984375,
+        "y": 38.933074951171875,
+        "width": 12.643501281738281,
+        "height": 12.025735855102539
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:896",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-896",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 24,
+      "bounds": {
+        "x": 6318.45361328125,
+        "y": -527.3757934570312,
+        "width": 12.231658935546875,
+        "height": 11.94337272644043
+      },
+      "pageRelativeBounds": {
+        "x": 191.45361328125,
+        "y": 22.62420654296875,
+        "width": 12.231658935546875,
+        "height": 11.94337272644043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:888",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-888",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 16,
+      "bounds": {
+        "x": 6278.14306640625,
+        "y": -511.0257568359375,
+        "width": 11.243241310119629,
+        "height": 11.94337272644043
+      },
+      "pageRelativeBounds": {
+        "x": 151.14306640625,
+        "y": 38.9742431640625,
+        "width": 11.243241310119629,
+        "height": 11.94337272644043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:897",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-897",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 25,
+      "bounds": {
+        "x": 6331.8037109375,
+        "y": -527.4993896484375,
+        "width": 11.11968994140625,
+        "height": 12.066923141479492
+      },
+      "pageRelativeBounds": {
+        "x": 204.8037109375,
+        "y": 22.5006103515625,
+        "width": 11.11968994140625,
+        "height": 12.066923141479492
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:893",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-893",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 21,
+      "bounds": {
+        "x": 6336.2685546875,
+        "y": -511.39642333984375,
+        "width": 11.078506469726562,
+        "height": 12.066925048828125
+      },
+      "pageRelativeBounds": {
+        "x": 209.2685546875,
+        "y": 38.60357666015625,
+        "width": 11.078506469726562,
+        "height": 12.066925048828125
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:889",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-889",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 17,
+      "bounds": {
+        "x": 6291.60986328125,
+        "y": -511.0669250488281,
+        "width": 10.419557571411133,
+        "height": 11.94337272644043
+      },
+      "pageRelativeBounds": {
+        "x": 164.60986328125,
+        "y": 38.933074951171875,
+        "width": 10.419557571411133,
+        "height": 11.94337272644043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;658:707;651:891",
+      "uiSpecNodeId": "vl-checkout-I728-1891-658-707-651-891",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 19,
+      "bounds": {
+        "x": 6315.63134765625,
+        "y": -517.51611328125,
+        "width": 5.193595886230469,
+        "height": 18.14539337158203
+      },
+      "pageRelativeBounds": {
+        "x": 188.63134765625,
+        "y": 32.48388671875,
+        "width": 5.193595886230469,
+        "height": 18.14539337158203
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;425:656",
+      "uiSpecNodeId": "vl-checkout-I728-1891-425-656",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 12,
+      "bounds": {
+        "x": 6455,
+        "y": -526,
+        "width": 24,
+        "height": 24
+      },
+      "pageRelativeBounds": {
+        "x": 328,
+        "y": 24,
+        "width": 24,
+        "height": 24
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;424:630",
+      "uiSpecNodeId": "vl-checkout-I728-1891-424-630",
+      "sourcePageId": "728:1889",
+      "reason": "line_divider",
+      "layerRole": "icon",
+      "zOrder": 5,
+      "bounds": {
+        "x": 6143,
+        "y": -527.246337890625,
+        "width": 24,
+        "height": 24
+      },
+      "pageRelativeBounds": {
+        "x": 16,
+        "y": 22.753662109375,
+        "width": 24,
+        "height": 24
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;424:630",
+      "uiSpecNodeId": "vl-checkout-I728-1891-424-630",
+      "sourcePageId": "728:1889",
+      "reason": "line_divider",
+      "layerRole": "icon",
+      "zOrder": 6,
+      "bounds": {
+        "x": 6143,
+        "y": -527.246337890625,
+        "width": 24,
+        "height": 24
+      },
+      "pageRelativeBounds": {
+        "x": 16,
+        "y": 22.753662109375,
+        "width": 24,
+        "height": 24
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:1947",
+      "uiSpecNodeId": "vl-checkout-728-1947",
+      "sourcePageId": "728:1889",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 47,
+      "bounds": {
+        "x": 6143,
+        "y": -275,
+        "width": 343,
+        "height": 0
+      },
+      "pageRelativeBounds": {
+        "x": 16,
+        "y": 275,
+        "width": 343,
+        "height": 0
+      },
+      "opacity": 0.10000000149011612,
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:1951",
+      "uiSpecNodeId": "vl-checkout-728-1951",
+      "sourcePageId": "728:1889",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 48,
+      "bounds": {
+        "x": 6143,
+        "y": -202.420654296875,
+        "width": 343,
+        "height": 0
+      },
+      "pageRelativeBounds": {
+        "x": 16,
+        "y": 347.579345703125,
+        "width": 343,
+        "height": 0
+      },
+      "opacity": 0.10000000149011612,
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I861:3037;835:3093",
+      "uiSpecNodeId": "vl-checkout-I861-3037-835-3093",
+      "sourcePageId": "728:1889",
+      "reason": "named_visual",
+      "layerRole": "decorative_shape",
+      "zOrder": 69,
+      "bounds": {
+        "x": 6127,
+        "y": 191,
+        "width": 375,
+        "height": 56
+      },
+      "pageRelativeBounds": {
+        "x": 0,
+        "y": 741,
+        "width": 375,
+        "height": 56
+      },
+      "assetRef": "figma/screenshots/86d6593d08c408933372f6b77b9c3e5aab4ace1e1456ce6a461e8ada3dcaea11.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1891;544:734",
+      "uiSpecNodeId": "vl-checkout-I728-1891-544-734",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 2,
+      "bounds": {
+        "x": 6127,
+        "y": -550,
+        "width": 375,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 375,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 36,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:1917",
+      "uiSpecNodeId": "vl-checkout-728-1917",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 27,
+      "bounds": {
+        "x": 6252.8525390625,
+        "y": -423.6767272949219,
+        "width": 124.95879364013672,
+        "height": 9.254290580749512
+      },
+      "pageRelativeBounds": {
+        "x": 125.8525390625,
+        "y": 126.32327270507812,
+        "width": 124.95879364013672,
+        "height": 9.254290580749512
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 37,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 38,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 40,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 41,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 43,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 44,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 39,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1971;700:1463",
+      "uiSpecNodeId": "vl-checkout-I728-1971-700-1463",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 59,
+      "bounds": {
+        "x": 6253.71630859375,
+        "y": -125.479248046875,
+        "width": 24,
+        "height": 24
+      },
+      "pageRelativeBounds": {
+        "x": 126.71630859375,
+        "y": 424.520751953125,
+        "width": 24,
+        "height": 24
+      },
+      "opacity": 0.20000000298023224,
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1971;700:1467",
+      "uiSpecNodeId": "vl-checkout-I728-1971-700-1467",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 60,
+      "bounds": {
+        "x": 6307.71630859375,
+        "y": -125.479248046875,
+        "width": 24,
+        "height": 24
+      },
+      "pageRelativeBounds": {
+        "x": 180.71630859375,
+        "y": 424.520751953125,
+        "width": 24,
+        "height": 24
+      },
+      "opacity": 0.20000000298023224,
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "728:2176",
+      "uiSpecNodeId": "vl-checkout-728-2176",
+      "sourcePageId": "728:1889",
+      "reason": "structural_visual",
+      "layerRole": "icon",
+      "zOrder": 42,
+      "bounds": {
+        "x": 6160.8955078125,
+        "y": -257.6490478515625,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "pageRelativeBounds": {
+        "x": 33.8955078125,
+        "y": 292.3509521484375,
+        "width": 52.15129852294922,
+        "height": 32.0001335144043
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1926;94:1742",
+      "uiSpecNodeId": "vl-checkout-I728-1926-94-1742",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 32,
+      "bounds": {
+        "x": 6460.5,
+        "y": -347.9915466308594,
+        "width": 5.802644729614258,
+        "height": 11.60528564453125
+      },
+      "pageRelativeBounds": {
+        "x": 333.5,
+        "y": 202.00845336914062,
+        "width": 5.802644729614258,
+        "height": 11.60528564453125
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1940;94:1742",
+      "uiSpecNodeId": "vl-checkout-I728-1940-94-1742",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 46,
+      "bounds": {
+        "x": 6460.5,
+        "y": -246.0904083251953,
+        "width": 5.802644729614258,
+        "height": 11.60528564453125
+      },
+      "pageRelativeBounds": {
+        "x": 333.5,
+        "y": 303.9095916748047,
+        "width": 5.802644729614258,
+        "height": 11.60528564453125
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1971;700:1471",
+      "uiSpecNodeId": "vl-checkout-I728-1971-700-1471",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 62,
+      "bounds": {
+        "x": 6257.71630859375,
+        "y": -121.479248046875,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 130.71630859375,
+        "y": 428.520751953125,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I728:1971;700:1468",
+      "uiSpecNodeId": "vl-checkout-I728-1971-700-1468",
+      "sourcePageId": "728:1889",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 64,
+      "bounds": {
+        "x": 6311.71630859375,
+        "y": -121.479248046875,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 184.71630859375,
+        "y": 428.520751953125,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    }
+  ],
+  "unsupportedFeatures": [],
+  "warnings": [],
+  "residualRisks": [
+    "M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。",
+    "图标按钮缺少真实业务 action，仅保留静态语义。",
+    "复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。"
+  ]
+}
