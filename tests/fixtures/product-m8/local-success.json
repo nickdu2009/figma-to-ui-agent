@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1",
+  "ok": true,
+  "runId": "m7-local-run",
+  "projectId": "demo",
+  "input": {
+    "mode": "local",
+    "designBundleRevision": 1,
+    "designBundleRevisionSource": "explicit"
+  },
+  "artifacts": {
+    "summaryJson": "reports/m7-e2e/m7-local-run/summary.json",
+    "summaryMarkdown": "reports/m7-e2e/m7-local-run/summary.md",
+    "designBundleRef": "project:demo:designBundle:1",
+    "uiSpecRef": "project:demo:uiSpec:2",
+    "generatedAppRef": "project:demo:uiSpec:2"
+  },
+  "metrics": {
+    "pages": 1,
+    "warnings": 0,
+    "unsupported": 0
+  },
+  "validation": {
+    "status": "skipped",
+    "reason": "render_compare_not_requested"
+  },
+  "steps": [
+    { "id": "validate_input", "status": "passed", "message": "输入契约校验通过" },
+    { "id": "create_run_context", "status": "passed", "message": "已创建 runId 和报告上下文" },
+    { "id": "acquire_design", "status": "passed", "message": "DesignBundle revision=1 source=explicit" },
+    { "id": "generate_ui_spec", "status": "passed", "message": "已从 DesignBundle 生成 UISpec" },
+    { "id": "save_ui_spec", "status": "passed", "message": "UISpec revision=2" },
+    { "id": "render_compare", "status": "skipped", "message": "render compare skipped" },
+    { "id": "write_report", "status": "passed", "message": "已写入 summary.json 和 summary.md" }
+  ],
+  "nextAction": "M7 local 端到端流程完成；如需 live 验证，请单独授权 GATE-PRODUCT-M8-LIVE-FIGMA。"
+}

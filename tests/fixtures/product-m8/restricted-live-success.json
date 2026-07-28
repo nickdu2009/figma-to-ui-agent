@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1",
+  "ok": true,
+  "runId": "m7-restricted-run",
+  "projectId": "demo",
+  "input": {
+    "figmaUrl": "https://www.figma.com/design/abc12345/demo?node-id=1-2",
+    "fileKey": "abc12345",
+    "nodeId": "1:2",
+    "designBundleRevision": 3,
+    "designBundleRevisionSource": "generated",
+    "mode": "restricted-live"
+  },
+  "artifacts": {
+    "summaryJson": "reports/m7-e2e/m7-restricted-run/summary.json",
+    "summaryMarkdown": "reports/m7-e2e/m7-restricted-run/summary.md",
+    "designBundleRef": "project:demo:designBundle:3",
+    "uiSpecRef": "project:demo:uiSpec:4",
+    "generatedAppRef": "project:demo:uiSpec:4"
+  },
+  "metrics": {
+    "pages": 1,
+    "warnings": 0,
+    "unsupported": 0
+  },
+  "validation": {
+    "status": "skipped",
+    "reason": "render_compare_not_requested"
+  },
+  "steps": [
+    { "id": "validate_input", "status": "passed", "message": "输入契约校验通过" },
+    { "id": "create_run_context", "status": "passed", "message": "已创建 runId 和报告上下文" },
+    { "id": "acquire_design", "status": "passed", "message": "DesignBundle revision=3 source=generated" },
+    { "id": "generate_ui_spec", "status": "passed", "message": "已从 DesignBundle 生成 UISpec" },
+    { "id": "save_ui_spec", "status": "passed", "message": "UISpec revision=4" },
+    { "id": "render_compare", "status": "skipped", "message": "render compare skipped" },
+    { "id": "write_report", "status": "passed", "message": "已写入 summary.json 和 summary.md" }
+  ],
+  "nextAction": "M7 restricted-live Figma 读取与本地生成完成；未调用 OpenAI。如需 full live 验证，请单独授权 OpenAI gate。"
+}

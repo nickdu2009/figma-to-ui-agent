@@ -44,6 +44,21 @@ describe("run-figma-to-ui CLI", () => {
 
     expect(stdout).toContain("--project-id");
     expect(stdout).toContain("--designBundleRevision");
+    expect(stdout).toContain("local mode (no Figma, no OpenAI)");
+    expect(stdout).toContain("restricted-live: Figma REST only, no OpenAI gate required");
+    expect(stdout).toContain("--allow-openai is only needed for live mode");
+    expect(stdout).toContain("summary.json");
+    expect(stdout).toContain("reports/m7-e2e");
+  });
+
+  it("returns exit code 2 for unknown arguments", async () => {
+    await expect(
+      execFileAsync(
+        "node",
+        ["scripts/run-figma-to-ui.mjs", "--unknown-flag"],
+        { cwd: process.cwd() },
+      ),
+    ).rejects.toMatchObject({ code: 2 });
   });
 
   it("runs local e2e with JSON output", async () => {

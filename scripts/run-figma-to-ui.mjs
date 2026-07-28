@@ -6,6 +6,11 @@ import { runM7E2EFlow } from "../src/runtime/e2e-flow-service.ts";
 function printHelp() {
   console.log(`Usage: node scripts/run-figma-to-ui.mjs --project-id <id> [options]
 
+Product-M8 agent-facing usage: run Product-M7 end-to-end flow and return a
+stable JSON result with nextAction. Use --json for machine-readable output.
+Reports are written to <reportRoot>/<runId>/summary.json and summary.md
+(default reportRoot: reports/m7-e2e).
+
 Options:
   --figma-url <url>              Full HTTPS Figma design URL
   --file-key <key>               Figma file key, optional in local mode
@@ -25,6 +30,32 @@ Options:
   --allow-openai                 Gate for live OpenAI usage
   --allow-asset-backfill         Gate for optional asset backfill
   --help                         Show this help
+
+Examples:
+  # local mode (no Figma, no OpenAI)
+  node scripts/run-figma-to-ui.mjs --project-id demo --designBundleRevision 1 --mode local --json
+
+  # restricted-live: Figma REST only, no OpenAI gate required
+  node scripts/run-figma-to-ui.mjs \
+    --project-id demo \
+    --figma-url https://www.figma.com/design/<file-key>/<name>?node-id=<node-id> \
+    --mode restricted-live \
+    --allow-figma-network \
+    --json
+
+  # live: needs both --allow-figma-network and --allow-openai
+  node scripts/run-figma-to-ui.mjs \
+    --project-id demo \
+    --figma-url https://www.figma.com/design/<file-key>/<name>?node-id=<node-id> \
+    --mode live \
+    --allow-figma-network \
+    --allow-openai \
+    --json
+
+Gate notes:
+  - --allow-openai is only needed for live mode.
+  - restricted-live mode only requires --allow-figma-network.
+  - local mode requires neither gate.
 `);
 }
 

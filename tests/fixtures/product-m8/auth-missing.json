@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "runId": "m7-auth-missing",
+  "projectId": "demo",
+  "input": {
+    "figmaUrl": "https://www.figma.com/design/abc12345/demo?node-id=1-2",
+    "fileKey": "abc12345",
+    "nodeId": "1:2",
+    "mode": "restricted-live"
+  },
+  "artifacts": {
+    "summaryJson": "reports/m7-e2e/m7-auth-missing/summary.json",
+    "summaryMarkdown": "reports/m7-e2e/m7-auth-missing/summary.md"
+  },
+  "validation": {
+    "status": "skipped",
+    "reason": "flow_failed_before_validation"
+  },
+  "steps": [
+    { "id": "validate_input", "status": "passed", "message": "输入契约校验通过" },
+    { "id": "create_run_context", "status": "passed", "message": "已创建 runId 和报告上下文" },
+    { "id": "m7_flow", "status": "failed", "message": "restricted-live/live 模式未授权 Figma 网络访问" }
+  ],
+  "error": {
+    "category": "auth_missing",
+    "message": "restricted-live/live 模式未授权 Figma 网络访问",
+    "recoverable": true,
+    "nextAction": "添加 allowFigmaNetwork gate 或改用 local 模式。"
+  },
+  "nextAction": "添加 allowFigmaNetwork gate 或改用 local 模式。"
+}

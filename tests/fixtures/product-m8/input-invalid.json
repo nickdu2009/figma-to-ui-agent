@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "runId": "m7-input-invalid",
+  "projectId": "demo",
+  "input": {
+    "mode": "local"
+  },
+  "artifacts": {
+    "summaryJson": "reports/m7-e2e/m7-input-invalid/summary.json",
+    "summaryMarkdown": "reports/m7-e2e/m7-input-invalid/summary.md"
+  },
+  "validation": {
+    "status": "skipped",
+    "reason": "flow_failed_before_validation"
+  },
+  "steps": [
+    { "id": "validate_input", "status": "failed", "message": "M7 输入无效" }
+  ],
+  "error": {
+    "category": "input_invalid",
+    "message": "M7 输入无效",
+    "recoverable": true,
+    "nextAction": "修正 figmaUrl、fileKey、nodeId、projectId、mode 或 designBundleRevision 后重试。"
+  },
+  "nextAction": "修正 figmaUrl、fileKey、nodeId、projectId、mode 或 designBundleRevision 后重试。"
+}

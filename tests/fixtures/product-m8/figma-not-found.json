@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "runId": "m7-not-found",
+  "projectId": "demo",
+  "input": {
+    "figmaUrl": "https://www.figma.com/design/abc12345/demo?node-id=1-2",
+    "fileKey": "abc12345",
+    "nodeId": "1:2",
+    "mode": "restricted-live"
+  },
+  "artifacts": {
+    "summaryJson": "reports/m7-e2e/m7-not-found/summary.json",
+    "summaryMarkdown": "reports/m7-e2e/m7-not-found/summary.md"
+  },
+  "validation": {
+    "status": "skipped",
+    "reason": "flow_failed_before_validation"
+  },
+  "steps": [
+    { "id": "validate_input", "status": "passed", "message": "输入契约校验通过" },
+    { "id": "create_run_context", "status": "passed", "message": "已创建 runId 和报告上下文" },
+    { "id": "acquire_design", "status": "failed", "message": "Figma REST 404" }
+  ],
+  "error": {
+    "category": "figma_not_found",
+    "message": "Figma REST 404",
+    "recoverable": true,
+    "nextAction": "检查 Figma URL、fileKey、nodeId 或 token 文件权限后重试。"
+  },
+  "nextAction": "检查 Figma URL、fileKey、nodeId 或 token 文件权限后重试。"
+}

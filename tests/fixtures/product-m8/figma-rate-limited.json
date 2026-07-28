@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "runId": "m7-rate-limited",
+  "projectId": "demo",
+  "input": {
+    "figmaUrl": "https://www.figma.com/design/abc12345/demo?node-id=1-2",
+    "fileKey": "abc12345",
+    "nodeId": "1:2",
+    "mode": "restricted-live"
+  },
+  "artifacts": {
+    "summaryJson": "reports/m7-e2e/m7-rate-limited/summary.json",
+    "summaryMarkdown": "reports/m7-e2e/m7-rate-limited/summary.md"
+  },
+  "validation": {
+    "status": "skipped",
+    "reason": "flow_failed_before_validation"
+  },
+  "steps": [
+    { "id": "validate_input", "status": "passed", "message": "输入契约校验通过" },
+    { "id": "create_run_context", "status": "passed", "message": "已创建 runId 和报告上下文" },
+    { "id": "acquire_design", "status": "failed", "message": "Figma REST 429" }
+  ],
+  "error": {
+    "category": "figma_rate_limited",
+    "message": "Figma REST 429",
+    "recoverable": true,
+    "nextAction": "等待 Retry-After 后重试，或降低 Figma REST 请求频率。"
+  },
+  "nextAction": "等待 Retry-After 后重试，或降低 Figma REST 请求频率。"
+}
