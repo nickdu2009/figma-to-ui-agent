@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1",
+  "mode": "font-asset-plan",
+  "dataRoot": "data/community-corpus-v21",
+  "generatedAt": "2026-07-26T23:04:03.705Z",
+  "projects": [
+    {
+      "projectId": "community-v21-login-001",
+      "designBundleRevision": 1,
+      "faces": [
+        {
+          "family": "Inter",
+          "weight": 400,
+          "style": "normal",
+          "textNodeCount": 1,
+          "sampleTexts": [
+            "Or"
+          ]
+        },
+        {
+          "family": "Inter",
+          "weight": 500,
+          "style": "normal",
+          "textNodeCount": 6,
+          "sampleTexts": [
+            "Enter your email and password to log in ",
+            "Loisbecket@gmail.com",
+            "*******",
+            "Log In",
+            "Don’t have an account?"
+          ]
+        },
+        {
+          "family": "Inter",
+          "weight": 600,
+          "style": "normal",
+          "textNodeCount": 4,
+          "sampleTexts": [
+            "Forgot Password ?",
+            "Continue with Google",
+            "Continue with Facebook",
+            "Sign Up"
+          ]
+        },
+        {
+          "family": "Inter",
+          "weight": 700,
+          "style": "normal",
+          "textNodeCount": 1,
+          "sampleTexts": [
+            "Sign in to your Account"
+          ]
+        },
+        {
+          "family": "Plus Jakarta Sans",
+          "weight": 500,
+          "style": "normal",
+          "textNodeCount": 2,
+          "sampleTexts": [
+            "Email",
+            "Password"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-design-system-001",
+      "designBundleRevision": 1,
+      "faces": [
+        {
+          "family": "Apercu Pro",
+          "weight": 400,
+          "style": "normal",
+          "textNodeCount": 2,
+          "sampleTexts": [
+            "Data",
+            "Templates"
+          ]
+        },
+        {
+          "family": "Apercu Pro",
+          "weight": 500,
+          "style": "normal",
+          "textNodeCount": 39,
+          "sampleTexts": [
+            "/",
+            "Add templates",
+            "To start work with data, please create your first components templates.",
+            "Create",
+            "Templates"
+          ]
+        },
+        {
+          "family": "Apercu Pro",
+          "weight": 700,
+          "style": "normal",
+          "textNodeCount": 3,
+          "sampleTexts": [
+            "Templates",
+            "Invite",
+            "remove"
+          ]
+        },
+        {
+          "family": "Noto Sans",
+          "weight": 400,
+          "style": "normal",
+          "textNodeCount": 2,
+          "sampleTexts": [
+            "Medium",
+            "Owner"
+          ]
+        },
+        {
+          "family": "Noto Sans",
+          "weight": 500,
+          "style": "normal",
+          "textNodeCount": 1,
+          "sampleTexts": [
+            "Medium"
+          ]
+        },
+        {
+          "family": "Noto Sans",
+          "weight": 700,
+          "style": "normal",
+          "textNodeCount": 2,
+          "sampleTexts": [
+            "Rosneft",
+            "2"
+          ]
+        }
+      ]
+    }
+  ],
+  "importRequires": "FONT_ASSET_IMPORT_AUTHORIZED=1 scripts/import-font-assets.mjs --apply --confirm"
+}

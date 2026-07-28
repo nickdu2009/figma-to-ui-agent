@@ -1,0 +1,27 @@
+{
+  "projectId": "community-v21-design-system-001",
+  "dataRoot": "data/community-corpus-v21",
+  "fonts": [
+    {
+      "sourcePath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260727gf-font-assets/sources/NotoSans-400.ttf",
+      "family": "Noto Sans",
+      "weight": 400,
+      "style": "normal",
+      "sourceKind": "authorized_download"
+    },
+    {
+      "sourcePath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260727gf-font-assets/sources/NotoSans-500.ttf",
+      "family": "Noto Sans",
+      "weight": 500,
+      "style": "normal",
+      "sourceKind": "authorized_download"
+    },
+    {
+      "sourcePath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260727gf-font-assets/sources/NotoSans-700.ttf",
+      "family": "Noto Sans",
+      "weight": 700,
+      "style": "normal",
+      "sourceKind": "authorized_download"
+    }
+  ]
+}

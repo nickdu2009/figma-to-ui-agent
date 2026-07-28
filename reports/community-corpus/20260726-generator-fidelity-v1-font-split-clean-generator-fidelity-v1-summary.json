@@ -1,0 +1,1535 @@
+{
+  "schemaVersion": "1",
+  "runLabel": "20260726-generator-fidelity-v1-font-split-clean",
+  "generatedAt": "2026-07-26T04:30:53.589Z",
+  "dataRoot": "data/community-corpus-v21",
+  "reportRoot": "reports/community-corpus",
+  "projectIds": [
+    "community-v21-login-001",
+    "community-v21-mobile-001",
+    "community-v21-dashboard-001",
+    "community-v21-ecommerce-001",
+    "community-v21-landing-001",
+    "community-v21-design-system-001"
+  ],
+  "baselineSummaryPath": "reports/community-corpus/20260726-m5-visual-v21-local-summary.json",
+  "threshold": 0.05,
+  "apiBoundary": {
+    "figma": false,
+    "openai": false
+  },
+  "aggregate": {
+    "resultCount": 6,
+    "comparableCount": 6,
+    "threshold": 0.05,
+    "passed5PctCount": 1,
+    "failed5PctCount": 5,
+    "averageDiff": 0.09651351616909838,
+    "minDiff": 0.04016051295292194,
+    "maxDiff": 0.19423779186493195
+  },
+  "results": [
+    {
+      "projectId": "community-v21-login-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726-generator-fidelity-v1-font-split-clean/m5-static/community-v21-login-001/20260726-generator-fidelity-v1-font-split-clean-community-v21-login-001/summary.json",
+      "pageId": "login-version-1",
+      "diffPixelRatio": 0.10182266009852217,
+      "diffPixels": 31005,
+      "passed5Pct": false,
+      "canvasMapping": {
+        "sourcePageId": "3:5123",
+        "pageId": "login-version-1",
+        "artboard": {
+          "width": 375,
+          "height": 812
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "native_artboard"
+      },
+      "topRegions": [
+        {
+          "id": "cta",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 24,
+            "y": 474,
+            "width": 327,
+            "height": 218
+          },
+          "diffPixelRatio": 0.2225261622197907,
+          "diffPixels": 15863,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-login-version-1-3-5137-control",
+            "ui-login-version-1-28-4028-control",
+            "ui-login-version-1-28-4029-control",
+            "ui-login-version-1-28-4027-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 24,
+            "y": 474,
+            "width": 327,
+            "height": 218
+          },
+          "diffPixelRatio": 0.2225261622197907,
+          "diffPixels": 15863,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-login-version-1-3-5137-control",
+            "ui-login-version-1-28-4028-control",
+            "ui-login-version-1-28-4029-control",
+            "ui-login-version-1-28-4027-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 24,
+            "y": 14,
+            "width": 327,
+            "height": 748
+          },
+          "diffPixelRatio": 0.12639617982305515,
+          "diffPixels": 30916,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-login-version-1-3-5129",
+            "ui-login-version-1-3-5130",
+            "ui-login-version-1-I3-5133-3-6010",
+            "ui-login-version-1-I3-5133-3-6014",
+            "ui-login-version-1-I3-5134-3-6010",
+            "ui-login-version-1-I3-5134-3-6014",
+            "ui-login-version-1-3-5135",
+            "ui-login-version-1-I3-5137-3-6045",
+            "ui-login-version-1-28-4025",
+            "ui-login-version-1-I28-4028-3-6132",
+            "ui-login-version-1-I28-4029-3-6137",
+            "ui-login-version-1-3-16715",
+            "ui-login-version-1-3-16716",
+            "ui-login-version-1-I3-16736-3-6767"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 24,
+            "y": 15,
+            "width": 328,
+            "height": 789
+          },
+          "diffPixelRatio": 0.11964048347707812,
+          "diffPixels": 30962,
+          "sourceNodeIds": [
+            "3:16684",
+            "I3:16736;3:6782",
+            "I28:4029;3:6135",
+            "I3:16736;3:6770",
+            "I3:16736;3:6784",
+            "I3:16736;3:6776",
+            "I3:5133;3:6015;4:78000",
+            "I3:5134;3:6015;4:78000",
+            "I28:4029;3:6136",
+            "I3:5137;3:6044;4:76017",
+            "I3:5133;3:6013;4:78376",
+            "I3:5134;3:6013;4:78376",
+            "I28:4028;3:6131;136:158",
+            "I28:4028;3:6131;136:156",
+            "I3:16736;3:6777",
+            "I3:16755;3:6790",
+            "3:16683"
+          ],
+          "uiSpecNodeIds": [
+            "vl-login-version-1-3-16684",
+            "vl-login-version-1-3-16683",
+            "vl-login-version-1-I3-5133-3-6015-4-78000",
+            "vl-login-version-1-I3-5133-3-6013-4-78376",
+            "vl-login-version-1-I3-5134-3-6015-4-78000",
+            "vl-login-version-1-I3-5134-3-6013-4-78376",
+            "vl-login-version-1-I3-5137-3-6044-4-76017",
+            "vl-login-version-1-I28-4028-3-6131-136-158",
+            "vl-login-version-1-I28-4028-3-6131-136-156",
+            "vl-login-version-1-I28-4029-3-6135",
+            "vl-login-version-1-I28-4029-3-6136",
+            "vl-login-version-1-I3-16736-3-6770",
+            "vl-login-version-1-I3-16736-3-6776",
+            "vl-login-version-1-I3-16736-3-6782",
+            "vl-login-version-1-I3-16736-3-6784",
+            "vl-login-version-1-I3-16755-3-6790",
+            "vl-login-version-1-I3-16736-3-6777"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        },
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 375,
+            "height": 812
+          },
+          "diffPixelRatio": 0.10182266009852217,
+          "diffPixels": 31005,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "contractBucket": "form_controls",
+          "bounds": {
+            "x": 24,
+            "y": 263,
+            "width": 327,
+            "height": 157
+          },
+          "diffPixelRatio": 0.08354272580299578,
+          "diffPixels": 4289,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-login-version-1-I3-5133-3-6011-control",
+            "ui-login-version-1-3-5133-control",
+            "ui-login-version-1-I3-5134-3-6011-control",
+            "ui-login-version-1-3-5134-control"
+          ],
+          "suspectedCauses": [
+            "typography",
+            "renderer_reset"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-mobile-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726-generator-fidelity-v1-font-split-clean/m5-static/community-v21-mobile-001/20260726-generator-fidelity-v1-font-split-clean-community-v21-mobile-001/summary.json",
+      "pageId": "6-11---a---profile",
+      "diffPixelRatio": 0.057403986676459025,
+      "diffPixels": 23214,
+      "passed5Pct": false,
+      "canvasMapping": {
+        "sourcePageId": "3186:4543",
+        "pageId": "6-11---a---profile",
+        "artboard": {
+          "width": 393,
+          "height": 1029
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "scroll_canvas"
+      },
+      "topRegions": [
+        {
+          "id": "cta",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 124,
+            "y": 904,
+            "width": 142,
+            "height": 36
+          },
+          "diffPixelRatio": 0.1850547730829421,
+          "diffPixels": 946,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-6-11---a---profile-3186-4431-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 124,
+            "y": 904,
+            "width": 142,
+            "height": 36
+          },
+          "diffPixelRatio": 0.1850547730829421,
+          "diffPixels": 946,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-6-11---a---profile-3186-4431-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 35,
+            "y": 9,
+            "width": 310,
+            "height": 923
+          },
+          "diffPixelRatio": 0.06803201342047321,
+          "diffPixels": 19466,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-6-11---a---profile-3186-4551",
+            "ui-6-11---a---profile-3186-4560",
+            "ui-6-11---a---profile-3186-4561",
+            "ui-6-11---a---profile-3186-4562",
+            "ui-6-11---a---profile-3186-4563",
+            "ui-6-11---a---profile-I3186-4431-53-140",
+            "ui-6-11---a---profile-3186-4650",
+            "ui-6-11---a---profile-3186-4654",
+            "ui-6-11---a---profile-3186-4655",
+            "ui-6-11---a---profile-3186-4657",
+            "ui-6-11---a---profile-3186-4658",
+            "ui-6-11---a---profile-3186-4660",
+            "ui-6-11---a---profile-3186-4662",
+            "ui-6-11---a---profile-3186-4689",
+            "ui-6-11---a---profile-3186-4750",
+            "ui-6-11---a---profile-3186-4663",
+            "ui-6-11---a---profile-3186-4690",
+            "ui-6-11---a---profile-3186-4751",
+            "ui-6-11---a---profile-3250-4635",
+            "ui-6-11---a---profile-3250-4636",
+            "ui-6-11---a---profile-3250-4637",
+            "ui-6-11---a---profile-3250-4640",
+            "ui-6-11---a---profile-3250-4641",
+            "ui-6-11---a---profile-3250-4642"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 393,
+            "height": 1029
+          },
+          "diffPixelRatio": 0.057403986676459025,
+          "diffPixels": 23214,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 0,
+            "y": 30,
+            "width": 393,
+            "height": 999
+          },
+          "diffPixelRatio": 0.055966908384211186,
+          "diffPixels": 21973,
+          "sourceNodeIds": [
+            "I3186:4557;3096:2590;3071:2441",
+            "I3186:4557;3189:4744;3189:4296",
+            "I3186:4557;3096:2594;3071:2439",
+            "I3186:4557;3096:2596;3071:2445",
+            "3186:4547",
+            "I3186:4557;3096:2568",
+            "3250:4634",
+            "3186:4649",
+            "3186:4688",
+            "3186:4749",
+            "3186:4652",
+            "3186:4656",
+            "3186:4659",
+            "I3202:4758;2069:1252"
+          ],
+          "uiSpecNodeIds": [
+            "ui-6-11---a---profile-3186-4549",
+            "vl-6-11---a---profile-I3202-4758-2069-1252",
+            "vl-6-11---a---profile-I3186-4557-3096-2568",
+            "vl-6-11---a---profile-I3186-4557-3189-4744-3189-4296",
+            "vl-6-11---a---profile-I3186-4557-3096-2596-3071-2445",
+            "vl-6-11---a---profile-I3186-4557-3096-2594-3071-2439",
+            "vl-6-11---a---profile-I3186-4557-3096-2590-3071-2441",
+            "vl-6-11---a---profile-3186-4547",
+            "vl-6-11---a---profile-3250-4634",
+            "vl-6-11---a---profile-3186-4649",
+            "vl-6-11---a---profile-3186-4688",
+            "vl-6-11---a---profile-3186-4749",
+            "vl-6-11---a---profile-3186-4652",
+            "vl-6-11---a---profile-3186-4656",
+            "vl-6-11---a---profile-3186-4659"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-dashboard-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726-generator-fidelity-v1-font-split-clean/m5-static/community-v21-dashboard-001/20260726-generator-fidelity-v1-font-split-clean-community-v21-dashboard-001/summary.json",
+      "pageId": "light---dashboard---1",
+      "diffPixelRatio": 0.11005384657118056,
+      "diffPixels": 162281,
+      "passed5Pct": false,
+      "canvasMapping": {
+        "sourcePageId": "0:2",
+        "pageId": "light---dashboard---1",
+        "artboard": {
+          "width": 1440,
+          "height": 1024
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "scroll_canvas"
+      },
+      "topRegions": [
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1024
+          },
+          "diffPixelRatio": 0.11005384657118056,
+          "diffPixels": 162281,
+          "sourceNodeIds": [
+            "0:8",
+            "0:69",
+            "0:68",
+            "0:22",
+            "0:24",
+            "0:54",
+            "0:53",
+            "0:40",
+            "0:41",
+            "0:45",
+            "0:46",
+            "0:31",
+            "0:33",
+            "0:23",
+            "0:38",
+            "0:39",
+            "0:30",
+            "0:29",
+            "0:10",
+            "0:52",
+            "0:64",
+            "0:63",
+            "0:43",
+            "0:72",
+            "0:61",
+            "0:60",
+            "0:101",
+            "0:99",
+            "0:159",
+            "0:105",
+            "0:103",
+            "0:158",
+            "0:177",
+            "0:196",
+            "0:115",
+            "0:113",
+            "0:178",
+            "0:110",
+            "0:108",
+            "0:230",
+            "0:231",
+            "0:232",
+            "0:233",
+            "0:234",
+            "0:197",
+            "0:95",
+            "0:96",
+            "0:137",
+            "0:138",
+            "0:460",
+            "0:264",
+            "0:478",
+            "0:473",
+            "0:466",
+            "0:488",
+            "0:462",
+            "0:472",
+            "0:476",
+            "0:485",
+            "0:493",
+            "0:487",
+            "0:459",
+            "0:475",
+            "0:481",
+            "0:492",
+            "0:484",
+            "0:491",
+            "0:465",
+            "0:467",
+            "0:489",
+            "0:479",
+            "0:471",
+            "0:486",
+            "0:494",
+            "0:474",
+            "0:477",
+            "0:490",
+            "0:468",
+            "0:463",
+            "0:482",
+            "0:90",
+            "0:91",
+            "0:92",
+            "0:93",
+            "0:94",
+            "0:469",
+            "0:483",
+            "0:464",
+            "0:470",
+            "0:480",
+            "0:44",
+            "0:65",
+            "0:62",
+            "0:14",
+            "0:15",
+            "0:16",
+            "0:17",
+            "0:18",
+            "0:4",
+            "0:204",
+            "0:262",
+            "0:135",
+            "0:75",
+            "0:242",
+            "0:6",
+            "0:451",
+            "0:461",
+            "0:241",
+            "0:12",
+            "0:238",
+            "0:236",
+            "0:152",
+            "0:151",
+            "0:171",
+            "0:170",
+            "0:190",
+            "0:189",
+            "0:245",
+            "0:249",
+            "0:276",
+            "0:292",
+            "0:310",
+            "0:330",
+            "0:348",
+            "0:368",
+            "0:369",
+            "0:370",
+            "0:371",
+            "0:372",
+            "0:373",
+            "0:374",
+            "0:383",
+            "0:384",
+            "0:385",
+            "0:386",
+            "0:387",
+            "0:388",
+            "0:389",
+            "0:398",
+            "0:399",
+            "0:400",
+            "0:401",
+            "0:402",
+            "0:403",
+            "0:404",
+            "0:413",
+            "0:414",
+            "0:415",
+            "0:416",
+            "0:417",
+            "0:418",
+            "0:419",
+            "0:428",
+            "0:429",
+            "0:430",
+            "0:431",
+            "0:432",
+            "0:433",
+            "0:440",
+            "0:121"
+          ],
+          "uiSpecNodeIds": [
+            "vl-light---dashboard---1-0-4",
+            "vl-light---dashboard---1-0-10",
+            "vl-light---dashboard---1-0-8",
+            "vl-light---dashboard---1-0-14",
+            "vl-light---dashboard---1-0-15",
+            "vl-light---dashboard---1-0-16",
+            "vl-light---dashboard---1-0-17",
+            "vl-light---dashboard---1-0-18",
+            "vl-light---dashboard---1-0-22",
+            "vl-light---dashboard---1-0-31",
+            "vl-light---dashboard---1-0-40",
+            "vl-light---dashboard---1-0-45",
+            "vl-light---dashboard---1-0-54",
+            "vl-light---dashboard---1-0-64",
+            "vl-light---dashboard---1-0-61",
+            "vl-light---dashboard---1-0-65",
+            "vl-light---dashboard---1-0-12",
+            "ui-light---dashboard---1-0-70",
+            "vl-light---dashboard---1-0-69",
+            "vl-light---dashboard---1-0-68",
+            "vl-light---dashboard---1-0-72",
+            "vl-light---dashboard---1-0-6",
+            "vl-light---dashboard---1-0-95",
+            "vl-light---dashboard---1-0-96",
+            "vl-light---dashboard---1-0-90",
+            "vl-light---dashboard---1-0-91",
+            "vl-light---dashboard---1-0-92",
+            "vl-light---dashboard---1-0-93",
+            "vl-light---dashboard---1-0-94",
+            "vl-light---dashboard---1-0-101",
+            "vl-light---dashboard---1-0-105",
+            "vl-light---dashboard---1-0-110",
+            "vl-light---dashboard---1-0-115",
+            "vl-light---dashboard---1-0-75",
+            "vl-light---dashboard---1-0-137",
+            "vl-light---dashboard---1-0-138",
+            "ui-light---dashboard---1-0-153",
+            "vl-light---dashboard---1-0-152",
+            "vl-light---dashboard---1-0-151",
+            "vl-light---dashboard---1-0-159",
+            "vl-light---dashboard---1-0-158",
+            "ui-light---dashboard---1-0-172",
+            "vl-light---dashboard---1-0-171",
+            "vl-light---dashboard---1-0-170",
+            "vl-light---dashboard---1-0-177",
+            "vl-light---dashboard---1-0-178",
+            "ui-light---dashboard---1-0-191",
+            "vl-light---dashboard---1-0-190",
+            "vl-light---dashboard---1-0-189",
+            "vl-light---dashboard---1-0-196",
+            "vl-light---dashboard---1-0-197",
+            "vl-light---dashboard---1-0-135",
+            "vl-light---dashboard---1-0-230",
+            "vl-light---dashboard---1-0-231",
+            "vl-light---dashboard---1-0-232",
+            "vl-light---dashboard---1-0-233",
+            "vl-light---dashboard---1-0-234",
+            "vl-light---dashboard---1-0-238",
+            "vl-light---dashboard---1-0-242",
+            "vl-light---dashboard---1-0-241",
+            "vl-light---dashboard---1-0-245",
+            "vl-light---dashboard---1-0-204",
+            "vl-light---dashboard---1-0-249",
+            "vl-light---dashboard---1-0-262",
+            "vl-light---dashboard---1-0-276",
+            "vl-light---dashboard---1-0-292",
+            "vl-light---dashboard---1-0-310",
+            "vl-light---dashboard---1-0-330",
+            "vl-light---dashboard---1-0-348",
+            "vl-light---dashboard---1-0-264",
+            "vl-light---dashboard---1-0-370",
+            "vl-light---dashboard---1-0-371",
+            "vl-light---dashboard---1-0-372",
+            "vl-light---dashboard---1-0-373",
+            "vl-light---dashboard---1-0-374",
+            "vl-light---dashboard---1-0-383",
+            "vl-light---dashboard---1-0-384",
+            "vl-light---dashboard---1-0-385",
+            "vl-light---dashboard---1-0-386",
+            "vl-light---dashboard---1-0-387",
+            "vl-light---dashboard---1-0-388",
+            "vl-light---dashboard---1-0-389",
+            "vl-light---dashboard---1-0-398",
+            "vl-light---dashboard---1-0-399",
+            "vl-light---dashboard---1-0-400",
+            "vl-light---dashboard---1-0-401",
+            "vl-light---dashboard---1-0-402",
+            "vl-light---dashboard---1-0-403",
+            "vl-light---dashboard---1-0-404",
+            "vl-light---dashboard---1-0-413",
+            "vl-light---dashboard---1-0-414",
+            "vl-light---dashboard---1-0-415",
+            "vl-light---dashboard---1-0-416",
+            "vl-light---dashboard---1-0-417",
+            "vl-light---dashboard---1-0-418",
+            "vl-light---dashboard---1-0-419",
+            "vl-light---dashboard---1-0-428",
+            "vl-light---dashboard---1-0-429",
+            "vl-light---dashboard---1-0-430",
+            "vl-light---dashboard---1-0-431",
+            "vl-light---dashboard---1-0-432",
+            "vl-light---dashboard---1-0-433",
+            "vl-light---dashboard---1-0-440",
+            "vl-light---dashboard---1-0-451",
+            "vl-light---dashboard---1-0-24",
+            "vl-light---dashboard---1-0-53",
+            "vl-light---dashboard---1-0-41",
+            "vl-light---dashboard---1-0-46",
+            "vl-light---dashboard---1-0-33",
+            "vl-light---dashboard---1-0-23",
+            "vl-light---dashboard---1-0-38",
+            "vl-light---dashboard---1-0-39",
+            "vl-light---dashboard---1-0-30",
+            "vl-light---dashboard---1-0-29",
+            "vl-light---dashboard---1-0-52",
+            "vl-light---dashboard---1-0-63",
+            "vl-light---dashboard---1-0-43",
+            "vl-light---dashboard---1-0-60",
+            "vl-light---dashboard---1-0-99",
+            "vl-light---dashboard---1-0-103",
+            "vl-light---dashboard---1-0-113",
+            "vl-light---dashboard---1-0-108",
+            "vl-light---dashboard---1-0-460",
+            "vl-light---dashboard---1-0-478",
+            "vl-light---dashboard---1-0-473",
+            "vl-light---dashboard---1-0-466",
+            "vl-light---dashboard---1-0-488",
+            "vl-light---dashboard---1-0-462",
+            "vl-light---dashboard---1-0-472",
+            "vl-light---dashboard---1-0-476",
+            "vl-light---dashboard---1-0-485",
+            "vl-light---dashboard---1-0-493",
+            "vl-light---dashboard---1-0-487",
+            "vl-light---dashboard---1-0-459",
+            "vl-light---dashboard---1-0-475",
+            "vl-light---dashboard---1-0-481",
+            "vl-light---dashboard---1-0-492",
+            "vl-light---dashboard---1-0-484",
+            "vl-light---dashboard---1-0-491",
+            "vl-light---dashboard---1-0-465",
+            "vl-light---dashboard---1-0-467",
+            "vl-light---dashboard---1-0-489",
+            "vl-light---dashboard---1-0-479",
+            "vl-light---dashboard---1-0-471",
+            "vl-light---dashboard---1-0-486",
+            "vl-light---dashboard---1-0-494",
+            "vl-light---dashboard---1-0-474",
+            "vl-light---dashboard---1-0-477",
+            "vl-light---dashboard---1-0-490",
+            "vl-light---dashboard---1-0-468",
+            "vl-light---dashboard---1-0-463",
+            "vl-light---dashboard---1-0-482",
+            "vl-light---dashboard---1-0-469",
+            "vl-light---dashboard---1-0-483",
+            "vl-light---dashboard---1-0-464",
+            "vl-light---dashboard---1-0-470",
+            "vl-light---dashboard---1-0-480",
+            "vl-light---dashboard---1-0-44",
+            "vl-light---dashboard---1-0-62",
+            "vl-light---dashboard---1-0-236"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        },
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1024
+          },
+          "diffPixelRatio": 0.11005384657118056,
+          "diffPixels": 162281,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 122,
+            "y": 30,
+            "width": 1288,
+            "height": 972
+          },
+          "diffPixelRatio": 0.10830825217902512,
+          "diffPixels": 135595,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-light---dashboard---1-0-79",
+            "ui-light---dashboard---1-0-80",
+            "ui-light---dashboard---1-0-81",
+            "ui-light---dashboard---1-0-83",
+            "ui-light---dashboard---1-0-84",
+            "ui-light---dashboard---1-0-85",
+            "ui-light---dashboard---1-0-86",
+            "ui-light---dashboard---1-0-87",
+            "ui-light---dashboard---1-0-98",
+            "ui-light---dashboard---1-0-106",
+            "ui-light---dashboard---1-0-111",
+            "ui-light---dashboard---1-0-116",
+            "ui-light---dashboard---1-0-119",
+            "ui-light---dashboard---1-0-120",
+            "ui-light---dashboard---1-0-123",
+            "ui-light---dashboard---1-0-124",
+            "ui-light---dashboard---1-0-127",
+            "ui-light---dashboard---1-0-128",
+            "ui-light---dashboard---1-0-131",
+            "ui-light---dashboard---1-0-132",
+            "ui-light---dashboard---1-0-142",
+            "ui-light---dashboard---1-0-143",
+            "ui-light---dashboard---1-0-144",
+            "ui-light---dashboard---1-0-147",
+            "ui-light---dashboard---1-0-148",
+            "ui-light---dashboard---1-0-155",
+            "ui-light---dashboard---1-0-156",
+            "ui-light---dashboard---1-0-167",
+            "ui-light---dashboard---1-0-168",
+            "ui-light---dashboard---1-0-174",
+            "ui-light---dashboard---1-0-175",
+            "ui-light---dashboard---1-0-186",
+            "ui-light---dashboard---1-0-187",
+            "ui-light---dashboard---1-0-193",
+            "ui-light---dashboard---1-0-194",
+            "ui-light---dashboard---1-0-206",
+            "ui-light---dashboard---1-0-210",
+            "ui-light---dashboard---1-0-211",
+            "ui-light---dashboard---1-0-215",
+            "ui-light---dashboard---1-0-216",
+            "ui-light---dashboard---1-0-219",
+            "ui-light---dashboard---1-0-220",
+            "ui-light---dashboard---1-0-221",
+            "ui-light---dashboard---1-0-222",
+            "ui-light---dashboard---1-0-223",
+            "ui-light---dashboard---1-0-224",
+            "ui-light---dashboard---1-0-225",
+            "ui-light---dashboard---1-0-226",
+            "ui-light---dashboard---1-0-227",
+            "ui-light---dashboard---1-0-228",
+            "ui-light---dashboard---1-0-239",
+            "ui-light---dashboard---1-0-247",
+            "ui-light---dashboard---1-0-259",
+            "ui-light---dashboard---1-0-268",
+            "ui-light---dashboard---1-0-269",
+            "ui-light---dashboard---1-0-284",
+            "ui-light---dashboard---1-0-285",
+            "ui-light---dashboard---1-0-302",
+            "ui-light---dashboard---1-0-303",
+            "ui-light---dashboard---1-0-322",
+            "ui-light---dashboard---1-0-323",
+            "ui-light---dashboard---1-0-340",
+            "ui-light---dashboard---1-0-341",
+            "ui-light---dashboard---1-0-357",
+            "ui-light---dashboard---1-0-358",
+            "ui-light---dashboard---1-0-362",
+            "ui-light---dashboard---1-0-365",
+            "ui-light---dashboard---1-0-375",
+            "ui-light---dashboard---1-0-376",
+            "ui-light---dashboard---1-0-377",
+            "ui-light---dashboard---1-0-378",
+            "ui-light---dashboard---1-0-379",
+            "ui-light---dashboard---1-0-380",
+            "ui-light---dashboard---1-0-381",
+            "ui-light---dashboard---1-0-390",
+            "ui-light---dashboard---1-0-391",
+            "ui-light---dashboard---1-0-392",
+            "ui-light---dashboard---1-0-393",
+            "ui-light---dashboard---1-0-394",
+            "ui-light---dashboard---1-0-395",
+            "ui-light---dashboard---1-0-396",
+            "ui-light---dashboard---1-0-405",
+            "ui-light---dashboard---1-0-406",
+            "ui-light---dashboard---1-0-407",
+            "ui-light---dashboard---1-0-408",
+            "ui-light---dashboard---1-0-409",
+            "ui-light---dashboard---1-0-410",
+            "ui-light---dashboard---1-0-411",
+            "ui-light---dashboard---1-0-420",
+            "ui-light---dashboard---1-0-421",
+            "ui-light---dashboard---1-0-422",
+            "ui-light---dashboard---1-0-423",
+            "ui-light---dashboard---1-0-424",
+            "ui-light---dashboard---1-0-425",
+            "ui-light---dashboard---1-0-426",
+            "ui-light---dashboard---1-0-434",
+            "ui-light---dashboard---1-0-435",
+            "ui-light---dashboard---1-0-436",
+            "ui-light---dashboard---1-0-437",
+            "ui-light---dashboard---1-0-438",
+            "ui-light---dashboard---1-0-439",
+            "ui-light---dashboard---1-0-441",
+            "ui-light---dashboard---1-0-443",
+            "ui-light---dashboard---1-0-444",
+            "ui-light---dashboard---1-0-445",
+            "ui-light---dashboard---1-0-446",
+            "ui-light---dashboard---1-0-447",
+            "ui-light---dashboard---1-0-448",
+            "ui-light---dashboard---1-0-449",
+            "ui-light---dashboard---1-0-453",
+            "ui-light---dashboard---1-0-456",
+            "ui-light---dashboard---1-0-457",
+            "ui-light---dashboard---1-0-496",
+            "ui-light---dashboard---1-0-497"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-ecommerce-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726-generator-fidelity-v1-font-split-clean/m5-static/community-v21-ecommerce-001/20260726-generator-fidelity-v1-font-split-clean-community-v21-ecommerce-001/summary.json",
+      "pageId": "featured",
+      "diffPixelRatio": 0.07540229885057471,
+      "diffPixels": 22960,
+      "passed5Pct": false,
+      "canvasMapping": {
+        "sourcePageId": "0:303",
+        "pageId": "featured",
+        "artboard": {
+          "width": 375,
+          "height": 812
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "native_artboard"
+      },
+      "topRegions": [
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 24,
+            "y": 65,
+            "width": 327,
+            "height": 684
+          },
+          "diffPixelRatio": 0.08847488241500796,
+          "diffPixels": 19789,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-featured-0-310",
+            "ui-featured-0-311",
+            "ui-featured-0-312",
+            "ui-featured-0-313",
+            "ui-featured-0-314",
+            "ui-featured-0-315",
+            "ui-featured-0-316",
+            "ui-featured-0-317",
+            "ui-featured-0-318",
+            "ui-featured-0-319",
+            "ui-featured-0-320",
+            "ui-featured-0-321",
+            "ui-featured-0-322",
+            "ui-featured-0-323",
+            "ui-featured-0-324",
+            "ui-featured-0-325",
+            "ui-featured-0-327",
+            "ui-featured-0-328",
+            "ui-featured-0-329",
+            "ui-featured-0-330",
+            "ui-featured-0-365"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 375,
+            "height": 812
+          },
+          "diffPixelRatio": 0.07540229885057471,
+          "diffPixels": 22960,
+          "sourceNodeIds": [
+            "0:349",
+            "0:340",
+            "0:326",
+            "0:341",
+            "0:308",
+            "0:309",
+            "0:307",
+            "0:305",
+            "0:306",
+            "0:304",
+            "0:356",
+            "0:368",
+            "0:367",
+            "0:345",
+            "0:343",
+            "0:361",
+            "0:360"
+          ],
+          "uiSpecNodeIds": [
+            "vl-featured-0-349",
+            "vl-featured-0-356",
+            "vl-featured-0-368",
+            "vl-featured-0-345",
+            "vl-featured-0-340",
+            "vl-featured-0-326",
+            "vl-featured-0-341",
+            "vl-featured-0-308",
+            "vl-featured-0-309",
+            "vl-featured-0-307",
+            "vl-featured-0-305",
+            "vl-featured-0-306",
+            "vl-featured-0-304",
+            "vl-featured-0-367",
+            "vl-featured-0-343",
+            "vl-featured-0-361",
+            "vl-featured-0-360"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        },
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 375,
+            "height": 812
+          },
+          "diffPixelRatio": 0.07540229885057471,
+          "diffPixels": 22960,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-landing-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726-generator-fidelity-v1-font-split-clean/m5-static/community-v21-landing-001/20260726-generator-fidelity-v1-font-split-clean-community-v21-landing-001/summary.json",
+      "pageId": "home",
+      "diffPixelRatio": 0.04016051295292194,
+      "diffPixels": 74660,
+      "passed5Pct": true,
+      "canvasMapping": {
+        "sourcePageId": "10:948",
+        "pageId": "home",
+        "artboard": {
+          "width": 1440,
+          "height": 1291
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "scroll_canvas"
+      },
+      "topRegions": [
+        {
+          "id": "cta",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 144,
+            "y": 385,
+            "width": 128,
+            "height": 53
+          },
+          "diffPixelRatio": 0.11998820754716981,
+          "diffPixels": 814,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-home-10-918-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 144,
+            "y": 385,
+            "width": 128,
+            "height": 53
+          },
+          "diffPixelRatio": 0.11998820754716981,
+          "diffPixels": 814,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-home-10-918-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 0,
+            "y": 161,
+            "width": 1440,
+            "height": 1100
+          },
+          "diffPixelRatio": 0.04601830808080808,
+          "diffPixels": 72893,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-home-5-827",
+            "ui-home-5-828",
+            "ui-home-I10-918-1-724",
+            "ui-home-10-941",
+            "ui-home-10-942",
+            "ui-home-12-622",
+            "ui-home-12-623",
+            "ui-home-14-861",
+            "ui-home-14-902",
+            "ui-home-14-954",
+            "ui-home-14-956",
+            "ui-home-14-999",
+            "ui-home-14-1001"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1291
+          },
+          "diffPixelRatio": 0.04016051295292194,
+          "diffPixels": 74660,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 148,
+            "y": 96,
+            "width": 1153,
+            "height": 999
+          },
+          "diffPixelRatio": 0.03744420917014152,
+          "diffPixels": 43130,
+          "sourceNodeIds": [
+            "10:917",
+            "12:633",
+            "14:958",
+            "14:1003",
+            "211:825",
+            "211:853",
+            "211:819",
+            "13:637",
+            "211:822",
+            "211:846",
+            "14:976",
+            "211:826",
+            "211:854",
+            "211:849",
+            "211:850"
+          ],
+          "uiSpecNodeIds": [
+            "vl-home-10-917",
+            "vl-home-211-819",
+            "vl-home-211-822",
+            "vl-home-211-825",
+            "vl-home-211-826",
+            "vl-home-211-846",
+            "vl-home-211-849",
+            "vl-home-211-850",
+            "vl-home-211-853",
+            "vl-home-211-854",
+            "vl-home-13-637",
+            "vl-home-12-633",
+            "vl-home-14-976",
+            "vl-home-14-958",
+            "vl-home-14-1003"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-design-system-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726-generator-fidelity-v1-font-split-clean/m5-static/community-v21-design-system-001/20260726-generator-fidelity-v1-font-split-clean-community-v21-design-system-001/summary.json",
+      "pageId": "in-modals",
+      "diffPixelRatio": 0.19423779186493195,
+      "diffPixels": 368607,
+      "passed5Pct": false,
+      "canvasMapping": {
+        "sourcePageId": "5:37426",
+        "pageId": "in-modals",
+        "artboard": {
+          "width": 1830,
+          "height": 1037
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "scroll_canvas"
+      },
+      "topRegions": [
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1830,
+            "height": 1037
+          },
+          "diffPixelRatio": 0.19423779186493195,
+          "diffPixels": 368607,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "contractBucket": "form_controls",
+          "bounds": {
+            "x": 598,
+            "y": 301,
+            "width": 584,
+            "height": 152
+          },
+          "diffPixelRatio": 0.18107876712328766,
+          "diffPixels": 16074,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-in-modals-14-4219-control",
+            "ui-in-modals-14-4292-control",
+            "ui-in-modals-14-4264-control",
+            "ui-in-modals-14-4334-control",
+            "ui-in-modals-14-4393-control",
+            "ui-in-modals-14-4365-control",
+            "ui-in-modals-14-4421-control",
+            "ui-in-modals-14-4483-control",
+            "ui-in-modals-14-4451-control"
+          ],
+          "suspectedCauses": [
+            "typography",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 236,
+            "y": 77,
+            "width": 1306,
+            "height": 555
+          },
+          "diffPixelRatio": 0.04780017383386449,
+          "diffPixels": 34647,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-in-modals-I21-2366-5-37007",
+            "ui-in-modals-I21-2366-5-36999",
+            "ui-in-modals-I21-2366-5-37005",
+            "ui-in-modals-I21-2366-5-37008-1-745",
+            "ui-in-modals-I21-2366-5-37008-1-746",
+            "ui-in-modals-I21-2366-5-37008-1-747-2-1772",
+            "ui-in-modals-I21-2366-5-37405",
+            "ui-in-modals-I21-2366-5-37381",
+            "ui-in-modals-I21-2366-5-37037",
+            "ui-in-modals-I21-2366-5-37132",
+            "ui-in-modals-21-2374",
+            "ui-in-modals-21-2383",
+            "ui-in-modals-21-2396",
+            "ui-in-modals-21-2407",
+            "ui-in-modals-21-2418",
+            "ui-in-modals-21-2429",
+            "ui-in-modals-21-2442",
+            "ui-in-modals-21-2453",
+            "ui-in-modals-13-18309",
+            "ui-in-modals-14-4530",
+            "ui-in-modals-14-4222",
+            "ui-in-modals-14-4588",
+            "ui-in-modals-14-4295",
+            "ui-in-modals-14-4552",
+            "ui-in-modals-14-4267",
+            "ui-in-modals-14-4512",
+            "ui-in-modals-14-4570",
+            "ui-in-modals-14-4654",
+            "ui-in-modals-14-4721",
+            "ui-in-modals-14-4619",
+            "ui-in-modals-14-4689",
+            "ui-in-modals-13-18313",
+            "ui-in-modals-I13-18321-2-1584",
+            "ui-in-modals-14-4823",
+            "ui-in-modals-14-4816"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "cta",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 192,
+            "y": 70,
+            "width": 1396,
+            "height": 572
+          },
+          "diffPixelRatio": 0.04390541407017052,
+          "diffPixels": 35059,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-in-modals-I21-2366-5-36973-control",
+            "ui-in-modals-I21-2366-5-36978-control",
+            "ui-in-modals-I21-2366-5-36992-control",
+            "ui-in-modals-I21-2366-5-37008-1-747-control",
+            "ui-in-modals-I21-2366-5-37118-control",
+            "ui-in-modals-I21-2366-5-37124-control",
+            "ui-in-modals-I21-2366-5-37130-control",
+            "ui-in-modals-I21-2366-5-37112-control",
+            "ui-in-modals-I21-2366-5-37043-control",
+            "ui-in-modals-21-2370-control",
+            "ui-in-modals-21-2376-control",
+            "ui-in-modals-21-2386-control",
+            "ui-in-modals-21-2398-control",
+            "ui-in-modals-21-2409-control",
+            "ui-in-modals-21-2420-control",
+            "ui-in-modals-21-2432-control",
+            "ui-in-modals-21-2444-control",
+            "ui-in-modals-14-4758-control",
+            "ui-in-modals-14-4782-control",
+            "ui-in-modals-14-4776-control",
+            "ui-in-modals-14-4822-control",
+            "ui-in-modals-14-4815-control",
+            "ui-in-modals-14-4796-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 192,
+            "y": 70,
+            "width": 1396,
+            "height": 572
+          },
+          "diffPixelRatio": 0.04390541407017052,
+          "diffPixels": 35059,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-in-modals-I21-2366-5-36973-control",
+            "ui-in-modals-I21-2366-5-36978-control",
+            "ui-in-modals-I21-2366-5-36992-control",
+            "ui-in-modals-I21-2366-5-37008-1-747-control",
+            "ui-in-modals-I21-2366-5-37118-control",
+            "ui-in-modals-I21-2366-5-37124-control",
+            "ui-in-modals-I21-2366-5-37130-control",
+            "ui-in-modals-I21-2366-5-37112-control",
+            "ui-in-modals-I21-2366-5-37043-control",
+            "ui-in-modals-21-2370-control",
+            "ui-in-modals-21-2376-control",
+            "ui-in-modals-21-2386-control",
+            "ui-in-modals-21-2398-control",
+            "ui-in-modals-21-2409-control",
+            "ui-in-modals-21-2420-control",
+            "ui-in-modals-21-2432-control",
+            "ui-in-modals-21-2444-control",
+            "ui-in-modals-14-4758-control",
+            "ui-in-modals-14-4782-control",
+            "ui-in-modals-14-4776-control",
+            "ui-in-modals-14-4822-control",
+            "ui-in-modals-14-4815-control",
+            "ui-in-modals-14-4796-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 191,
+            "y": 54,
+            "width": 1441,
+            "height": 785
+          },
+          "diffPixelRatio": 0.042292816824834135,
+          "diffPixels": 47841,
+          "sourceNodeIds": [
+            "I21:2366;5:36996",
+            "I21:2366;5:37146",
+            "21:2450",
+            "I21:2366;5:36990",
+            "14:4767",
+            "14:4791",
+            "14:4779",
+            "21:2381",
+            "21:2405",
+            "21:2416",
+            "21:2427",
+            "21:2394",
+            "21:2439",
+            "I21:2366;5:37154",
+            "I21:2366;5:37155",
+            "I21:2366;5:37148",
+            "14:4769",
+            "14:4793",
+            "14:4781",
+            "I21:2366;5:37008;1:747;2:1773;11:17049",
+            "I13:18307;1630:17;5:2312",
+            "I14:4824;11:17049",
+            "I14:4817;11:17049",
+            "21:2440",
+            "21:2372",
+            "I13:18306;2189:34",
+            "I13:18308;1235:359;5:2381",
+            "I21:2366;5:37108",
+            "I21:2366;5:37008;1:743;11:17029;11:17026",
+            "I13:18306;2189:36",
+            "I21:2366;5:37329",
+            "21:2534",
+            "5:37656",
+            "I14:4591;2:27099",
+            "I14:4586;2:27072"
+          ],
+          "uiSpecNodeIds": [
+            "vl-in-modals-I21-2366-5-36990",
+            "vl-in-modals-I21-2366-5-36996",
+            "vl-in-modals-I21-2366-5-37008-1-743-11-17029-11-17026",
+            "vl-in-modals-I21-2366-5-37008-1-747-2-1773-11-17049",
+            "vl-in-modals-I21-2366-5-37329",
+            "vl-in-modals-I21-2366-5-37108",
+            "vl-in-modals-I21-2366-5-37154",
+            "vl-in-modals-I21-2366-5-37155",
+            "vl-in-modals-I21-2366-5-37148",
+            "vl-in-modals-I21-2366-5-37146",
+            "vl-in-modals-21-2372",
+            "vl-in-modals-21-2381",
+            "vl-in-modals-21-2394",
+            "vl-in-modals-21-2405",
+            "vl-in-modals-21-2416",
+            "vl-in-modals-21-2427",
+            "vl-in-modals-21-2439",
+            "vl-in-modals-21-2440",
+            "vl-in-modals-21-2450",
+            "vl-in-modals-21-2534",
+            "vl-in-modals-I14-4586-2-27072",
+            "vl-in-modals-14-4767",
+            "vl-in-modals-14-4769",
+            "vl-in-modals-14-4791",
+            "vl-in-modals-14-4793",
+            "vl-in-modals-14-4779",
+            "vl-in-modals-14-4781",
+            "vl-in-modals-I14-4824-11-17049",
+            "vl-in-modals-I14-4817-11-17049",
+            "vl-in-modals-5-37656",
+            "vl-in-modals-I13-18307-1630-17-5-2312",
+            "vl-in-modals-I13-18306-2189-34",
+            "vl-in-modals-I13-18308-1235-359-5-2381",
+            "vl-in-modals-I13-18306-2189-36"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        }
+      ]
+    }
+  ]
+}

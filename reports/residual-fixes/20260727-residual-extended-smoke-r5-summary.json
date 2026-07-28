@@ -1,0 +1,71 @@
+{
+  "runLabel": "20260727-residual-extended-smoke-r5",
+  "generatedAt": "2026-07-27T05:01:37.936Z",
+  "dataRoot": "data",
+  "apiBoundary": {
+    "figma": false,
+    "openai": false
+  },
+  "results": [
+    {
+      "projectId": "blind-case-a2-r8",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r5/blind-case-a2-r8/20260727-residual-extended-smoke-r5-blind-case-a2-r8/summary.json",
+      "pages": 2,
+      "warnings": 0,
+      "unsupported": 0,
+      "visualLayers": 44,
+      "rendered": 44
+    },
+    {
+      "projectId": "blind-case-b-r8",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r5/blind-case-b-r8/20260727-residual-extended-smoke-r5-blind-case-b-r8/summary.json",
+      "pages": 1,
+      "warnings": 0,
+      "unsupported": 0,
+      "visualLayers": 37,
+      "rendered": 37
+    },
+    {
+      "projectId": "blind-case-c-r8",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r5/blind-case-c-r8/20260727-residual-extended-smoke-r5-blind-case-c-r8/summary.json",
+      "pages": 1,
+      "warnings": 0,
+      "unsupported": 0,
+      "visualLayers": 71,
+      "rendered": 71
+    },
+    {
+      "projectId": "blind-case-d-r3",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r5/blind-case-d-r3/20260727-residual-extended-smoke-r5-blind-case-d-r3/summary.json",
+      "pages": 1,
+      "warnings": 0,
+      "unsupported": 0,
+      "visualLayers": 0,
+      "rendered": 0
+    },
+    {
+      "projectId": "m3-flow-20260723-c",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r5/m3-flow-20260723-c/20260727-residual-extended-smoke-r5-m3-flow-20260723-c/summary.json",
+      "pages": 3,
+      "warnings": 0,
+      "unsupported": 0,
+      "visualLayers": 0,
+      "rendered": 0
+    },
+    {
+      "projectId": "m3-flow-20260724-i",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r5/m3-flow-20260724-i/20260727-residual-extended-smoke-r5-m3-flow-20260724-i/summary.json",
+      "pages": 3,
+      "warnings": 0,
+      "unsupported": 0,
+      "visualLayers": 19,
+      "rendered": 19
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-07-26T01:46:00.151Z",
+  "manifestPath": "tests/fixtures/figma/community-sample-manifest.json",
+  "apiBoundary": {
+    "figmaRest": false,
+    "openai": false,
+    "figmaMe": false,
+    "variables": false
+  },
+  "reportRoot": "reports/community-corpus/m5-coverage-v21-local",
+  "targetSampleCount": 6,
+  "resultCounts": {
+    "completed": 6
+  },
+  "results": [
+    {
+      "sampleId": "community-login-001",
+      "projectId": "community-v21-login-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21-local/community-login-001/ms14zks7-b94d7cd6a9184a7f/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21-local/community-login-001/ms14zks7-b94d7cd6a9184a7f/summary.md",
+      "stderr": []
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "projectId": "community-v21-mobile-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21-local/community-mobile-001/ms14zksk-d1825d1d15b34a40/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21-local/community-mobile-001/ms14zksk-d1825d1d15b34a40/summary.md",
+      "stderr": []
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "projectId": "community-v21-dashboard-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21-local/community-dashboard-001/ms14zktn-430e63f57fce4a71/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21-local/community-dashboard-001/ms14zktn-430e63f57fce4a71/summary.md",
+      "stderr": []
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "projectId": "community-v21-ecommerce-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21-local/community-ecommerce-001/ms14zktx-cddc58e1ad2b4ce4/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21-local/community-ecommerce-001/ms14zktx-cddc58e1ad2b4ce4/summary.md",
+      "stderr": []
+    },
+    {
+      "sampleId": "community-landing-001",
+      "projectId": "community-v21-landing-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21-local/community-landing-001/ms14zkua-6efcd5d8e07e4fc5/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21-local/community-landing-001/ms14zkua-6efcd5d8e07e4fc5/summary.md",
+      "stderr": []
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "projectId": "community-v21-design-system-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21-local/community-design-system-001/ms14zkur-27a0fa9356d249eb/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21-local/community-design-system-001/ms14zkur-27a0fa9356d249eb/summary.md",
+      "stderr": []
+    }
+  ]
+}

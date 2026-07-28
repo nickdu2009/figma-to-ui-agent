@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1",
+  "projectId": "community-v21-mobile-001",
+  "designBundleRevision": 2,
+  "fileKeyHash": "2a7c1bd129015f6202f491de19b31039f67cc4e0182981d1a6e2d46fd8143802",
+  "entries": [
+    {
+      "sourcePageId": "3186:4543",
+      "sourceNodeId": "I3202:4758;2069:1253",
+      "sourceNodeIdHash": "74b532a2c735ccc2e2d69e092521e7707cacdf8fc5361e7bf77bb86602f35697",
+      "reasonCode": "diagnostic_missing_asset",
+      "priorityRank": 1,
+      "bounds": {
+        "x": -9077.5751953125,
+        "y": 29231.724609375,
+        "width": 12.15000057220459,
+        "height": 17.55000114440918
+      }
+    }
+  ]
+}

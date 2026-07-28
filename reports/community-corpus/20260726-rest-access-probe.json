@@ -1,0 +1,749 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-07-26T00:55:48.881Z",
+  "manifestPath": "tests/fixtures/figma/community-sample-manifest.json",
+  "apiBoundary": {
+    "figmaRest": true,
+    "openai": false
+  },
+  "targetSampleCount": 6,
+  "resultCounts": {
+    "rest_readable_node_selected": 6
+  },
+  "rateLimitEventCount": 0,
+  "rateLimitEvents": [],
+  "results": [
+    {
+      "sampleId": "community-login-001",
+      "status": "rest_readable_node_selected",
+      "fileKey": "jLjZfh0AntwoJ0Z7NjfKnY",
+      "nodeId": "3:5123",
+      "selected": {
+        "id": "3:5123",
+        "type": "FRAME",
+        "name": "Login Version 1",
+        "pageName": "✨ Design Area",
+        "width": 375,
+        "height": 812,
+        "area": 304500,
+        "depth": 2,
+        "score": 869
+      },
+      "topCandidates": [
+        {
+          "id": "3:5123",
+          "type": "FRAME",
+          "name": "Login Version 1",
+          "pageName": "✨ Design Area",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 869
+        },
+        {
+          "id": "44:5551",
+          "type": "FRAME",
+          "name": "Login Version 8",
+          "pageName": "✨ Design Area",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 869
+        },
+        {
+          "id": "51:1815",
+          "type": "FRAME",
+          "name": "Sign Up Version 8",
+          "pageName": "✨ Design Area",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 869
+        },
+        {
+          "id": "49:1514",
+          "type": "FRAME",
+          "name": "Login Version 9",
+          "pageName": "✨ Design Area",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 869
+        },
+        {
+          "id": "49:1661",
+          "type": "FRAME",
+          "name": "Sign Up Version 9",
+          "pageName": "✨ Design Area",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 869
+        },
+        {
+          "id": "37:827",
+          "type": "FRAME",
+          "name": "Sign Up Version 1",
+          "pageName": "✨ Design Area",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 869
+        },
+        {
+          "id": "3:16775",
+          "type": "FRAME",
+          "name": "Login Version 2",
+          "pageName": "✨ Design Area",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 869
+        },
+        {
+          "id": "42:1820",
+          "type": "FRAME",
+          "name": "Sign Up Version 2",
+          "pageName": "✨ Design Area",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 869
+        }
+      ],
+      "summary": {
+        "probeDepth": 2
+      }
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "status": "rest_readable_node_selected",
+      "fileKey": "NfIJDaLmWpNuVzugWT12xs",
+      "nodeId": "3186:4543",
+      "selected": {
+        "id": "3186:4543",
+        "type": "FRAME",
+        "name": "6.11 - A - Profile",
+        "pageName": "FitBody App",
+        "width": 393,
+        "height": 1029,
+        "area": 404397,
+        "depth": 2,
+        "score": 944
+      },
+      "topCandidates": [
+        {
+          "id": "3186:4543",
+          "type": "FRAME",
+          "name": "6.11 - A - Profile",
+          "pageName": "FitBody App",
+          "width": 393,
+          "height": 1029,
+          "area": 404397,
+          "depth": 2,
+          "score": 944
+        },
+        {
+          "id": "3095:46",
+          "type": "FRAME",
+          "name": "7.3 - A - Nutrition",
+          "pageName": "FitBody App",
+          "width": 393,
+          "height": 960,
+          "area": 377280,
+          "depth": 2,
+          "score": 941
+        },
+        {
+          "id": "3184:4727",
+          "type": "FRAME",
+          "name": "7.3.2.3 - C - Meal Plans - Dinner",
+          "pageName": "FitBody App",
+          "width": 393,
+          "height": 952,
+          "area": 374136,
+          "depth": 2,
+          "score": 941
+        },
+        {
+          "id": "3184:4689",
+          "type": "FRAME",
+          "name": "7.3.2.3 - B - Meal Plans - Dinner",
+          "pageName": "FitBody App",
+          "width": 393,
+          "height": 952,
+          "area": 374136,
+          "depth": 2,
+          "score": 941
+        },
+        {
+          "id": "3095:2698",
+          "type": "FRAME",
+          "name": "7.3.2.3 - A - Meal Plans - Dinner",
+          "pageName": "FitBody App",
+          "width": 393,
+          "height": 952,
+          "area": 374136,
+          "depth": 2,
+          "score": 941
+        },
+        {
+          "id": "3184:3631",
+          "type": "FRAME",
+          "name": "7.3.2.2 - C - Meal Plans - Lunch",
+          "pageName": "FitBody App",
+          "width": 393,
+          "height": 952,
+          "area": 374136,
+          "depth": 2,
+          "score": 941
+        },
+        {
+          "id": "3184:3587",
+          "type": "FRAME",
+          "name": "7.3.2.2 - B - Meal Plans - Lunch",
+          "pageName": "FitBody App",
+          "width": 393,
+          "height": 952,
+          "area": 374136,
+          "depth": 2,
+          "score": 941
+        },
+        {
+          "id": "3095:2591",
+          "type": "FRAME",
+          "name": "7.3.2.2 - A - Meal Plans - Lunch",
+          "pageName": "FitBody App",
+          "width": 393,
+          "height": 952,
+          "area": 374136,
+          "depth": 2,
+          "score": 941
+        }
+      ],
+      "summary": {
+        "nodeCount": 8216,
+        "pageCount": 4,
+        "typeCounts": {
+          "CANVAS": 4,
+          "COMPONENT": 92,
+          "COMPONENT_SET": 38,
+          "DOCUMENT": 1,
+          "ELLIPSE": 508,
+          "FRAME": 354,
+          "GROUP": 716,
+          "INSTANCE": 1540,
+          "LINE": 120,
+          "RECTANGLE": 917,
+          "REGULAR_POLYGON": 5,
+          "TEXT": 1859,
+          "VECTOR": 2062
+        }
+      }
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "status": "rest_readable_node_selected",
+      "fileKey": "krSvKTElV3sqy0wbbrzsnM",
+      "nodeId": "0:2",
+      "selected": {
+        "id": "0:2",
+        "type": "FRAME",
+        "name": "Light - Dashboard - 1",
+        "pageName": "Page 1",
+        "width": 1440,
+        "height": 1024,
+        "area": 1474560,
+        "depth": 2,
+        "score": 941
+      },
+      "topCandidates": [
+        {
+          "id": "0:2",
+          "type": "FRAME",
+          "name": "Light - Dashboard - 1",
+          "pageName": "Page 1",
+          "width": 1440,
+          "height": 1024,
+          "area": 1474560,
+          "depth": 2,
+          "score": 941
+        },
+        {
+          "id": "0:498",
+          "type": "FRAME",
+          "name": "Dark - Dashboard - 2",
+          "pageName": "Page 1",
+          "width": 1440,
+          "height": 1024,
+          "area": 1474560,
+          "depth": 2,
+          "score": 941
+        },
+        {
+          "id": "0:3",
+          "type": "GROUP",
+          "name": "Bg",
+          "pageName": "Page 1",
+          "width": 1440,
+          "height": 1024,
+          "area": 1474560,
+          "depth": 3,
+          "score": 806
+        },
+        {
+          "id": "0:499",
+          "type": "GROUP",
+          "name": "Bg",
+          "pageName": "Page 1",
+          "width": 1440,
+          "height": 1024,
+          "area": 1474560,
+          "depth": 3,
+          "score": 806
+        },
+        {
+          "id": "0:73",
+          "type": "GROUP",
+          "name": "Center",
+          "pageName": "Page 1",
+          "width": 947,
+          "height": 1002,
+          "area": 948894,
+          "depth": 3,
+          "score": 797
+        },
+        {
+          "id": "0:569",
+          "type": "GROUP",
+          "name": "Center",
+          "pageName": "Page 1",
+          "width": 947,
+          "height": 1002,
+          "area": 948894,
+          "depth": 3,
+          "score": 797
+        },
+        {
+          "id": "0:260",
+          "type": "GROUP",
+          "name": "Right",
+          "pageName": "Page 1",
+          "width": 343,
+          "height": 1024,
+          "area": 351232,
+          "depth": 3,
+          "score": 64
+        },
+        {
+          "id": "0:756",
+          "type": "GROUP",
+          "name": "Right",
+          "pageName": "Page 1",
+          "width": 343,
+          "height": 1024,
+          "area": 351232,
+          "depth": 3,
+          "score": 64
+        }
+      ],
+      "summary": {
+        "nodeCount": 994,
+        "pageCount": 1,
+        "typeCounts": {
+          "BOOLEAN_OPERATION": 62,
+          "CANVAS": 1,
+          "DOCUMENT": 1,
+          "FRAME": 2,
+          "GROUP": 230,
+          "RECTANGLE": 326,
+          "TEXT": 228,
+          "VECTOR": 144
+        }
+      }
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "status": "rest_readable_node_selected",
+      "fileKey": "pAd2NPLRFjI3eZ70IxYbTf",
+      "nodeId": "0:303",
+      "selected": {
+        "id": "0:303",
+        "type": "FRAME",
+        "name": "Featured",
+        "pageName": "Wireframes",
+        "width": 375,
+        "height": 812,
+        "area": 304500,
+        "depth": 2,
+        "score": 935
+      },
+      "topCandidates": [
+        {
+          "id": "0:303",
+          "type": "FRAME",
+          "name": "Featured",
+          "pageName": "Wireframes",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 935
+        },
+        {
+          "id": "0:369",
+          "type": "FRAME",
+          "name": "Cart",
+          "pageName": "Wireframes",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 935
+        },
+        {
+          "id": "0:526",
+          "type": "FRAME",
+          "name": "Check out - 2",
+          "pageName": "Wireframes",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 935
+        },
+        {
+          "id": "0:593",
+          "type": "FRAME",
+          "name": "Add new card",
+          "pageName": "Wireframes",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 935
+        },
+        {
+          "id": "0:683",
+          "type": "FRAME",
+          "name": "Group",
+          "pageName": "Wireframes",
+          "width": 375,
+          "height": 566,
+          "area": 212250,
+          "depth": 3,
+          "score": 926
+        },
+        {
+          "id": "0:527",
+          "type": "FRAME",
+          "name": "Group 8",
+          "pageName": "Wireframes",
+          "width": 375,
+          "height": 528,
+          "area": 198000,
+          "depth": 3,
+          "score": 914
+        },
+        {
+          "id": "0:594",
+          "type": "FRAME",
+          "name": "Group 8",
+          "pageName": "Wireframes",
+          "width": 375,
+          "height": 528,
+          "area": 198000,
+          "depth": 3,
+          "score": 914
+        },
+        {
+          "id": "0:256",
+          "type": "FRAME",
+          "name": "Order Completed",
+          "pageName": "UI",
+          "width": 375,
+          "height": 812,
+          "area": 304500,
+          "depth": 2,
+          "score": 910
+        }
+      ],
+      "summary": {
+        "nodeCount": 965,
+        "pageCount": 4,
+        "typeCounts": {
+          "BOOLEAN_OPERATION": 72,
+          "CANVAS": 4,
+          "COMPONENT": 8,
+          "DOCUMENT": 1,
+          "FRAME": 70,
+          "GROUP": 57,
+          "INSTANCE": 11,
+          "RECTANGLE": 152,
+          "TEXT": 260,
+          "VECTOR": 330
+        }
+      }
+    },
+    {
+      "sampleId": "community-landing-001",
+      "status": "rest_readable_node_selected",
+      "fileKey": "qXqo1OokdWnXvg0UjFaDX3",
+      "nodeId": "10:948",
+      "selected": {
+        "id": "10:948",
+        "type": "FRAME",
+        "name": "Home",
+        "pageName": "Design",
+        "width": 1440,
+        "height": 1285,
+        "area": 1850400,
+        "depth": 3,
+        "score": 951
+      },
+      "topCandidates": [
+        {
+          "id": "10:948",
+          "type": "FRAME",
+          "name": "Home",
+          "pageName": "Design",
+          "width": 1440,
+          "height": 1285,
+          "area": 1850400,
+          "depth": 3,
+          "score": 951
+        },
+        {
+          "id": "22:1182",
+          "type": "FRAME",
+          "name": "Footer",
+          "pageName": "Design",
+          "width": 1440,
+          "height": 628,
+          "area": 904320,
+          "depth": 3,
+          "score": 905
+        },
+        {
+          "id": "10:923",
+          "type": "FRAME",
+          "name": "Hero Section",
+          "pageName": "Design",
+          "width": 1440,
+          "height": 599,
+          "area": 862560,
+          "depth": 4,
+          "score": 823
+        },
+        {
+          "id": "22:919",
+          "type": "FRAME",
+          "name": "Community Updates",
+          "pageName": "Design",
+          "width": 1440,
+          "height": 506,
+          "area": 728640,
+          "depth": 4,
+          "score": 815
+        },
+        {
+          "id": "17:678",
+          "type": "FRAME",
+          "name": "Unlock",
+          "pageName": "Design",
+          "width": 1440,
+          "height": 433,
+          "area": 624095,
+          "depth": 5,
+          "score": 809
+        },
+        {
+          "id": "14:1044",
+          "type": "FRAME",
+          "name": "Unlock",
+          "pageName": "Design",
+          "width": 1440,
+          "height": 433,
+          "area": 623520,
+          "depth": 5,
+          "score": 809
+        },
+        {
+          "id": "17:677",
+          "type": "FRAME",
+          "name": "Calender",
+          "pageName": "Design",
+          "width": 1440,
+          "height": 433,
+          "area": 624095,
+          "depth": 4,
+          "score": 804
+        },
+        {
+          "id": "14:1043",
+          "type": "FRAME",
+          "name": "Unlock",
+          "pageName": "Design",
+          "width": 1440,
+          "height": 433,
+          "area": 623520,
+          "depth": 4,
+          "score": 804
+        }
+      ],
+      "summary": {
+        "nodeCount": 4727,
+        "pageCount": 2,
+        "typeCounts": {
+          "BOOLEAN_OPERATION": 4,
+          "CANVAS": 2,
+          "COMPONENT": 332,
+          "COMPONENT_SET": 3,
+          "DOCUMENT": 1,
+          "ELLIPSE": 67,
+          "FRAME": 401,
+          "GROUP": 467,
+          "INSTANCE": 251,
+          "RECTANGLE": 76,
+          "REGULAR_POLYGON": 17,
+          "TEXT": 525,
+          "VECTOR": 2581
+        }
+      }
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "status": "rest_readable_node_selected",
+      "fileKey": "dgYDpEYe2yITqznx3e2hPw",
+      "nodeId": "5:37426",
+      "selected": {
+        "id": "5:37426",
+        "type": "FRAME",
+        "name": "In modals",
+        "pageName": "-> variants & showcase",
+        "width": 1829,
+        "height": 924,
+        "area": 1689996,
+        "depth": 3,
+        "score": 940
+      },
+      "topCandidates": [
+        {
+          "id": "5:37426",
+          "type": "FRAME",
+          "name": "In modals",
+          "pageName": "-> variants & showcase",
+          "width": 1829,
+          "height": 924,
+          "area": 1689996,
+          "depth": 3,
+          "score": 940
+        },
+        {
+          "id": "5:38475",
+          "type": "FRAME",
+          "name": "Popup",
+          "pageName": "-> variants & showcase",
+          "width": 1829,
+          "height": 924,
+          "area": 1689996,
+          "depth": 3,
+          "score": 935
+        },
+        {
+          "id": "5:37425",
+          "type": "FRAME",
+          "name": "Sticky-info-messages",
+          "pageName": "-> variants & showcase",
+          "width": 1829,
+          "height": 733,
+          "area": 1340657,
+          "depth": 3,
+          "score": 921
+        },
+        {
+          "id": "5:38095",
+          "type": "FRAME",
+          "name": "Widget",
+          "pageName": "-> variants & showcase",
+          "width": 1829,
+          "height": 733,
+          "area": 1340657,
+          "depth": 3,
+          "score": 921
+        },
+        {
+          "id": "5:38096",
+          "type": "FRAME",
+          "name": "base-layout",
+          "pageName": "-> variants & showcase",
+          "width": 1440,
+          "height": 840,
+          "area": 1209600,
+          "depth": 4,
+          "score": 845
+        },
+        {
+          "id": "5:38476",
+          "type": "FRAME",
+          "name": "base-layout",
+          "pageName": "-> variants & showcase",
+          "width": 1440,
+          "height": 840,
+          "area": 1209600,
+          "depth": 4,
+          "score": 845
+        },
+        {
+          "id": "5:9182",
+          "type": "COMPONENT",
+          "name": "page-container",
+          "pageName": "-> variants & showcase",
+          "width": 1220,
+          "height": 899,
+          "area": 1096780,
+          "depth": 5,
+          "score": 845
+        },
+        {
+          "id": "21:2366",
+          "type": "INSTANCE",
+          "name": "page-container",
+          "pageName": "-> variants & showcase",
+          "width": 1220,
+          "height": 899,
+          "area": 1096780,
+          "depth": 5,
+          "score": 845
+        }
+      ],
+      "summary": {
+        "nodeCount": 1709,
+        "pageCount": 2,
+        "typeCounts": {
+          "BOOLEAN_OPERATION": 26,
+          "CANVAS": 2,
+          "COMPONENT": 50,
+          "COMPONENT_SET": 4,
+          "DOCUMENT": 1,
+          "ELLIPSE": 10,
+          "FRAME": 331,
+          "GROUP": 92,
+          "INSTANCE": 182,
+          "RECTANGLE": 28,
+          "REGULAR_POLYGON": 2,
+          "TEXT": 222,
+          "VECTOR": 759
+        }
+      }
+    }
+  ]
+}

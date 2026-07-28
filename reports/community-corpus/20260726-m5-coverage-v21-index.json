@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-07-26T01:43:55.371Z",
+  "manifestPath": "tests/fixtures/figma/community-sample-manifest.json",
+  "apiBoundary": {
+    "figmaRest": true,
+    "openai": false,
+    "figmaMe": false,
+    "variables": false
+  },
+  "reportRoot": "reports/community-corpus/m5-coverage-v21",
+  "targetSampleCount": 6,
+  "resultCounts": {
+    "completed": 6
+  },
+  "results": [
+    {
+      "sampleId": "community-login-001",
+      "projectId": "community-v21-login-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-login-001/ms14upou-d6cdd9aeb9784a73/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-login-001/ms14upou-d6cdd9aeb9784a73/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-login-001/ms14upou-d6cdd9aeb9784a73/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-login-001/ms14upou-d6cdd9aeb9784a73/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 17",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "projectId": "community-v21-mobile-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-mobile-001/ms14v2pi-8341617581314a7b/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-mobile-001/ms14v2pi-8341617581314a7b/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-mobile-001/ms14v2pi-8341617581314a7b/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-mobile-001/ms14v2pi-8341617581314a7b/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 14",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "projectId": "community-v21-dashboard-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-dashboard-001/ms14vuvh-c678c824d9f341e6/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-dashboard-001/ms14vuvh-c678c824d9f341e6/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-dashboard-001/ms14vuvh-c678c824d9f341e6/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-dashboard-001/ms14vuvh-c678c824d9f341e6/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 160",
+        "unsupportedFeatures: 12"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "projectId": "community-v21-ecommerce-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-ecommerce-001/ms14w5kb-30790a1935804ec0/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-ecommerce-001/ms14w5kb-30790a1935804ec0/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-ecommerce-001/ms14w5kb-30790a1935804ec0/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-ecommerce-001/ms14w5kb-30790a1935804ec0/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 17",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-landing-001",
+      "projectId": "community-v21-landing-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-landing-001/ms14wgg1-7d68fd3d091d4c79/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-landing-001/ms14wgg1-7d68fd3d091d4c79/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-landing-001/ms14wgg1-7d68fd3d091d4c79/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-landing-001/ms14wgg1-7d68fd3d091d4c79/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 15",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "projectId": "community-v21-design-system-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-design-system-001/ms14wwk2-b5abfd92b391484a/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-design-system-001/ms14wwk2-b5abfd92b391484a/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-design-system-001/ms14wwk2-b5abfd92b391484a/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v21/community-design-system-001/ms14wwk2-b5abfd92b391484a/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 35",
+        "unsupportedFeatures: 1"
+      ],
+      "stderr": []
+    }
+  ]
+}

@@ -1,0 +1,372 @@
+{
+  "schemaVersion": "1",
+  "runId": "20260727-residual-extended-smoke-r4-blind-case-d-r3",
+  "projectId": "blind-case-d-r3",
+  "designBundleRevision": 1,
+  "uiSpecRevision": 5,
+  "status": "passed",
+  "scope": "static_generation_only",
+  "behaviorFlowVerified": false,
+  "m4ValidationStatus": "not_required",
+  "coverageVersion": "1",
+  "coverage": {
+    "coverageVersion": "1",
+    "pages": [
+      {
+        "sourceNodeCount": 6,
+        "visibleNodeCount": 6,
+        "byKind": {
+          "container": {
+            "total": 2,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 2,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "vector": {
+            "total": 1,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 1
+          },
+          "image": {
+            "total": 1,
+            "structuredDom": 0,
+            "visualAsset": 1,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "text": {
+            "total": 2,
+            "structuredDom": 2,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 1,
+          "rendered": 0,
+          "ignoredSafe": 0,
+          "unsupported": 1,
+          "unmapped": 0
+        },
+        "imageFill": {
+          "total": 1,
+          "rendered": 1,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 2,
+          "rendered": 2,
+          "styleComplete": 2
+        },
+        "pageId": "01",
+        "sourcePageId": "1:2",
+        "pageSize": {
+          "expectedWidth": 685,
+          "expectedHeight": 492,
+          "actualWidth": 685,
+          "actualHeight": 492,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      }
+    ],
+    "records": [
+      {
+        "sourceNodeId": "1:2",
+        "sourcePageId": "1:2",
+        "sourceNodeName": "01",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 238,
+          "y": 17,
+          "width": 685,
+          "height": 492
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 685,
+          "height": 492
+        },
+        "zOrder": 0,
+        "area": 337020,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-01-1-2",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "1:4",
+        "sourcePageId": "1:2",
+        "sourceNodeName": "Background",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": 238,
+          "y": 17,
+          "width": 685,
+          "height": 492
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 685,
+          "height": 492
+        },
+        "zOrder": 1,
+        "area": 337020,
+        "areaRatio": 1,
+        "confidence": "medium",
+        "uiSpecNodeId": "ui-01-1-4",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "1:9",
+        "sourcePageId": "1:2",
+        "sourceNodeName": "01",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": 238,
+          "y": 17,
+          "width": 342.5,
+          "height": 492
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 342.5,
+          "height": 492
+        },
+        "zOrder": 2,
+        "area": 168510,
+        "areaRatio": 0.5,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-01-1-9",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "223:49",
+        "sourcePageId": "1:2",
+        "sourceNodeName": "Group 4",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 613,
+          "y": 162,
+          "width": 278,
+          "height": 202
+        },
+        "pageRelativeBounds": {
+          "x": 375,
+          "y": 145,
+          "width": 278,
+          "height": 202
+        },
+        "zOrder": 3,
+        "area": 56156,
+        "areaRatio": 0.16662512610527566,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-01-223-49",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "1:6",
+        "sourcePageId": "1:2",
+        "sourceNodeName": "Build your own team library",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 613,
+          "y": 162,
+          "width": 276,
+          "height": 88
+        },
+        "pageRelativeBounds": {
+          "x": 375,
+          "y": 145,
+          "width": 276,
+          "height": 88
+        },
+        "zOrder": 4,
+        "area": 24288,
+        "areaRatio": 0.07206693964749866,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-01-1-6",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "1:7",
+        "sourcePageId": "1:2",
+        "sourceNodeName": "Don’t reinvent the wheel with every design. Team libraries let you share styles and components across files, with everyone on your team.",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 613,
+          "y": 268,
+          "width": 278,
+          "height": 96
+        },
+        "pageRelativeBounds": {
+          "x": 375,
+          "y": 251,
+          "width": 278,
+          "height": 96
+        },
+        "zOrder": 5,
+        "area": 26688,
+        "areaRatio": 0.0791881787431013,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-01-1-7",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      }
+    ],
+    "aggregate": {
+      "sourceNodeCount": 6,
+      "visibleNodeCount": 6,
+      "unsupportedCount": 1,
+      "unmappedCount": 0
+    },
+    "diagnostics": {
+      "unsupportedByReason": {
+        "unsupported_renderer_limit": 1
+      },
+      "unsupportedByKind": {
+        "vector": 1
+      },
+      "topUnsupported": [
+        {
+          "sourceNodeId": "1:4",
+          "sourcePageId": "1:2",
+          "sourceNodeName": "Background",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 337020,
+          "bounds": {
+            "x": 238,
+            "y": 17,
+            "width": 685,
+            "height": 492
+          }
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "pageId": "01",
+      "sourcePageId": "1:2",
+      "sourceRootNodeId": "1:2",
+      "path": "/01",
+      "viewportRole": "tablet",
+      "nodeCounts": {
+        "text": 2,
+        "input": 0,
+        "select": 0,
+        "button": 0,
+        "image": 1,
+        "pixelOverlay": 0,
+        "total": 5
+      },
+      "structuredCoverage": {
+        "textNodeCount": 2,
+        "interactiveNodeCount": 0,
+        "fullPageScreenshotFallback": false
+      },
+      "componentFidelity": {
+        "sourceComponentNodeCount": 0,
+        "byFamily": {},
+        "byState": {}
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 0,
+        "renderedCount": 0,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualLayers": [],
+  "unsupportedFeatures": [],
+  "warnings": [],
+  "residualRisks": [
+    "M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。",
+    "图标按钮缺少真实业务 action，仅保留静态语义。",
+    "复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。"
+  ]
+}

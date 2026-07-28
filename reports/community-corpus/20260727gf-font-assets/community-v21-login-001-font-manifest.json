@@ -1,0 +1,41 @@
+{
+  "projectId": "community-v21-login-001",
+  "dataRoot": "data/community-corpus-v21",
+  "fonts": [
+    {
+      "sourcePath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260727gf-font-assets/sources/Inter-400.ttf",
+      "family": "Inter",
+      "weight": 400,
+      "style": "normal",
+      "sourceKind": "authorized_download"
+    },
+    {
+      "sourcePath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260727gf-font-assets/sources/Inter-500.ttf",
+      "family": "Inter",
+      "weight": 500,
+      "style": "normal",
+      "sourceKind": "authorized_download"
+    },
+    {
+      "sourcePath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260727gf-font-assets/sources/Inter-600.ttf",
+      "family": "Inter",
+      "weight": 600,
+      "style": "normal",
+      "sourceKind": "authorized_download"
+    },
+    {
+      "sourcePath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260727gf-font-assets/sources/Inter-700.ttf",
+      "family": "Inter",
+      "weight": 700,
+      "style": "normal",
+      "sourceKind": "authorized_download"
+    },
+    {
+      "sourcePath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260727gf-font-assets/sources/PlusJakartaSans-500.ttf",
+      "family": "Plus Jakarta Sans",
+      "weight": 500,
+      "style": "normal",
+      "sourceKind": "authorized_download"
+    }
+  ]
+}

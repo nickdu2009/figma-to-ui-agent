@@ -1,0 +1,259 @@
+{
+  "schemaVersion": "1",
+  "runId": "m5-blind-b-20260725-193957",
+  "projectId": "blind-case-b-r8",
+  "designBundleRevision": 1,
+  "uiSpecRevision": 2,
+  "status": "partial",
+  "scope": "static_generation_only",
+  "behaviorFlowVerified": false,
+  "m4ValidationStatus": "pending",
+  "pages": [
+    {
+      "pageId": "checkout",
+      "sourcePageId": "728:1889",
+      "sourceRootNodeId": "728:1889",
+      "path": "/checkout",
+      "viewportRole": "mobile",
+      "nodeCounts": {
+        "text": 12,
+        "input": 0,
+        "button": 0,
+        "image": 1,
+        "pixelOverlay": 1,
+        "total": 35
+      },
+      "structuredCoverage": {
+        "textNodeCount": 12,
+        "interactiveNodeCount": 0,
+        "fullPageScreenshotFallback": false
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 1,
+        "renderedCount": 1,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ],
+      "comparison": {
+        "diffPixelRatio": 0.7148030112923462,
+        "diffPixels": 854547,
+        "screenshotPaths": [
+          "runs/ms0arkl8-7c496b0413454a88944d863ca6db525e/screenshots/001-7f5fa9efe814-expected.png",
+          "runs/ms0arkl8-7c496b0413454a88944d863ca6db525e/screenshots/001-7f5fa9efe814-actual.png",
+          "runs/ms0arkl8-7c496b0413454a88944d863ca6db525e/diffs/001-7f5fa9efe814-diff.png"
+        ]
+      }
+    }
+  ],
+  "visualLayers": [
+    {
+      "sourceNodeId": "I861:3037;835:3093",
+      "uiSpecNodeId": "vl-checkout-I861-3037-835-3093",
+      "sourcePageId": "728:1889",
+      "reason": "named_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 69,
+      "bounds": {
+        "x": 6127,
+        "y": 191,
+        "width": 375,
+        "height": 56
+      },
+      "pageRelativeBounds": {
+        "x": 0,
+        "y": 741,
+        "width": 375,
+        "height": 56
+      },
+      "assetRef": "figma/screenshots/86d6593d08c408933372f6b77b9c3e5aab4ace1e1456ce6a461e8ada3dcaea11.png",
+      "rendered": true
+    }
+  ],
+  "unsupportedFeatures": [],
+  "warnings": [
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;544:734"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;424:630;94:1862"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;424:630;103:2"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;424:630;94:1863"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;424:634;94:1726"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;424:634;94:1727"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;425:656;425:649"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;425:656;425:650"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:887"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:888"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:889"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:890"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:891"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:892"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:893"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:894"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:895"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:896"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1891;658:707;651:897"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 728:1917"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1926;94:1742"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 728:2177"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 728:2180"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 728:2183"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1940;94:1742"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 728:1947"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 728:1951"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1971;700:1463"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1971;700:1467"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1971;700:1473"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1971;700:1468;94:1750"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I728:1971;700:1468;94:1751"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I861:3037;835:3097;425:649"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I861:3037;835:3097;425:650"
+    }
+  ],
+  "residualRisks": [
+    "M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。",
+    "图标按钮缺少真实业务 action，仅保留静态语义。",
+    "复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。"
+  ]
+}

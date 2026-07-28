@@ -1,0 +1,397 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-07-26T01:52:26.019Z",
+  "reportRoot": "reports/community-corpus/m5-visual-v21-local",
+  "threshold": 0.05,
+  "aggregate": {
+    "resultCount": 6,
+    "comparableCount": 6,
+    "passThreshold": 0.05,
+    "passed5PctCount": 1,
+    "failed5PctCount": 5,
+    "minDiffPixelRatio": 0.042196510026680435,
+    "maxDiffPixelRatio": 0.5196799184959334,
+    "averageDiffPixelRatio": 0.209466
+  },
+  "results": [
+    {
+      "projectId": "community-v21-dashboard-001",
+      "runId": "ms156riw-569288fdd4fb43a4",
+      "status": "partial",
+      "pageId": "light---dashboard---1",
+      "sourcePageId": "0:2",
+      "visualLayers": 160,
+      "unsupportedFeatures": 12,
+      "warnings": 42,
+      "diffPixelRatio": 0.11775648328993056,
+      "diffPixels": 173639,
+      "passed5Pct": false,
+      "summaryPath": "reports/community-corpus/m5-visual-v21-local/community-v21-dashboard-001/ms156riw-569288fdd4fb43a4/summary.json",
+      "screenshotPaths": [
+        "runs/ms156rjg-1dc4ccab8f174c6fae46cbb4200ce940/screenshots/000-72e60729bf19-expected.png",
+        "runs/ms156rjg-1dc4ccab8f174c6fae46cbb4200ce940/screenshots/000-72e60729bf19-actual.png",
+        "runs/ms156rjg-1dc4ccab8f174c6fae46cbb4200ce940/diffs/000-72e60729bf19-diff.png"
+      ],
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-design-system-001",
+      "runId": "ms156w7i-001e172923c54068",
+      "status": "partial",
+      "pageId": "in-modals",
+      "sourcePageId": "5:37426",
+      "visualLayers": 35,
+      "unsupportedFeatures": 1,
+      "warnings": 43,
+      "diffPixelRatio": 0.3758313967887612,
+      "diffPixels": 713219,
+      "passed5Pct": false,
+      "summaryPath": "reports/community-corpus/m5-visual-v21-local/community-v21-design-system-001/ms156w7i-001e172923c54068/summary.json",
+      "screenshotPaths": [
+        "runs/ms156w7x-69dc9adea0f848bfb53f7d2bca4d912c/screenshots/000-6fa923173131-expected.png",
+        "runs/ms156w7x-69dc9adea0f848bfb53f7d2bca4d912c/screenshots/000-6fa923173131-actual.png",
+        "runs/ms156w7x-69dc9adea0f848bfb53f7d2bca4d912c/diffs/000-6fa923173131-diff.png"
+      ],
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-ecommerce-001",
+      "runId": "ms156thn-46db172baf0646cb",
+      "status": "partial",
+      "pageId": "featured",
+      "sourcePageId": "0:303",
+      "visualLayers": 17,
+      "unsupportedFeatures": 0,
+      "warnings": 6,
+      "diffPixelRatio": 0.08033169129720853,
+      "diffPixels": 24461,
+      "passed5Pct": false,
+      "summaryPath": "reports/community-corpus/m5-visual-v21-local/community-v21-ecommerce-001/ms156thn-46db172baf0646cb/summary.json",
+      "screenshotPaths": [
+        "runs/ms156thw-193285874f0f4f609f806fec4e363082/screenshots/000-d57a47154c16-expected.png",
+        "runs/ms156thw-193285874f0f4f609f806fec4e363082/screenshots/000-d57a47154c16-actual.png",
+        "runs/ms156thw-193285874f0f4f609f806fec4e363082/diffs/000-d57a47154c16-diff.png"
+      ],
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-landing-001",
+      "runId": "ms156usu-665d0c7fb02b435f",
+      "status": "partial",
+      "pageId": "home",
+      "sourcePageId": "10:948",
+      "visualLayers": 15,
+      "unsupportedFeatures": 0,
+      "warnings": 277,
+      "diffPixelRatio": 0.042196510026680435,
+      "diffPixels": 78445,
+      "passed5Pct": true,
+      "summaryPath": "reports/community-corpus/m5-visual-v21-local/community-v21-landing-001/ms156usu-665d0c7fb02b435f/summary.json",
+      "screenshotPaths": [
+        "runs/ms156ut8-b77fb28ea4194d4d9b6951ee8f8ff5e0/screenshots/000-f96ca2270afe-expected.png",
+        "runs/ms156ut8-b77fb28ea4194d4d9b6951ee8f8ff5e0/screenshots/000-f96ca2270afe-actual.png",
+        "runs/ms156ut8-b77fb28ea4194d4d9b6951ee8f8ff5e0/diffs/000-f96ca2270afe-diff.png"
+      ],
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-login-001",
+      "runId": "ms156ohy-9599cf4a71694bf6",
+      "status": "partial",
+      "pageId": "login-version-1",
+      "sourcePageId": "3:5123",
+      "visualLayers": 17,
+      "unsupportedFeatures": 0,
+      "warnings": 5,
+      "diffPixelRatio": 0.1209983579638752,
+      "diffPixels": 36844,
+      "passed5Pct": false,
+      "summaryPath": "reports/community-corpus/m5-visual-v21-local/community-v21-login-001/ms156ohy-9599cf4a71694bf6/summary.json",
+      "screenshotPaths": [
+        "runs/ms156oi7-bc730a4e38e34a65aa333ab1b50eb611/screenshots/000-fcb44a3d7f33-expected.png",
+        "runs/ms156oi7-bc730a4e38e34a65aa333ab1b50eb611/screenshots/000-fcb44a3d7f33-actual.png",
+        "runs/ms156oi7-bc730a4e38e34a65aa333ab1b50eb611/diffs/000-fcb44a3d7f33-diff.png"
+      ],
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-mobile-001",
+      "runId": "ms156q66-11e7982cee484d5d",
+      "status": "partial",
+      "pageId": "6-11---a---profile",
+      "sourcePageId": "3186:4543",
+      "visualLayers": 14,
+      "unsupportedFeatures": 0,
+      "warnings": 9,
+      "diffPixelRatio": 0.5196799184959334,
+      "diffPixels": 210157,
+      "passed5Pct": false,
+      "summaryPath": "reports/community-corpus/m5-visual-v21-local/community-v21-mobile-001/ms156q66-11e7982cee484d5d/summary.json",
+      "screenshotPaths": [
+        "runs/ms156q6g-5d2ecec38dd94456aa68985b11f35cf6/screenshots/000-811630216a36-expected.png",
+        "runs/ms156q6g-5d2ecec38dd94456aa68985b11f35cf6/screenshots/000-811630216a36-actual.png",
+        "runs/ms156q6g-5d2ecec38dd94456aa68985b11f35cf6/diffs/000-811630216a36-diff.png"
+      ],
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": "Coverage Engine v2.1 improves structural visual coverage, but current generator has not reached the recommended <5% pixel diff target across the Community corpus. Landing passes; login, ecommerce, dashboard, mobile profile, and design-system modal need further general rendering/layout fidelity work."
+}

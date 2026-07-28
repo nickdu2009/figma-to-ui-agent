@@ -1,0 +1,162 @@
+# M5 受限 Live 生成报告
+
+- runId: ms14r0tw-bce54b94c3064ec5
+- projectId: community-v2-design-system-001
+- designBundleRevision: 1
+- uiSpecRevision: 未保存
+- status: partial
+- scope: static_generation_only
+- behaviorFlowVerified: false
+- m4ValidationStatus: not_required
+- variablesMode: disabled_restricted_live
+- apiBoundary: openai=false, figmaMe=false, variables=false
+
+## 页面摘要
+
+### in-modals (/in-modals)
+
+- viewportRole: desktop
+- nodes: {"text":35,"input":0,"button":0,"image":0,"pixelOverlay":8,"total":195}
+- structuredCoverage: text=35, interactive=0
+- visualLayerCoverage: candidate=33, rendered=33, unsupported=0
+
+#### regions
+
+- **left_visual**: passed
+  - 检测到左侧视觉层
+- **form_fields**: not_applicable
+  - 无表单输入域
+- **cta**: not_applicable
+  - 无明确 CTA
+- **social_buttons**: not_applicable
+  - 无社交按钮
+- **footer**: not_applicable
+  - 无页脚文案
+- **page**: passed
+  - 页面包含可渲染节点
+
+## 视觉层追溯
+
+| sourceNodeId | reason | layerRole | rendered | uiSpecNodeId |
+|---|---|---|---|---|
+| I21:2366;5:36996 | button_icon | button_icon | true | - |
+| I21:2366;5:37146 | button_icon | button_icon | true | - |
+| 21:2450 | button_icon | button_icon | true | - |
+| I21:2366;5:36990 | button_icon | button_icon | true | - |
+| 14:4767 | button_icon | button_icon | true | - |
+| 14:4791 | button_icon | button_icon | true | - |
+| 14:4779 | button_icon | button_icon | true | - |
+| 21:2381 | button_icon | button_icon | true | - |
+| 21:2405 | button_icon | button_icon | true | - |
+| 21:2416 | button_icon | button_icon | true | - |
+| 21:2427 | button_icon | button_icon | true | - |
+| 21:2394 | button_icon | button_icon | true | - |
+| 21:2439 | button_icon | button_icon | true | - |
+| I21:2366;5:37154 | button_icon | button_icon | true | - |
+| I21:2366;5:37155 | button_icon | button_icon | true | - |
+| I21:2366;5:37148 | button_icon | button_icon | true | - |
+| 14:4769 | button_icon | button_icon | true | - |
+| 14:4793 | button_icon | button_icon | true | - |
+| 14:4781 | button_icon | button_icon | true | - |
+| I21:2366;5:37008;1:747;2:1773;11:17049 | button_icon | button_icon | true | - |
+| I13:18307;1630:17;5:2312 | button_icon | button_icon | true | - |
+| I14:4824;11:17049 | button_icon | button_icon | true | - |
+| I14:4817;11:17049 | button_icon | button_icon | true | - |
+| 21:2440 | button_icon | button_icon | true | - |
+| 21:2372 | button_icon | button_icon | true | - |
+| I13:18306;2189:34 | nav_icon | icon | true | vl-in-modals-I13-18306-2189-34 |
+| I13:18308;1235:359;5:2381 | nav_icon | icon | true | vl-in-modals-I13-18308-1235-359-5-2381 |
+| I21:2366;5:37108 | nav_icon | icon | true | vl-in-modals-I21-2366-5-37108 |
+| I21:2366;5:37008;1:743;11:17029;11:17026 | nav_icon | icon | true | vl-in-modals-I21-2366-5-37008-1-743-11-17029-11-17026 |
+| I13:18306;2189:36 | nav_icon | icon | true | vl-in-modals-I13-18306-2189-36 |
+| I21:2366;5:37329 | line_divider | line_or_divider | true | vl-in-modals-I21-2366-5-37329 |
+| 21:2534 | large_visual | decorative_background | true | vl-in-modals-21-2534 |
+| 5:37656 | large_visual | decorative_background | true | vl-in-modals-5-37656 |
+
+## 覆盖率摘要
+
+- sourceNodeCount: 329
+- visibleNodeCount: 301
+- unsupportedCount: 62
+- unmappedCount: 0
+
+### in-modals
+
+- sourceNodeCount: 329
+- visibleNodeCount: 301
+- vector: total=95, rendered=33, ignoredSafe=5, unsupported=57, unmapped=0
+- imageFill: total=4, rendered=3, missingAsset=0
+- text: total=49, rendered=42, styleComplete=42
+- budgetExceeded: 0
+- pageSize: 1830x1037 / 1829x924 (full_page)
+- widthMatched: false
+- heightMatched: false
+
+### unsupported 诊断
+
+- byReason: {"unsupported_renderer_limit":62}
+- byKind: {"vector":57,"unsupported":1,"container":4}
+
+- 14:4422 (container, unsupported_renderer_limit, area=7560): border
+- I14:4591;2:27099 (vector, unsupported_renderer_limit, area=5625): Vector
+- 21:2375 (container, unsupported_renderer_limit, area=3920): space
+- 21:2385 (container, unsupported_renderer_limit, area=1568): space
+- 21:2431 (container, unsupported_renderer_limit, area=1568): space
+- I14:4586;2:27072 (vector, unsupported_renderer_limit, area=537): Vector (Stroke)
+- I14:4591;2:27096 (vector, unsupported_renderer_limit, area=225): Vector
+- 14:4201 (vector, unsupported_renderer_limit, area=186): Vector
+- 14:4202 (vector, unsupported_renderer_limit, area=105): Vector
+- 14:4204 (vector, unsupported_renderer_limit, area=91): Vector
+
+
+## Warnings
+
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:36985
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:36986
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:36991
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37008;1:743;11:17029;11:17024
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37008;1:743;11:17029;11:17025
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37008;1:747;2:1773;11:17048
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37109
+- **unmapped_node_unsupported**: 未映射的节点类型 unsupported: I21:2366;5:37110
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37158
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37159
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37149
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37142
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37143
+- **unmapped_node_vector**: 未映射的节点类型 vector: I21:2366;5:37144
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2379
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2389
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2392
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2393
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2401
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2404
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2412
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2415
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2423
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2426
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2435
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2438
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2447
+- **unmapped_node_vector**: 未映射的节点类型 vector: 21:2451
+- **unmapped_node_vector**: 未映射的节点类型 vector: 14:4745
+- **unmapped_node_vector**: 未映射的节点类型 vector: 14:4737
+- **unmapped_node_vector**: 未映射的节点类型 vector: 14:4743
+- **unmapped_node_vector**: 未映射的节点类型 vector: 14:4735
+- **unmapped_node_vector**: 未映射的节点类型 vector: 14:4741
+- **unmapped_node_vector**: 未映射的节点类型 vector: 14:4739
+- **unmapped_node_vector**: 未映射的节点类型 vector: 13:18319
+- **unmapped_node_vector**: 未映射的节点类型 vector: 13:18320
+- **unmapped_node_vector**: 未映射的节点类型 vector: I13:18321;2:1582;11:17029;13:18111
+- **unmapped_node_vector**: 未映射的节点类型 vector: I13:18321;2:1582;11:17029;13:18112
+- **unmapped_node_vector**: 未映射的节点类型 vector: I13:18321;2:1582;11:17029;13:18113
+- **unmapped_node_vector**: 未映射的节点类型 vector: I13:18321;2:1582;11:17029;13:18114
+- **unmapped_node_vector**: 未映射的节点类型 vector: I13:18321;2:1582;11:17029;13:18115
+- **unmapped_node_vector**: 未映射的节点类型 vector: I13:18321;2:1582;11:17029;13:18116
+- **unmapped_node_component**: 未映射的节点类型 component: 14:4198
+
+## 残留风险
+
+- M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。
+- 图标按钮缺少真实业务 action，仅保留静态语义。
+- 复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。

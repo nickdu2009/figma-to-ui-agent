@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "m5.1-fix-check-aggregate-v1",
+  "generatedAt": "2026-07-25T14:51:59.535Z",
+  "reportRoot": "reports/m5-fix-check/20260725t1452-all",
+  "baselineReportRoot": "reports/m5-live-blind-restricted/20260725t14271784989637z",
+  "cases": [
+    {
+      "caseId": "case-a",
+      "projectId": "m5-live-restricted-case-a-20260725t14271784989637z",
+      "diff": 0.12657881773399016,
+      "diffPixels": 154173,
+      "visualLayers": 16,
+      "unsupported": 7,
+      "unmapped": 0,
+      "path": "reports/m5-fix-check/20260725t1452-all/ms0hllyk-e80f2f6620f242a2/summary.json",
+      "beforeDiff": 0.14117569786535303,
+      "relativeImprovement": 0.10339513352563494
+    },
+    {
+      "caseId": "case-b",
+      "projectId": "m5-live-restricted-case-b-20260725t14271784989637z",
+      "diff": 0.050942701798410706,
+      "diffPixels": 60902,
+      "visualLayers": 16,
+      "unsupported": 25,
+      "unmapped": 0,
+      "path": "reports/m5-fix-check/20260725t1452-all/ms0hlnin-721409120fd24912/summary.json",
+      "beforeDiff": 0.7144090338770389,
+      "relativeImprovement": 0.9286925285337605
+    },
+    {
+      "caseId": "case-c",
+      "projectId": "m5-live-restricted-case-c-20260725t14271784989637z",
+      "diff": 0.19647806524184477,
+      "diffPixels": 524007,
+      "visualLayers": 36,
+      "unsupported": 53,
+      "unmapped": 0,
+      "path": "reports/m5-fix-check/20260725t1452-all/ms0hlosr-275f75b74aca401a/summary.json",
+      "beforeDiff": 0.289249343832021,
+      "relativeImprovement": 0.32073116350456554
+    }
+  ],
+  "summary": {
+    "currentAggregateDiff": 0.12466652825808189,
+    "baselineAggregateDiff": 0.38161135852480427,
+    "aggregateRelativeImprovement": 0.6733154674955024
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "1",
+  "source": "Google Fonts official repository (github.com/google/fonts)",
+  "license": "SIL Open Font License, per user authorization",
+  "generatedStaticInstances": [
+    "League Spartan",
+    "Roboto"
+  ],
+  "fontCount": 9,
+  "fonts": [
+    {
+      "family": "League Spartan",
+      "weight": 300,
+      "style": "normal",
+      "byteCount": 57220,
+      "sha256": "cebdf8d29007878312bc4249f0f5e29d87b234ce376547b8c4a11496649a8916",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": true
+    },
+    {
+      "family": "League Spartan",
+      "weight": 400,
+      "style": "normal",
+      "byteCount": 57216,
+      "sha256": "00acb41bf7aad99b418d17a1c0e9b1f8532d785f595d764ff58b21b7e52ef9a8",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": true
+    },
+    {
+      "family": "League Spartan",
+      "weight": 500,
+      "style": "normal",
+      "byteCount": 57204,
+      "sha256": "f50243cf503b66cf22e068a10fc3d8133e68a6c758a6630b18da811ca9c3f16a",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": true
+    },
+    {
+      "family": "League Spartan",
+      "weight": 600,
+      "style": "normal",
+      "byteCount": 57272,
+      "sha256": "595d91a4e044f53fca2c9c45c53b1a828f6e2828b81e28ce16fed13ddee22bb5",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": true
+    },
+    {
+      "family": "Poppins",
+      "weight": 300,
+      "style": "normal",
+      "byteCount": 161936,
+      "sha256": "650ba57fa99d12ec40c31ccfb680be656be4497fbe14164617d67e32ffe9cd46",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": false
+    },
+    {
+      "family": "Poppins",
+      "weight": 600,
+      "style": "normal",
+      "byteCount": 157312,
+      "sha256": "d3bf1bdaf0550e83da9ac0b1d1d9fe6db086835a83aa28578e609a394b9a0286",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": false
+    },
+    {
+      "family": "Poppins",
+      "weight": 700,
+      "style": "normal",
+      "byteCount": 155996,
+      "sha256": "983676516167748b74de6f4771fb384c664fd913acb8b471122ecacf5da5ea6c",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": false
+    },
+    {
+      "family": "Roboto",
+      "weight": 400,
+      "style": "normal",
+      "byteCount": 157584,
+      "sha256": "46b048ccfef99c056ae410999aacaa432a191aa2c25eade6e1db44f66bb5ecbf",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": true
+    },
+    {
+      "family": "Roboto",
+      "weight": 700,
+      "style": "normal",
+      "byteCount": 158316,
+      "sha256": "ee00f6a1684f65c299788f0ad62def829dc87352df386bf8cb7d0f8751ef52ae",
+      "sourceKind": "authorized_download",
+      "source": "Google Fonts official repository",
+      "license": "SIL Open Font License",
+      "derivedStaticInstance": true
+    }
+  ]
+}

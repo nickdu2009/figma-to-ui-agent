@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "m5.1-t08-aggregate-v1",
+  "generatedAt": "2026-07-25T14:30:11.583Z",
+  "reportRoot": "reports/m5-live-blind-restricted/20260725t14271784989637z",
+  "baselineReport": "reports/m5-live-blind-restricted/20260725t122808/aggregate.json",
+  "cases": [
+    {
+      "caseId": "case-a",
+      "projectId": "m5-live-restricted-case-a-20260725t14271784989637z",
+      "status": "partial",
+      "summaryPath": "ms0gr39a-8b11d1c855cb45e3/summary.json",
+      "diffPixelRatio": 0.14117569786535303,
+      "baselineDiffPixelRatio": 0.14117569786535303,
+      "diffAbsoluteDelta": 0,
+      "diffRelativeImprovement": 0,
+      "visualLayers": 16,
+      "unsupportedFeatures": 0,
+      "coverage": {
+        "sourceNodeCount": 82,
+        "visibleNodeCount": 77,
+        "unsupportedCount": 7,
+        "unmappedCount": 0
+      },
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      }
+    },
+    {
+      "caseId": "case-b",
+      "projectId": "m5-live-restricted-case-b-20260725t14271784989637z",
+      "status": "partial",
+      "summaryPath": "ms0grhvg-afb729846df14fce/summary.json",
+      "diffPixelRatio": 0.7144090338770389,
+      "baselineDiffPixelRatio": 0.7144090338770389,
+      "diffAbsoluteDelta": 0,
+      "diffRelativeImprovement": 0,
+      "visualLayers": 16,
+      "unsupportedFeatures": 0,
+      "coverage": {
+        "sourceNodeCount": 75,
+        "visibleNodeCount": 75,
+        "unsupportedCount": 25,
+        "unmappedCount": 0
+      },
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      }
+    },
+    {
+      "caseId": "case-c",
+      "projectId": "m5-live-restricted-case-c-20260725t14271784989637z",
+      "status": "partial",
+      "summaryPath": "ms0grxd0-a5ef540975b3471f/summary.json",
+      "diffPixelRatio": 0.289249343832021,
+      "baselineDiffPixelRatio": 0.3457659259259259,
+      "diffAbsoluteDelta": -0.05651658209390492,
+      "diffRelativeImprovement": 0.16345330137016617,
+      "visualLayers": 36,
+      "unsupportedFeatures": 0,
+      "coverage": {
+        "sourceNodeCount": 278,
+        "visibleNodeCount": 278,
+        "unsupportedCount": 53,
+        "unmappedCount": 0
+      },
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      }
+    }
+  ],
+  "summary": {
+    "currentAggregateDiff": 0.38161135852480427,
+    "baselineAggregateDiff": 0.4004502192227726,
+    "aggregateRelativeImprovement": 0.04704420123563011,
+    "totalVisualLayers": 68,
+    "totalUnsupportedFeatures": 0,
+    "totalUnsupportedCoverageCount": 85,
+    "totalUnmappedCount": 0
+  },
+  "ac12": {
+    "anyCaseImprovedBy30Percent": false,
+    "aggregateImprovedBy20Percent": false,
+    "noUnmappedAndAllRemainingAttributed": true,
+    "passed": true
+  },
+  "caveat": "AC12 passes only by the no-unmapped/attributed fallback; pixel-diff improvement thresholds are not met.",
+  "apiBoundary": {
+    "openai": false,
+    "figmaMe": false,
+    "variables": false
+  }
+}

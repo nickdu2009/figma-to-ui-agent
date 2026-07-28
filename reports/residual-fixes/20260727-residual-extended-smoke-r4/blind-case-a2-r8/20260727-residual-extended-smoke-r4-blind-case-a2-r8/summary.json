@@ -1,0 +1,6963 @@
+{
+  "schemaVersion": "1",
+  "runId": "20260727-residual-extended-smoke-r4-blind-case-a2-r8",
+  "projectId": "blind-case-a2-r8",
+  "designBundleRevision": 1,
+  "uiSpecRevision": 6,
+  "status": "passed",
+  "scope": "static_generation_only",
+  "behaviorFlowVerified": false,
+  "m4ValidationStatus": "not_required",
+  "coverageVersion": "1",
+  "coverage": {
+    "coverageVersion": "1",
+    "pages": [
+      {
+        "sourceNodeCount": 82,
+        "visibleNodeCount": 77,
+        "byKind": {
+          "container": {
+            "total": 25,
+            "structuredDom": 10,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 15,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "vector": {
+            "total": 29,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 10,
+            "layoutContainer": 0,
+            "ignoredSafe": 6,
+            "unsupported": 13
+          },
+          "text": {
+            "total": 14,
+            "structuredDom": 14,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "instance": {
+            "total": 14,
+            "structuredDom": 5,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 4,
+            "ignoredSafe": 5,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 29,
+          "rendered": 16,
+          "ignoredSafe": 0,
+          "unsupported": 13,
+          "unmapped": 0
+        },
+        "imageFill": {
+          "total": 0,
+          "rendered": 0,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 14,
+          "rendered": 14,
+          "styleComplete": 14
+        },
+        "pageId": "login-version-1",
+        "sourcePageId": "3:5123",
+        "pageSize": {
+          "expectedWidth": 375,
+          "expectedHeight": 812,
+          "actualWidth": 375,
+          "actualHeight": 812,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      },
+      {
+        "sourceNodeCount": 109,
+        "visibleNodeCount": 99,
+        "byKind": {
+          "container": {
+            "total": 31,
+            "structuredDom": 10,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 20,
+            "ignoredSafe": 1,
+            "unsupported": 0
+          },
+          "instance": {
+            "total": 25,
+            "structuredDom": 5,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 12,
+            "ignoredSafe": 8,
+            "unsupported": 0
+          },
+          "vector": {
+            "total": 37,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 11,
+            "layoutContainer": 0,
+            "ignoredSafe": 7,
+            "unsupported": 19
+          },
+          "text": {
+            "total": 16,
+            "structuredDom": 16,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 37,
+          "rendered": 17,
+          "ignoredSafe": 1,
+          "unsupported": 19,
+          "unmapped": 0
+        },
+        "imageFill": {
+          "total": 0,
+          "rendered": 0,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 16,
+          "rendered": 16,
+          "styleComplete": 16
+        },
+        "pageId": "sign-up-version-1",
+        "sourcePageId": "37:827",
+        "pageSize": {
+          "expectedWidth": 375,
+          "expectedHeight": 812,
+          "actualWidth": 375,
+          "actualHeight": 812,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      }
+    ],
+    "records": [
+      {
+        "sourceNodeId": "3:5123",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Login Version 1",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1673,
+          "y": -1636,
+          "width": 375,
+          "height": 812
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 812
+        },
+        "zOrder": 0,
+        "area": 304500,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5123",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5124",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Content",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": -1568,
+          "width": 375,
+          "height": 710
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 68,
+          "width": 375,
+          "height": 710
+        },
+        "zOrder": 1,
+        "area": 266250,
+        "areaRatio": 0.874384236453202,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5124",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5125",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Field",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1568,
+          "width": 327,
+          "height": 623.3636474609375
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 327,
+          "height": 623.3636474609375
+        },
+        "zOrder": 2,
+        "area": 203839.91271972656,
+        "areaRatio": 0.6694250007215979,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5125",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5126",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Headline",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1568,
+          "width": 327,
+          "height": 163.36363220214844
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 327,
+          "height": 163.36363220214844
+        },
+        "zOrder": 3,
+        "area": 53419.90773010254,
+        "areaRatio": 0.17543483655206088,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5126",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16680",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Logo",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1568,
+          "width": 101,
+          "height": 18.363636016845703
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 101,
+          "height": 18.363636016845703
+        },
+        "zOrder": 4,
+        "area": 1854.727237701416,
+        "areaRatio": 0.006091058251892992,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16680",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16684",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1649,
+          "y": -1568,
+          "width": 18.363658905029297,
+          "height": 18.363636016845703
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 18.363658905029297,
+          "height": 18.363636016845703
+        },
+        "zOrder": 5,
+        "area": 337.2235480694653,
+        "areaRatio": 0.0011074664961230388,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16683",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -1624.668212890625,
+          "y": -1566.1636962890625,
+          "width": 76.66818237304688,
+          "height": 15.15000057220459
+        },
+        "pageRelativeBounds": {
+          "x": 48.331787109375,
+          "y": 69.8363037109375,
+          "width": 76.66818237304688,
+          "height": 15.15000057220459
+        },
+        "zOrder": 6,
+        "area": 1161.523006821546,
+        "areaRatio": 0.003814525473962384,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5128",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Text",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1517.6363525390625,
+          "width": 327,
+          "height": 113
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 118.3636474609375,
+          "width": 327,
+          "height": 113
+        },
+        "zOrder": 7,
+        "area": 36951,
+        "areaRatio": 0.12134975369458129,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5128",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5129",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Sign in to your Account",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1517.6363525390625,
+          "width": 327,
+          "height": 84
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 118.3636474609375,
+          "width": 327,
+          "height": 84
+        },
+        "zOrder": 8,
+        "area": 27468,
+        "areaRatio": 0.09020689655172413,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5129",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5130",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Enter your email and password to log in",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1421.6363525390625,
+          "width": 300,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 214.3636474609375,
+          "width": 300,
+          "height": 17
+        },
+        "zOrder": 9,
+        "area": 5100,
+        "areaRatio": 0.016748768472906402,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5130",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5131",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1372.6363525390625,
+          "width": 327,
+          "height": 428
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 263.3636474609375,
+          "width": 327,
+          "height": 428
+        },
+        "zOrder": 10,
+        "area": 139956,
+        "areaRatio": 0.4596256157635468,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5131",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5132",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Field",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1372.6363525390625,
+          "width": 327,
+          "height": 187
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 263.3636474609375,
+          "width": 327,
+          "height": 187
+        },
+        "zOrder": 11,
+        "area": 61149,
+        "areaRatio": 0.2008177339901478,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5132",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5133",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input Field",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1372.6363525390625,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 263.3636474609375,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 12,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5133-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6009",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1372.6363525390625,
+          "width": 30,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 263.3636474609375,
+          "width": 30,
+          "height": 21
+        },
+        "zOrder": 13,
+        "area": 630,
+        "areaRatio": 0.0020689655172413794,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6009",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6010",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1371.6363525390625,
+          "width": 30,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 264.3636474609375,
+          "width": 30,
+          "height": 19
+        },
+        "zOrder": 14,
+        "area": 570,
+        "areaRatio": 0.00187192118226601,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6010",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6011",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1349.6363525390625,
+          "width": 325,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 286.3636474609375,
+          "width": 325,
+          "height": 46
+        },
+        "zOrder": 15,
+        "area": 14950,
+        "areaRatio": 0.04909688013136289,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6011",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6012",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Frame 33825",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -1337.1363525390625,
+          "width": 271,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 298.8636474609375,
+          "width": 271,
+          "height": 21
+        },
+        "zOrder": 16,
+        "area": 5691,
+        "areaRatio": 0.018689655172413795,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6012",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6013",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "user",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1635,
+          "y": -1334.6363525390625,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 301.3636474609375,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 17,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6013;4:78376",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1631,
+          "y": -1332.6363525390625,
+          "width": 8,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 42,
+          "y": 303.3636474609375,
+          "width": 8,
+          "height": 12
+        },
+        "zOrder": 18,
+        "area": 96,
+        "areaRatio": 0.00031527093596059113,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6014",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "yourname@gmail.com|",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1635,
+          "y": -1337.1363525390625,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 298.8636474609375,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 19,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6014",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6015",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "eye-off",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1354,
+          "y": -1334.6363525390625,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 319,
+          "y": 301.3636474609375,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 20,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6015;4:78000",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1352,
+          "y": -1332.6363525390625,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 321,
+          "y": 303.3636474609375,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 21,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5134",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input Field",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1287.6363525390625,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 348.3636474609375,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 22,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5134-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6009",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1287.6363525390625,
+          "width": 30,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 348.3636474609375,
+          "width": 30,
+          "height": 21
+        },
+        "zOrder": 23,
+        "area": 630,
+        "areaRatio": 0.0020689655172413794,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6009",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6010",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1286.6363525390625,
+          "width": 55,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 349.3636474609375,
+          "width": 55,
+          "height": 19
+        },
+        "zOrder": 24,
+        "area": 1045,
+        "areaRatio": 0.003431855500821018,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6010",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6011",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1264.6363525390625,
+          "width": 325,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 371.3636474609375,
+          "width": 325,
+          "height": 46
+        },
+        "zOrder": 25,
+        "area": 14950,
+        "areaRatio": 0.04909688013136289,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6011",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6012",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Frame 33825",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -1252.1363525390625,
+          "width": 271,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 383.8636474609375,
+          "width": 271,
+          "height": 21
+        },
+        "zOrder": 26,
+        "area": 5691,
+        "areaRatio": 0.018689655172413795,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6012",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6013",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "user",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1635,
+          "y": -1249.6363525390625,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 386.3636474609375,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 27,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6013;4:78376",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1631,
+          "y": -1247.6363525390625,
+          "width": 8,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 42,
+          "y": 388.3636474609375,
+          "width": 8,
+          "height": 12
+        },
+        "zOrder": 28,
+        "area": 96,
+        "areaRatio": 0.00031527093596059113,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6014",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "yourname@gmail.com|",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1635,
+          "y": -1252.1363525390625,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 383.8636474609375,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 29,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6014",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6015",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "eye-off",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1354,
+          "y": -1249.6363525390625,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 319,
+          "y": 386.3636474609375,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 30,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6015",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6015;4:78000",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1352,
+          "y": -1247.6363525390625,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 321,
+          "y": 388.3636474609375,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 31,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5135",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Forgot Password ?",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1202.6363525390625,
+          "width": 327,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 433.3636474609375,
+          "width": 327,
+          "height": 17
+        },
+        "zOrder": 32,
+        "area": 5559,
+        "areaRatio": 0.01825615763546798,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5135",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5136",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Buttons",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1161.6363525390625,
+          "width": 327,
+          "height": 217
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 474.3636474609375,
+          "width": 327,
+          "height": 217
+        },
+        "zOrder": 33,
+        "area": 70959,
+        "areaRatio": 0.23303448275862068,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5136",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5137",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Button",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1161.6363525390625,
+          "width": 327,
+          "height": 48
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 474.3636474609375,
+          "width": 327,
+          "height": 48
+        },
+        "zOrder": 34,
+        "area": 15696,
+        "areaRatio": 0.051546798029556654,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5137-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6044",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "plus",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1548.5,
+          "y": -1146.6363525390625,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 124.5,
+          "y": 489.3636474609375,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 35,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6044;4:76017",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1544.75,
+          "y": -1142.8863525390625,
+          "width": 10.5,
+          "height": 10.5
+        },
+        "pageRelativeBounds": {
+          "x": 128.25,
+          "y": 493.1136474609375,
+          "width": 10.5,
+          "height": 10.5
+        },
+        "zOrder": 36,
+        "area": 110.25,
+        "areaRatio": 0.00036206896551724136,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6045",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Label Text",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1506,
+          "y": -1147.6363525390625,
+          "width": 41,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 167,
+          "y": 488.3636474609375,
+          "width": 41,
+          "height": 20
+        },
+        "zOrder": 37,
+        "area": 820,
+        "areaRatio": 0.0026929392446633825,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5137-3-6045",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6046",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "arrow-narrow-right",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1442.5,
+          "y": -1146.6363525390625,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 230.5,
+          "y": 489.3636474609375,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 38,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6046;4:70831",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1438.75,
+          "y": -1140.6363525390625,
+          "width": 10.5,
+          "height": 6
+        },
+        "pageRelativeBounds": {
+          "x": 234.25,
+          "y": 495.3636474609375,
+          "width": 10.5,
+          "height": 6
+        },
+        "zOrder": 39,
+        "area": 63,
+        "areaRatio": 0.00020689655172413793,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3:16696",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Or login With",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1089.6363525390625,
+          "width": 327,
+          "height": 145
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 546.3636474609375,
+          "width": 327,
+          "height": 145
+        },
+        "zOrder": 40,
+        "area": 47415,
+        "areaRatio": 0.15571428571428572,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16696",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4023",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "or",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1089.6363525390625,
+          "width": 327,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 546.3636474609375,
+          "width": 327,
+          "height": 18
+        },
+        "zOrder": 41,
+        "area": 5886,
+        "areaRatio": 0.019330049261083743,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4023",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4024",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Line",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1649,
+          "y": -1080.6363525390625,
+          "width": 140.5,
+          "height": 0.000012282900115678785
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 555.3636474609375,
+          "width": 140.5,
+          "height": 0.000012282900115678785
+        },
+        "zOrder": 42,
+        "area": 0.0017257474662528693,
+        "areaRatio": 5.667479363720425e-9,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4025",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Or",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1492.5,
+          "y": -1089.6363525390625,
+          "width": 14,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 180.5,
+          "y": 546.3636474609375,
+          "width": 14,
+          "height": 18
+        },
+        "zOrder": 43,
+        "area": 252,
+        "areaRatio": 0.0008275862068965517,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4025",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4026",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Line",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1462.5,
+          "y": -1080.6363525390625,
+          "width": 140.5,
+          "height": 0.000012282900115678785
+        },
+        "pageRelativeBounds": {
+          "x": 210.5,
+          "y": 555.3636474609375,
+          "width": 140.5,
+          "height": 0.000012282900115678785
+        },
+        "zOrder": 44,
+        "area": 0.0017257474662528693,
+        "areaRatio": 5.667479363720425e-9,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4027",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Button",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1055.6363525390625,
+          "width": 327,
+          "height": 111
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 580.3636474609375,
+          "width": 327,
+          "height": 111
+        },
+        "zOrder": 45,
+        "area": 36297,
+        "areaRatio": 0.11920197044334975,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4027",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4028",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Another Step login",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1055.6363525390625,
+          "width": 327,
+          "height": 48
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 580.3636474609375,
+          "width": 327,
+          "height": 48
+        },
+        "zOrder": 46,
+        "area": 15696,
+        "areaRatio": 0.051546798029556654,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4028-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "google",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1571.5,
+          "y": -1040.6363525390625,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 101.5,
+          "y": 595.3636474609375,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 47,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I28-4028-3-6131",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131;136:155",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1562.3385009765625,
+          "y": -1033.0714111328125,
+          "width": 7.714277267456055,
+          "height": 7.402498245239258
+        },
+        "pageRelativeBounds": {
+          "x": 110.6614990234375,
+          "y": 602.9285888671875,
+          "width": 7.714277267456055,
+          "height": 7.402498245239258
+        },
+        "zOrder": 48,
+        "area": 57.10492393563254,
+        "areaRatio": 0.00018753669601192952,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131;136:156",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1569.517578125,
+          "y": -1030.078857421875,
+          "width": 12.499963760375977,
+          "height": 6.317561149597168
+        },
+        "pageRelativeBounds": {
+          "x": 103.482421875,
+          "y": 605.921142578125,
+          "width": 12.499963760375977,
+          "height": 6.317561149597168
+        },
+        "zOrder": 49,
+        "area": 78.9692854239238,
+        "areaRatio": 0.00025934083883062003,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131;136:157",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1570.374267578125,
+          "y": -1035.209716796875,
+          "width": 3.464247703552246,
+          "height": 7.108308792114258
+        },
+        "pageRelativeBounds": {
+          "x": 102.625732421875,
+          "y": 600.790283203125,
+          "width": 3.464247703552246,
+          "height": 7.108308792114258
+        },
+        "zOrder": 50,
+        "area": 24.624942409222058,
+        "areaRatio": 0.00008087009001386555,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131;136:158",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1569.517578125,
+          "y": -1039.5113525390625,
+          "width": 12.553585052490234,
+          "height": 6.3174920082092285
+        },
+        "pageRelativeBounds": {
+          "x": 103.482421875,
+          "y": 596.4886474609375,
+          "width": 12.553585052490234,
+          "height": 6.3174920082092285
+        },
+        "zOrder": 51,
+        "area": 79.30717324348188,
+        "areaRatio": 0.00026045048684230504,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6132",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Google",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1543.5,
+          "y": -1041.6363525390625,
+          "width": 144,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 129.5,
+          "y": 594.3636474609375,
+          "width": 144,
+          "height": 20
+        },
+        "zOrder": 52,
+        "area": 2880,
+        "areaRatio": 0.009458128078817733,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I28-4028-3-6132",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4029",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Another Step login",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -992.6363525390625,
+          "width": 327,
+          "height": 48
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 643.3636474609375,
+          "width": 327,
+          "height": 48
+        },
+        "zOrder": 53,
+        "area": 15696,
+        "areaRatio": 0.051546798029556654,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4029-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4029;3:6134",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "2021_Facebook_icon 1",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1580.5,
+          "y": -977.6363525390625,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 92.5,
+          "y": 658.3636474609375,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 54,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I28-4029-3-6134",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4029;3:6135",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1580.5,
+          "y": -977.6363525390625,
+          "width": 18,
+          "height": 17.90999984741211
+        },
+        "pageRelativeBounds": {
+          "x": 92.5,
+          "y": 658.3636474609375,
+          "width": 18,
+          "height": 17.90999984741211
+        },
+        "zOrder": 55,
+        "area": 322.37999725341797,
+        "areaRatio": 0.0010587192028026862,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I28:4029;3:6136",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1575.18994140625,
+          "y": -974.1263427734375,
+          "width": 7.740000247955322,
+          "height": 14.49000072479248
+        },
+        "pageRelativeBounds": {
+          "x": 97.81005859375,
+          "y": 661.8736572265625,
+          "width": 7.740000247955322,
+          "height": 14.49000072479248
+        },
+        "zOrder": 56,
+        "area": 112.1526092027666,
+        "areaRatio": 0.00036831727160186074,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I28:4029;3:6137",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Facebook",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1552.5,
+          "y": -978.6363525390625,
+          "width": 162,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 120.5,
+          "y": 657.3636474609375,
+          "width": 162,
+          "height": 20
+        },
+        "zOrder": 57,
+        "area": 3240,
+        "areaRatio": 0.01064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I28-4029-3-6137",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16714",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Sign Up",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -891,
+          "width": 327,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 745,
+          "width": 327,
+          "height": 17
+        },
+        "zOrder": 58,
+        "area": 5559,
+        "areaRatio": 0.01825615763546798,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16714",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16715",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Don’t have an account?",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1577,
+          "y": -891,
+          "width": 132,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 96,
+          "y": 745,
+          "width": 132,
+          "height": 17
+        },
+        "zOrder": 59,
+        "area": 2244,
+        "areaRatio": 0.007369458128078818,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16715",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16716",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Sign Up",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1439,
+          "y": -891,
+          "width": 45,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 234,
+          "y": 745,
+          "width": 45,
+          "height": 17
+        },
+        "zOrder": 60,
+        "area": 765,
+        "areaRatio": 0.0025123152709359605,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16716",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16736",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Native / Status Bar",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": -1636,
+          "width": 375,
+          "height": 44
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 44
+        },
+        "zOrder": 61,
+        "area": 16500,
+        "areaRatio": 0.054187192118226604,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16736",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6767",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "9:41",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1643,
+          "y": -1622,
+          "width": 33,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 30,
+          "y": 14,
+          "width": 33,
+          "height": 16
+        },
+        "zOrder": 62,
+        "area": 528,
+        "areaRatio": 0.0017339901477832513,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6767",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6768",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Status Phone",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1390,
+          "y": -1621,
+          "width": 70.25043487548828,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 15,
+          "width": 70.25043487548828,
+          "height": 13
+        },
+        "zOrder": 63,
+        "area": 913.2556533813477,
+        "areaRatio": 0.0029991975480504027,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6768",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6769",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Mobile Signal",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1390,
+          "y": -1619.5,
+          "width": 18,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 16.5,
+          "width": 18,
+          "height": 10
+        },
+        "zOrder": 64,
+        "area": 180,
+        "areaRatio": 0.0005911330049261083,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6769",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6770",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Mobile Signal",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1390,
+          "y": -1619.5,
+          "width": 18,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 16.5,
+          "width": 18,
+          "height": 10
+        },
+        "zOrder": 65,
+        "area": 180,
+        "areaRatio": 0.0005911330049261083,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6771",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1390,
+          "y": -1613.5,
+          "width": 3,
+          "height": 4
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 22.5,
+          "width": 3,
+          "height": 4
+        },
+        "zOrder": 66,
+        "area": 12,
+        "areaRatio": 0.00003940886699507389,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6772",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1385,
+          "y": -1615.5,
+          "width": 3,
+          "height": 6
+        },
+        "pageRelativeBounds": {
+          "x": 288,
+          "y": 20.5,
+          "width": 3,
+          "height": 6
+        },
+        "zOrder": 67,
+        "area": 18,
+        "areaRatio": 0.00005911330049261084,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6773",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1379.9998779296875,
+          "y": -1617.5,
+          "width": 3,
+          "height": 8
+        },
+        "pageRelativeBounds": {
+          "x": 293.0001220703125,
+          "y": 18.5,
+          "width": 3,
+          "height": 8
+        },
+        "zOrder": 68,
+        "area": 24,
+        "areaRatio": 0.00007881773399014778,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6774",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1375,
+          "y": -1619.5,
+          "width": 3,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 298,
+          "y": 16.5,
+          "width": 3,
+          "height": 10
+        },
+        "zOrder": 69,
+        "area": 30,
+        "areaRatio": 0.00009852216748768474,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6775",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Wifi",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1367,
+          "y": -1619.982666015625,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.017333984375,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "zOrder": 70,
+        "area": 167.46506181607765,
+        "areaRatio": 0.0005499673622859693,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6775",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6776",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Union",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1367,
+          "y": -1619.982666015625,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.017333984375,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "zOrder": 71,
+        "area": 167.46506181607765,
+        "areaRatio": 0.0005499673622859693,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6777",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1367,
+          "y": -1619.982666015625,
+          "width": 15.27237606048584,
+          "height": 4.743237495422363
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.017333984375,
+          "width": 15.27237606048584,
+          "height": 4.743237495422363
+        },
+        "zOrder": 72,
+        "area": 72.44050677428731,
+        "areaRatio": 0.0002378998580436365,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6778",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1364.3367919921875,
+          "y": -1616.188720703125,
+          "width": 9.94901180267334,
+          "height": 3.6339809894561768
+        },
+        "pageRelativeBounds": {
+          "x": 308.6632080078125,
+          "y": 19.811279296875,
+          "width": 9.94901180267334,
+          "height": 3.6339809894561768
+        },
+        "zOrder": 73,
+        "area": 36.154519754790044,
+        "areaRatio": 0.00011873405502394103,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6779",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1361.6766357421875,
+          "y": -1612.391845703125,
+          "width": 4.626293659210205,
+          "height": 3.3744072914123535
+        },
+        "pageRelativeBounds": {
+          "x": 311.3233642578125,
+          "y": 23.608154296875,
+          "width": 4.626293659210205,
+          "height": 3.3744072914123535
+        },
+        "zOrder": 74,
+        "area": 15.610999055853654,
+        "areaRatio": 0.000051267648787696726,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6780",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Battery",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -1621,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "zOrder": 75,
+        "area": 350.7148017883301,
+        "areaRatio": 0.0011517727480733337,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6780",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6781",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Battery",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -1621,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "zOrder": 76,
+        "area": 350.7148017883301,
+        "areaRatio": 0.0011517727480733337,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6781",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6782",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Rectangle",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -1621,
+          "width": 25,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 25,
+          "height": 13
+        },
+        "zOrder": 77,
+        "area": 325,
+        "areaRatio": 0.0010673234811165845,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6783",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Combined Shape",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1321.07763671875,
+          "y": -1617,
+          "width": 1.328037977218628,
+          "height": 4
+        },
+        "pageRelativeBounds": {
+          "x": 351.92236328125,
+          "y": 19,
+          "width": 1.328037977218628,
+          "height": 4
+        },
+        "zOrder": 78,
+        "area": 5.312151908874512,
+        "areaRatio": 0.000017445490669538627,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6784",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Rectangle",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1344.427734375,
+          "y": -1618.6669921875,
+          "width": 20.199951171875,
+          "height": 8.329999923706055
+        },
+        "pageRelativeBounds": {
+          "x": 328.572265625,
+          "y": 17.3330078125,
+          "width": 20.199951171875,
+          "height": 8.329999923706055
+        },
+        "zOrder": 79,
+        "area": 168.26559172058478,
+        "areaRatio": 0.0005525963603303277,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3:16755",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Native / Home Indicator",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": -858,
+          "width": 375,
+          "height": 34
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 778,
+          "width": 375,
+          "height": 34
+        },
+        "zOrder": 80,
+        "area": 12750,
+        "areaRatio": 0.04187192118226601,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16755",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16755;3:6790",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "rectangle",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1559,
+          "y": -837,
+          "width": 148,
+          "height": 5
+        },
+        "pageRelativeBounds": {
+          "x": 114,
+          "y": 799,
+          "width": 148,
+          "height": 5
+        },
+        "zOrder": 81,
+        "area": 740,
+        "areaRatio": 0.0024302134646962234,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "37:827",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Sign Up Version 1",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1673,
+          "y": -588,
+          "width": 375,
+          "height": 812
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 812
+        },
+        "zOrder": 0,
+        "area": 304500,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-827",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "37:828",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Content",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": -520,
+          "width": 375,
+          "height": 710
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 68,
+          "width": 375,
+          "height": 710
+        },
+        "zOrder": 1,
+        "area": 266250,
+        "areaRatio": 0.874384236453202,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-828",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "37:829",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Field",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -520,
+          "width": 327,
+          "height": 640
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 327,
+          "height": 640
+        },
+        "zOrder": 2,
+        "area": 209280,
+        "areaRatio": 0.6872906403940887,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-829",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "37:830",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Headline",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -520,
+          "width": 327,
+          "height": 127
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 327,
+          "height": 127
+        },
+        "zOrder": 3,
+        "area": 41529,
+        "areaRatio": 0.13638423645320197,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-830",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "37:2547",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "arrow-narrow-left",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -520,
+          "width": 24,
+          "height": 24
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 24,
+          "height": 24
+        },
+        "zOrder": 4,
+        "area": 576,
+        "areaRatio": 0.0018916256157635468,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-2547",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:2547;4:70829",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1644,
+          "y": -512,
+          "width": 14,
+          "height": 8
+        },
+        "pageRelativeBounds": {
+          "x": 29,
+          "y": 76,
+          "width": 14,
+          "height": 8
+        },
+        "zOrder": 5,
+        "area": 112,
+        "areaRatio": 0.000367816091954023,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "37:834",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Text",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -464,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 124,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 6,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-834",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "37:835",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Sign up",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -464,
+          "width": 327,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 124,
+          "width": 327,
+          "height": 42
+        },
+        "zOrder": 7,
+        "area": 13734,
+        "areaRatio": 0.04510344827586207,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-835",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "37:836",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Create an account to continue!",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -410,
+          "width": 300,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 178,
+          "width": 300,
+          "height": 17
+        },
+        "zOrder": 8,
+        "area": 5100,
+        "areaRatio": 0.016748768472906402,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-836",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "37:837",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -361,
+          "width": 327,
+          "height": 481
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 227,
+          "width": 327,
+          "height": 481
+        },
+        "zOrder": 9,
+        "area": 157287,
+        "areaRatio": 0.5165418719211823,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-837",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "37:838",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Field",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -361,
+          "width": 327,
+          "height": 409
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 227,
+          "width": 327,
+          "height": 409
+        },
+        "zOrder": 10,
+        "area": 133743,
+        "areaRatio": 0.43922167487684727,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-838",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "37:839",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Field",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -361,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 227,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 11,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-839-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:839;3:6009",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -361,
+          "width": 30,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 227,
+          "width": 30,
+          "height": 21
+        },
+        "zOrder": 12,
+        "area": 630,
+        "areaRatio": 0.0020689655172413794,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-839-3-6009",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:839;3:6010",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -360,
+          "width": 54,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 228,
+          "width": 54,
+          "height": 19
+        },
+        "zOrder": 13,
+        "area": 1026,
+        "areaRatio": 0.0033694581280788176,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-839-3-6010",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:839;3:6011",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -338,
+          "width": 325,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 250,
+          "width": 325,
+          "height": 46
+        },
+        "zOrder": 14,
+        "area": 14950,
+        "areaRatio": 0.04909688013136289,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-839-3-6011",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:839;3:6012",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Frame 33825",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -325.5,
+          "width": 271,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 262.5,
+          "width": 271,
+          "height": 21
+        },
+        "zOrder": 15,
+        "area": 5691,
+        "areaRatio": 0.018689655172413795,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-839-3-6012",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:839;3:6013",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "user",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1635,
+          "y": -323,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 265,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 16,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:839;3:6013;4:78376",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1631,
+          "y": -321,
+          "width": 8,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 42,
+          "y": 267,
+          "width": 8,
+          "height": 12
+        },
+        "zOrder": 17,
+        "area": 96,
+        "areaRatio": 0.00031527093596059113,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:839;3:6014",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "yourname@gmail.com|",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1635,
+          "y": -325.5,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 262.5,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 18,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-839-3-6014",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:839;3:6015",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "eye-off",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1354,
+          "y": -323,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 319,
+          "y": 265,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 19,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:839;3:6015;4:78000",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1352,
+          "y": -321,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 321,
+          "y": 267,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 20,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "42:1255",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Field",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -276,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 312,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 21,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-42-1255-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6009",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -276,
+          "width": 30,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 312,
+          "width": 30,
+          "height": 21
+        },
+        "zOrder": 22,
+        "area": 630,
+        "areaRatio": 0.0020689655172413794,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1255-3-6009",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6010",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -275,
+          "width": 30,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 313,
+          "width": 30,
+          "height": 19
+        },
+        "zOrder": 23,
+        "area": 570,
+        "areaRatio": 0.00187192118226601,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1255-3-6010",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6011",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -253,
+          "width": 325,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 335,
+          "width": 325,
+          "height": 46
+        },
+        "zOrder": 24,
+        "area": 14950,
+        "areaRatio": 0.04909688013136289,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1255-3-6011",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6012",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Frame 33825",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -240.5,
+          "width": 271,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 347.5,
+          "width": 271,
+          "height": 21
+        },
+        "zOrder": 25,
+        "area": 5691,
+        "areaRatio": 0.018689655172413795,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1255-3-6012",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6013",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "user",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1635,
+          "y": -238,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 350,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 26,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6013;4:78376",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1631,
+          "y": -236,
+          "width": 8,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 42,
+          "y": 352,
+          "width": 8,
+          "height": 12
+        },
+        "zOrder": 27,
+        "area": 96,
+        "areaRatio": 0.00031527093596059113,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6014",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "yourname@gmail.com|",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1635,
+          "y": -240.5,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 347.5,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 28,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1255-3-6014",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6015",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "eye-off",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1354,
+          "y": -238,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 319,
+          "y": 350,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 29,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1255;3:6015;4:78000",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1352,
+          "y": -236,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 321,
+          "y": 352,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 30,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "42:1757",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Field",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -191,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 397,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 31,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-42-1757-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6009",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -191,
+          "width": 30,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 397,
+          "width": 30,
+          "height": 21
+        },
+        "zOrder": 32,
+        "area": 630,
+        "areaRatio": 0.0020689655172413794,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1757-3-6009",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6010",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -190,
+          "width": 68,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 398,
+          "width": 68,
+          "height": 19
+        },
+        "zOrder": 33,
+        "area": 1292,
+        "areaRatio": 0.0042430213464696226,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1757-3-6010",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6011",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -168,
+          "width": 325,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 420,
+          "width": 325,
+          "height": 46
+        },
+        "zOrder": 34,
+        "area": 14950,
+        "areaRatio": 0.04909688013136289,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1757-3-6011",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6012",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Frame 33825",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -155.5,
+          "width": 271,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 432.5,
+          "width": 271,
+          "height": 21
+        },
+        "zOrder": 35,
+        "area": 5691,
+        "areaRatio": 0.018689655172413795,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1757-3-6012",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6013",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "user",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1635,
+          "y": -153,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 435,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 36,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6013;4:78376",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1631,
+          "y": -151,
+          "width": 8,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 42,
+          "y": 437,
+          "width": 8,
+          "height": 12
+        },
+        "zOrder": 37,
+        "area": 96,
+        "areaRatio": 0.00031527093596059113,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6014",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "yourname@gmail.com|",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1635,
+          "y": -155.5,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 432.5,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 38,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1757-3-6014",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6015",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "calendar-due",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1354,
+          "y": -153,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 319,
+          "y": 435,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 39,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1757-3-6015",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1757;3:6015;3:14914",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1351.3333740234375,
+          "y": -151,
+          "width": 10.666666984558105,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 321.6666259765625,
+          "y": 437,
+          "width": 10.666666984558105,
+          "height": 12
+        },
+        "zOrder": 40,
+        "area": 128.00000381469727,
+        "areaRatio": 0.00042036126047519627,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "42:1129",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Phone Form",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -106,
+          "width": 327,
+          "height": 69
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 482,
+          "width": 327,
+          "height": 69
+        },
+        "zOrder": 41,
+        "area": 22563,
+        "areaRatio": 0.07409852216748769,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-42-1129",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6096",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -106,
+          "width": 83,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 482,
+          "width": 83,
+          "height": 21
+        },
+        "zOrder": 42,
+        "area": 1743,
+        "areaRatio": 0.005724137931034483,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6096",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6097",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Phone Number",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -105,
+          "width": 83,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 483,
+          "width": 83,
+          "height": 19
+        },
+        "zOrder": 43,
+        "area": 1577,
+        "areaRatio": 0.0051789819376026275,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6097",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6098",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -83,
+          "width": 327,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 505,
+          "width": 327,
+          "height": 46
+        },
+        "zOrder": 44,
+        "area": 15042,
+        "areaRatio": 0.049399014778325125,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6098-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6099",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Country",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -84,
+          "width": 62,
+          "height": 48
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 504,
+          "width": 62,
+          "height": 48
+        },
+        "zOrder": 45,
+        "area": 2976,
+        "areaRatio": 0.009773399014778325,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6099",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Countries/United Kingdom",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -69,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 519,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 46,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6100",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Circle/George Cross",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -69,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 519,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 47,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6100-3-7038",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038;623:87453",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Background",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1635,
+          "y": -69.00000762939453,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 518.9999923706055,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 48,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038;623:87454",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Outline",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1634.9304207025928,
+          "y": -68.93039209236336,
+          "width": 17.860743349687482,
+          "height": 17.860739534990316
+        },
+        "pageRelativeBounds": {
+          "x": 38.069579297407245,
+          "y": 519.0696079076366,
+          "width": 17.860743349687482,
+          "height": 17.860739534990316
+        },
+        "zOrder": 49,
+        "area": 319.00608487007855,
+        "areaRatio": 0.0010476390307720149,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038;623:87455",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Cross",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1635.0000007868043,
+          "y": -68.99999887945636,
+          "width": 18.00000078680432,
+          "height": 17.999983620667294
+        },
+        "pageRelativeBounds": {
+          "x": 37.99999921319568,
+          "y": 519.0000011205436,
+          "width": 18.00000078680432,
+          "height": 17.999983620667294
+        },
+        "zOrder": 50,
+        "area": 323.9997193344762,
+        "areaRatio": 0.001064038487141137,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038;623:87456",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Quarters New",
+        "nodeKind": "container",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1633.6820068359375,
+          "y": -67.68199157714844,
+          "width": 15.363984107971191,
+          "height": 15.363983154296875
+        },
+        "pageRelativeBounds": {
+          "x": 39.3179931640625,
+          "y": 520.3180084228516,
+          "width": 15.363984107971191,
+          "height": 15.363983154296875
+        },
+        "zOrder": 51,
+        "area": 236.05199301775428,
+        "areaRatio": 0.0007752117997298991,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038;623:87457",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Quarter",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1632.75,
+          "y": -66.75,
+          "width": 5.625,
+          "height": 5.624999523162842
+        },
+        "pageRelativeBounds": {
+          "x": 40.25,
+          "y": 521.25,
+          "width": 5.625,
+          "height": 5.624999523162842
+        },
+        "zOrder": 52,
+        "area": 31.640622317790985,
+        "areaRatio": 0.00010391008971359929,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038;623:87458",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Quarter",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1632.75,
+          "y": -58.875,
+          "width": 5.625,
+          "height": 5.625
+        },
+        "pageRelativeBounds": {
+          "x": 40.25,
+          "y": 529.125,
+          "width": 5.625,
+          "height": 5.625
+        },
+        "zOrder": 53,
+        "area": 31.640625,
+        "areaRatio": 0.00010391009852216749,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038;623:87459",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Quarter",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1624.875,
+          "y": -66.75,
+          "width": 5.625,
+          "height": 5.624999523162842
+        },
+        "pageRelativeBounds": {
+          "x": 48.125,
+          "y": 521.25,
+          "width": 5.625,
+          "height": 5.624999523162842
+        },
+        "zOrder": 54,
+        "area": 31.640622317790985,
+        "areaRatio": 0.00010391008971359929,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7038;623:87460",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Quarter",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1624.875,
+          "y": -58.875,
+          "width": 5.625,
+          "height": 5.625
+        },
+        "pageRelativeBounds": {
+          "x": 48.125,
+          "y": 529.125,
+          "width": 5.625,
+          "height": 5.625
+        },
+        "zOrder": 55,
+        "area": 31.640625,
+        "areaRatio": 0.00010391009852216749,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7039",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Circle/Canton",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -69,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 519,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 56,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6100-3-7039",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7039;623:87474",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Canton",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1635,
+          "y": -69,
+          "width": 9,
+          "height": 9
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 519,
+          "width": 9,
+          "height": 9
+        },
+        "zOrder": 57,
+        "area": 81,
+        "areaRatio": 0.00026600985221674877,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7040",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Intersect",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1634.0859375,
+          "y": -68.2548599243164,
+          "width": 6.046875,
+          "height": 8.75390625
+        },
+        "pageRelativeBounds": {
+          "x": 38.9140625,
+          "y": 519.7451400756836,
+          "width": 6.046875,
+          "height": 8.75390625
+        },
+        "zOrder": 58,
+        "area": 52.93377685546875,
+        "areaRatio": 0.0001738383476370074,
+        "confidence": "medium",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6100-3-7040",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7041",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Circle",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -69,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 519,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 59,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7041;623:87495",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Background",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1635,
+          "y": -69,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 519,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 60,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7042",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "cq",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -69,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 519,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 61,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6100;3:7042;1:217",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1634.0859375,
+          "y": -68.3251724243164,
+          "width": 6.046875,
+          "height": 8.82421875
+        },
+        "pageRelativeBounds": {
+          "x": 38.9140625,
+          "y": 519.6748275756836,
+          "width": 6.046875,
+          "height": 8.82421875
+        },
+        "zOrder": 62,
+        "area": 53.35894775390625,
+        "areaRatio": 0.00017523463958589902,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6101",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "arrow-down",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1610,
+          "y": -66,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 63,
+          "y": 522,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 63,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6101",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6101;1715:49002",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "vuesax/linear/arrow-down",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1610,
+          "y": -66,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 63,
+          "y": 522,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 64,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6101-1715-49002",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6101;1715:49003",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "arrow-down",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1610,
+          "y": -66,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 63,
+          "y": 522,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 65,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6101-1715-49003",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6101;1715:49004",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1607.9599609375,
+          "y": -61.525001525878906,
+          "width": 7.920000076293945,
+          "height": 3.548750400543213
+        },
+        "pageRelativeBounds": {
+          "x": 65.0400390625,
+          "y": 526.4749984741211,
+          "width": 7.920000076293945,
+          "height": 3.548750400543213
+        },
+        "zOrder": 66,
+        "area": 28.106103443050415,
+        "areaRatio": 0.00009230247436141351,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6101;1715:49005",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1610,
+          "y": -66,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 63,
+          "y": 522,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 67,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I42:1129;3:6102",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "(+12) -",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1577,
+          "y": -70.5,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 96,
+          "y": 517.5,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 68,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I42-1129-3-6102",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "37:840",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Field",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -21,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 567,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 69,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-840-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:840;3:6009",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -21,
+          "width": 30,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 567,
+          "width": 30,
+          "height": 21
+        },
+        "zOrder": 70,
+        "area": 630,
+        "areaRatio": 0.0020689655172413794,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-840-3-6009",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:840;3:6010",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -20,
+          "width": 76,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 568,
+          "width": 76,
+          "height": 19
+        },
+        "zOrder": 71,
+        "area": 1444,
+        "areaRatio": 0.004742200328407225,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-840-3-6010",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:840;3:6011",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": 2,
+          "width": 325,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 590,
+          "width": 325,
+          "height": 46
+        },
+        "zOrder": 72,
+        "area": 14950,
+        "areaRatio": 0.04909688013136289,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-840-3-6011",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:840;3:6012",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Frame 33825",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": 14.5,
+          "width": 271,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 602.5,
+          "width": 271,
+          "height": 21
+        },
+        "zOrder": 73,
+        "area": 5691,
+        "areaRatio": 0.018689655172413795,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-840-3-6012",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:840;3:6013",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "user",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1635,
+          "y": 17,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 605,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 74,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:840;3:6013;4:78376",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1631,
+          "y": 19,
+          "width": 8,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 42,
+          "y": 607,
+          "width": 8,
+          "height": 12
+        },
+        "zOrder": 75,
+        "area": 96,
+        "areaRatio": 0.00031527093596059113,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:840;3:6014",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "yourname@gmail.com|",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1635,
+          "y": 14.5,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 602.5,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 76,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-840-3-6014",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:840;3:6015",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "eye-off",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1354,
+          "y": 17,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 319,
+          "y": 605,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 77,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-840-3-6015",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:840;3:6015;4:78000",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1352,
+          "y": 19,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 321,
+          "y": 607,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 78,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "37:843",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Button",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": 72,
+          "width": 327,
+          "height": 48
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 660,
+          "width": 327,
+          "height": 48
+        },
+        "zOrder": 79,
+        "area": 15696,
+        "areaRatio": 0.051546798029556654,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-843-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:843;3:6044",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "plus",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1548.5,
+          "y": 87,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 124.5,
+          "y": 675,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 80,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:843;3:6044;4:76017",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1544.75,
+          "y": 90.75,
+          "width": 10.5,
+          "height": 10.5
+        },
+        "pageRelativeBounds": {
+          "x": 128.25,
+          "y": 678.75,
+          "width": 10.5,
+          "height": 10.5
+        },
+        "zOrder": 81,
+        "area": 110.25,
+        "areaRatio": 0.00036206896551724136,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:843;3:6045",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Label Text",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1513,
+          "y": 86,
+          "width": 55,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 160,
+          "y": 674,
+          "width": 55,
+          "height": 20
+        },
+        "zOrder": 82,
+        "area": 1100,
+        "areaRatio": 0.00361247947454844,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-843-3-6045",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:843;3:6046",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "arrow-narrow-right",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1442.5,
+          "y": 87,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 230.5,
+          "y": 675,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 83,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:843;3:6046;4:70831",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1438.75,
+          "y": 93,
+          "width": 10.5,
+          "height": 6
+        },
+        "pageRelativeBounds": {
+          "x": 234.25,
+          "y": 681,
+          "width": 10.5,
+          "height": 6
+        },
+        "zOrder": 84,
+        "area": 63,
+        "areaRatio": 0.00020689655172413793,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "37:852",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Sign Up",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": 157,
+          "width": 327,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 745,
+          "width": 327,
+          "height": 17
+        },
+        "zOrder": 85,
+        "area": 5559,
+        "areaRatio": 0.01825615763546798,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-852",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "37:853",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Already have an account?",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1577,
+          "y": 157,
+          "width": 145,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 96,
+          "y": 745,
+          "width": 145,
+          "height": 17
+        },
+        "zOrder": 86,
+        "area": 2465,
+        "areaRatio": 0.008095238095238095,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-853",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "37:854",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Login",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1426,
+          "y": 157,
+          "width": 32,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 247,
+          "y": 745,
+          "width": 32,
+          "height": 17
+        },
+        "zOrder": 87,
+        "area": 544,
+        "areaRatio": 0.0017865353037766832,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-854",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "37:855",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Native / Status Bar",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": -588,
+          "width": 375,
+          "height": 44
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 44
+        },
+        "zOrder": 88,
+        "area": 16500,
+        "areaRatio": 0.054187192118226604,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-855",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6767",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "9:41",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1643,
+          "y": -574,
+          "width": 33,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 30,
+          "y": 14,
+          "width": 33,
+          "height": 16
+        },
+        "zOrder": 89,
+        "area": 528,
+        "areaRatio": 0.0017339901477832513,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-855-3-6767",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6768",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Status Phone",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1390,
+          "y": -573,
+          "width": 70.25043487548828,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 15,
+          "width": 70.25043487548828,
+          "height": 13
+        },
+        "zOrder": 90,
+        "area": 913.2556533813477,
+        "areaRatio": 0.0029991975480504027,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-855-3-6768",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6769",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Mobile Signal",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1390,
+          "y": -571.5,
+          "width": 18,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 16.5,
+          "width": 18,
+          "height": 10
+        },
+        "zOrder": 91,
+        "area": 180,
+        "areaRatio": 0.0005911330049261083,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-855-3-6769",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6770",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Mobile Signal",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1390,
+          "y": -571.5,
+          "width": 18,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 16.5,
+          "width": 18,
+          "height": 10
+        },
+        "zOrder": 92,
+        "area": 180,
+        "areaRatio": 0.0005911330049261083,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6771",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1390,
+          "y": -565.5,
+          "width": 3,
+          "height": 4
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 22.5,
+          "width": 3,
+          "height": 4
+        },
+        "zOrder": 93,
+        "area": 12,
+        "areaRatio": 0.00003940886699507389,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:855;3:6772",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1385,
+          "y": -567.5,
+          "width": 3,
+          "height": 6
+        },
+        "pageRelativeBounds": {
+          "x": 288,
+          "y": 20.5,
+          "width": 3,
+          "height": 6
+        },
+        "zOrder": 94,
+        "area": 18,
+        "areaRatio": 0.00005911330049261084,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:855;3:6773",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1379.9998779296875,
+          "y": -569.5,
+          "width": 3,
+          "height": 8
+        },
+        "pageRelativeBounds": {
+          "x": 293.0001220703125,
+          "y": 18.5,
+          "width": 3,
+          "height": 8
+        },
+        "zOrder": 95,
+        "area": 24,
+        "areaRatio": 0.00007881773399014778,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:855;3:6774",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1375,
+          "y": -571.5,
+          "width": 3,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 298,
+          "y": 16.5,
+          "width": 3,
+          "height": 10
+        },
+        "zOrder": 96,
+        "area": 30,
+        "areaRatio": 0.00009852216748768474,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:855;3:6775",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Wifi",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1367,
+          "y": -571.9826049804688,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.01739501953125,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "zOrder": 97,
+        "area": 167.46506181607765,
+        "areaRatio": 0.0005499673622859693,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-855-3-6775",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6776",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Union",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1367,
+          "y": -571.9826049804688,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.01739501953125,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "zOrder": 98,
+        "area": 167.46506181607765,
+        "areaRatio": 0.0005499673622859693,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6777",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1367,
+          "y": -571.9826049804688,
+          "width": 15.27237606048584,
+          "height": 4.743237495422363
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.01739501953125,
+          "width": 15.27237606048584,
+          "height": 4.743237495422363
+        },
+        "zOrder": 99,
+        "area": 72.44050677428731,
+        "areaRatio": 0.0002378998580436365,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6778",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1364.3367919921875,
+          "y": -568.1886596679688,
+          "width": 9.94901180267334,
+          "height": 3.6339809894561768
+        },
+        "pageRelativeBounds": {
+          "x": 308.6632080078125,
+          "y": 19.81134033203125,
+          "width": 9.94901180267334,
+          "height": 3.6339809894561768
+        },
+        "zOrder": 100,
+        "area": 36.154519754790044,
+        "areaRatio": 0.00011873405502394103,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:855;3:6779",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1361.6766357421875,
+          "y": -564.3917846679688,
+          "width": 4.626293659210205,
+          "height": 3.3744072914123535
+        },
+        "pageRelativeBounds": {
+          "x": 311.3233642578125,
+          "y": 23.60821533203125,
+          "width": 4.626293659210205,
+          "height": 3.3744072914123535
+        },
+        "zOrder": 101,
+        "area": 15.610999055853654,
+        "areaRatio": 0.000051267648787696726,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:855;3:6780",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Battery",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -573,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "zOrder": 102,
+        "area": 350.7148017883301,
+        "areaRatio": 0.0011517727480733337,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-855-3-6780",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6781",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Battery",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -573,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "zOrder": 103,
+        "area": 350.7148017883301,
+        "areaRatio": 0.0011517727480733337,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-I37-855-3-6781",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:855;3:6782",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Rectangle",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -573,
+          "width": 25,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 25,
+          "height": 13
+        },
+        "zOrder": 104,
+        "area": 325,
+        "areaRatio": 0.0010673234811165845,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:855;3:6783",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Combined Shape",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1321.07763671875,
+          "y": -569,
+          "width": 1.328037977218628,
+          "height": 4
+        },
+        "pageRelativeBounds": {
+          "x": 351.92236328125,
+          "y": 19,
+          "width": 1.328037977218628,
+          "height": 4
+        },
+        "zOrder": 105,
+        "area": 5.312151908874512,
+        "areaRatio": 0.000017445490669538627,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I37:855;3:6784",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Rectangle",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1344.427734375,
+          "y": -570.6669921875,
+          "width": 20.199951171875,
+          "height": 8.329999923706055
+        },
+        "pageRelativeBounds": {
+          "x": 328.572265625,
+          "y": 17.3330078125,
+          "width": 20.199951171875,
+          "height": 8.329999923706055
+        },
+        "zOrder": 106,
+        "area": 168.26559172058478,
+        "areaRatio": 0.0005525963603303277,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "37:856",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "Native / Home Indicator",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": 190,
+          "width": 375,
+          "height": 34
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 778,
+          "width": 375,
+          "height": 34
+        },
+        "zOrder": 107,
+        "area": 12750,
+        "areaRatio": 0.04187192118226601,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-sign-up-version-1-37-856",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I37:856;3:6790",
+        "sourcePageId": "37:827",
+        "sourceNodeName": "rectangle",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1559,
+          "y": 211,
+          "width": 148,
+          "height": 5
+        },
+        "pageRelativeBounds": {
+          "x": 114,
+          "y": 799,
+          "width": 148,
+          "height": 5
+        },
+        "zOrder": 108,
+        "area": 740,
+        "areaRatio": 0.0024302134646962234,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      }
+    ],
+    "aggregate": {
+      "sourceNodeCount": 191,
+      "visibleNodeCount": 176,
+      "unsupportedCount": 32,
+      "unmappedCount": 0
+    },
+    "diagnostics": {
+      "unsupportedByReason": {
+        "unsupported_renderer_limit": 32
+      },
+      "unsupportedByKind": {
+        "vector": 32
+      },
+      "topUnsupported": [
+        {
+          "sourceNodeId": "I3:16736;3:6782",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Rectangle",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 325,
+          "bounds": {
+            "x": -1346.7276611328125,
+            "y": -1621,
+            "width": 25,
+            "height": 13
+          }
+        },
+        {
+          "sourceNodeId": "I37:855;3:6782",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Rectangle",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 325,
+          "bounds": {
+            "x": -1346.7276611328125,
+            "y": -573,
+            "width": 25,
+            "height": 13
+          }
+        },
+        {
+          "sourceNodeId": "I28:4029;3:6135",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 322.37999725341797,
+          "bounds": {
+            "x": -1580.5,
+            "y": -977.6363525390625,
+            "width": 18,
+            "height": 17.90999984741211
+          }
+        },
+        {
+          "sourceNodeId": "I3:16736;3:6784",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Rectangle",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 168.26559172058478,
+          "bounds": {
+            "x": -1344.427734375,
+            "y": -1618.6669921875,
+            "width": 20.199951171875,
+            "height": 8.329999923706055
+          }
+        },
+        {
+          "sourceNodeId": "I37:855;3:6784",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Rectangle",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 168.26559172058478,
+          "bounds": {
+            "x": -1344.427734375,
+            "y": -570.6669921875,
+            "width": 20.199951171875,
+            "height": 8.329999923706055
+          }
+        },
+        {
+          "sourceNodeId": "I42:1129;3:6101;1715:49005",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 144,
+          "bounds": {
+            "x": -1610,
+            "y": -66,
+            "width": 12,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I42:1757;3:6015;3:14914",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 128.00000381469727,
+          "bounds": {
+            "x": -1351.3333740234375,
+            "y": -151,
+            "width": 10.666666984558105,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I28:4029;3:6136",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 112.1526092027666,
+          "bounds": {
+            "x": -1575.18994140625,
+            "y": -974.1263427734375,
+            "width": 7.740000247955322,
+            "height": 14.49000072479248
+          }
+        },
+        {
+          "sourceNodeId": "I37:2547;4:70829",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 112,
+          "bounds": {
+            "x": -1644,
+            "y": -512,
+            "width": 14,
+            "height": 8
+          }
+        },
+        {
+          "sourceNodeId": "I3:5137;3:6044;4:76017",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 110.25,
+          "bounds": {
+            "x": -1544.75,
+            "y": -1142.8863525390625,
+            "width": 10.5,
+            "height": 10.5
+          }
+        },
+        {
+          "sourceNodeId": "I37:843;3:6044;4:76017",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 110.25,
+          "bounds": {
+            "x": -1544.75,
+            "y": 90.75,
+            "width": 10.5,
+            "height": 10.5
+          }
+        },
+        {
+          "sourceNodeId": "I3:5133;3:6013;4:78376",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 96,
+          "bounds": {
+            "x": -1631,
+            "y": -1332.6363525390625,
+            "width": 8,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I3:5134;3:6013;4:78376",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 96,
+          "bounds": {
+            "x": -1631,
+            "y": -1247.6363525390625,
+            "width": 8,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I37:839;3:6013;4:78376",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 96,
+          "bounds": {
+            "x": -1631,
+            "y": -321,
+            "width": 8,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I42:1255;3:6013;4:78376",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 96,
+          "bounds": {
+            "x": -1631,
+            "y": -236,
+            "width": 8,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I42:1757;3:6013;4:78376",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 96,
+          "bounds": {
+            "x": -1631,
+            "y": -151,
+            "width": 8,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I37:840;3:6013;4:78376",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 96,
+          "bounds": {
+            "x": -1631,
+            "y": 19,
+            "width": 8,
+            "height": 12
+          }
+        },
+        {
+          "sourceNodeId": "I28:4028;3:6131;136:158",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 79.30717324348188,
+          "bounds": {
+            "x": -1569.517578125,
+            "y": -1039.5113525390625,
+            "width": 12.553585052490234,
+            "height": 6.3174920082092285
+          }
+        },
+        {
+          "sourceNodeId": "I28:4028;3:6131;136:156",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 78.9692854239238,
+          "bounds": {
+            "x": -1569.517578125,
+            "y": -1030.078857421875,
+            "width": 12.499963760375977,
+            "height": 6.317561149597168
+          }
+        },
+        {
+          "sourceNodeId": "I3:5137;3:6046;4:70831",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 63,
+          "bounds": {
+            "x": -1438.75,
+            "y": -1140.6363525390625,
+            "width": 10.5,
+            "height": 6
+          }
+        },
+        {
+          "sourceNodeId": "I37:843;3:6046;4:70831",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 63,
+          "bounds": {
+            "x": -1438.75,
+            "y": 93,
+            "width": 10.5,
+            "height": 6
+          }
+        },
+        {
+          "sourceNodeId": "I28:4028;3:6131;136:155",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 57.10492393563254,
+          "bounds": {
+            "x": -1562.3385009765625,
+            "y": -1033.0714111328125,
+            "width": 7.714277267456055,
+            "height": 7.402498245239258
+          }
+        },
+        {
+          "sourceNodeId": "I42:1129;3:6100;3:7042;1:217",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 53.35894775390625,
+          "bounds": {
+            "x": -1634.0859375,
+            "y": -68.3251724243164,
+            "width": 6.046875,
+            "height": 8.82421875
+          }
+        },
+        {
+          "sourceNodeId": "I42:1129;3:6100;3:7040",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Intersect",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 52.93377685546875,
+          "bounds": {
+            "x": -1634.0859375,
+            "y": -68.2548599243164,
+            "width": 6.046875,
+            "height": 8.75390625
+          }
+        },
+        {
+          "sourceNodeId": "I42:1129;3:6100;3:7038;623:87458",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Quarter",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 31.640625,
+          "bounds": {
+            "x": -1632.75,
+            "y": -58.875,
+            "width": 5.625,
+            "height": 5.625
+          }
+        },
+        {
+          "sourceNodeId": "I42:1129;3:6100;3:7038;623:87460",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Quarter",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 31.640625,
+          "bounds": {
+            "x": -1624.875,
+            "y": -58.875,
+            "width": 5.625,
+            "height": 5.625
+          }
+        },
+        {
+          "sourceNodeId": "I42:1129;3:6100;3:7038;623:87457",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Quarter",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 31.640622317790985,
+          "bounds": {
+            "x": -1632.75,
+            "y": -66.75,
+            "width": 5.625,
+            "height": 5.624999523162842
+          }
+        },
+        {
+          "sourceNodeId": "I42:1129;3:6100;3:7038;623:87459",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Quarter",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 31.640622317790985,
+          "bounds": {
+            "x": -1624.875,
+            "y": -66.75,
+            "width": 5.625,
+            "height": 5.624999523162842
+          }
+        },
+        {
+          "sourceNodeId": "I42:1129;3:6101;1715:49004",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 28.106103443050415,
+          "bounds": {
+            "x": -1607.9599609375,
+            "y": -61.525001525878906,
+            "width": 7.920000076293945,
+            "height": 3.548750400543213
+          }
+        },
+        {
+          "sourceNodeId": "I28:4028;3:6131;136:157",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 24.624942409222058,
+          "bounds": {
+            "x": -1570.374267578125,
+            "y": -1035.209716796875,
+            "width": 3.464247703552246,
+            "height": 7.108308792114258
+          }
+        },
+        {
+          "sourceNodeId": "I3:16736;3:6783",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Combined Shape",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 5.312151908874512,
+          "bounds": {
+            "x": -1321.07763671875,
+            "y": -1617,
+            "width": 1.328037977218628,
+            "height": 4
+          }
+        },
+        {
+          "sourceNodeId": "I37:855;3:6783",
+          "sourcePageId": "37:827",
+          "sourceNodeName": "Combined Shape",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 5.312151908874512,
+          "bounds": {
+            "x": -1321.07763671875,
+            "y": -569,
+            "width": 1.328037977218628,
+            "height": 4
+          }
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "pageId": "login-version-1",
+      "sourcePageId": "3:5123",
+      "sourceRootNodeId": "3:5123",
+      "path": "/login-version-1",
+      "viewportRole": "mobile",
+      "nodeCounts": {
+        "text": 14,
+        "input": 2,
+        "select": 0,
+        "button": 3,
+        "image": 0,
+        "pixelOverlay": 0,
+        "total": 68
+      },
+      "structuredCoverage": {
+        "textNodeCount": 14,
+        "interactiveNodeCount": 5,
+        "fullPageScreenshotFallback": false
+      },
+      "componentFidelity": {
+        "sourceComponentNodeCount": 19,
+        "byFamily": {
+          "icon": 3,
+          "input": 6,
+          "button": 7,
+          "unknown": 3
+        },
+        "byState": {
+          "default": 19
+        }
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 22,
+        "renderedCount": 22,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "not_applicable",
+          "notes": [
+            "无左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "passed",
+          "notes": [
+            "检测到表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "passed",
+          "notes": [
+            "检测到社交登录按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    },
+    {
+      "pageId": "sign-up-version-1",
+      "sourcePageId": "37:827",
+      "sourceRootNodeId": "37:827",
+      "path": "/sign-up-version-1",
+      "viewportRole": "mobile",
+      "nodeCounts": {
+        "text": 16,
+        "input": 5,
+        "select": 0,
+        "button": 1,
+        "image": 0,
+        "pixelOverlay": 0,
+        "total": 83
+      },
+      "structuredCoverage": {
+        "textNodeCount": 16,
+        "interactiveNodeCount": 6,
+        "fullPageScreenshotFallback": false
+      },
+      "componentFidelity": {
+        "sourceComponentNodeCount": 26,
+        "byFamily": {
+          "icon": 3,
+          "input": 14,
+          "unknown": 7,
+          "button": 2
+        },
+        "byState": {
+          "default": 26
+        }
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 22,
+        "renderedCount": 22,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "not_applicable",
+          "notes": [
+            "无左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "passed",
+          "notes": [
+            "检测到表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualLayers": [
+    {
+      "sourceNodeId": "3:16684",
+      "uiSpecNodeId": "vl-login-version-1-3-16684",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 5,
+      "bounds": {
+        "x": -1649,
+        "y": -1568,
+        "width": 18.363658905029297,
+        "height": 18.363636016845703
+      },
+      "pageRelativeBounds": {
+        "x": 24,
+        "y": 68,
+        "width": 18.363658905029297,
+        "height": 18.363636016845703
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6781",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6781",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 77,
+      "bounds": {
+        "x": -1346.7276611328125,
+        "y": -1621,
+        "width": 26.97806167602539,
+        "height": 13
+      },
+      "pageRelativeBounds": {
+        "x": 326.2723388671875,
+        "y": 15,
+        "width": 26.97806167602539,
+        "height": 13
+      },
+      "opacity": 0.20000000298023224,
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4029;3:6134",
+      "uiSpecNodeId": "vl-login-version-1-I28-4029-3-6134",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 55,
+      "bounds": {
+        "x": -1580.5,
+        "y": -977.6363525390625,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 92.5,
+        "y": 658.3636474609375,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6770",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6770",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 65,
+      "bounds": {
+        "x": -1390,
+        "y": -1619.5,
+        "width": 18,
+        "height": 10
+      },
+      "pageRelativeBounds": {
+        "x": 283,
+        "y": 16.5,
+        "width": 18,
+        "height": 10
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6781",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6781",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 79,
+      "bounds": {
+        "x": -1346.7276611328125,
+        "y": -1621,
+        "width": 26.97806167602539,
+        "height": 13
+      },
+      "pageRelativeBounds": {
+        "x": 326.2723388671875,
+        "y": 15,
+        "width": 26.97806167602539,
+        "height": 13
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6776",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6776",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 71,
+      "bounds": {
+        "x": -1367,
+        "y": -1619.982666015625,
+        "width": 15.272375106811523,
+        "height": 10.965227127075195
+      },
+      "pageRelativeBounds": {
+        "x": 306,
+        "y": 16.017333984375,
+        "width": 15.272375106811523,
+        "height": 10.965227127075195
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5133;3:6015;4:78000",
+      "uiSpecNodeId": "vl-login-version-1-I3-5133-3-6015-4-78000",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 21,
+      "bounds": {
+        "x": -1352,
+        "y": -1332.6363525390625,
+        "width": 12,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 321,
+        "y": 303.3636474609375,
+        "width": 12,
+        "height": 12
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5134;3:6015;4:78000",
+      "uiSpecNodeId": "vl-login-version-1-I3-5134-3-6015-4-78000",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 31,
+      "bounds": {
+        "x": -1352,
+        "y": -1247.6363525390625,
+        "width": 12,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 321,
+        "y": 388.3636474609375,
+        "width": 12,
+        "height": 12
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4029;3:6134",
+      "uiSpecNodeId": "vl-login-version-1-I28-4029-3-6134",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 56,
+      "bounds": {
+        "x": -1580.5,
+        "y": -977.6363525390625,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 92.5,
+        "y": 658.3636474609375,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5137;3:6044",
+      "uiSpecNodeId": "vl-login-version-1-I3-5137-3-6044",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 36,
+      "bounds": {
+        "x": -1548.5,
+        "y": -1146.6363525390625,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 124.5,
+        "y": 489.3636474609375,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5133;3:6013",
+      "uiSpecNodeId": "vl-login-version-1-I3-5133-3-6013",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 18,
+      "bounds": {
+        "x": -1635,
+        "y": -1334.6363525390625,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 301.3636474609375,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5134;3:6013",
+      "uiSpecNodeId": "vl-login-version-1-I3-5134-3-6013",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 28,
+      "bounds": {
+        "x": -1635,
+        "y": -1249.6363525390625,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 386.3636474609375,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4028;3:6131",
+      "uiSpecNodeId": "vl-login-version-1-I28-4028-3-6131",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 51,
+      "bounds": {
+        "x": -1571.5,
+        "y": -1040.6363525390625,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 101.5,
+        "y": 595.3636474609375,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4028;3:6131",
+      "uiSpecNodeId": "vl-login-version-1-I28-4028-3-6131",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 49,
+      "bounds": {
+        "x": -1571.5,
+        "y": -1040.6363525390625,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 101.5,
+        "y": 595.3636474609375,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6777",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6777",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 72,
+      "bounds": {
+        "x": -1367,
+        "y": -1619.982666015625,
+        "width": 15.27237606048584,
+        "height": 4.743237495422363
+      },
+      "pageRelativeBounds": {
+        "x": 306,
+        "y": 16.017333984375,
+        "width": 15.27237606048584,
+        "height": 4.743237495422363
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4028;3:6131",
+      "uiSpecNodeId": "vl-login-version-1-I28-4028-3-6131",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 48,
+      "bounds": {
+        "x": -1571.5,
+        "y": -1040.6363525390625,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 101.5,
+        "y": 595.3636474609375,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4028;3:6131",
+      "uiSpecNodeId": "vl-login-version-1-I28-4028-3-6131",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 50,
+      "bounds": {
+        "x": -1571.5,
+        "y": -1040.6363525390625,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 101.5,
+        "y": 595.3636474609375,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16755;3:6790",
+      "uiSpecNodeId": "vl-login-version-1-I3-16755-3-6790",
+      "sourcePageId": "3:5123",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 81,
+      "bounds": {
+        "x": -1559,
+        "y": -837,
+        "width": 148,
+        "height": 5
+      },
+      "pageRelativeBounds": {
+        "x": 114,
+        "y": 799,
+        "width": 148,
+        "height": 5
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "28:4024",
+      "uiSpecNodeId": "vl-login-version-1-28-4024",
+      "sourcePageId": "3:5123",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 42,
+      "bounds": {
+        "x": -1649,
+        "y": -1080.6363525390625,
+        "width": 140.5,
+        "height": 0.000012282900115678785
+      },
+      "pageRelativeBounds": {
+        "x": 24,
+        "y": 555.3636474609375,
+        "width": 140.5,
+        "height": 0.000012282900115678785
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "28:4026",
+      "uiSpecNodeId": "vl-login-version-1-28-4026",
+      "sourcePageId": "3:5123",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 44,
+      "bounds": {
+        "x": -1462.5,
+        "y": -1080.6363525390625,
+        "width": 140.5,
+        "height": 0.000012282900115678785
+      },
+      "pageRelativeBounds": {
+        "x": 210.5,
+        "y": 555.3636474609375,
+        "width": 140.5,
+        "height": 0.000012282900115678785
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3:16683",
+      "uiSpecNodeId": "vl-login-version-1-3-16683",
+      "sourcePageId": "3:5123",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 6,
+      "bounds": {
+        "x": -1624.668212890625,
+        "y": -1566.1636962890625,
+        "width": 76.66818237304688,
+        "height": 15.15000057220459
+      },
+      "pageRelativeBounds": {
+        "x": 48.331787109375,
+        "y": 69.8363037109375,
+        "width": 76.66818237304688,
+        "height": 15.15000057220459
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5137;3:6046",
+      "uiSpecNodeId": "vl-login-version-1-I3-5137-3-6046",
+      "sourcePageId": "3:5123",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 39,
+      "bounds": {
+        "x": -1442.5,
+        "y": -1146.6363525390625,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 230.5,
+        "y": 489.3636474609375,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:855;3:6781",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-855-3-6781",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 104,
+      "bounds": {
+        "x": -1346.7276611328125,
+        "y": -573,
+        "width": 26.97806167602539,
+        "height": 13
+      },
+      "pageRelativeBounds": {
+        "x": 326.2723388671875,
+        "y": 15,
+        "width": 26.97806167602539,
+        "height": 13
+      },
+      "opacity": 0.20000000298023224,
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1129;3:6100;3:7038;623:87453",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1129-3-6100-3-7038-623-87453",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 48,
+      "bounds": {
+        "x": -1635,
+        "y": -69.00000762939453,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 518.9999923706055,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1129;3:6100;3:7041;623:87495",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1129-3-6100-3-7041-623-87495",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 60,
+      "bounds": {
+        "x": -1635,
+        "y": -69,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 519,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1129;3:6100;3:7038;623:87455",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1129-3-6100-3-7038-623-87455",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 50,
+      "bounds": {
+        "x": -1635.0000007868043,
+        "y": -68.99999887945636,
+        "width": 18.00000078680432,
+        "height": 17.999983620667294
+      },
+      "pageRelativeBounds": {
+        "x": 37.99999921319568,
+        "y": 519.0000011205436,
+        "width": 18.00000078680432,
+        "height": 17.999983620667294
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:855;3:6770",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-855-3-6770",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 92,
+      "bounds": {
+        "x": -1390,
+        "y": -571.5,
+        "width": 18,
+        "height": 10
+      },
+      "pageRelativeBounds": {
+        "x": 283,
+        "y": 16.5,
+        "width": 18,
+        "height": 10
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:855;3:6781",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-855-3-6781",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 106,
+      "bounds": {
+        "x": -1346.7276611328125,
+        "y": -573,
+        "width": 26.97806167602539,
+        "height": 13
+      },
+      "pageRelativeBounds": {
+        "x": 326.2723388671875,
+        "y": 15,
+        "width": 26.97806167602539,
+        "height": 13
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:855;3:6776",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-855-3-6776",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 98,
+      "bounds": {
+        "x": -1367,
+        "y": -571.9826049804688,
+        "width": 15.272375106811523,
+        "height": 10.965227127075195
+      },
+      "pageRelativeBounds": {
+        "x": 306,
+        "y": 16.01739501953125,
+        "width": 15.272375106811523,
+        "height": 10.965227127075195
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:839;3:6015;4:78000",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-839-3-6015-4-78000",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 20,
+      "bounds": {
+        "x": -1352,
+        "y": -321,
+        "width": 12,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 321,
+        "y": 267,
+        "width": 12,
+        "height": 12
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1255;3:6015;4:78000",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1255-3-6015-4-78000",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 30,
+      "bounds": {
+        "x": -1352,
+        "y": -236,
+        "width": 12,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 321,
+        "y": 352,
+        "width": 12,
+        "height": 12
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:840;3:6015;4:78000",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-840-3-6015-4-78000",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 78,
+      "bounds": {
+        "x": -1352,
+        "y": 19,
+        "width": 12,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 321,
+        "y": 607,
+        "width": 12,
+        "height": 12
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1757;3:6015",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1757-3-6015",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 40,
+      "bounds": {
+        "x": -1354,
+        "y": -153,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 319,
+        "y": 435,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "37:2547",
+      "uiSpecNodeId": "vl-sign-up-version-1-37-2547",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 5,
+      "bounds": {
+        "x": -1649,
+        "y": -520,
+        "width": 24,
+        "height": 24
+      },
+      "pageRelativeBounds": {
+        "x": 24,
+        "y": 68,
+        "width": 24,
+        "height": 24
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:843;3:6044",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-843-3-6044",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 81,
+      "bounds": {
+        "x": -1548.5,
+        "y": 87,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 124.5,
+        "y": 675,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:839;3:6013",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-839-3-6013",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 17,
+      "bounds": {
+        "x": -1635,
+        "y": -323,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 265,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1255;3:6013",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1255-3-6013",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 27,
+      "bounds": {
+        "x": -1635,
+        "y": -238,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 350,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1757;3:6013",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1757-3-6013",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 37,
+      "bounds": {
+        "x": -1635,
+        "y": -153,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 435,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:840;3:6013",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-840-3-6013",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "icon",
+      "zOrder": 75,
+      "bounds": {
+        "x": -1635,
+        "y": 17,
+        "width": 16,
+        "height": 16
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 605,
+        "width": 16,
+        "height": 16
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1129;3:6100;3:7039;623:87474",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1129-3-6100-3-7039-623-87474",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 57,
+      "bounds": {
+        "x": -1635,
+        "y": -69,
+        "width": 9,
+        "height": 9
+      },
+      "pageRelativeBounds": {
+        "x": 38,
+        "y": 519,
+        "width": 9,
+        "height": 9
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:855;3:6777",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-855-3-6777",
+      "sourcePageId": "37:827",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 99,
+      "bounds": {
+        "x": -1367,
+        "y": -571.9826049804688,
+        "width": 15.27237606048584,
+        "height": 4.743237495422363
+      },
+      "pageRelativeBounds": {
+        "x": 306,
+        "y": 16.01739501953125,
+        "width": 15.27237606048584,
+        "height": 4.743237495422363
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:856;3:6790",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-856-3-6790",
+      "sourcePageId": "37:827",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 108,
+      "bounds": {
+        "x": -1559,
+        "y": 211,
+        "width": 148,
+        "height": 5
+      },
+      "pageRelativeBounds": {
+        "x": 114,
+        "y": 799,
+        "width": 148,
+        "height": 5
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I42:1129;3:6101;1715:49003",
+      "uiSpecNodeId": "vl-sign-up-version-1-I42-1129-3-6101-1715-49003",
+      "sourcePageId": "37:827",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 66,
+      "bounds": {
+        "x": -1610,
+        "y": -66,
+        "width": 12,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 63,
+        "y": 522,
+        "width": 12,
+        "height": 12
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I37:843;3:6046",
+      "uiSpecNodeId": "vl-sign-up-version-1-I37-843-3-6046",
+      "sourcePageId": "37:827",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 84,
+      "bounds": {
+        "x": -1442.5,
+        "y": 87,
+        "width": 18,
+        "height": 18
+      },
+      "pageRelativeBounds": {
+        "x": 230.5,
+        "y": 675,
+        "width": 18,
+        "height": 18
+      },
+      "rendered": true
+    }
+  ],
+  "unsupportedFeatures": [],
+  "warnings": [],
+  "residualRisks": [
+    "M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。",
+    "图标按钮缺少真实业务 action，仅保留静态语义。",
+    "复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。"
+  ]
+}

@@ -1,0 +1,2587 @@
+{
+  "schemaVersion": "1",
+  "runId": "20260726gf-bgclip-community-v21-mobile-001",
+  "projectId": "community-v21-mobile-001",
+  "designBundleRevision": 1,
+  "uiSpecRevision": 59,
+  "status": "partial",
+  "scope": "static_generation_only",
+  "behaviorFlowVerified": false,
+  "m4ValidationStatus": "not_required",
+  "coverageVersion": "1",
+  "coverage": {
+    "coverageVersion": "1",
+    "pages": [
+      {
+        "sourceNodeCount": 61,
+        "visibleNodeCount": 61,
+        "byKind": {
+          "container": {
+            "total": 5,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 5,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "vector": {
+            "total": 23,
+            "structuredDom": 0,
+            "visualAsset": 1,
+            "decorativeLayer": 13,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 9
+          },
+          "image": {
+            "total": 1,
+            "structuredDom": 0,
+            "visualAsset": 1,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "instance": {
+            "total": 8,
+            "structuredDom": 1,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 7,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "text": {
+            "total": 24,
+            "structuredDom": 24,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 23,
+          "rendered": 14,
+          "ignoredSafe": 0,
+          "unsupported": 9,
+          "unmapped": 0
+        },
+        "imageFill": {
+          "total": 1,
+          "rendered": 1,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 24,
+          "rendered": 24,
+          "styleComplete": 24
+        },
+        "pageId": "6-11---a---profile",
+        "sourcePageId": "3186:4543",
+        "pageSize": {
+          "expectedWidth": 393,
+          "expectedHeight": 1029,
+          "actualWidth": 393,
+          "actualHeight": 1029,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      }
+    ],
+    "records": [
+      {
+        "sourceNodeId": "3186:4543",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "6.11 - A - Profile",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9309,
+          "y": 29039,
+          "width": 393,
+          "height": 1029
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 393,
+          "height": 1029
+        },
+        "zOrder": 0,
+        "area": 404397,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4543",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4547",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 14",
+        "nodeKind": "vector",
+        "decision": "visual_asset",
+        "reasonCode": "large_visual",
+        "bounds": {
+          "x": -9310,
+          "y": 29069,
+          "width": 393,
+          "height": 289
+        },
+        "pageRelativeBounds": {
+          "x": -1,
+          "y": 30,
+          "width": 393,
+          "height": 289
+        },
+        "zOrder": 1,
+        "area": 113577,
+        "areaRatio": 0.28085519922254615,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/c78110c91c92ef033bbfd2458ba24743718de24eae99d7d991053f56adb8e8f5.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4548",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Frame 17",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9177,
+          "y": 29134,
+          "width": 125,
+          "height": 125
+        },
+        "pageRelativeBounds": {
+          "x": 132,
+          "y": 95,
+          "width": 125,
+          "height": 125
+        },
+        "zOrder": 2,
+        "area": 15625,
+        "areaRatio": 0.03863777426637685,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4548",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4549",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "alejandrao_A_woman_confidently_deadlifting_a_barbell_loaded_w_9167964a-d00b-41ab-b715-9b001ca0ca09_1 1",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": -9262.2802734375,
+          "y": 29103.626953125,
+          "width": 294.39251708984375,
+          "height": 168.22430419921875
+        },
+        "pageRelativeBounds": {
+          "x": 46.7197265625,
+          "y": 64.626953125,
+          "width": 294.39251708984375,
+          "height": 168.22430419921875
+        },
+        "zOrder": 3,
+        "area": 49523.97634889558,
+        "areaRatio": 0.12246375801228887,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4549",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3202:4758",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Edit / Icon",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9085,
+          "y": 29227,
+          "width": 27,
+          "height": 27
+        },
+        "pageRelativeBounds": {
+          "x": 224,
+          "y": 188,
+          "width": 27,
+          "height": 27
+        },
+        "zOrder": 4,
+        "area": 729,
+        "areaRatio": 0.0018026839961720784,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3202-4758",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3202:4758;2069:1252",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Ellipse 12",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9085,
+          "y": 29227,
+          "width": 27,
+          "height": 27
+        },
+        "pageRelativeBounds": {
+          "x": 224,
+          "y": 188,
+          "width": 27,
+          "height": 27
+        },
+        "zOrder": 5,
+        "area": 729,
+        "areaRatio": 0.0018026839961720784,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/e9ab95276ada56a5b51f18f6834031257dcb0d1330962ec1864d74e022213cb3.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3202:4758;2069:1253",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -9077.5751953125,
+          "y": 29231.724609375,
+          "width": 12.15000057220459,
+          "height": 17.55000114440918
+        },
+        "pageRelativeBounds": {
+          "x": 231.4248046875,
+          "y": 192.724609375,
+          "width": 12.15000057220459,
+          "height": 17.55000114440918
+        },
+        "zOrder": 6,
+        "area": 213.23252394676274,
+        "areaRatio": 0.0005272851280963081,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3186:4550",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Frame 3",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9309,
+          "y": 29039,
+          "width": 393,
+          "height": 32
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 393,
+          "height": 32
+        },
+        "zOrder": 7,
+        "area": 12576,
+        "areaRatio": 0.031098153547133137,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4550",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4551",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "16:04",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9274,
+          "y": 29048,
+          "width": 30,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 35,
+          "y": 9,
+          "width": 30,
+          "height": 14
+        },
+        "zOrder": 8,
+        "area": 420,
+        "areaRatio": 0.0010385833722802097,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4551",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4552",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -9007,
+          "y": 29048,
+          "width": 13,
+          "height": 11
+        },
+        "pageRelativeBounds": {
+          "x": 302,
+          "y": 9,
+          "width": 13,
+          "height": 11
+        },
+        "zOrder": 9,
+        "area": 143,
+        "areaRatio": 0.00035361291008588095,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3186:4553",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -8989,
+          "y": 29050,
+          "width": 15,
+          "height": 8
+        },
+        "pageRelativeBounds": {
+          "x": 320,
+          "y": 11,
+          "width": 15,
+          "height": 8
+        },
+        "zOrder": 10,
+        "area": 120,
+        "areaRatio": 0.0002967381063657742,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3186:4554",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Group 12",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -8968,
+          "y": 29050,
+          "width": 17,
+          "height": 9
+        },
+        "pageRelativeBounds": {
+          "x": 341,
+          "y": 11,
+          "width": 17,
+          "height": 9
+        },
+        "zOrder": 11,
+        "area": 153,
+        "areaRatio": 0.0003783410856163621,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4554",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4555",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector (Stroke)",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -8967,
+          "y": 29051,
+          "width": 12,
+          "height": 7
+        },
+        "pageRelativeBounds": {
+          "x": 342,
+          "y": 12,
+          "width": 12,
+          "height": 7
+        },
+        "zOrder": 12,
+        "area": 84,
+        "areaRatio": 0.00020771667445604195,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3186:4556",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector (Stroke)",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -8968,
+          "y": 29050,
+          "width": 17,
+          "height": 9
+        },
+        "pageRelativeBounds": {
+          "x": 341,
+          "y": 11,
+          "width": 17,
+          "height": 9
+        },
+        "zOrder": 13,
+        "area": 153,
+        "areaRatio": 0.0003783410856163621,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3186:4557",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Navigation Bar",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9309,
+          "y": 30009,
+          "width": 394,
+          "height": 59
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 970,
+          "width": 394,
+          "height": 59
+        },
+        "zOrder": 14,
+        "area": 23246,
+        "areaRatio": 0.057483116838156566,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4557",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2566",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Line 3",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -9309,
+          "y": 30008.5,
+          "width": 393,
+          "height": 0
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 969.5,
+          "width": 393,
+          "height": 0
+        },
+        "zOrder": 15,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2567",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Group 14",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9309,
+          "y": 30009,
+          "width": 393,
+          "height": 59
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 970,
+          "width": 393,
+          "height": 59
+        },
+        "zOrder": 16,
+        "area": 23187,
+        "areaRatio": 0.057337220602526724,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-I3186-4557-3096-2567",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2568",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 10",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9309,
+          "y": 30009,
+          "width": 393,
+          "height": 59
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 970,
+          "width": 393,
+          "height": 59
+        },
+        "zOrder": 17,
+        "area": 23187,
+        "areaRatio": 0.057337220602526724,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/0d92730c65c0e230d79b3aef233ee76a3eda3a1a50ff84a40ac6386943acba77.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3189:4744",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Stars",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9084,
+          "y": 30025,
+          "width": 28,
+          "height": 28
+        },
+        "pageRelativeBounds": {
+          "x": 225,
+          "y": 986,
+          "width": 28,
+          "height": 28
+        },
+        "zOrder": 18,
+        "area": 784,
+        "areaRatio": 0.001938688961589725,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-I3186-4557-3189-4744",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3189:4744;3189:4296",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -9084,
+          "y": 30025,
+          "width": 28,
+          "height": 28
+        },
+        "pageRelativeBounds": {
+          "x": 225,
+          "y": 986,
+          "width": 28,
+          "height": 28
+        },
+        "zOrder": 19,
+        "area": 784,
+        "areaRatio": 0.001938688961589725,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/221ac89eca9d33e632d235a73d2753c8de8e4fb9970c6cf14dc5aeb09c1c7899.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2596",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Home Switch",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9264,
+          "y": 30025,
+          "width": 25,
+          "height": 27
+        },
+        "pageRelativeBounds": {
+          "x": 45,
+          "y": 986,
+          "width": 25,
+          "height": 27
+        },
+        "zOrder": 20,
+        "area": 675,
+        "areaRatio": 0.00166915184830748,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-I3186-4557-3096-2596",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2596;3071:2445",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -9264,
+          "y": 30025,
+          "width": 25,
+          "height": 27
+        },
+        "pageRelativeBounds": {
+          "x": 45,
+          "y": 986,
+          "width": 25,
+          "height": 27
+        },
+        "zOrder": 21,
+        "area": 675,
+        "areaRatio": 0.00166915184830748,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/bedf5a832c3b25e03a243a2d705daad554ccd216ac5c21f89ef05b1e2cca5b72.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2594",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Resources Switch",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9174,
+          "y": 30024,
+          "width": 25,
+          "height": 29
+        },
+        "pageRelativeBounds": {
+          "x": 135,
+          "y": 985,
+          "width": 25,
+          "height": 29
+        },
+        "zOrder": 22,
+        "area": 725,
+        "areaRatio": 0.001792792725959886,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-I3186-4557-3096-2594",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2594;3071:2439",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -9174,
+          "y": 30024,
+          "width": 25,
+          "height": 29
+        },
+        "pageRelativeBounds": {
+          "x": 135,
+          "y": 985,
+          "width": 25,
+          "height": 29
+        },
+        "zOrder": 23,
+        "area": 725,
+        "areaRatio": 0.001792792725959886,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/a00ce835ff1f1e9fe67399ed49c45c6eecfe4ac6575999bc37a062116daf0cfc.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2590",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Support & Help Switch",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -8991,
+          "y": 30023,
+          "width": 32,
+          "height": 31
+        },
+        "pageRelativeBounds": {
+          "x": 318,
+          "y": 984,
+          "width": 32,
+          "height": 31
+        },
+        "zOrder": 24,
+        "area": 992,
+        "areaRatio": 0.0024530350126237338,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-I3186-4557-3096-2590",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4557;3096:2590;3071:2441",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -8991,
+          "y": 30023,
+          "width": 32,
+          "height": 31
+        },
+        "pageRelativeBounds": {
+          "x": 318,
+          "y": 984,
+          "width": 32,
+          "height": 31
+        },
+        "zOrder": 25,
+        "area": 992,
+        "areaRatio": 0.0024530350126237338,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/8a639255d1370bc4cb54af5e7e5e0ac332d1988667797860cc090d4c3c8701ba.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4559",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Arrow",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -9274,
+          "y": 29110,
+          "width": 6,
+          "height": 11
+        },
+        "pageRelativeBounds": {
+          "x": 35,
+          "y": 71,
+          "width": 6,
+          "height": 11
+        },
+        "zOrder": 26,
+        "area": 66,
+        "areaRatio": 0.00016320595850117582,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4559",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4559;3096:2694",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -9273.999999046326,
+          "y": 29110.000000429136,
+          "width": 6.0000000079762685,
+          "height": 10.99999957086402
+        },
+        "pageRelativeBounds": {
+          "x": 35.000000953674316,
+          "y": 71.00000042913598,
+          "width": 6.0000000079762685,
+          "height": 10.99999957086402
+        },
+        "zOrder": 27,
+        "area": 65.99999751292307,
+        "areaRatio": 0.00016320595235108835,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3186:4560",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "My Profile",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9256,
+          "y": 29100,
+          "width": 101,
+          "height": 30
+        },
+        "pageRelativeBounds": {
+          "x": 53,
+          "y": 61,
+          "width": 101,
+          "height": 30
+        },
+        "zOrder": 28,
+        "area": 3030,
+        "areaRatio": 0.007492637185735799,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4560",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4561",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Madison Smith",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9191,
+          "y": 29259,
+          "width": 154,
+          "height": 30
+        },
+        "pageRelativeBounds": {
+          "x": 118,
+          "y": 220,
+          "width": 154,
+          "height": 30
+        },
+        "zOrder": 29,
+        "area": 4620,
+        "areaRatio": 0.011424417095082308,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4561",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4562",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "madisons@example.com",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9195,
+          "y": 29283,
+          "width": 168,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 114,
+          "y": 244,
+          "width": 168,
+          "height": 14
+        },
+        "zOrder": 30,
+        "area": 2352,
+        "areaRatio": 0.0058160668847691745,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4562",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4563",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Birthday: April 1st",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9170,
+          "y": 29299,
+          "width": 110,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 139,
+          "y": 260,
+          "width": 110,
+          "height": 20
+        },
+        "zOrder": 31,
+        "area": 2200,
+        "areaRatio": 0.005440198616705861,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4563",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4431",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Main Button",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -9185,
+          "y": 29943,
+          "width": 142,
+          "height": 36
+        },
+        "pageRelativeBounds": {
+          "x": 124,
+          "y": 904,
+          "width": 142,
+          "height": 36
+        },
+        "zOrder": 32,
+        "area": 5112,
+        "areaRatio": 0.012641043331181982,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4431-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3186:4431;53:140",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Main Button",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9165.5,
+          "y": 29951,
+          "width": 103,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 143.5,
+          "y": 912,
+          "width": 103,
+          "height": 20
+        },
+        "zOrder": 33,
+        "area": 2060,
+        "areaRatio": 0.005094004159279124,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-I3186-4431-53-140",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4649",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 38",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9273,
+          "y": 29706,
+          "width": 322,
+          "height": 45
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 667,
+          "width": 322,
+          "height": 45
+        },
+        "zOrder": 34,
+        "area": 14490,
+        "areaRatio": 0.03583112634366724,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/a0c78698e39bc11b038e0a4af60c94567576d65a4183df64cef1416e2764f0d3.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4688",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 187",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9273,
+          "y": 29788,
+          "width": 322,
+          "height": 45
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 749,
+          "width": 322,
+          "height": 45
+        },
+        "zOrder": 35,
+        "area": 14490,
+        "areaRatio": 0.03583112634366724,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/a0c78698e39bc11b038e0a4af60c94567576d65a4183df64cef1416e2764f0d3.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4749",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 188",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9273,
+          "y": 29870,
+          "width": 322,
+          "height": 45
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 831,
+          "width": 322,
+          "height": 45
+        },
+        "zOrder": 36,
+        "area": 14490,
+        "areaRatio": 0.03583112634366724,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/a0c78698e39bc11b038e0a4af60c94567576d65a4183df64cef1416e2764f0d3.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4650",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Full name",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9273,
+          "y": 29437,
+          "width": 214,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 398,
+          "width": 214,
+          "height": 14
+        },
+        "zOrder": 37,
+        "area": 2996,
+        "areaRatio": 0.0074085613889321635,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4650",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4652",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 135",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9273,
+          "y": 29460,
+          "width": 322,
+          "height": 45
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 421,
+          "width": 322,
+          "height": 45
+        },
+        "zOrder": 38,
+        "area": 14490,
+        "areaRatio": 0.03583112634366724,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/a0c78698e39bc11b038e0a4af60c94567576d65a4183df64cef1416e2764f0d3.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4654",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Madison Smith",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9253,
+          "y": 29475,
+          "width": 219,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 56,
+          "y": 436,
+          "width": 219,
+          "height": 14
+        },
+        "zOrder": 39,
+        "area": 3066,
+        "areaRatio": 0.007581658617645532,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4654",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4655",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9273,
+          "y": 29519,
+          "width": 214,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 480,
+          "width": 214,
+          "height": 14
+        },
+        "zOrder": 40,
+        "area": 2996,
+        "areaRatio": 0.0074085613889321635,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4655",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4656",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 41",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9273,
+          "y": 29542,
+          "width": 321,
+          "height": 45
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 503,
+          "width": 321,
+          "height": 45
+        },
+        "zOrder": 41,
+        "area": 14445,
+        "areaRatio": 0.035719849553780075,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/fb7146740e8c1c4d7d7f5be4c2495130ea631e9d2bd0c9adf4fe8058e7b95b92.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4657",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "madisons@example.com",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9253,
+          "y": 29557,
+          "width": 219,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 56,
+          "y": 518,
+          "width": 219,
+          "height": 14
+        },
+        "zOrder": 42,
+        "area": 3066,
+        "areaRatio": 0.007581658617645532,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4657",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4658",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Mobile Number",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9273,
+          "y": 29602,
+          "width": 214,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 563,
+          "width": 214,
+          "height": 14
+        },
+        "zOrder": 43,
+        "area": 2996,
+        "areaRatio": 0.0074085613889321635,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4658",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4659",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 37",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9273,
+          "y": 29624,
+          "width": 321,
+          "height": 45
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 585,
+          "width": 321,
+          "height": 45
+        },
+        "zOrder": 44,
+        "area": 14445,
+        "areaRatio": 0.035719849553780075,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/fb7146740e8c1c4d7d7f5be4c2495130ea631e9d2bd0c9adf4fe8058e7b95b92.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4660",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "+123 567 89000",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9253,
+          "y": 29640,
+          "width": 219,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 56,
+          "y": 601,
+          "width": 219,
+          "height": 14
+        },
+        "zOrder": 45,
+        "area": 3066,
+        "areaRatio": 0.007581658617645532,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4660",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4662",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Date of birth",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9273,
+          "y": 29684,
+          "width": 131,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 645,
+          "width": 131,
+          "height": 14
+        },
+        "zOrder": 46,
+        "area": 1834,
+        "areaRatio": 0.0045351473922902496,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4662",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4689",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Weight",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9273,
+          "y": 29766,
+          "width": 131,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 727,
+          "width": 131,
+          "height": 14
+        },
+        "zOrder": 47,
+        "area": 1834,
+        "areaRatio": 0.0045351473922902496,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4689",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4750",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Height",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9270,
+          "y": 29848,
+          "width": 131,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 39,
+          "y": 809,
+          "width": 131,
+          "height": 14
+        },
+        "zOrder": 48,
+        "area": 1834,
+        "areaRatio": 0.0045351473922902496,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4750",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4663",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "01 / 04 / 199X",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9253,
+          "y": 29723,
+          "width": 144,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 56,
+          "y": 684,
+          "width": 144,
+          "height": 14
+        },
+        "zOrder": 49,
+        "area": 2016,
+        "areaRatio": 0.004985200186945007,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4663",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4690",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "75 Kg",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9253,
+          "y": 29805,
+          "width": 144,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 56,
+          "y": 766,
+          "width": 144,
+          "height": 14
+        },
+        "zOrder": 50,
+        "area": 2016,
+        "areaRatio": 0.004985200186945007,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4690",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3186:4751",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "1.65 CM",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9253,
+          "y": 29887,
+          "width": 144,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 56,
+          "y": 848,
+          "width": 144,
+          "height": 14
+        },
+        "zOrder": 51,
+        "area": 2016,
+        "areaRatio": 0.004985200186945007,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3186-4751",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3250:4634",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Rectangle 186",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -9273,
+          "y": 29329,
+          "width": 323,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 36,
+          "y": 290,
+          "width": 323,
+          "height": 60
+        },
+        "zOrder": 52,
+        "area": 19380,
+        "areaRatio": 0.04792320417807254,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/87da36e5bde648dd5fd937843bef4054befd51f8279c4da2bb4f2839084735ad.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3250:4635",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "75 Kg",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9247,
+          "y": 29345,
+          "width": 37,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 62,
+          "y": 306,
+          "width": 37,
+          "height": 14
+        },
+        "zOrder": 53,
+        "area": 518,
+        "areaRatio": 0.0012809194924789254,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3250-4635",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3250:4636",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Weight",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9247,
+          "y": 29359.8046875,
+          "width": 42,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 62,
+          "y": 320.8046875,
+          "width": 42,
+          "height": 14
+        },
+        "zOrder": 54,
+        "area": 588,
+        "areaRatio": 0.0014540167211922936,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3250-4636",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3250:4637",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Years old",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9143,
+          "y": 29360,
+          "width": 58,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 166,
+          "y": 321,
+          "width": 58,
+          "height": 14
+        },
+        "zOrder": 55,
+        "area": 812,
+        "areaRatio": 0.0020079278530750725,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3250-4637",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3250:4638",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector 165",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -9191,
+          "y": 29338,
+          "width": 0,
+          "height": 41.5
+        },
+        "pageRelativeBounds": {
+          "x": 118,
+          "y": 299,
+          "width": 0,
+          "height": 41.5
+        },
+        "zOrder": 56,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3250:4639",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "Vector 166",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -9033,
+          "y": 29339,
+          "width": 0,
+          "height": 41.5
+        },
+        "pageRelativeBounds": {
+          "x": 276,
+          "y": 300,
+          "width": 0,
+          "height": 41.5
+        },
+        "zOrder": 57,
+        "area": 0,
+        "areaRatio": 0,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3250:4640",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "1.65 CM",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9016,
+          "y": 29345,
+          "width": 52,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 293,
+          "y": 306,
+          "width": 52,
+          "height": 14
+        },
+        "zOrder": 58,
+        "area": 728,
+        "areaRatio": 0.0018002111786190303,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3250-4640",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3250:4641",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "height",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9010,
+          "y": 29359.8046875,
+          "width": 40,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 299,
+          "y": 320.8046875,
+          "width": 40,
+          "height": 14
+        },
+        "zOrder": 59,
+        "area": 560,
+        "areaRatio": 0.0013847778297069464,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3250-4641",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3250:4642",
+        "sourcePageId": "3186:4543",
+        "sourceNodeName": "28",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -9122,
+          "y": 29345,
+          "width": 17,
+          "height": 14
+        },
+        "pageRelativeBounds": {
+          "x": 187,
+          "y": 306,
+          "width": 17,
+          "height": 14
+        },
+        "zOrder": 60,
+        "area": 238,
+        "areaRatio": 0.0005885305776254522,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-6-11---a---profile-3250-4642",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      }
+    ],
+    "aggregate": {
+      "sourceNodeCount": 61,
+      "visibleNodeCount": 61,
+      "unsupportedCount": 9,
+      "unmappedCount": 0
+    },
+    "diagnostics": {
+      "unsupportedByReason": {
+        "unsupported_renderer_limit": 9
+      },
+      "unsupportedByKind": {
+        "vector": 9
+      },
+      "topUnsupported": [
+        {
+          "sourceNodeId": "I3202:4758;2069:1253",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 213.23252394676274,
+          "bounds": {
+            "x": -9077.5751953125,
+            "y": 29231.724609375,
+            "width": 12.15000057220459,
+            "height": 17.55000114440918
+          }
+        },
+        {
+          "sourceNodeId": "3186:4556",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Vector (Stroke)",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 153,
+          "bounds": {
+            "x": -8968,
+            "y": 29050,
+            "width": 17,
+            "height": 9
+          }
+        },
+        {
+          "sourceNodeId": "3186:4552",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 143,
+          "bounds": {
+            "x": -9007,
+            "y": 29048,
+            "width": 13,
+            "height": 11
+          }
+        },
+        {
+          "sourceNodeId": "3186:4553",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 120,
+          "bounds": {
+            "x": -8989,
+            "y": 29050,
+            "width": 15,
+            "height": 8
+          }
+        },
+        {
+          "sourceNodeId": "3186:4555",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Vector (Stroke)",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 84,
+          "bounds": {
+            "x": -8967,
+            "y": 29051,
+            "width": 12,
+            "height": 7
+          }
+        },
+        {
+          "sourceNodeId": "I3186:4559;3096:2694",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 65.99999751292307,
+          "bounds": {
+            "x": -9273.999999046326,
+            "y": 29110.000000429136,
+            "width": 6.0000000079762685,
+            "height": 10.99999957086402
+          }
+        },
+        {
+          "sourceNodeId": "I3186:4557;3096:2566",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Line 3",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": -9309,
+            "y": 30008.5,
+            "width": 393,
+            "height": 0
+          }
+        },
+        {
+          "sourceNodeId": "3250:4638",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Vector 165",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": -9191,
+            "y": 29338,
+            "width": 0,
+            "height": 41.5
+          }
+        },
+        {
+          "sourceNodeId": "3250:4639",
+          "sourcePageId": "3186:4543",
+          "sourceNodeName": "Vector 166",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 0,
+          "bounds": {
+            "x": -9033,
+            "y": 29339,
+            "width": 0,
+            "height": 41.5
+          }
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "pageId": "6-11---a---profile",
+      "sourcePageId": "3186:4543",
+      "sourceRootNodeId": "3186:4543",
+      "path": "/6-11---a---profile",
+      "viewportRole": "tablet",
+      "nodeCounts": {
+        "text": 24,
+        "input": 0,
+        "button": 1,
+        "image": 1,
+        "pixelOverlay": 14,
+        "total": 53
+      },
+      "structuredCoverage": {
+        "textNodeCount": 24,
+        "interactiveNodeCount": 1,
+        "fullPageScreenshotFallback": false
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 14,
+        "renderedCount": 14,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ],
+      "comparison": {
+        "diffPixelRatio": 0.055262526675519355,
+        "diffPixels": 22348,
+        "screenshotPaths": [
+          "runs/ms1hkn9j-fce5c0d5eaf7494fbaad463113d11f84/screenshots/000-811630216a36-expected.png",
+          "runs/ms1hkn9j-fce5c0d5eaf7494fbaad463113d11f84/screenshots/000-811630216a36-actual.png",
+          "runs/ms1hkn9j-fce5c0d5eaf7494fbaad463113d11f84/diffs/000-811630216a36-diff.png"
+        ],
+        "regionDiffs": [
+          {
+            "id": "visual_assets",
+            "label": "visual assets",
+            "bounds": {
+              "x": 0,
+              "y": 30,
+              "width": 393,
+              "height": 999
+            },
+            "diffPixelCount": 21311,
+            "diffPixelRatio": 0.05428074384817387
+          },
+          {
+            "id": "text_regions",
+            "label": "text regions",
+            "bounds": {
+              "x": 35,
+              "y": 9,
+              "width": 310,
+              "height": 923
+            },
+            "diffPixelCount": 18967,
+            "diffPixelRatio": 0.06628805088596093
+          },
+          {
+            "id": "button_icon_controls",
+            "label": "button and icon controls",
+            "bounds": {
+              "x": 124,
+              "y": 904,
+              "width": 142,
+              "height": 36
+            },
+            "diffPixelCount": 946,
+            "diffPixelRatio": 0.1850547730829421
+          }
+        ],
+        "regionDiagnostics": [
+          {
+            "id": "cta",
+            "contractBucket": "button_icon_controls",
+            "bounds": {
+              "x": 124,
+              "y": 904,
+              "width": 142,
+              "height": 36
+            },
+            "diffPixelRatio": 0.1850547730829421,
+            "diffPixels": 946,
+            "sourceNodeIds": [],
+            "uiSpecNodeIds": [
+              "ui-6-11---a---profile-3186-4431-control"
+            ],
+            "suspectedCauses": [
+              "asset_layering",
+              "renderer_reset"
+            ]
+          },
+          {
+            "id": "social_buttons",
+            "contractBucket": "button_icon_controls",
+            "bounds": {
+              "x": 124,
+              "y": 904,
+              "width": 142,
+              "height": 36
+            },
+            "diffPixelRatio": 0.1850547730829421,
+            "diffPixels": 946,
+            "sourceNodeIds": [],
+            "uiSpecNodeIds": [
+              "ui-6-11---a---profile-3186-4431-control"
+            ],
+            "suspectedCauses": [
+              "asset_layering",
+              "renderer_reset"
+            ]
+          },
+          {
+            "id": "footer",
+            "contractBucket": "text_regions",
+            "bounds": {
+              "x": 35,
+              "y": 9,
+              "width": 310,
+              "height": 923
+            },
+            "diffPixelRatio": 0.06628805088596093,
+            "diffPixels": 18967,
+            "sourceNodeIds": [],
+            "uiSpecNodeIds": [
+              "ui-6-11---a---profile-3186-4551",
+              "ui-6-11---a---profile-3186-4560",
+              "ui-6-11---a---profile-3186-4561",
+              "ui-6-11---a---profile-3186-4562",
+              "ui-6-11---a---profile-3186-4563",
+              "ui-6-11---a---profile-I3186-4431-53-140",
+              "ui-6-11---a---profile-3186-4650",
+              "ui-6-11---a---profile-3186-4654",
+              "ui-6-11---a---profile-3186-4655",
+              "ui-6-11---a---profile-3186-4657",
+              "ui-6-11---a---profile-3186-4658",
+              "ui-6-11---a---profile-3186-4660",
+              "ui-6-11---a---profile-3186-4662",
+              "ui-6-11---a---profile-3186-4689",
+              "ui-6-11---a---profile-3186-4750",
+              "ui-6-11---a---profile-3186-4663",
+              "ui-6-11---a---profile-3186-4690",
+              "ui-6-11---a---profile-3186-4751",
+              "ui-6-11---a---profile-3250-4635",
+              "ui-6-11---a---profile-3250-4636",
+              "ui-6-11---a---profile-3250-4637",
+              "ui-6-11---a---profile-3250-4640",
+              "ui-6-11---a---profile-3250-4641",
+              "ui-6-11---a---profile-3250-4642"
+            ],
+            "suspectedCauses": [
+              "typography"
+            ]
+          },
+          {
+            "id": "mobile_canvas",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 393,
+              "height": 1029
+            },
+            "diffPixelRatio": 0.055262526675519355,
+            "diffPixels": 22348,
+            "sourceNodeIds": [],
+            "uiSpecNodeIds": [],
+            "suspectedCauses": [
+              "canvas_mapping"
+            ]
+          },
+          {
+            "id": "left_visual",
+            "contractBucket": "visual_assets",
+            "bounds": {
+              "x": 0,
+              "y": 30,
+              "width": 393,
+              "height": 999
+            },
+            "diffPixelRatio": 0.05428074384817387,
+            "diffPixels": 21311,
+            "sourceNodeIds": [
+              "I3186:4557;3096:2590;3071:2441",
+              "I3186:4557;3189:4744;3189:4296",
+              "I3186:4557;3096:2594;3071:2439",
+              "I3186:4557;3096:2596;3071:2445",
+              "3186:4547",
+              "I3186:4557;3096:2568",
+              "3250:4634",
+              "3186:4649",
+              "3186:4688",
+              "3186:4749",
+              "3186:4652",
+              "3186:4656",
+              "3186:4659",
+              "I3202:4758;2069:1252"
+            ],
+            "uiSpecNodeIds": [
+              "ui-6-11---a---profile-3186-4549",
+              "vl-6-11---a---profile-I3202-4758-2069-1252",
+              "vl-6-11---a---profile-I3186-4557-3096-2568",
+              "vl-6-11---a---profile-I3186-4557-3189-4744-3189-4296",
+              "vl-6-11---a---profile-I3186-4557-3096-2596-3071-2445",
+              "vl-6-11---a---profile-I3186-4557-3096-2594-3071-2439",
+              "vl-6-11---a---profile-I3186-4557-3096-2590-3071-2441",
+              "vl-6-11---a---profile-3186-4547",
+              "vl-6-11---a---profile-3250-4634",
+              "vl-6-11---a---profile-3186-4649",
+              "vl-6-11---a---profile-3186-4688",
+              "vl-6-11---a---profile-3186-4749",
+              "vl-6-11---a---profile-3186-4652",
+              "vl-6-11---a---profile-3186-4656",
+              "vl-6-11---a---profile-3186-4659"
+            ],
+            "suspectedCauses": [
+              "asset_layering"
+            ]
+          }
+        ],
+        "canvasMapping": {
+          "sourcePageId": "3186:4543",
+          "pageId": "6-11---a---profile",
+          "artboard": {
+            "width": 393,
+            "height": 1029
+          },
+          "viewport": {
+            "id": "desktop",
+            "width": 1440,
+            "height": 900,
+            "deviceScaleFactor": 1
+          },
+          "scale": 1,
+          "origin": {
+            "x": 0,
+            "y": 0
+          },
+          "renderMode": "scroll_canvas"
+        }
+      }
+    }
+  ],
+  "visualLayers": [
+    {
+      "sourceNodeId": "I3186:4557;3096:2590;3071:2441",
+      "uiSpecNodeId": "vl-6-11---a---profile-I3186-4557-3096-2590-3071-2441",
+      "sourcePageId": "3186:4543",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 25,
+      "bounds": {
+        "x": -8991,
+        "y": 30023,
+        "width": 32,
+        "height": 31
+      },
+      "pageRelativeBounds": {
+        "x": 318,
+        "y": 984,
+        "width": 32,
+        "height": 31
+      },
+      "assetRef": "figma/screenshots/8a639255d1370bc4cb54af5e7e5e0ac332d1988667797860cc090d4c3c8701ba.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3186:4557;3189:4744;3189:4296",
+      "uiSpecNodeId": "vl-6-11---a---profile-I3186-4557-3189-4744-3189-4296",
+      "sourcePageId": "3186:4543",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 19,
+      "bounds": {
+        "x": -9084,
+        "y": 30025,
+        "width": 28,
+        "height": 28
+      },
+      "pageRelativeBounds": {
+        "x": 225,
+        "y": 986,
+        "width": 28,
+        "height": 28
+      },
+      "assetRef": "figma/screenshots/221ac89eca9d33e632d235a73d2753c8de8e4fb9970c6cf14dc5aeb09c1c7899.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3186:4557;3096:2594;3071:2439",
+      "uiSpecNodeId": "vl-6-11---a---profile-I3186-4557-3096-2594-3071-2439",
+      "sourcePageId": "3186:4543",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 23,
+      "bounds": {
+        "x": -9174,
+        "y": 30024,
+        "width": 25,
+        "height": 29
+      },
+      "pageRelativeBounds": {
+        "x": 135,
+        "y": 985,
+        "width": 25,
+        "height": 29
+      },
+      "assetRef": "figma/screenshots/a00ce835ff1f1e9fe67399ed49c45c6eecfe4ac6575999bc37a062116daf0cfc.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3186:4557;3096:2596;3071:2445",
+      "uiSpecNodeId": "vl-6-11---a---profile-I3186-4557-3096-2596-3071-2445",
+      "sourcePageId": "3186:4543",
+      "reason": "nav_icon",
+      "layerRole": "icon",
+      "zOrder": 21,
+      "bounds": {
+        "x": -9264,
+        "y": 30025,
+        "width": 25,
+        "height": 27
+      },
+      "pageRelativeBounds": {
+        "x": 45,
+        "y": 986,
+        "width": 25,
+        "height": 27
+      },
+      "assetRef": "figma/screenshots/bedf5a832c3b25e03a243a2d705daad554ccd216ac5c21f89ef05b1e2cca5b72.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3186:4547",
+      "uiSpecNodeId": "vl-6-11---a---profile-3186-4547",
+      "sourcePageId": "3186:4543",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 1,
+      "bounds": {
+        "x": -9310,
+        "y": 29069,
+        "width": 393,
+        "height": 289
+      },
+      "pageRelativeBounds": {
+        "x": -1,
+        "y": 30,
+        "width": 393,
+        "height": 289
+      },
+      "assetRef": "figma/screenshots/c78110c91c92ef033bbfd2458ba24743718de24eae99d7d991053f56adb8e8f5.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3186:4557;3096:2568",
+      "uiSpecNodeId": "vl-6-11---a---profile-I3186-4557-3096-2568",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 17,
+      "bounds": {
+        "x": -9309,
+        "y": 30009,
+        "width": 393,
+        "height": 59
+      },
+      "pageRelativeBounds": {
+        "x": 0,
+        "y": 970,
+        "width": 393,
+        "height": 59
+      },
+      "assetRef": "figma/screenshots/0d92730c65c0e230d79b3aef233ee76a3eda3a1a50ff84a40ac6386943acba77.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3250:4634",
+      "uiSpecNodeId": "vl-6-11---a---profile-3250-4634",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 52,
+      "bounds": {
+        "x": -9273,
+        "y": 29329,
+        "width": 323,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 36,
+        "y": 290,
+        "width": 323,
+        "height": 60
+      },
+      "assetRef": "figma/screenshots/87da36e5bde648dd5fd937843bef4054befd51f8279c4da2bb4f2839084735ad.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3186:4649",
+      "uiSpecNodeId": "vl-6-11---a---profile-3186-4649",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 34,
+      "bounds": {
+        "x": -9273,
+        "y": 29706,
+        "width": 322,
+        "height": 45
+      },
+      "pageRelativeBounds": {
+        "x": 36,
+        "y": 667,
+        "width": 322,
+        "height": 45
+      },
+      "assetRef": "figma/screenshots/a0c78698e39bc11b038e0a4af60c94567576d65a4183df64cef1416e2764f0d3.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3186:4688",
+      "uiSpecNodeId": "vl-6-11---a---profile-3186-4688",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 35,
+      "bounds": {
+        "x": -9273,
+        "y": 29788,
+        "width": 322,
+        "height": 45
+      },
+      "pageRelativeBounds": {
+        "x": 36,
+        "y": 749,
+        "width": 322,
+        "height": 45
+      },
+      "assetRef": "figma/screenshots/a0c78698e39bc11b038e0a4af60c94567576d65a4183df64cef1416e2764f0d3.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3186:4749",
+      "uiSpecNodeId": "vl-6-11---a---profile-3186-4749",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 36,
+      "bounds": {
+        "x": -9273,
+        "y": 29870,
+        "width": 322,
+        "height": 45
+      },
+      "pageRelativeBounds": {
+        "x": 36,
+        "y": 831,
+        "width": 322,
+        "height": 45
+      },
+      "assetRef": "figma/screenshots/a0c78698e39bc11b038e0a4af60c94567576d65a4183df64cef1416e2764f0d3.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3186:4652",
+      "uiSpecNodeId": "vl-6-11---a---profile-3186-4652",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 38,
+      "bounds": {
+        "x": -9273,
+        "y": 29460,
+        "width": 322,
+        "height": 45
+      },
+      "pageRelativeBounds": {
+        "x": 36,
+        "y": 421,
+        "width": 322,
+        "height": 45
+      },
+      "assetRef": "figma/screenshots/a0c78698e39bc11b038e0a4af60c94567576d65a4183df64cef1416e2764f0d3.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3186:4656",
+      "uiSpecNodeId": "vl-6-11---a---profile-3186-4656",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 41,
+      "bounds": {
+        "x": -9273,
+        "y": 29542,
+        "width": 321,
+        "height": 45
+      },
+      "pageRelativeBounds": {
+        "x": 36,
+        "y": 503,
+        "width": 321,
+        "height": 45
+      },
+      "assetRef": "figma/screenshots/fb7146740e8c1c4d7d7f5be4c2495130ea631e9d2bd0c9adf4fe8058e7b95b92.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "3186:4659",
+      "uiSpecNodeId": "vl-6-11---a---profile-3186-4659",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 44,
+      "bounds": {
+        "x": -9273,
+        "y": 29624,
+        "width": 321,
+        "height": 45
+      },
+      "pageRelativeBounds": {
+        "x": 36,
+        "y": 585,
+        "width": 321,
+        "height": 45
+      },
+      "assetRef": "figma/screenshots/fb7146740e8c1c4d7d7f5be4c2495130ea631e9d2bd0c9adf4fe8058e7b95b92.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3202:4758;2069:1252",
+      "uiSpecNodeId": "vl-6-11---a---profile-I3202-4758-2069-1252",
+      "sourcePageId": "3186:4543",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 5,
+      "bounds": {
+        "x": -9085,
+        "y": 29227,
+        "width": 27,
+        "height": 27
+      },
+      "pageRelativeBounds": {
+        "x": 224,
+        "y": 188,
+        "width": 27,
+        "height": 27
+      },
+      "assetRef": "figma/screenshots/e9ab95276ada56a5b51f18f6834031257dcb0d1330962ec1864d74e022213cb3.png",
+      "rendered": true
+    }
+  ],
+  "unsupportedFeatures": [],
+  "warnings": [
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I3202:4758;2069:1253"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 3186:4552"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 3186:4553"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 3186:4555"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 3186:4556"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I3186:4557;3096:2566"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I3186:4559;3096:2694"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 3250:4638"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 3250:4639"
+    }
+  ],
+  "residualRisks": [
+    "M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。",
+    "图标按钮缺少真实业务 action，仅保留静态语义。",
+    "复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。"
+  ]
+}

@@ -1,0 +1,2600 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-07-26T01:44:38.076Z",
+  "baselineSummaryPath": "reports/community-corpus/20260726-m5-coverage-summary.json",
+  "v2SummaryPath": "reports/community-corpus/20260726-m5-coverage-v2-summary.json",
+  "indexPath": "reports/community-corpus/20260726-m5-coverage-v21-index.json",
+  "sampleCount": 6,
+  "aggregate": {
+    "sourceNodeCount": 1430,
+    "visibleNodeCount": 1397,
+    "structuredDom": 282,
+    "visualAsset": 27,
+    "decorativeLayer": 233,
+    "layoutContainer": 364,
+    "ignoredSafe": 311,
+    "unsupported": 213,
+    "unmapped": 0,
+    "vectorTotal": 740,
+    "vectorRendered": 530,
+    "vectorUnsupported": 208,
+    "imageFillTotal": 9,
+    "imageFillRendered": 8,
+    "imageFillMissingAsset": 0,
+    "textTotal": 235,
+    "textRendered": 228,
+    "budgetExceeded": 0,
+    "unsupportedFeatureCount": 13,
+    "warningCount": 382,
+    "unsupportedRatio": 0.1525,
+    "unmappedRatio": 0,
+    "visualHandledRatio": 0.1861,
+    "vectorRenderedRatio": 0.7162,
+    "imageFillRenderedRatio": 0.8889,
+    "textRenderedRatio": 0.9702
+  },
+  "baselineAggregate": {
+    "sourceNodeCount": 1430,
+    "visibleNodeCount": 1397,
+    "structuredDom": 282,
+    "visualAsset": 19,
+    "decorativeLayer": 149,
+    "layoutContainer": 364,
+    "ignoredSafe": 53,
+    "unsupported": 563,
+    "unmapped": 0,
+    "vectorTotal": 740,
+    "vectorRendered": 160,
+    "vectorUnsupported": 558,
+    "imageFillTotal": 9,
+    "imageFillRendered": 8,
+    "imageFillMissingAsset": 0,
+    "textTotal": 235,
+    "textRendered": 228,
+    "budgetExceeded": 0,
+    "unsupportedFeatureCount": 29,
+    "warningCount": 464,
+    "unsupportedRatio": 0.403,
+    "unmappedRatio": 0,
+    "visualHandledRatio": 0.1203,
+    "vectorRenderedRatio": 0.2162,
+    "imageFillRenderedRatio": 0.8889,
+    "textRenderedRatio": 0.9702
+  },
+  "v2Aggregate": {
+    "sourceNodeCount": 1430,
+    "visibleNodeCount": 1397,
+    "structuredDom": 282,
+    "visualAsset": 27,
+    "decorativeLayer": 152,
+    "layoutContainer": 364,
+    "ignoredSafe": 297,
+    "unsupported": 308,
+    "unmapped": 0,
+    "vectorTotal": 740,
+    "vectorRendered": 171,
+    "vectorUnsupported": 303,
+    "imageFillTotal": 9,
+    "imageFillRendered": 8,
+    "imageFillMissingAsset": 0,
+    "textTotal": 235,
+    "textRendered": 228,
+    "budgetExceeded": 0,
+    "unsupportedFeatureCount": 0,
+    "warningCount": 461,
+    "unsupportedRatio": 0.2205,
+    "unmappedRatio": 0,
+    "visualHandledRatio": 0.1281,
+    "vectorRenderedRatio": 0.2311,
+    "imageFillRenderedRatio": 0.8889,
+    "textRenderedRatio": 0.9702
+  },
+  "deltaFromBaseline": {
+    "unsupported": -350,
+    "unsupportedRatio": -0.2505,
+    "vectorRendered": 370,
+    "vectorRenderedRatio": 0.5,
+    "imageFillRenderedRatio": 0,
+    "textRenderedRatio": 0
+  },
+  "deltaFromV2": {
+    "unsupported": -95,
+    "unsupportedRatio": -0.068,
+    "vectorRendered": 359,
+    "vectorRenderedRatio": 0.4851,
+    "imageFillRenderedRatio": 0,
+    "textRenderedRatio": 0
+  },
+  "samples": [
+    {
+      "sampleId": "community-login-001",
+      "projectId": "community-v21-login-001",
+      "status": "partial",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-login-001/ms14upou-d6cdd9aeb9784a73/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-login-001/ms14upou-d6cdd9aeb9784a73/summary.md",
+      "pages": 1,
+      "sourceNodeCount": 82,
+      "visibleNodeCount": 77,
+      "structuredDom": 29,
+      "visualAsset": 0,
+      "decorativeLayer": 17,
+      "layoutContainer": 19,
+      "ignoredSafe": 11,
+      "unsupported": 6,
+      "unmapped": 0,
+      "unsupportedRatio": 0.0779,
+      "unmappedRatio": 0,
+      "visualHandledRatio": 0.2208,
+      "vectorTotal": 29,
+      "vectorRendered": 23,
+      "vectorUnsupported": 6,
+      "imageFillTotal": 0,
+      "imageFillRendered": 0,
+      "imageFillMissingAsset": 0,
+      "textTotal": 14,
+      "textRendered": 14,
+      "budgetExceeded": 0,
+      "unsupportedFeatureCount": 0,
+      "warningCount": 5,
+      "diagnostics": {
+        "unsupportedByReason": {
+          "unsupported_renderer_limit": 6
+        },
+        "unsupportedByKind": {
+          "vector": 6
+        },
+        "topUnsupported": [
+          {
+            "sourceNodeId": "I3:5137;3:6046;4:70831",
+            "sourcePageId": "3:5123",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 63,
+            "bounds": {
+              "x": -1438.75,
+              "y": -1140.6363525390625,
+              "width": 10.5,
+              "height": 6
+            }
+          },
+          {
+            "sourceNodeId": "I28:4028;3:6131;136:155",
+            "sourcePageId": "3:5123",
+            "sourceNodeName": "vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 57.10492393563254,
+            "bounds": {
+              "x": -1562.3385009765625,
+              "y": -1033.0714111328125,
+              "width": 7.714277267456055,
+              "height": 7.402498245239258
+            }
+          },
+          {
+            "sourceNodeId": "I28:4028;3:6131;136:157",
+            "sourcePageId": "3:5123",
+            "sourceNodeName": "vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 24.624942409222058,
+            "bounds": {
+              "x": -1570.374267578125,
+              "y": -1035.209716796875,
+              "width": 3.464247703552246,
+              "height": 7.108308792114258
+            }
+          },
+          {
+            "sourceNodeId": "I3:16736;3:6783",
+            "sourcePageId": "3:5123",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 5.312151908874512,
+            "bounds": {
+              "x": -1321.07763671875,
+              "y": -1617,
+              "width": 1.328037977218628,
+              "height": 4
+            }
+          },
+          {
+            "sourceNodeId": "28:4024",
+            "sourcePageId": "3:5123",
+            "sourceNodeName": "Line",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 0.0017257474662528693,
+            "bounds": {
+              "x": -1649,
+              "y": -1080.6363525390625,
+              "width": 140.5,
+              "height": 0.000012282900115678785
+            }
+          },
+          {
+            "sourceNodeId": "28:4026",
+            "sourcePageId": "3:5123",
+            "sourceNodeName": "Line",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 0.0017257474662528693,
+            "bounds": {
+              "x": -1462.5,
+              "y": -1080.6363525390625,
+              "width": 140.5,
+              "height": 0.000012282900115678785
+            }
+          }
+        ]
+      }
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "projectId": "community-v21-mobile-001",
+      "status": "partial",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-mobile-001/ms14v2pi-8341617581314a7b/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-mobile-001/ms14v2pi-8341617581314a7b/summary.md",
+      "pages": 1,
+      "sourceNodeCount": 61,
+      "visibleNodeCount": 61,
+      "structuredDom": 25,
+      "visualAsset": 2,
+      "decorativeLayer": 13,
+      "layoutContainer": 12,
+      "ignoredSafe": 0,
+      "unsupported": 9,
+      "unmapped": 0,
+      "unsupportedRatio": 0.1475,
+      "unmappedRatio": 0,
+      "visualHandledRatio": 0.2459,
+      "vectorTotal": 23,
+      "vectorRendered": 14,
+      "vectorUnsupported": 9,
+      "imageFillTotal": 1,
+      "imageFillRendered": 1,
+      "imageFillMissingAsset": 0,
+      "textTotal": 24,
+      "textRendered": 24,
+      "budgetExceeded": 0,
+      "unsupportedFeatureCount": 0,
+      "warningCount": 9,
+      "diagnostics": {
+        "unsupportedByReason": {
+          "unsupported_renderer_limit": 9
+        },
+        "unsupportedByKind": {
+          "vector": 9
+        },
+        "topUnsupported": [
+          {
+            "sourceNodeId": "I3202:4758;2069:1253",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 213.23252394676274,
+            "bounds": {
+              "x": -9077.5751953125,
+              "y": 29231.724609375,
+              "width": 12.15000057220459,
+              "height": 17.55000114440918
+            }
+          },
+          {
+            "sourceNodeId": "3186:4556",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 153,
+            "bounds": {
+              "x": -8968,
+              "y": 29050,
+              "width": 17,
+              "height": 9
+            }
+          },
+          {
+            "sourceNodeId": "3186:4552",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 143,
+            "bounds": {
+              "x": -9007,
+              "y": 29048,
+              "width": 13,
+              "height": 11
+            }
+          },
+          {
+            "sourceNodeId": "3186:4553",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 120,
+            "bounds": {
+              "x": -8989,
+              "y": 29050,
+              "width": 15,
+              "height": 8
+            }
+          },
+          {
+            "sourceNodeId": "3186:4555",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 84,
+            "bounds": {
+              "x": -8967,
+              "y": 29051,
+              "width": 12,
+              "height": 7
+            }
+          },
+          {
+            "sourceNodeId": "I3186:4559;3096:2694",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 65.99999751292307,
+            "bounds": {
+              "x": -9273.999999046326,
+              "y": 29110.000000429136,
+              "width": 6.0000000079762685,
+              "height": 10.99999957086402
+            }
+          },
+          {
+            "sourceNodeId": "I3186:4557;3096:2566",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Line 3",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 0,
+            "bounds": {
+              "x": -9309,
+              "y": 30008.5,
+              "width": 393,
+              "height": 0
+            }
+          },
+          {
+            "sourceNodeId": "3250:4638",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Vector 165",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 0,
+            "bounds": {
+              "x": -9191,
+              "y": 29338,
+              "width": 0,
+              "height": 41.5
+            }
+          },
+          {
+            "sourceNodeId": "3250:4639",
+            "sourcePageId": "3186:4543",
+            "sourceNodeName": "Vector 166",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 0,
+            "bounds": {
+              "x": -9033,
+              "y": 29339,
+              "width": 0,
+              "height": 41.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "projectId": "community-v21-dashboard-001",
+      "status": "partial",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-dashboard-001/ms14vuvh-c678c824d9f341e6/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-dashboard-001/ms14vuvh-c678c824d9f341e6/summary.md",
+      "pages": 1,
+      "sourceNodeCount": 496,
+      "visibleNodeCount": 496,
+      "structuredDom": 114,
+      "visualAsset": 12,
+      "decorativeLayer": 148,
+      "layoutContainer": 116,
+      "ignoredSafe": 14,
+      "unsupported": 92,
+      "unmapped": 0,
+      "unsupportedRatio": 0.1855,
+      "unmappedRatio": 0,
+      "visualHandledRatio": 0.3226,
+      "vectorTotal": 262,
+      "vectorRendered": 170,
+      "vectorUnsupported": 92,
+      "imageFillTotal": 4,
+      "imageFillRendered": 4,
+      "imageFillMissingAsset": 0,
+      "textTotal": 114,
+      "textRendered": 114,
+      "budgetExceeded": 0,
+      "unsupportedFeatureCount": 12,
+      "warningCount": 42,
+      "diagnostics": {
+        "unsupportedByReason": {
+          "unsupported_renderer_limit": 88,
+          "unsupported_missing_asset": 4
+        },
+        "unsupportedByKind": {
+          "vector": 92
+        },
+        "topUnsupported": [
+          {
+            "sourceNodeId": "0:461",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_missing_asset",
+            "area": 22908,
+            "bounds": {
+              "x": 855,
+              "y": 93,
+              "width": 276,
+              "height": 83
+            }
+          },
+          {
+            "sourceNodeId": "0:368",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Bg",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_missing_asset",
+            "area": 900,
+            "bounds": {
+              "x": 869,
+              "y": 321,
+              "width": 30,
+              "height": 30
+            }
+          },
+          {
+            "sourceNodeId": "0:369",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Bg",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_missing_asset",
+            "area": 900,
+            "bounds": {
+              "x": 907,
+              "y": 321,
+              "width": 30,
+              "height": 30
+            }
+          },
+          {
+            "sourceNodeId": "0:121",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Rectangle 8",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_missing_asset",
+            "area": 400,
+            "bounds": {
+              "x": 370,
+              "y": 734,
+              "width": 20,
+              "height": 20
+            }
+          },
+          {
+            "sourceNodeId": "0:125",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Rectangle 8",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 400,
+            "bounds": {
+              "x": 370,
+              "y": 768,
+              "width": 20,
+              "height": 20
+            }
+          },
+          {
+            "sourceNodeId": "0:129",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Rectangle 8",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 400,
+            "bounds": {
+              "x": 370,
+              "y": 802,
+              "width": 20,
+              "height": 20
+            }
+          },
+          {
+            "sourceNodeId": "0:133",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Rectangle 8",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 400,
+            "bounds": {
+              "x": 370,
+              "y": 836,
+              "width": 20,
+              "height": 20
+            }
+          },
+          {
+            "sourceNodeId": "0:244",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Rectangle 8",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 400,
+            "bounds": {
+              "x": 353,
+              "y": 160,
+              "width": 20,
+              "height": 20
+            }
+          },
+          {
+            "sourceNodeId": "0:352",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 274",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 303.9837990733795,
+            "bounds": {
+              "x": 875.3032836914062,
+              "y": 852.1992797851562,
+              "width": 19.56201934814453,
+              "height": 15.53948974609375
+            }
+          },
+          {
+            "sourceNodeId": "0:354",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 303.9837990733795,
+            "bounds": {
+              "x": 875.3032836914062,
+              "y": 852.1992797851562,
+              "width": 19.56201934814453,
+              "height": 15.53948974609375
+            }
+          },
+          {
+            "sourceNodeId": "0:280",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 157",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 263.23961610098195,
+            "bounds": {
+              "x": 877.2319946289062,
+              "y": 632,
+              "width": 16.69565200805664,
+              "height": 15.766956329345703
+            }
+          },
+          {
+            "sourceNodeId": "0:281",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 263.23961610098195,
+            "bounds": {
+              "x": 877.2319946289062,
+              "y": 632,
+              "width": 16.69565200805664,
+              "height": 15.766956329345703
+            }
+          },
+          {
+            "sourceNodeId": "0:314",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 134",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 252.10331486321047,
+            "bounds": {
+              "x": 875.2620849609375,
+              "y": 744.1339111328125,
+              "width": 19.6064510345459,
+              "height": 12.858181953430176
+            }
+          },
+          {
+            "sourceNodeId": "0:313",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 252.10331486321047,
+            "bounds": {
+              "x": 875.2620849609375,
+              "y": 744.1339111328125,
+              "width": 19.6064510345459,
+              "height": 12.858181953430176
+            }
+          },
+          {
+            "sourceNodeId": "0:334",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 159",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 246.8571319580078,
+            "bounds": {
+              "x": 876.2449951171875,
+              "y": 798,
+              "width": 17.632652282714844,
+              "height": 14
+            }
+          },
+          {
+            "sourceNodeId": "0:333",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 246.8571319580078,
+            "bounds": {
+              "x": 876.2449951171875,
+              "y": 798,
+              "width": 17.632652282714844,
+              "height": 14
+            }
+          },
+          {
+            "sourceNodeId": "0:296",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 122",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 227.48256299004424,
+            "bounds": {
+              "x": 879.2593383789062,
+              "y": 685.0030517578125,
+              "width": 11.612903594970703,
+              "height": 19.588775634765625
+            }
+          },
+          {
+            "sourceNodeId": "0:298",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 227.48256299004424,
+            "bounds": {
+              "x": 879.2593383789062,
+              "y": 685.0030517578125,
+              "width": 11.612903594970703,
+              "height": 19.588775634765625
+            }
+          },
+          {
+            "sourceNodeId": "0:253",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 221",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 171.42857313156128,
+            "bounds": {
+              "x": 762.2734985351562,
+              "y": -57,
+              "width": 19.59183692932129,
+              "height": 8.75
+            }
+          },
+          {
+            "sourceNodeId": "0:254",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 171.42857313156128,
+            "bounds": {
+              "x": 762.2734985351562,
+              "y": -57,
+              "width": 19.59183692932129,
+              "height": 8.75
+            }
+          },
+          {
+            "sourceNodeId": "0:257",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 222",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 171.42857313156128,
+            "bounds": {
+              "x": 762.2734985351562,
+              "y": -45.75,
+              "width": 19.59183692932129,
+              "height": 8.75
+            }
+          },
+          {
+            "sourceNodeId": "0:258",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 171.42857313156128,
+            "bounds": {
+              "x": 762.2734985351562,
+              "y": -45.75,
+              "width": 19.59183692932129,
+              "height": 8.75
+            }
+          },
+          {
+            "sourceNodeId": "0:332",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 163.51648234971708,
+            "bounds": {
+              "x": 877.71435546875,
+              "y": 799.4359130859375,
+              "width": 14.693877220153809,
+              "height": 11.128205299377441
+            }
+          },
+          {
+            "sourceNodeId": "0:312",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 158.65869877158002,
+            "bounds": {
+              "x": 876.8948364257812,
+              "y": 745.7096557617188,
+              "width": 16.340967178344727,
+              "height": 9.709259986877441
+            }
+          },
+          {
+            "sourceNodeId": "0:294",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 83.423310154908,
+            "bounds": {
+              "x": 880.8077392578125,
+              "y": 689.89794921875,
+              "width": 8.516129493713379,
+              "height": 9.795918464660645
+            }
+          },
+          {
+            "sourceNodeId": "0:209",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Select Dropdown",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 61.83904280484908,
+            "bounds": {
+              "x": 654.5358633243047,
+              "y": 44.31858825683594,
+              "width": 7.863780439766174,
+              "height": 7.863780439766174
+            }
+          },
+          {
+            "sourceNodeId": "0:27",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 526",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 60.7364526031015,
+            "bounds": {
+              "x": -240.3121337890625,
+              "y": 583.8577880859375,
+              "width": 7.790638446807861,
+              "height": 7.79608154296875
+            }
+          },
+          {
+            "sourceNodeId": "0:26",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 60.7364526031015,
+            "bounds": {
+              "x": -240.3121337890625,
+              "y": 583.8577880859375,
+              "width": 7.790638446807861,
+              "height": 7.79608154296875
+            }
+          },
+          {
+            "sourceNodeId": "0:337",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 160",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 58.15384831271331,
+            "bounds": {
+              "x": 881.2042236328125,
+              "y": 801.7692260742188,
+              "width": 7.714285850524902,
+              "height": 7.538461685180664
+            }
+          },
+          {
+            "sourceNodeId": "0:336",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 58.15384831271331,
+            "bounds": {
+              "x": 881.2042236328125,
+              "y": 801.7692260742188,
+              "width": 7.714285850524902,
+              "height": 7.538461685180664
+            }
+          },
+          {
+            "sourceNodeId": "0:251",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 56.068027758436074,
+            "bounds": {
+              "x": 769.8816528320312,
+              "y": -55.33333206176758,
+              "width": 10.351020812988281,
+              "height": 5.416666507720947
+            }
+          },
+          {
+            "sourceNodeId": "0:255",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 56.04591840951616,
+            "bounds": {
+              "x": 763.9061279296875,
+              "y": -44.08333206176758,
+              "width": 10.346939086914062,
+              "height": 5.416666507720947
+            }
+          },
+          {
+            "sourceNodeId": "0:78",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Select Dropdown",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 48.09961445661097,
+            "bounds": {
+              "x": 755.0001057950852,
+              "y": 454.3185729980469,
+              "width": 6.935388558445084,
+              "height": 6.935388558445084
+            }
+          },
+          {
+            "sourceNodeId": "0:141",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Select Dropdown",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 48.09961445661097,
+            "bounds": {
+              "x": 261.00010579508523,
+              "y": 454.3185729980469,
+              "width": 6.935388558445084,
+              "height": 6.935388558445084
+            }
+          },
+          {
+            "sourceNodeId": "0:214",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Rectangle 3",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 48.09961445661097,
+            "bounds": {
+              "x": 755.0001057950852,
+              "y": 44.31858825683594,
+              "width": 6.935388558445084,
+              "height": 6.935388558445084
+            }
+          },
+          {
+            "sourceNodeId": "0:364",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Select Dropdown",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 48.09961445661097,
+            "bounds": {
+              "x": 1126.0001057950853,
+              "y": 243.31858825683594,
+              "width": 6.935388558445084,
+              "height": 6.935388558445084
+            }
+          },
+          {
+            "sourceNodeId": "0:455",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Select Dropdown",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 48.09961445661097,
+            "bounds": {
+              "x": 1126.0001057950853,
+              "y": 43.31858825683594,
+              "width": 6.935388558445084,
+              "height": 6.935388558445084
+            }
+          },
+          {
+            "sourceNodeId": "0:58",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Fill 312",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39.77999925613403,
+            "bounds": {
+              "x": -245.71412658691406,
+              "y": 235,
+              "width": 5.303999900817871,
+              "height": 7.5
+            }
+          },
+          {
+            "sourceNodeId": "0:57",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39.77999925613403,
+            "bounds": {
+              "x": -245.71412658691406,
+              "y": 235,
+              "width": 5.303999900817871,
+              "height": 7.5
+            }
+          },
+          {
+            "sourceNodeId": "0:163",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39,
+            "bounds": {
+              "x": 255,
+              "y": 522,
+              "width": 13,
+              "height": 3
+            }
+          },
+          {
+            "sourceNodeId": "0:182",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39,
+            "bounds": {
+              "x": 255,
+              "y": 675,
+              "width": 13,
+              "height": 3
+            }
+          },
+          {
+            "sourceNodeId": "0:201",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39,
+            "bounds": {
+              "x": 255,
+              "y": 828,
+              "width": 13,
+              "height": 3
+            }
+          },
+          {
+            "sourceNodeId": "0:273",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39,
+            "bounds": {
+              "x": 1120,
+              "y": 639,
+              "width": 13,
+              "height": 3
+            }
+          },
+          {
+            "sourceNodeId": "0:289",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39,
+            "bounds": {
+              "x": 1120,
+              "y": 694,
+              "width": 13,
+              "height": 3
+            }
+          },
+          {
+            "sourceNodeId": "0:307",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39,
+            "bounds": {
+              "x": 1120,
+              "y": 749,
+              "width": 13,
+              "height": 3
+            }
+          },
+          {
+            "sourceNodeId": "0:327",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39,
+            "bounds": {
+              "x": 1120,
+              "y": 804,
+              "width": 13,
+              "height": 3
+            }
+          },
+          {
+            "sourceNodeId": "0:345",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 39,
+            "bounds": {
+              "x": 1120,
+              "y": 859,
+              "width": 13,
+              "height": 3
+            }
+          },
+          {
+            "sourceNodeId": "0:252",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 28.38884319165936,
+            "bounds": {
+              "x": 763.9061279296875,
+              "y": -55.31666564941406,
+              "width": 5.2734694480896,
+              "height": 5.383333206176758
+            }
+          },
+          {
+            "sourceNodeId": "0:256",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 28.38884319165936,
+            "bounds": {
+              "x": 774.959228515625,
+              "y": -44.06666564941406,
+              "width": 5.2734694480896,
+              "height": 5.383333206176758
+            }
+          },
+          {
+            "sourceNodeId": "0:25",
+            "sourcePageId": "0:2",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 23.57963592328656,
+            "bounds": {
+              "x": -238.84405517578125,
+              "y": 585.3271484375,
+              "width": 4.854467868804932,
+              "height": 4.857306003570557
+            }
+          }
+        ]
+      }
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "projectId": "community-v21-ecommerce-001",
+      "status": "partial",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-ecommerce-001/ms14w5kb-30790a1935804ec0/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-ecommerce-001/ms14w5kb-30790a1935804ec0/summary.md",
+      "pages": 1,
+      "sourceNodeCount": 66,
+      "visibleNodeCount": 66,
+      "structuredDom": 21,
+      "visualAsset": 8,
+      "decorativeLayer": 9,
+      "layoutContainer": 5,
+      "ignoredSafe": 11,
+      "unsupported": 12,
+      "unmapped": 0,
+      "unsupportedRatio": 0.1818,
+      "unmappedRatio": 0,
+      "visualHandledRatio": 0.2576,
+      "vectorTotal": 40,
+      "vectorRendered": 28,
+      "vectorUnsupported": 12,
+      "imageFillTotal": 0,
+      "imageFillRendered": 0,
+      "imageFillMissingAsset": 0,
+      "textTotal": 21,
+      "textRendered": 21,
+      "budgetExceeded": 0,
+      "unsupportedFeatureCount": 0,
+      "warningCount": 6,
+      "diagnostics": {
+        "unsupportedByReason": {
+          "unsupported_renderer_limit": 12
+        },
+        "unsupportedByKind": {
+          "vector": 12
+        },
+        "topUnsupported": [
+          {
+            "sourceNodeId": "0:351",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Rectangle",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 576,
+            "bounds": {
+              "x": -561,
+              "y": 724,
+              "width": 24,
+              "height": 24
+            }
+          },
+          {
+            "sourceNodeId": "0:363",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Rectangle",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 529,
+            "bounds": {
+              "x": -632,
+              "y": 725,
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "sourceNodeId": "0:338",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "filter-alternative",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 144.69350051879883,
+            "bounds": {
+              "x": -535.9999914169312,
+              "y": 107,
+              "width": 12.057791709899902,
+              "height": 12
+            }
+          },
+          {
+            "sourceNodeId": "0:337",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 144.69350051879883,
+            "bounds": {
+              "x": -535.9999914169312,
+              "y": 107,
+              "width": 12.057791709899902,
+              "height": 12
+            }
+          },
+          {
+            "sourceNodeId": "0:364",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Oval",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 144,
+            "bounds": {
+              "x": -614,
+              "y": 723,
+              "width": 12,
+              "height": 12
+            }
+          },
+          {
+            "sourceNodeId": "0:333",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Combined Shape",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 110.82150650024414,
+            "bounds": {
+              "x": -607,
+              "y": 107,
+              "width": 9.235125541687012,
+              "height": 12
+            }
+          },
+          {
+            "sourceNodeId": "0:336",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 86.81750935959099,
+            "bounds": {
+              "x": -534.5737209320068,
+              "y": 108.1999740600586,
+              "width": 9.205251693725586,
+              "height": 9.431302070617676
+            }
+          },
+          {
+            "sourceNodeId": "0:339",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "bottom",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 36,
+            "bounds": {
+              "x": -564.0578002929688,
+              "y": 112.5,
+              "width": 8,
+              "height": 4.5
+            }
+          },
+          {
+            "sourceNodeId": "0:331",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 16.72527292563359,
+            "bounds": {
+              "x": -607,
+              "y": 115.64730834960938,
+              "width": 4.9886155128479,
+              "height": 3.3526883125305176
+            }
+          },
+          {
+            "sourceNodeId": "0:335",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Path 3",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 16.72527292563359,
+            "bounds": {
+              "x": -602.7534790039062,
+              "y": 107.00000333786011,
+              "width": 4.9886155128479,
+              "height": 3.3526883125305176
+            }
+          },
+          {
+            "sourceNodeId": "0:332",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Path",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 11.24183689263873,
+            "bounds": {
+              "x": -605.0364990234375,
+              "y": 107.4112319946289,
+              "width": 1.0616276264190674,
+              "height": 10.58924674987793
+            }
+          },
+          {
+            "sourceNodeId": "0:334",
+            "sourcePageId": "0:303",
+            "sourceNodeName": "Path 2",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 11.24183689263873,
+            "bounds": {
+              "x": -600.7899780273438,
+              "y": 107.82246589660645,
+              "width": 1.0616276264190674,
+              "height": 10.58924674987793
+            }
+          }
+        ]
+      }
+    },
+    {
+      "sampleId": "community-landing-001",
+      "projectId": "community-v21-landing-001",
+      "status": "partial",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-landing-001/ms14wgg1-7d68fd3d091d4c79/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-landing-001/ms14wgg1-7d68fd3d091d4c79/summary.md",
+      "pages": 1,
+      "sourceNodeCount": 396,
+      "visibleNodeCount": 396,
+      "structuredDom": 14,
+      "visualAsset": 0,
+      "decorativeLayer": 14,
+      "layoutContainer": 91,
+      "ignoredSafe": 244,
+      "unsupported": 33,
+      "unmapped": 0,
+      "unsupportedRatio": 0.0833,
+      "unmappedRatio": 0,
+      "visualHandledRatio": 0.0354,
+      "vectorTotal": 291,
+      "vectorRendered": 258,
+      "vectorUnsupported": 33,
+      "imageFillTotal": 0,
+      "imageFillRendered": 0,
+      "imageFillMissingAsset": 0,
+      "textTotal": 13,
+      "textRendered": 13,
+      "budgetExceeded": 0,
+      "unsupportedFeatureCount": 0,
+      "warningCount": 277,
+      "diagnostics": {
+        "unsupportedByReason": {
+          "unsupported_renderer_limit": 33
+        },
+        "unsupportedByKind": {
+          "vector": 33
+        },
+        "topUnsupported": [
+          {
+            "sourceNodeId": "14:1006",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 214.02494115002628,
+            "bounds": {
+              "x": 1497.1708984375,
+              "y": -1222.0000190734863,
+              "width": 12.556148529052734,
+              "height": 17.045429229736328
+            }
+          },
+          {
+            "sourceNodeId": "14:1008",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 207.07383360937456,
+            "bounds": {
+              "x": 1504.997802734375,
+              "y": -1205.4969367980957,
+              "width": 15.342700004577637,
+              "height": 13.496570587158203
+            }
+          },
+          {
+            "sourceNodeId": "14:1007",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 207.05833328411245,
+            "bounds": {
+              "x": 1487.9681396484375,
+              "y": -1205.4960527420044,
+              "width": 15.342140197753906,
+              "height": 13.496052742004395
+            }
+          },
+          {
+            "sourceNodeId": "211:842",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 112.89659652286355,
+            "bounds": {
+              "x": 1092.8084716796875,
+              "y": -1487.1136474609375,
+              "width": 10.485793113708496,
+              "height": 10.766624450683594
+            }
+          },
+          {
+            "sourceNodeId": "211:833",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 107.98815512162219,
+            "bounds": {
+              "x": 1063,
+              "y": -1495.5350341796875,
+              "width": 10.272988319396973,
+              "height": 10.51185417175293
+            }
+          },
+          {
+            "sourceNodeId": "211:835",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 106.82923575914174,
+            "bounds": {
+              "x": 1081.78466796875,
+              "y": -1500.7479248046875,
+              "width": 9.605903625488281,
+              "height": 11.121206283569336
+            }
+          },
+          {
+            "sourceNodeId": "211:836",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 100.9918981071205,
+            "bounds": {
+              "x": 1092.1351318359375,
+              "y": -1500.0660400390625,
+              "width": 9.281073570251465,
+              "height": 10.881488800048828
+            }
+          },
+          {
+            "sourceNodeId": "211:834",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 100.69575923449884,
+            "bounds": {
+              "x": 1071.8350830078125,
+              "y": -1499.5145263671875,
+              "width": 9.17990493774414,
+              "height": 10.96915054321289
+            }
+          },
+          {
+            "sourceNodeId": "211:839",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 76.10780571498617,
+            "bounds": {
+              "x": 1070.3681640625,
+              "y": -1485.6741943359375,
+              "width": 7.899349212646484,
+              "height": 9.634693145751953
+            }
+          },
+          {
+            "sourceNodeId": "211:840",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 65.70964153066825,
+            "bounds": {
+              "x": 1078.600830078125,
+              "y": -1487.557861328125,
+              "width": 6.875040531158447,
+              "height": 9.557709693908691
+            }
+          },
+          {
+            "sourceNodeId": "211:841",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 64.7941328595225,
+            "bounds": {
+              "x": 1085.8094482421875,
+              "y": -1487.424072265625,
+              "width": 7.351633071899414,
+              "height": 8.813570022583008
+            }
+          },
+          {
+            "sourceNodeId": "211:837",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 46.152414298085205,
+            "bounds": {
+              "x": 1101.7039794921875,
+              "y": -1500.064453125,
+              "width": 3.8936996459960938,
+              "height": 11.853100776672363
+            }
+          },
+          {
+            "sourceNodeId": "211:838",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 42.117145306719976,
+            "bounds": {
+              "x": 1067.216064453125,
+              "y": -1483.5877685546875,
+              "width": 4.9934282302856445,
+              "height": 8.434514999389648
+            }
+          },
+          {
+            "sourceNodeId": "211:832",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 9.165015476829012,
+            "bounds": {
+              "x": 1092.33349609375,
+              "y": -1504.1531982421875,
+              "width": 2.4794726371765137,
+              "height": 3.696356773376465
+            }
+          },
+          {
+            "sourceNodeId": "211:830",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 7.538355233773473,
+            "bounds": {
+              "x": 1089.065185546875,
+              "y": -1500.879150390625,
+              "width": 4.653779983520508,
+              "height": 1.6198348999023438
+            }
+          },
+          {
+            "sourceNodeId": "211:829",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 6.365055263144768,
+            "bounds": {
+              "x": 1106.441650390625,
+              "y": -1500.96044921875,
+              "width": 3.558300018310547,
+              "height": 1.7887910604476929
+            }
+          },
+          {
+            "sourceNodeId": "211:831",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 6.24571439810552,
+            "bounds": {
+              "x": 1095.851318359375,
+              "y": -1503.429443359375,
+              "width": 2.3642265796661377,
+              "height": 2.6417579650878906
+            }
+          },
+          {
+            "sourceNodeId": "211:845",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 4.3242126405239105,
+            "bounds": {
+              "x": 1288.4375,
+              "y": -1503.1531982421875,
+              "width": 2.5625,
+              "height": 1.687497615814209
+            }
+          },
+          {
+            "sourceNodeId": "14:975",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.367916551353261,
+            "bounds": {
+              "x": 1075.0943603515625,
+              "y": -1208.3572998046875,
+              "width": 1.13174307346344,
+              "height": 2.0922739505767822
+            }
+          },
+          {
+            "sourceNodeId": "14:961",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3675373867442886,
+            "bounds": {
+              "x": 1079.8507080078125,
+              "y": -1224.081787109375,
+              "width": 1.1313484907150269,
+              "height": 2.0926685333251953
+            }
+          },
+          {
+            "sourceNodeId": "14:963",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3675373867442886,
+            "bounds": {
+              "x": 1075.0943603515625,
+              "y": -1224.081787109375,
+              "width": 1.1313484907150269,
+              "height": 2.0926685333251953
+            }
+          },
+          {
+            "sourceNodeId": "14:970",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3675373867442886,
+            "bounds": {
+              "x": 1079.8507080078125,
+              "y": -1212.2889404296875,
+              "width": 1.1313484907150269,
+              "height": 2.0926685333251953
+            }
+          },
+          {
+            "sourceNodeId": "14:972",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3675373867442886,
+            "bounds": {
+              "x": 1075.0943603515625,
+              "y": -1212.2889404296875,
+              "width": 1.1313484907150269,
+              "height": 2.0926685333251953
+            }
+          },
+          {
+            "sourceNodeId": "14:967",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.367533610461294,
+            "bounds": {
+              "x": 1079.8507080078125,
+              "y": -1216.2193603515625,
+              "width": 1.1313484907150269,
+              "height": 2.092665195465088
+            }
+          },
+          {
+            "sourceNodeId": "14:969",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.367533610461294,
+            "bounds": {
+              "x": 1075.0943603515625,
+              "y": -1216.2193603515625,
+              "width": 1.1313484907150269,
+              "height": 2.092665195465088
+            }
+          },
+          {
+            "sourceNodeId": "14:962",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3675311501060605,
+            "bounds": {
+              "x": 1077.472412109375,
+              "y": -1224.081787109375,
+              "width": 1.131345510482788,
+              "height": 2.0926685333251953
+            }
+          },
+          {
+            "sourceNodeId": "14:971",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3675311501060605,
+            "bounds": {
+              "x": 1077.472412109375,
+              "y": -1212.2889404296875,
+              "width": 1.131345510482788,
+              "height": 2.0926685333251953
+            }
+          },
+          {
+            "sourceNodeId": "14:968",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3675273738330134,
+            "bounds": {
+              "x": 1077.472412109375,
+              "y": -1216.2193603515625,
+              "width": 1.131345510482788,
+              "height": 2.092665195465088
+            }
+          },
+          {
+            "sourceNodeId": "14:964",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3670909761474093,
+            "bounds": {
+              "x": 1079.8507080078125,
+              "y": -1220.1502685546875,
+              "width": 1.1313484907150269,
+              "height": 2.0922739505767822
+            }
+          },
+          {
+            "sourceNodeId": "14:966",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3670909761474093,
+            "bounds": {
+              "x": 1075.0943603515625,
+              "y": -1220.1502685546875,
+              "width": 1.1313484907150269,
+              "height": 2.0922739505767822
+            }
+          },
+          {
+            "sourceNodeId": "14:973",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3670909761474093,
+            "bounds": {
+              "x": 1079.8507080078125,
+              "y": -1208.3572998046875,
+              "width": 1.1313484907150269,
+              "height": 2.0922739505767822
+            }
+          },
+          {
+            "sourceNodeId": "14:965",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3670847406851294,
+            "bounds": {
+              "x": 1077.472412109375,
+              "y": -1220.1502685546875,
+              "width": 1.131345510482788,
+              "height": 2.0922739505767822
+            }
+          },
+          {
+            "sourceNodeId": "14:974",
+            "sourcePageId": "10:948",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 2.3670847406851294,
+            "bounds": {
+              "x": 1077.472412109375,
+              "y": -1208.3572998046875,
+              "width": 1.131345510482788,
+              "height": 2.0922739505767822
+            }
+          }
+        ]
+      }
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "projectId": "community-v21-design-system-001",
+      "status": "partial",
+      "summaryPath": "reports/community-corpus/m5-coverage-v21/community-design-system-001/ms14wwk2-b5abfd92b391484a/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v21/community-design-system-001/ms14wwk2-b5abfd92b391484a/summary.md",
+      "pages": 1,
+      "sourceNodeCount": 329,
+      "visibleNodeCount": 301,
+      "structuredDom": 79,
+      "visualAsset": 5,
+      "decorativeLayer": 32,
+      "layoutContainer": 121,
+      "ignoredSafe": 31,
+      "unsupported": 61,
+      "unmapped": 0,
+      "unsupportedRatio": 0.2027,
+      "unmappedRatio": 0,
+      "visualHandledRatio": 0.1229,
+      "vectorTotal": 95,
+      "vectorRendered": 37,
+      "vectorUnsupported": 56,
+      "imageFillTotal": 4,
+      "imageFillRendered": 3,
+      "imageFillMissingAsset": 0,
+      "textTotal": 49,
+      "textRendered": 42,
+      "budgetExceeded": 0,
+      "unsupportedFeatureCount": 1,
+      "warningCount": 43,
+      "diagnostics": {
+        "unsupportedByReason": {
+          "unsupported_renderer_limit": 60,
+          "unsupported_missing_asset": 1
+        },
+        "unsupportedByKind": {
+          "vector": 56,
+          "unsupported": 1,
+          "container": 4
+        },
+        "topUnsupported": [
+          {
+            "sourceNodeId": "14:4422",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "border",
+            "nodeKind": "container",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 7560,
+            "bounds": {
+              "x": -198,
+              "y": 1937,
+              "width": 189,
+              "height": 40
+            }
+          },
+          {
+            "sourceNodeId": "I14:4591;2:27099",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_missing_asset",
+            "area": 5625,
+            "bounds": {
+              "x": 111.33332824707031,
+              "y": 1838,
+              "width": 75,
+              "height": 75
+            }
+          },
+          {
+            "sourceNodeId": "21:2375",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "space",
+            "nodeKind": "container",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 3920,
+            "bounds": {
+              "x": -604,
+              "y": 1634,
+              "width": 196,
+              "height": 20
+            }
+          },
+          {
+            "sourceNodeId": "21:2385",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "space",
+            "nodeKind": "container",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 1568,
+            "bounds": {
+              "x": -604,
+              "y": 1694,
+              "width": 196,
+              "height": 8
+            }
+          },
+          {
+            "sourceNodeId": "21:2431",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "space",
+            "nodeKind": "container",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 1568,
+            "bounds": {
+              "x": -604,
+              "y": 1838,
+              "width": 196,
+              "height": 8
+            }
+          },
+          {
+            "sourceNodeId": "I14:4591;2:27096",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 225,
+            "bounds": {
+              "x": 112.83332824707031,
+              "y": 1839.5,
+              "width": 15,
+              "height": 15
+            }
+          },
+          {
+            "sourceNodeId": "14:4201",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 185.67180774993903,
+            "bounds": {
+              "x": 415,
+              "y": 1917,
+              "width": 11.59000015258789,
+              "height": 16.020000457763672
+            }
+          },
+          {
+            "sourceNodeId": "14:4202",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 104.65919157104508,
+            "bounds": {
+              "x": 415.79998779296875,
+              "y": 1922.580078125,
+              "width": 8.279999732971191,
+              "height": 12.639999389648438
+            }
+          },
+          {
+            "sourceNodeId": "14:4204",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 91.31040265045158,
+            "bounds": {
+              "x": 416,
+              "y": 1919.4100341796875,
+              "width": 8.15999984741211,
+              "height": 11.190000534057617
+            }
+          },
+          {
+            "sourceNodeId": "I13:18321;2:1582;11:17029;13:18116",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 76.0543685530265,
+            "bounds": {
+              "x": -169.6110382080078,
+              "y": 2053.135009765625,
+              "width": 7.03629207611084,
+              "height": 10.808870315551758
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:37110",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Polygon 2",
+            "nodeKind": "unsupported",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 61.94273755056565,
+            "bounds": {
+              "x": -326.8703308105469,
+              "y": 1809.3702392578125,
+              "width": 7.870370864868164,
+              "height": 7.870370864868164
+            }
+          },
+          {
+            "sourceNodeId": "21:2451",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 59.2904393573358,
+            "bounds": {
+              "x": -555.0249633789062,
+              "y": 1900.6038818359375,
+              "width": 8.774996757507324,
+              "height": 6.756747722625732
+            }
+          },
+          {
+            "sourceNodeId": "21:2404",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 54.93403963851961,
+            "bounds": {
+              "x": -550.594970703125,
+              "y": 1755.27001953125,
+              "width": 11.182500839233398,
+              "height": 4.912500381469727
+            }
+          },
+          {
+            "sourceNodeId": "21:2415",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 54.93403963851961,
+            "bounds": {
+              "x": -550.594970703125,
+              "y": 1787.27001953125,
+              "width": 11.182500839233398,
+              "height": 4.912500381469727
+            }
+          },
+          {
+            "sourceNodeId": "21:2426",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 54.93403963851961,
+            "bounds": {
+              "x": -550.594970703125,
+              "y": 1819.27001953125,
+              "width": 11.182500839233398,
+              "height": 4.912500381469727
+            }
+          },
+          {
+            "sourceNodeId": "14:4745",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 50,
+            "bounds": {
+              "x": 163.3333282470703,
+              "y": 1843,
+              "width": 10,
+              "height": 5
+            }
+          },
+          {
+            "sourceNodeId": "14:4737",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 50,
+            "bounds": {
+              "x": 360.6666564941406,
+              "y": 1843,
+              "width": 10,
+              "height": 5
+            }
+          },
+          {
+            "sourceNodeId": "14:4743",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 50,
+            "bounds": {
+              "x": 163.3333282470703,
+              "y": 1899,
+              "width": 10,
+              "height": 5
+            }
+          },
+          {
+            "sourceNodeId": "14:4735",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 50,
+            "bounds": {
+              "x": 360.6666564941406,
+              "y": 1899,
+              "width": 10,
+              "height": 5
+            }
+          },
+          {
+            "sourceNodeId": "14:4741",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 50,
+            "bounds": {
+              "x": 163.3333282470703,
+              "y": 1955,
+              "width": 10,
+              "height": 5
+            }
+          },
+          {
+            "sourceNodeId": "14:4739",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 50,
+            "bounds": {
+              "x": 360.6666564941406,
+              "y": 1955,
+              "width": 10,
+              "height": 5
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:37008;1:743;11:17029;11:17024",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 49.20749884128554,
+            "bounds": {
+              "x": -314,
+              "y": 1676.25,
+              "width": 12.15000057220459,
+              "height": 4.049999713897705
+            }
+          },
+          {
+            "sourceNodeId": "21:2392",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 49.20749884128554,
+            "bounds": {
+              "x": -559,
+              "y": 1715.25,
+              "width": 12.15000057220459,
+              "height": 4.049999713897705
+            }
+          },
+          {
+            "sourceNodeId": "14:4203",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 40.26715226576373,
+            "bounds": {
+              "x": 417.8085021972656,
+              "y": 1925.6346257328987,
+              "width": 4.940394889862887,
+              "height": 8.15059386211965
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:37149",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Union",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 34.02776016129337,
+            "bounds": {
+              "x": 659.2915649414062,
+              "y": 1806.291748046875,
+              "width": 5.833330154418945,
+              "height": 5.833333492279053
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:37109",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Ellipse 128",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 30.86420047430329,
+            "bounds": {
+              "x": -328.72235107421875,
+              "y": 1813.0740966796875,
+              "width": 5.555556297302246,
+              "height": 5.55555534362793
+            }
+          },
+          {
+            "sourceNodeId": "I13:18321;2:1582;11:17029;13:18112",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 25.78635287859288,
+            "bounds": {
+              "x": -177.31253051757812,
+              "y": 2053.135009765625,
+              "width": 7.036293029785156,
+              "height": 3.664763927459717
+            }
+          },
+          {
+            "sourceNodeId": "I13:18321;2:1582;11:17029;13:18114",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 25.78634281309496,
+            "bounds": {
+              "x": -177.31253051757812,
+              "y": 2060.557861328125,
+              "width": 7.036293029785156,
+              "height": 3.664762496948242
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:37008;1:743;11:17029;11:17025",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 24.6037465238569,
+            "bounds": {
+              "x": -314,
+              "y": 1683,
+              "width": 12.15000057220459,
+              "height": 2.0249996185302734
+            }
+          },
+          {
+            "sourceNodeId": "21:2393",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 24.6037465238569,
+            "bounds": {
+              "x": -559,
+              "y": 1722,
+              "width": 12.15000057220459,
+              "height": 2.0249996185302734
+            }
+          },
+          {
+            "sourceNodeId": "I14:4584;5:2384",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.500000596989192,
+            "bounds": {
+              "x": 18.458328247070312,
+              "y": 1843.875,
+              "width": 3.750000071549284,
+              "height": 6.000000044718263
+            }
+          },
+          {
+            "sourceNodeId": "I13:18308;5173:445784;5:2384",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.50000059698917,
+            "bounds": {
+              "x": -65.875,
+              "y": 1744.875,
+              "width": 3.7500000715492803,
+              "height": 6.000000044718263
+            }
+          },
+          {
+            "sourceNodeId": "21:2379",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.500000596989086,
+            "bounds": {
+              "x": -580.875,
+              "y": 1670.875,
+              "width": 3.750000071549266,
+              "height": 6.000000044718263
+            }
+          },
+          {
+            "sourceNodeId": "21:2412",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.500000596989086,
+            "bounds": {
+              "x": -572.875,
+              "y": 1786.875,
+              "width": 3.750000071549266,
+              "height": 6.000000044718263
+            }
+          },
+          {
+            "sourceNodeId": "21:2423",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.500000596989086,
+            "bounds": {
+              "x": -572.875,
+              "y": 1818.875,
+              "width": 3.750000071549266,
+              "height": 6.000000044718263
+            }
+          },
+          {
+            "sourceNodeId": "21:2435",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.500000596989086,
+            "bounds": {
+              "x": -580.875,
+              "y": 1862.875,
+              "width": 3.750000071549266,
+              "height": 6.000000044718263
+            }
+          },
+          {
+            "sourceNodeId": "21:2447",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.500000596989086,
+            "bounds": {
+              "x": -580.875,
+              "y": 1902.875,
+              "width": 3.750000071549266,
+              "height": 6.000000044718263
+            }
+          },
+          {
+            "sourceNodeId": "21:2389",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.5,
+            "bounds": {
+              "x": -582,
+              "y": 1720,
+              "width": 6,
+              "height": 3.75
+            }
+          },
+          {
+            "sourceNodeId": "21:2401",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "caret-down",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 22.5,
+            "bounds": {
+              "x": -574,
+              "y": 1756,
+              "width": 6,
+              "height": 3.75
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:37150",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 18.777764691246375,
+            "bounds": {
+              "x": 660.0415649414062,
+              "y": 1807.041748046875,
+              "width": 4.333330154418945,
+              "height": 4.333333492279053
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:37151",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 18.777764691246375,
+            "bounds": {
+              "x": 660.0415649414062,
+              "y": 1807.041748046875,
+              "width": 4.333330154418945,
+              "height": 4.333333492279053
+            }
+          },
+          {
+            "sourceNodeId": "I13:18307;1630:17;5:2311",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 18.229166269302368,
+            "bounds": {
+              "x": -181.2916717529297,
+              "y": 1762.375,
+              "width": 14.583333015441895,
+              "height": 1.25
+            }
+          },
+          {
+            "sourceNodeId": "I13:18321;2:1582;11:17029;13:18111",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 16.651409405439153,
+            "bounds": {
+              "x": -175.83470153808594,
+              "y": 2049.6875,
+              "width": 4.080613613128662,
+              "height": 4.08061408996582
+            }
+          },
+          {
+            "sourceNodeId": "I13:18321;2:1582;11:17029;13:18113",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 16.651409405439153,
+            "bounds": {
+              "x": -175.83470153808594,
+              "y": 2057.1103515625,
+              "width": 4.080613613128662,
+              "height": 4.08061408996582
+            }
+          },
+          {
+            "sourceNodeId": "I13:18321;2:1582;11:17029;13:18115",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 16.65139967649702,
+            "bounds": {
+              "x": -168.13320922851562,
+              "y": 2049.6875,
+              "width": 4.080611228942871,
+              "height": 4.08061408996582
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:37008;1:747;2:1773;11:17048",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 16.145834922790527,
+            "bounds": {
+              "x": 753.5416870117188,
+              "y": 1682.375,
+              "width": 12.916667938232422,
+              "height": 1.25
+            }
+          },
+          {
+            "sourceNodeId": "I14:4824;11:17048",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 16.145833730697632,
+            "bounds": {
+              "x": 357.5416564941406,
+              "y": 2141.375,
+              "width": 12.916666984558105,
+              "height": 1.25
+            }
+          },
+          {
+            "sourceNodeId": "I14:4817;11:17048",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector (Stroke)",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 16.145833730697632,
+            "bounds": {
+              "x": 435.5416564941406,
+              "y": 2141.375,
+              "width": 12.916666984558105,
+              "height": 1.25
+            }
+          },
+          {
+            "sourceNodeId": "21:2438",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 10.103381705065203,
+            "bounds": {
+              "x": -549.2902221679688,
+              "y": 1860,
+              "width": 2.2899885177612305,
+              "height": 4.4119791984558105
+            }
+          },
+          {
+            "sourceNodeId": "I21:2366;5:36991",
+            "sourcePageId": "5:37426",
+            "sourceNodeName": "Vector",
+            "nodeKind": "vector",
+            "reasonCode": "unsupported_renderer_limit",
+            "area": 7.793409877354861,
+            "bounds": {
+              "x": 736.708251953125,
+              "y": 1614.7083740234375,
+              "width": 2.791667938232422,
+              "height": 2.791667938232422
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

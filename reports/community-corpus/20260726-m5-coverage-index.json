@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-07-26T01:00:03.084Z",
+  "manifestPath": "tests/fixtures/figma/community-sample-manifest.json",
+  "apiBoundary": {
+    "figmaRest": true,
+    "openai": false,
+    "figmaMe": false,
+    "variables": false
+  },
+  "reportRoot": "reports/community-corpus/m5-coverage",
+  "targetSampleCount": 6,
+  "resultCounts": {
+    "completed": 6
+  },
+  "results": [
+    {
+      "sampleId": "community-login-001",
+      "projectId": "community-login-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage/community-login-001/ms13anjw-e84f3dcfb8de4808/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage/community-login-001/ms13anjw-e84f3dcfb8de4808/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-login-001/ms13anjw-e84f3dcfb8de4808/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-login-001/ms13anjw-e84f3dcfb8de4808/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 16",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "projectId": "community-mobile-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage/community-mobile-001/ms13b01y-13515377872b40b4/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage/community-mobile-001/ms13b01y-13515377872b40b4/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-mobile-001/ms13b01y-13515377872b40b4/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-mobile-001/ms13b01y-13515377872b40b4/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 5",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "projectId": "community-dashboard-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage/community-dashboard-001/ms13bhf7-bc585220131e4c0e/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage/community-dashboard-001/ms13bhf7-bc585220131e4c0e/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-dashboard-001/ms13bhf7-bc585220131e4c0e/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-dashboard-001/ms13bhf7-bc585220131e4c0e/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 80",
+        "unsupportedFeatures: 29"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "projectId": "community-ecommerce-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage/community-ecommerce-001/ms13brkx-cb2db3d5375d493e/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage/community-ecommerce-001/ms13brkx-cb2db3d5375d493e/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-ecommerce-001/ms13brkx-cb2db3d5375d493e/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-ecommerce-001/ms13brkx-cb2db3d5375d493e/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 9",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-landing-001",
+      "projectId": "community-landing-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage/community-landing-001/ms13c3e4-4d66cb1843a447b3/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage/community-landing-001/ms13c3e4-4d66cb1843a447b3/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-landing-001/ms13c3e4-4d66cb1843a447b3/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-landing-001/ms13c3e4-4d66cb1843a447b3/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 18",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "projectId": "community-design-system-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage/community-design-system-001/ms13chh2-9031d19265f0453a/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage/community-design-system-001/ms13chh2-9031d19265f0453a/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-design-system-001/ms13chh2-9031d19265f0453a/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage/community-design-system-001/ms13chh2-9031d19265f0453a/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 33",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    }
+  ]
+}

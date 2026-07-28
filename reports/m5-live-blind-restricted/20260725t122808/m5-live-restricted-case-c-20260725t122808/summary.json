@@ -1,0 +1,637 @@
+{
+  "schemaVersion": "1",
+  "runId": "m5-live-restricted-case-c-20260725t122808",
+  "projectId": "m5-live-restricted-case-c-20260725t122808",
+  "designBundleRevision": 1,
+  "uiSpecRevision": 1,
+  "status": "partial",
+  "scope": "static_generation_only",
+  "behaviorFlowVerified": false,
+  "m4ValidationStatus": "pending",
+  "pages": [
+    {
+      "pageId": "dashboard-for-mobile",
+      "sourcePageId": "169:3352",
+      "sourceRootNodeId": "169:3352",
+      "path": "/dashboard-for-mobile",
+      "viewportRole": "unknown",
+      "nodeCounts": {
+        "text": 72,
+        "input": 0,
+        "button": 0,
+        "image": 7,
+        "pixelOverlay": 10,
+        "total": 199
+      },
+      "structuredCoverage": {
+        "textNodeCount": 72,
+        "interactiveNodeCount": 0,
+        "fullPageScreenshotFallback": false
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 10,
+        "renderedCount": 10,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ],
+      "comparison": {
+        "diffPixelRatio": 0.3457659259259259,
+        "diffPixels": 116696,
+        "screenshotPaths": [
+          "runs/ms0ciknf-cd65482412bc4390a36399ba83c216f8/screenshots/000-9ab64830e9f5-expected.png",
+          "runs/ms0ciknf-cd65482412bc4390a36399ba83c216f8/screenshots/000-9ab64830e9f5-actual.png",
+          "runs/ms0ciknf-cd65482412bc4390a36399ba83c216f8/diffs/000-9ab64830e9f5-diff.png"
+        ]
+      }
+    }
+  ],
+  "visualLayers": [
+    {
+      "sourceNodeId": "170:137",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-170-137",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 2,
+      "bounds": {
+        "x": -717,
+        "y": 5902,
+        "width": 375,
+        "height": 140
+      },
+      "pageRelativeBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 375,
+        "height": 140
+      },
+      "assetRef": "figma/screenshots/273f7d2a01a9f426f93641b48edbd24dd10f9150aae2ddc8e5c72234a18b9da1.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "170:10",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-170-10",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 21,
+      "bounds": {
+        "x": -692,
+        "y": 6095,
+        "width": 265,
+        "height": 170
+      },
+      "pageRelativeBounds": {
+        "x": 25,
+        "y": 193,
+        "width": 265,
+        "height": 170
+      },
+      "assetRef": "figma/screenshots/b79905690fe4152114c588aad49a155e1e815f647f055d64f3bf30d0a71532db.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "170:63",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-170-63",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 40,
+      "bounds": {
+        "x": -407,
+        "y": 6095,
+        "width": 265,
+        "height": 170
+      },
+      "pageRelativeBounds": {
+        "x": 310,
+        "y": 193,
+        "width": 265,
+        "height": 170
+      },
+      "assetRef": "figma/screenshots/d867adfd87aa546b0a6020fa0bb04bea9ac9e68ee132f66f13497b99c0b1177a.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "170:104",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-170-104",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 62,
+      "bounds": {
+        "x": -692,
+        "y": 6315,
+        "width": 325,
+        "height": 214
+      },
+      "pageRelativeBounds": {
+        "x": 25,
+        "y": 413,
+        "width": 325,
+        "height": 214
+      },
+      "assetRef": "figma/screenshots/889f69109b92a87f53ee6ffe133d2e415196a96d9dbdc2fec66efc2445e47e95.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "181:10",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-181-10",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 99,
+      "bounds": {
+        "x": -692,
+        "y": 6582,
+        "width": 325,
+        "height": 254
+      },
+      "pageRelativeBounds": {
+        "x": 25,
+        "y": 680,
+        "width": 325,
+        "height": 254
+      },
+      "assetRef": "figma/screenshots/b2297d5d19a98faee080f7ae09990188cbaaf0712898b023cb1fd57d7bf39975.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "181:90",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-181-90",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 161,
+      "bounds": {
+        "x": -692,
+        "y": 6889,
+        "width": 325,
+        "height": 240
+      },
+      "pageRelativeBounds": {
+        "x": 25,
+        "y": 987,
+        "width": 325,
+        "height": 240
+      },
+      "assetRef": "figma/screenshots/e0f132996cb8401c37abd92a13bc46597041d81b56f4105536b1028318b49ef8.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "181:104",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-181-104",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 175,
+      "bounds": {
+        "x": -692,
+        "y": 7184,
+        "width": 325,
+        "height": 195
+      },
+      "pageRelativeBounds": {
+        "x": 25,
+        "y": 1282,
+        "width": 325,
+        "height": 195
+      },
+      "assetRef": "figma/screenshots/41bf6cc864acf8addd2b9681a1702ab240d4685745f552d7d030b235e45ebb73.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "181:201",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-181-201",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 214,
+      "bounds": {
+        "x": -692,
+        "y": 7432,
+        "width": 325,
+        "height": 223
+      },
+      "pageRelativeBounds": {
+        "x": 25,
+        "y": 1530,
+        "width": 325,
+        "height": 223
+      },
+      "assetRef": "figma/screenshots/9cea14dd1c03337902d4fa1ebd8615628af612c92ec5bbab751cbc1958c557a0.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "181:199",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-181-199",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 276,
+      "bounds": {
+        "x": -640,
+        "y": 7467,
+        "width": 255,
+        "height": 147
+      },
+      "pageRelativeBounds": {
+        "x": 77,
+        "y": 1565,
+        "width": 255,
+        "height": 147
+      },
+      "assetRef": "figma/screenshots/faa61b7a4c3f0efa49afb3df68f5327dee4bf99832da45cfdc7de48a9707d53f.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "181:200",
+      "uiSpecNodeId": "vl-dashboard-for-mobile-181-200",
+      "sourcePageId": "169:3352",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 277,
+      "bounds": {
+        "x": -640,
+        "y": 7467,
+        "width": 255,
+        "height": 128.72882080078125
+      },
+      "pageRelativeBounds": {
+        "x": 77,
+        "y": 1565,
+        "width": 255,
+        "height": 128.72882080078125
+      },
+      "assetRef": "figma/screenshots/29bc1fc3a384fd08b6f503d03f66e77e73986fc2c59990dbc347e70780798e17.png",
+      "rendered": true
+    }
+  ],
+  "unsupportedFeatures": [],
+  "warnings": [
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:2"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:3"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:4"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 169:3413"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 169:3345"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 169:3349"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:22"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:26"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:27"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:75"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:79"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:80"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:119"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:122"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:123"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 170:124"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 179:6"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:2"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 179:17"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:5"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:13"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:14"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:15"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:16"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:17"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:18"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:28"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:29"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:33"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:34"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:38"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:39"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:43"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:44"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:48"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:49"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:53"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:54"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:58"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:59"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:63"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:67"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:93"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:94"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:95"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:96"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:110"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:118"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:125"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:128"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:129"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:132"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:135"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:138"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:154"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:156"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:158"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:160"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:162"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:164"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:166"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:168"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:171"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:174"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:177"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:180"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:184"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:185"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:186"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:187"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:188"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:190"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:191"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:192"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:193"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:194"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:195"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:196"
+    },
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: 181:197"
+    }
+  ],
+  "residualRisks": [
+    "M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。",
+    "图标按钮缺少真实业务 action，仅保留静态语义。",
+    "复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。"
+  ]
+}

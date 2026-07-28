@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1",
+  "projectId": "community-v21-dashboard-001",
+  "designBundleRevision": 2,
+  "fileKeyHash": "2c1bbf6d4fd72acf38dd566b55cc2cafe366e8817503ae810fd8ef080bb42cca",
+  "entries": [
+    {
+      "sourcePageId": "0:2",
+      "sourceNodeId": "0:461",
+      "sourceNodeIdHash": "4bffa755591251631cf7a2723710bb7325c76d0f376812169f08803f5e9806e7",
+      "reasonCode": "named_decorative",
+      "priorityRank": 1,
+      "bounds": {
+        "x": 855,
+        "y": 93,
+        "width": 276,
+        "height": 83
+      }
+    },
+    {
+      "sourcePageId": "0:2",
+      "sourceNodeId": "0:368",
+      "sourceNodeIdHash": "8dd7e796175167db285d27271aac600c4476f1f7f49419fad3acef559d6bb71c",
+      "reasonCode": "structural_visual",
+      "priorityRank": 2,
+      "bounds": {
+        "x": 869,
+        "y": 321,
+        "width": 30,
+        "height": 30
+      }
+    },
+    {
+      "sourcePageId": "0:2",
+      "sourceNodeId": "0:369",
+      "sourceNodeIdHash": "3da595fb253fe194522805dbc3ba8a6fd7c35ca1636edd6c0e8b32c7c825e876",
+      "reasonCode": "structural_visual",
+      "priorityRank": 3,
+      "bounds": {
+        "x": 907,
+        "y": 321,
+        "width": 30,
+        "height": 30
+      }
+    },
+    {
+      "sourcePageId": "0:2",
+      "sourceNodeId": "0:121",
+      "sourceNodeIdHash": "da5992a9737b6bd7745d98432f52b7591c347e52088e880ee7a6de49cb67a352",
+      "reasonCode": "structural_visual",
+      "priorityRank": 4,
+      "bounds": {
+        "x": 370,
+        "y": 734,
+        "width": 20,
+        "height": 20
+      }
+    }
+  ]
+}

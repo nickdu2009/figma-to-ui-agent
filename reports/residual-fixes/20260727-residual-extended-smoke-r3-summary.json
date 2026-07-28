@@ -1,0 +1,101 @@
+{
+  "runLabel": "20260727-residual-extended-smoke-r3",
+  "apiBoundary": {
+    "figma": false,
+    "openai": false
+  },
+  "results": [
+    {
+      "projectId": "blind-case-a2-r8",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r3/blind-case-a2-r8/20260727-residual-extended-smoke-r3-blind-case-a2-r8/summary.json",
+      "pages": 2,
+      "warnings": 0,
+      "warningCodes": {},
+      "unsupported": 0,
+      "unsupportedCodes": {},
+      "visualLayers": 44,
+      "rendered": 44
+    },
+    {
+      "projectId": "blind-case-b-r8",
+      "status": "partial",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r3/blind-case-b-r8/20260727-residual-extended-smoke-r3-blind-case-b-r8/summary.json",
+      "pages": 1,
+      "warnings": 0,
+      "warningCodes": {},
+      "unsupported": 2,
+      "unsupportedCodes": {
+        "visual_stroke_icon_no_asset": 2
+      },
+      "visualLayers": 35,
+      "rendered": 35
+    },
+    {
+      "projectId": "blind-case-c-r8",
+      "status": "partial",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r3/blind-case-c-r8/20260727-residual-extended-smoke-r3-blind-case-c-r8/summary.json",
+      "pages": 1,
+      "warnings": 0,
+      "warningCodes": {},
+      "unsupported": 1,
+      "unsupportedCodes": {
+        "visual_layer_no_asset": 1
+      },
+      "visualLayers": 71,
+      "rendered": 70
+    },
+    {
+      "projectId": "blind-case-d-r3",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r3/blind-case-d-r3/20260727-residual-extended-smoke-r3-blind-case-d-r3/summary.json",
+      "pages": 1,
+      "warnings": 0,
+      "warningCodes": {},
+      "unsupported": 0,
+      "unsupportedCodes": {},
+      "visualLayers": 0,
+      "rendered": 0
+    },
+    {
+      "projectId": "login-ui-concept-perceptual-20260724a",
+      "status": "failed",
+      "exit": 1,
+      "stderr": "ZodError: [\n  {\n    \"origin\": \"array\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [\n      \"pages\"\n    ],\n    \"message\": \"Too small: expected array to have >=1 items\"\n  },\n  {\n    \"origin\": \"array\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [\n      \"nodes\"\n    ],\n    \"message\": \"Too small: expected array to have >=1 items\"\n  }\n]\n    at ProjectStore.saveArtifact (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/src/project-store/store.ts:855:39)\n    at ProjectStore.saveUISpec (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/src/project-store/store.ts:556:23)\n    at main (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/scripts/run-m5-static.mjs:336:38)",
+      "stdout": ""
+    },
+    {
+      "projectId": "m3-flow-20260723-b",
+      "status": "failed",
+      "exit": 1,
+      "stderr": "ZodError: [\n  {\n    \"origin\": \"array\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [\n      \"pages\"\n    ],\n    \"message\": \"Too small: expected array to have >=1 items\"\n  },\n  {\n    \"origin\": \"array\",\n    \"code\": \"too_small\",\n    \"minimum\": 1,\n    \"inclusive\": true,\n    \"path\": [\n      \"nodes\"\n    ],\n    \"message\": \"Too small: expected array to have >=1 items\"\n  }\n]\n    at ProjectStore.saveArtifact (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/src/project-store/store.ts:855:39)\n    at ProjectStore.saveUISpec (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/src/project-store/store.ts:556:23)\n    at main (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/scripts/run-m5-static.mjs:336:38)",
+      "stdout": ""
+    },
+    {
+      "projectId": "m3-flow-20260723-c",
+      "status": "passed",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r3/m3-flow-20260723-c/20260727-residual-extended-smoke-r3-m3-flow-20260723-c/summary.json",
+      "pages": 3,
+      "warnings": 0,
+      "warningCodes": {},
+      "unsupported": 0,
+      "unsupportedCodes": {},
+      "visualLayers": 0,
+      "rendered": 0
+    },
+    {
+      "projectId": "m3-flow-20260724-i",
+      "status": "partial",
+      "summaryPath": "reports/residual-fixes/20260727-residual-extended-smoke-r3/m3-flow-20260724-i/20260727-residual-extended-smoke-r3-m3-flow-20260724-i/summary.json",
+      "pages": 3,
+      "warnings": 0,
+      "warningCodes": {},
+      "unsupported": 2,
+      "unsupportedCodes": {
+        "visual_layer_no_asset": 2
+      },
+      "visualLayers": 19,
+      "rendered": 17
+    }
+  ]
+}

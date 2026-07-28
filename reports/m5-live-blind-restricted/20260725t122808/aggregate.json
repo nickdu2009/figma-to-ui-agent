@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1",
+  "stamp": "20260725t122808",
+  "status": "partial",
+  "reportRoot": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/m5-live-blind-restricted/20260725t122808",
+  "openaiCalled": false,
+  "figmaRestCalled": true,
+  "meEndpointCalled": false,
+  "variablesEndpointCalled": false,
+  "summaries": [
+    {
+      "caseId": "case-a",
+      "projectId": "m5-live-restricted-case-a-20260725t122808",
+      "status": "partial",
+      "restrictedInterfacePolicy": {
+        "meEndpointCalled": false,
+        "variablesEndpointCalled": false,
+        "allowedFigmaApiCategories": [
+          "nodes_or_file",
+          "image_renders",
+          "image_fills"
+        ]
+      },
+      "inspect": {
+        "status": "passed",
+        "designBundleRevision": 1,
+        "pageCount": 1,
+        "variablesStatus": "unavailable_optional",
+        "warningCount": 10
+      },
+      "m5": {
+        "runId": "m5-live-restricted-case-a-20260725t122808",
+        "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/m5-live-blind-restricted/20260725t122808/m5-live-restricted-case-a-20260725t122808/summary.json",
+        "markdownPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/m5-live-blind-restricted/20260725t122808/m5-live-restricted-case-a-20260725t122808/summary.md",
+        "status": "partial",
+        "uiSpecRevision": 1,
+        "pageCount": 1,
+        "visualLayerCount": 0,
+        "unsupportedFeatureCount": 0,
+        "comparisons": [
+          {
+            "pageId": "login-version-1",
+            "diffPixelRatio": 0.14117569786535303,
+            "diffPixels": 42988
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "case-b",
+      "projectId": "m5-live-restricted-case-b-20260725t122808",
+      "status": "partial",
+      "restrictedInterfacePolicy": {
+        "meEndpointCalled": false,
+        "variablesEndpointCalled": false,
+        "allowedFigmaApiCategories": [
+          "nodes_or_file",
+          "image_renders",
+          "image_fills"
+        ]
+      },
+      "inspect": {
+        "status": "passed",
+        "designBundleRevision": 1,
+        "pageCount": 1,
+        "variablesStatus": "unavailable_optional",
+        "warningCount": 13
+      },
+      "m5": {
+        "runId": "m5-live-restricted-case-b-20260725t122808",
+        "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/m5-live-blind-restricted/20260725t122808/m5-live-restricted-case-b-20260725t122808/summary.json",
+        "markdownPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/m5-live-blind-restricted/20260725t122808/m5-live-restricted-case-b-20260725t122808/summary.md",
+        "status": "partial",
+        "uiSpecRevision": 1,
+        "pageCount": 1,
+        "visualLayerCount": 1,
+        "unsupportedFeatureCount": 0,
+        "comparisons": [
+          {
+            "pageId": "checkout",
+            "diffPixelRatio": 0.7144090338770389,
+            "diffPixels": 213519
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "case-c",
+      "projectId": "m5-live-restricted-case-c-20260725t122808",
+      "status": "partial",
+      "restrictedInterfacePolicy": {
+        "meEndpointCalled": false,
+        "variablesEndpointCalled": false,
+        "allowedFigmaApiCategories": [
+          "nodes_or_file",
+          "image_renders",
+          "image_fills"
+        ]
+      },
+      "inspect": {
+        "status": "passed",
+        "designBundleRevision": 1,
+        "pageCount": 1,
+        "variablesStatus": "unavailable_optional",
+        "warningCount": 4
+      },
+      "m5": {
+        "runId": "m5-live-restricted-case-c-20260725t122808",
+        "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/m5-live-blind-restricted/20260725t122808/m5-live-restricted-case-c-20260725t122808/summary.json",
+        "markdownPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/m5-live-blind-restricted/20260725t122808/m5-live-restricted-case-c-20260725t122808/summary.md",
+        "status": "partial",
+        "uiSpecRevision": 1,
+        "pageCount": 1,
+        "visualLayerCount": 10,
+        "unsupportedFeatureCount": 0,
+        "comparisons": [
+          {
+            "pageId": "dashboard-for-mobile",
+            "diffPixelRatio": 0.3457659259259259,
+            "diffPixels": 116696
+          }
+        ]
+      }
+    }
+  ]
+}

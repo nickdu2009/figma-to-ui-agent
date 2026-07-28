@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1",
+  "runLabel": "20260727gf-v2-restricted-r1",
+  "reportRoot": "reports/m6-live-blind/20260727gf-v2-restricted-r1",
+  "dataRoot": "data/m6-live-blind/20260727gf-v2-restricted-r1",
+  "resultCount": 6,
+  "comparableCount": 5,
+  "passed5PctCount": 4,
+  "failed5PctCount": 1,
+  "averageDiff": 0.03375328527395545,
+  "minDiff": 0.009188834154351396,
+  "maxDiff": 0.061402045355902775,
+  "results": [
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "title": "20 Screen Login & Register Mobile App",
+      "projectId": "m6-live-community-login-001",
+      "status": "passed",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-login-001/ms2mv70x-8c762fe8f04044c3/summary.json",
+      "pageId": "login-version-1",
+      "diffPixelRatio": 0.04967816091954023,
+      "diffPixels": 15127,
+      "passed5Pct": true,
+      "unsupportedFeatures": 0,
+      "warnings": 0,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 22
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "projectId": "m6-live-community-mobile-001",
+      "status": "failed",
+      "code": 1,
+      "error": "ZodError: [\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [\n      \"nodes\",\n      20,\n      \"style\",\n      \"height\"\n    ],\n    \"message\": \"Too small: expected number to be >0\"\n  },\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [\n      \"nodes\",\n      20,\n      \"height\"\n    ],\n    \"message\": \"Too small: expected number to be >0\"\n  },\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [\n      \"nodes\",\n      48,\n      \"style\",\n      \"width\"\n    ],\n    \"message\": \"Too small: expected number to be >0\"\n  },\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [\n      \"nodes\",\n      48,\n      \"width\"\n    ],\n    \"message\": \"Too small: expected number to be >0\"\n  },\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [\n      \"nodes\",\n      49,\n      \"style\",\n      \"width\"\n    ],\n    \"message\": \"Too small: expected number to be >0\"\n  },\n  {\n    \"origin\": \"number\",\n    \"code\": \"too_small\",\n    \"minimum\": 0,\n    \"inclusive\": false,\n    \"path\": [\n      \"nodes\",\n      49,\n      \"width\"\n    ],\n    \"message\": \"Too small: expected number to be >0\"\n  }\n]\n    at ProjectStore.saveArtifact (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/src/project-store/store.ts:855:39)\n    at ProjectStore.saveUISpec (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/src/project-store/store.ts:556:23)\n    at main (file:///Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/scripts/run-m5-live-restricted.mjs:184:38)"
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "category": "dashboard",
+      "title": "Web Dashboard & Statistics UI Kit App Template",
+      "projectId": "m6-live-community-dashboard-001",
+      "status": "partial",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-dashboard-001/ms2mwp4g-7c06090af7c44e14/summary.json",
+      "pageId": "light---dashboard---1",
+      "diffPixelRatio": 0.061402045355902775,
+      "diffPixels": 90541,
+      "passed5Pct": false,
+      "unsupportedFeatures": 9,
+      "warnings": 42,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 160
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "category": "ecommerce",
+      "title": "Mobile Credit Card Check Out",
+      "projectId": "m6-live-community-ecommerce-001",
+      "status": "partial",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-ecommerce-001/ms2mx7vn-126119d3cf704938/summary.json",
+      "pageId": "featured",
+      "diffPixelRatio": 0.009188834154351396,
+      "diffPixels": 2798,
+      "passed5Pct": true,
+      "unsupportedFeatures": 0,
+      "warnings": 6,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 17
+    },
+    {
+      "sampleId": "community-landing-001",
+      "category": "landing-page",
+      "title": "Minimal Landing Page Design Website Home Page Design",
+      "projectId": "m6-live-community-landing-001",
+      "status": "partial",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-landing-001/ms2mxq9v-9546627375924138/summary.json",
+      "pageId": "home",
+      "diffPixelRatio": 0.035881971465629055,
+      "diffPixels": 66396,
+      "passed5Pct": true,
+      "unsupportedFeatures": 0,
+      "warnings": 33,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 15
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "title": "Dynamic components & Variants in design systems",
+      "projectId": "m6-live-community-design-system-001",
+      "status": "passed",
+      "summaryPath": "reports/m6-live-blind/20260727gf-v2-restricted-r1/community-design-system-001/ms2myaxr-0592a2cb60374839/summary.json",
+      "pageId": "in-modals",
+      "diffPixelRatio": 0.012615414474353786,
+      "diffPixels": 21320,
+      "passed5Pct": true,
+      "unsupportedFeatures": 0,
+      "warnings": 0,
+      "apiBoundary": {
+        "openai": false,
+        "figmaMe": false,
+        "variables": false
+      },
+      "visualLayers": 45
+    }
+  ]
+}

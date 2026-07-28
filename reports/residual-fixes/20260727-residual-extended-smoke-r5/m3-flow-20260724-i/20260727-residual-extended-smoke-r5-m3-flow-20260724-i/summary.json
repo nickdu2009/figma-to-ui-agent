@@ -1,0 +1,3389 @@
+{
+  "schemaVersion": "1",
+  "runId": "20260727-residual-extended-smoke-r5-m3-flow-20260724-i",
+  "projectId": "m3-flow-20260724-i",
+  "designBundleRevision": 1,
+  "status": "passed",
+  "scope": "static_generation_only",
+  "behaviorFlowVerified": false,
+  "m4ValidationStatus": "pending",
+  "coverageVersion": "1",
+  "coverage": {
+    "coverageVersion": "1",
+    "pages": [
+      {
+        "sourceNodeCount": 48,
+        "visibleNodeCount": 48,
+        "byKind": {
+          "container": {
+            "total": 15,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 15,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "text": {
+            "total": 21,
+            "structuredDom": 21,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "vector": {
+            "total": 9,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 9,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "image": {
+            "total": 3,
+            "structuredDom": 0,
+            "visualAsset": 3,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 9,
+          "rendered": 9,
+          "ignoredSafe": 0,
+          "unsupported": 0,
+          "unmapped": 0
+        },
+        "imageFill": {
+          "total": 3,
+          "rendered": 3,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 21,
+          "rendered": 21,
+          "styleComplete": 21
+        },
+        "pageId": "projectdata",
+        "sourcePageId": "9:41",
+        "pageSize": {
+          "expectedWidth": 1440,
+          "expectedHeight": 1024,
+          "actualWidth": 1440,
+          "actualHeight": 1024,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      },
+      {
+        "sourceNodeCount": 38,
+        "visibleNodeCount": 38,
+        "byKind": {
+          "container": {
+            "total": 12,
+            "structuredDom": 9,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 3,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "vector": {
+            "total": 10,
+            "structuredDom": 6,
+            "visualAsset": 4,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "image": {
+            "total": 3,
+            "structuredDom": 0,
+            "visualAsset": 3,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "text": {
+            "total": 13,
+            "structuredDom": 13,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 10,
+          "rendered": 4,
+          "ignoredSafe": 0,
+          "unsupported": 0,
+          "unmapped": 6
+        },
+        "imageFill": {
+          "total": 3,
+          "rendered": 3,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 13,
+          "rendered": 13,
+          "styleComplete": 13
+        },
+        "pageId": "loginpage",
+        "sourcePageId": "2:2",
+        "pageSize": {
+          "expectedWidth": 1440,
+          "expectedHeight": 1024,
+          "actualWidth": 1440,
+          "actualHeight": 1024,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      },
+      {
+        "sourceNodeCount": 2,
+        "visibleNodeCount": 2,
+        "byKind": {
+          "container": {
+            "total": 1,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 1,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "image": {
+            "total": 1,
+            "structuredDom": 0,
+            "visualAsset": 1,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 0,
+          "rendered": 0,
+          "ignoredSafe": 0,
+          "unsupported": 0,
+          "unmapped": 0
+        },
+        "imageFill": {
+          "total": 1,
+          "rendered": 1,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 0,
+          "rendered": 0,
+          "styleComplete": 0
+        },
+        "pageId": "thumbnail",
+        "sourcePageId": "11:2",
+        "pageSize": {
+          "expectedWidth": 1440,
+          "expectedHeight": 1024,
+          "actualWidth": 1440,
+          "actualHeight": 1024,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      }
+    ],
+    "records": [
+      {
+        "sourceNodeId": "9:41",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "ProjectData",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -677,
+          "y": 581,
+          "width": 1440,
+          "height": 1024
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1024
+        },
+        "zOrder": 0,
+        "area": 1474560,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-9-41",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:49",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Reserved directs to Leo Barreto",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -34,
+          "y": 1539,
+          "width": 279,
+          "height": 23
+        },
+        "pageRelativeBounds": {
+          "x": 643,
+          "y": 958,
+          "width": 279,
+          "height": 23
+        },
+        "zOrder": 1,
+        "area": 6417,
+        "areaRatio": 0.004351806640625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-49",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:33",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Colors",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -577,
+          "y": 981,
+          "width": 670,
+          "height": 412
+        },
+        "pageRelativeBounds": {
+          "x": 100,
+          "y": 400,
+          "width": 670,
+          "height": 412
+        },
+        "zOrder": 2,
+        "area": 276040,
+        "areaRatio": 0.1872016059027778,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-33",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:20",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#000000 50%",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -527,
+          "y": 1247,
+          "width": 284,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 666,
+          "width": 284,
+          "height": 60
+        },
+        "zOrder": 3,
+        "area": 17040,
+        "areaRatio": 0.011555989583333334,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-20",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:12",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Frame",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -527,
+          "y": 1247,
+          "width": 60,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 666,
+          "width": 60,
+          "height": 60
+        },
+        "zOrder": 4,
+        "area": 3600,
+        "areaRatio": 0.00244140625,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:6",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#000000 50%",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -458,
+          "y": 1256,
+          "width": 215,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 219,
+          "y": 675,
+          "width": 215,
+          "height": 42
+        },
+        "zOrder": 5,
+        "area": 9030,
+        "areaRatio": 0.006123860677083333,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-6",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:30",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#000000",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -126,
+          "y": 1333,
+          "width": 210,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 551,
+          "y": 752,
+          "width": 210,
+          "height": 60
+        },
+        "zOrder": 6,
+        "area": 12600,
+        "areaRatio": 0.008544921875,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-30",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:31",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Frame",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -126,
+          "y": 1333,
+          "width": 60,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 551,
+          "y": 752,
+          "width": 60,
+          "height": 60
+        },
+        "zOrder": 7,
+        "area": 3600,
+        "areaRatio": 0.00244140625,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:32",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#000000",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -57,
+          "y": 1342,
+          "width": 141,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 620,
+          "y": 761,
+          "width": 141,
+          "height": 42
+        },
+        "zOrder": 8,
+        "area": 5922,
+        "areaRatio": 0.00401611328125,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-32",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:27",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#7C838A",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -527,
+          "y": 1333,
+          "width": 216,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 752,
+          "width": 216,
+          "height": 60
+        },
+        "zOrder": 9,
+        "area": 12960,
+        "areaRatio": 0.0087890625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-27",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:28",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Frame",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -527,
+          "y": 1333,
+          "width": 60,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 752,
+          "width": 60,
+          "height": 60
+        },
+        "zOrder": 10,
+        "area": 3600,
+        "areaRatio": 0.00244140625,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:29",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#7C838A",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -458,
+          "y": 1342,
+          "width": 147,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 219,
+          "y": 761,
+          "width": 147,
+          "height": 42
+        },
+        "zOrder": 11,
+        "area": 6174,
+        "areaRatio": 0.00418701171875,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-29",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:23",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#D9BD32",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -126,
+          "y": 1075,
+          "width": 219,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 551,
+          "y": 494,
+          "width": 219,
+          "height": 60
+        },
+        "zOrder": 12,
+        "area": 13140,
+        "areaRatio": 0.0089111328125,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-23",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:24",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Frame",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -126,
+          "y": 1075,
+          "width": 60,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 551,
+          "y": 494,
+          "width": 60,
+          "height": 60
+        },
+        "zOrder": 13,
+        "area": 3600,
+        "areaRatio": 0.00244140625,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:25",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#D9BD32",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -57,
+          "y": 1084,
+          "width": 150,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 620,
+          "y": 503,
+          "width": 150,
+          "height": 42
+        },
+        "zOrder": 14,
+        "area": 6300,
+        "areaRatio": 0.0042724609375,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-25",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:19",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#F9ED32",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -126,
+          "y": 1161,
+          "width": 213,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 551,
+          "y": 580,
+          "width": 213,
+          "height": 60
+        },
+        "zOrder": 15,
+        "area": 12780,
+        "areaRatio": 0.0086669921875,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-19",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:17",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Frame",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -126,
+          "y": 1161,
+          "width": 60,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 551,
+          "y": 580,
+          "width": 60,
+          "height": 60
+        },
+        "zOrder": 16,
+        "area": 3600,
+        "areaRatio": 0.00244140625,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:18",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#F9ED32",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -57,
+          "y": 1170,
+          "width": 144,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 620,
+          "y": 589,
+          "width": 144,
+          "height": 42
+        },
+        "zOrder": 17,
+        "area": 6048,
+        "areaRatio": 0.0041015625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-18",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:16",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#F2D335",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -126,
+          "y": 1247,
+          "width": 213,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 551,
+          "y": 666,
+          "width": 213,
+          "height": 60
+        },
+        "zOrder": 18,
+        "area": 12780,
+        "areaRatio": 0.0086669921875,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-16",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:14",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Frame",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -126,
+          "y": 1247,
+          "width": 60,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 551,
+          "y": 666,
+          "width": 60,
+          "height": 60
+        },
+        "zOrder": 19,
+        "area": 3600,
+        "areaRatio": 0.00244140625,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:15",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#F2D335",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -57,
+          "y": 1256,
+          "width": 144,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 620,
+          "y": 675,
+          "width": 144,
+          "height": 42
+        },
+        "zOrder": 20,
+        "area": 6048,
+        "areaRatio": 0.0041015625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-15",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:9",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#E6F3FF",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -527,
+          "y": 1161,
+          "width": 283,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 580,
+          "width": 283,
+          "height": 60
+        },
+        "zOrder": 21,
+        "area": 16980,
+        "areaRatio": 0.011515299479166666,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-9",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:5",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Frame",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -527,
+          "y": 1161,
+          "width": 60,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 580,
+          "width": 60,
+          "height": 60
+        },
+        "zOrder": 22,
+        "area": 3600,
+        "areaRatio": 0.00244140625,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:13",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#E6F3FF 75%",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -458,
+          "y": 1170,
+          "width": 214,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 219,
+          "y": 589,
+          "width": 214,
+          "height": 42
+        },
+        "zOrder": 23,
+        "area": 8988,
+        "areaRatio": 0.006095377604166666,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-13",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:10",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#BOBAC3",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -527,
+          "y": 1075,
+          "width": 294,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 494,
+          "width": 294,
+          "height": 60
+        },
+        "zOrder": 24,
+        "area": 17640,
+        "areaRatio": 0.011962890625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-10",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:7",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Frame",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -527,
+          "y": 1075,
+          "width": 60,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 494,
+          "width": 60,
+          "height": 60
+        },
+        "zOrder": 25,
+        "area": 3600,
+        "areaRatio": 0.00244140625,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:8",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "#B0BAC3 40%",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -458,
+          "y": 1084,
+          "width": 225,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 219,
+          "y": 503,
+          "width": 225,
+          "height": 42
+        },
+        "zOrder": 26,
+        "area": 9450,
+        "areaRatio": 0.00640869140625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-8",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "9:42",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Colors",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -577,
+          "y": 981,
+          "width": 138,
+          "height": 56
+        },
+        "pageRelativeBounds": {
+          "x": 100,
+          "y": 400,
+          "width": 138,
+          "height": 56
+        },
+        "zOrder": 27,
+        "area": 7728,
+        "areaRatio": 0.005240885416666666,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-9-42",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:3",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Typography",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -577,
+          "y": 681,
+          "width": 641,
+          "height": 271
+        },
+        "pageRelativeBounds": {
+          "x": 100,
+          "y": 100,
+          "width": 641,
+          "height": 271
+        },
+        "zOrder": 28,
+        "area": 173711,
+        "areaRatio": 0.11780531141493056,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-3",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "9:44",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Style: SemiBold, Medium, Regular",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -527,
+          "y": 845,
+          "width": 591,
+          "height": 54
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 264,
+          "width": 591,
+          "height": 54
+        },
+        "zOrder": 29,
+        "area": 31914,
+        "areaRatio": 0.02164306640625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-9-44",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "9:43",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Font-size: 14, 18, 20, 26",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -527,
+          "y": 910,
+          "width": 374,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 329,
+          "width": 374,
+          "height": 42
+        },
+        "zOrder": 30,
+        "area": 15708,
+        "areaRatio": 0.010652669270833333,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-9-43",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:2",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Font: Poppins",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -527,
+          "y": 781,
+          "width": 235,
+          "height": 54
+        },
+        "pageRelativeBounds": {
+          "x": 150,
+          "y": 200,
+          "width": 235,
+          "height": 54
+        },
+        "zOrder": 31,
+        "area": 12690,
+        "areaRatio": 0.00860595703125,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-2",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:35",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Typography",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -577,
+          "y": 681,
+          "width": 247,
+          "height": 56
+        },
+        "pageRelativeBounds": {
+          "x": 100,
+          "y": 100,
+          "width": 247,
+          "height": 56
+        },
+        "zOrder": 32,
+        "area": 13832,
+        "areaRatio": 0.009380425347222223,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-35",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:48",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Plugins",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 213,
+          "y": 681,
+          "width": 485,
+          "height": 670
+        },
+        "pageRelativeBounds": {
+          "x": 890,
+          "y": 100,
+          "width": 485,
+          "height": 670
+        },
+        "zOrder": 33,
+        "area": 324950,
+        "areaRatio": 0.2203708224826389,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-48",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:47",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Unsplash Plugin",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 219,
+          "y": 1185,
+          "width": 479,
+          "height": 166
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 604,
+          "width": 479,
+          "height": 166
+        },
+        "zOrder": 34,
+        "area": 79514,
+        "areaRatio": 0.053923882378472225,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-47",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:39",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Community link: https://www.figma.com/community/plugin/738454987945972471/Unsplash",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 219,
+          "y": 1271,
+          "width": 479,
+          "height": 80
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 690,
+          "width": 479,
+          "height": 80
+        },
+        "zOrder": 35,
+        "area": 38320,
+        "areaRatio": 0.025987413194444444,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-39",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:43",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Unsplash",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 311,
+          "y": 1200,
+          "width": 149,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 988,
+          "y": 619,
+          "width": 149,
+          "height": 42
+        },
+        "zOrder": 36,
+        "area": 6258,
+        "areaRatio": 0.004243977864583333,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-43",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:57",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "image 3",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": 219,
+          "y": 1185,
+          "width": 73.73077392578125,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 604,
+          "width": 73.73077392578125,
+          "height": 71
+        },
+        "zOrder": 37,
+        "area": 5234.884948730469,
+        "areaRatio": 0.003550133564405971,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-57",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:52",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Icons8 Plugin",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 219,
+          "y": 979,
+          "width": 479,
+          "height": 166
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 398,
+          "width": 479,
+          "height": 166
+        },
+        "zOrder": 38,
+        "area": 79514,
+        "areaRatio": 0.053923882378472225,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-52",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:53",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Community link: https://www.figma.com/community/plugin/791103617505812222/Icons8-Icons",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 219,
+          "y": 1065,
+          "width": 479,
+          "height": 80
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 484,
+          "width": 479,
+          "height": 80
+        },
+        "zOrder": 39,
+        "area": 38320,
+        "areaRatio": 0.025987413194444444,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-53",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:54",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "image 2",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": 219,
+          "y": 979,
+          "width": 72,
+          "height": 72
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 398,
+          "width": 72,
+          "height": 72
+        },
+        "zOrder": 40,
+        "area": 5184,
+        "areaRatio": 0.003515625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-54",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:55",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Icons8 Icons",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 311,
+          "y": 994,
+          "width": 205,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 988,
+          "y": 413,
+          "width": 205,
+          "height": 42
+        },
+        "zOrder": 41,
+        "area": 8610,
+        "areaRatio": 0.005839029947916667,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-55",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:40",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Blobs Plugin",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 219,
+          "y": 777,
+          "width": 479,
+          "height": 162
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 196,
+          "width": 479,
+          "height": 162
+        },
+        "zOrder": 42,
+        "area": 77598,
+        "areaRatio": 0.05262451171875,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-40",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:37",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "image 1",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": 219,
+          "y": 777,
+          "width": 73.01408386230469,
+          "height": 72
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 196,
+          "width": 73.01408386230469,
+          "height": 72
+        },
+        "zOrder": 43,
+        "area": 5257.0140380859375,
+        "areaRatio": 0.003565140813589096,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-37",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "10:38",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Blobs",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 311,
+          "y": 792,
+          "width": 91,
+          "height": 42
+        },
+        "pageRelativeBounds": {
+          "x": 988,
+          "y": 211,
+          "width": 91,
+          "height": 42
+        },
+        "zOrder": 44,
+        "area": 3822,
+        "areaRatio": 0.0025919596354166668,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-38",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:45",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Community link: https://www.figma.com/community/plugin/739208439270091369/Blobs",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 219,
+          "y": 859,
+          "width": 479,
+          "height": 80
+        },
+        "pageRelativeBounds": {
+          "x": 896,
+          "y": 278,
+          "width": 479,
+          "height": 80
+        },
+        "zOrder": 45,
+        "area": 38320,
+        "areaRatio": 0.025987413194444444,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-45",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:4",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Plugins",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 213,
+          "y": 681,
+          "width": 158,
+          "height": 56
+        },
+        "pageRelativeBounds": {
+          "x": 890,
+          "y": 100,
+          "width": 158,
+          "height": 56
+        },
+        "zOrder": 46,
+        "area": 8848,
+        "areaRatio": 0.006000434027777778,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-projectdata-10-4",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "10:46",
+        "sourcePageId": "9:41",
+        "sourceNodeName": "Line 1",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": 143.99999999999997,
+          "y": 681,
+          "width": 2.842170943040401e-14,
+          "height": 712.0028076171875
+        },
+        "pageRelativeBounds": {
+          "x": 821,
+          "y": 100,
+          "width": 2.842170943040401e-14,
+          "height": 712.0028076171875
+        },
+        "zOrder": 47,
+        "area": 2.0236336911727548e-11,
+        "areaRatio": 1.372364428149926e-17,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "2:2",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "LoginPage",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -677,
+          "y": -493,
+          "width": 1440,
+          "height": 1024
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1024
+        },
+        "zOrder": 0,
+        "area": 1474560,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-2",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "4:4",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "BlobsVector",
+        "nodeKind": "vector",
+        "decision": "visual_asset",
+        "reasonCode": "large_visual",
+        "bounds": {
+          "x": -653,
+          "y": -350,
+          "width": 526,
+          "height": 661
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 143,
+          "width": 526,
+          "height": 661
+        },
+        "zOrder": 1,
+        "area": 347686,
+        "areaRatio": 0.23578965928819445,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/b3cd37dfc641bf78f734facfba999bb529ea49ebe11e18d7a1ad2b13b5015f97.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "4:3",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "BlobsVector",
+        "nodeKind": "vector",
+        "decision": "visual_asset",
+        "reasonCode": "large_visual",
+        "bounds": {
+          "x": -574,
+          "y": -414,
+          "width": 530,
+          "height": 607
+        },
+        "pageRelativeBounds": {
+          "x": 103,
+          "y": 79,
+          "width": 530,
+          "height": 607
+        },
+        "zOrder": 2,
+        "area": 321710,
+        "areaRatio": 0.2181735568576389,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/a1335b5fc28b4ed420f65338dcc9cc87bdd25f9911ee2d22258ede0e04247925.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "4:2",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "BlobsVector",
+        "nodeKind": "vector",
+        "decision": "visual_asset",
+        "reasonCode": "large_visual",
+        "bounds": {
+          "x": -677,
+          "y": -5,
+          "width": 550,
+          "height": 469
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 488,
+          "width": 550,
+          "height": 469
+        },
+        "zOrder": 3,
+        "area": 257950,
+        "areaRatio": 0.1749335394965278,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/cbe3d014f878721d4d753f2a4b4d85ad9dd450d10ec56dfa2f172551d63a0153.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "4:5",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "MainImage",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": -630,
+          "y": -303,
+          "width": 419,
+          "height": 613
+        },
+        "pageRelativeBounds": {
+          "x": 47,
+          "y": 190,
+          "width": 419,
+          "height": 613
+        },
+        "zOrder": 4,
+        "area": 256847,
+        "areaRatio": 0.17418551974826388,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-4-5",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "9:40",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Content",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -82,
+          "y": -493,
+          "width": 845,
+          "height": 1024
+        },
+        "pageRelativeBounds": {
+          "x": 595,
+          "y": 0,
+          "width": 845,
+          "height": 1024
+        },
+        "zOrder": 5,
+        "area": 865280,
+        "areaRatio": 0.5868055555555556,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-9-40",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "2:3",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "ContentFrame",
+        "nodeKind": "vector",
+        "decision": "visual_asset",
+        "reasonCode": "large_visual",
+        "bounds": {
+          "x": -82,
+          "y": -493,
+          "width": 845,
+          "height": 1024
+        },
+        "pageRelativeBounds": {
+          "x": 595,
+          "y": 0,
+          "width": 845,
+          "height": 1024
+        },
+        "zOrder": 6,
+        "area": 865280,
+        "areaRatio": 0.5868055555555556,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/9bdabceaa5a789278f4a4f7511e468aed047c86c91f82d234f24f8e9766628e3.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "2:34",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Content",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 41,
+          "y": -369,
+          "width": 600,
+          "height": 856
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 124,
+          "width": 600,
+          "height": 856
+        },
+        "zOrder": 7,
+        "area": 513600,
+        "areaRatio": 0.3483072916666667,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-34",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "10:51",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Reserved directs to Leo Barreto",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 193,
+          "y": 464,
+          "width": 279,
+          "height": 23
+        },
+        "pageRelativeBounds": {
+          "x": 870,
+          "y": 957,
+          "width": 279,
+          "height": 23
+        },
+        "zOrder": 8,
+        "area": 6417,
+        "areaRatio": 0.004351806640625,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-10-51",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:28",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "ButtonGitHub",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": 373,
+          "y": 325,
+          "width": 220,
+          "height": 55
+        },
+        "pageRelativeBounds": {
+          "x": 1050,
+          "y": 818,
+          "width": 220,
+          "height": 55
+        },
+        "zOrder": 9,
+        "area": 12100,
+        "areaRatio": 0.008205837673611112,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-28",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:25",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "GitHub",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": 383,
+          "y": 327.9999084472656,
+          "width": 50,
+          "height": 50.00000762939453
+        },
+        "pageRelativeBounds": {
+          "x": 1060,
+          "y": 820.9999084472656,
+          "width": 50,
+          "height": 50.00000762939453
+        },
+        "zOrder": 10,
+        "area": 2500.0003814697266,
+        "areaRatio": 0.0016954212656451596,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-25",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "2:27",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Sing up with GitHub",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 439,
+          "y": 341.9999084472656,
+          "width": 138,
+          "height": 21.0000057220459
+        },
+        "pageRelativeBounds": {
+          "x": 1116,
+          "y": 834.9999084472656,
+          "width": 138,
+          "height": 21.0000057220459
+        },
+        "zOrder": 11,
+        "area": 2898.000789642334,
+        "areaRatio": 0.0019653325667604803,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-27",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:26",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "ButtonFrame",
+        "nodeKind": "vector",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": 373,
+          "y": 325,
+          "width": 220,
+          "height": 55
+        },
+        "pageRelativeBounds": {
+          "x": 1050,
+          "y": 818,
+          "width": 220,
+          "height": 55
+        },
+        "zOrder": 12,
+        "area": 12100,
+        "areaRatio": 0.008205837673611112,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-26",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:29",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "ButtonGoogle",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": 72,
+          "y": 325,
+          "width": 220,
+          "height": 55
+        },
+        "pageRelativeBounds": {
+          "x": 749,
+          "y": 818,
+          "width": 220,
+          "height": 55
+        },
+        "zOrder": 13,
+        "area": 12100,
+        "areaRatio": 0.008205837673611112,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-29",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:30",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Google",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": 79,
+          "y": 327.9999084472656,
+          "width": 50,
+          "height": 50.00000762939453
+        },
+        "pageRelativeBounds": {
+          "x": 756,
+          "y": 820.9999084472656,
+          "width": 50,
+          "height": 50.00000762939453
+        },
+        "zOrder": 14,
+        "area": 2500.0003814697266,
+        "areaRatio": 0.0016954212656451596,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-30",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "2:31",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Sing up with Google",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 138,
+          "y": 341.9999084472656,
+          "width": 141,
+          "height": 21.0000057220459
+        },
+        "pageRelativeBounds": {
+          "x": 815,
+          "y": 834.9999084472656,
+          "width": 141,
+          "height": 21.0000057220459
+        },
+        "zOrder": 15,
+        "area": 2961.0008068084717,
+        "areaRatio": 0.0020080571877770124,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-31",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:32",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "ButtonFrame",
+        "nodeKind": "vector",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": 72,
+          "y": 325,
+          "width": 220,
+          "height": 55
+        },
+        "pageRelativeBounds": {
+          "x": 749,
+          "y": 818,
+          "width": 220,
+          "height": 55
+        },
+        "zOrder": 16,
+        "area": 12100,
+        "areaRatio": 0.008205837673611112,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-32",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:23",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "- OR -",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 292,
+          "y": 271,
+          "width": 81,
+          "height": 39
+        },
+        "pageRelativeBounds": {
+          "x": 969,
+          "y": 764,
+          "width": 81,
+          "height": 39
+        },
+        "zOrder": 17,
+        "area": 3159,
+        "areaRatio": 0.002142333984375,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-23",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:33",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Already have a account? Log in",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 43,
+          "y": 203,
+          "width": 282,
+          "height": 27
+        },
+        "pageRelativeBounds": {
+          "x": 720,
+          "y": 696,
+          "width": 282,
+          "height": 27
+        },
+        "zOrder": 18,
+        "area": 7614,
+        "areaRatio": 0.00516357421875,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-33",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:22",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "ButtonCreateAcc",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": 162,
+          "y": 128,
+          "width": 340,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 839,
+          "y": 621,
+          "width": 340,
+          "height": 60
+        },
+        "zOrder": 19,
+        "area": 20400,
+        "areaRatio": 0.013834635416666666,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-22",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:20",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "ButtonFrame",
+        "nodeKind": "vector",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": 162,
+          "y": 128,
+          "width": 340,
+          "height": 60
+        },
+        "pageRelativeBounds": {
+          "x": 839,
+          "y": 621,
+          "width": 340,
+          "height": 60
+        },
+        "zOrder": 20,
+        "area": 20400,
+        "areaRatio": 0.013834635416666666,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-20",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:21",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Create Account",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 232,
+          "y": 138,
+          "width": 215,
+          "height": 39
+        },
+        "pageRelativeBounds": {
+          "x": 909,
+          "y": 631,
+          "width": 215,
+          "height": 39
+        },
+        "zOrder": 21,
+        "area": 8385,
+        "areaRatio": 0.005686442057291667,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-21",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:10",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Password_Input",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 41,
+          "y": -7,
+          "width": 600,
+          "height": 95
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 486,
+          "width": 600,
+          "height": 95
+        },
+        "zOrder": 22,
+        "area": 57000,
+        "areaRatio": 0.038655598958333336,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-10-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:11",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Password",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 43,
+          "y": -7,
+          "width": 98,
+          "height": 30
+        },
+        "pageRelativeBounds": {
+          "x": 720,
+          "y": 486,
+          "width": 98,
+          "height": 30
+        },
+        "zOrder": 23,
+        "area": 2940,
+        "areaRatio": 0.0019938151041666665,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-11",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:12",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "PasswordInp",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 41,
+          "y": 23,
+          "width": 600,
+          "height": 65
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 516,
+          "width": 600,
+          "height": 65
+        },
+        "zOrder": 24,
+        "area": 39000,
+        "areaRatio": 0.026448567708333332,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-12",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:13",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Enter your Password here",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 81,
+          "y": 40,
+          "width": 252,
+          "height": 30
+        },
+        "pageRelativeBounds": {
+          "x": 758,
+          "y": 533,
+          "width": 252,
+          "height": 30
+        },
+        "zOrder": 25,
+        "area": 7560,
+        "areaRatio": 0.005126953125,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-13",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:14",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Input",
+        "nodeKind": "vector",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 41,
+          "y": 23,
+          "width": 600,
+          "height": 65
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 516,
+          "width": 600,
+          "height": 65
+        },
+        "zOrder": 26,
+        "area": 39000,
+        "areaRatio": 0.026448567708333332,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-14",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:15",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Email_Input",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 41,
+          "y": -142,
+          "width": 600,
+          "height": 95
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 351,
+          "width": 600,
+          "height": 95
+        },
+        "zOrder": 27,
+        "area": 57000,
+        "areaRatio": 0.038655598958333336,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-15-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:16",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 43,
+          "y": -142,
+          "width": 56,
+          "height": 30
+        },
+        "pageRelativeBounds": {
+          "x": 720,
+          "y": 351,
+          "width": 56,
+          "height": 30
+        },
+        "zOrder": 28,
+        "area": 1680,
+        "areaRatio": 0.0011393229166666667,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-16",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:17",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "EmailInp",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 41,
+          "y": -112,
+          "width": 600,
+          "height": 65
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 381,
+          "width": 600,
+          "height": 65
+        },
+        "zOrder": 29,
+        "area": 39000,
+        "areaRatio": 0.026448567708333332,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-17",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:18",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Enter your Email here",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 81,
+          "y": -95,
+          "width": 210,
+          "height": 30
+        },
+        "pageRelativeBounds": {
+          "x": 758,
+          "y": 398,
+          "width": 210,
+          "height": 30
+        },
+        "zOrder": 30,
+        "area": 6300,
+        "areaRatio": 0.0042724609375,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-18",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:19",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Input",
+        "nodeKind": "vector",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 41,
+          "y": -112,
+          "width": 600,
+          "height": 65
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 381,
+          "width": 600,
+          "height": 65
+        },
+        "zOrder": 31,
+        "area": 39000,
+        "areaRatio": 0.026448567708333332,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-19",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:9",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "FullName_Input",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 41,
+          "y": -278,
+          "width": 600,
+          "height": 95
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 215,
+          "width": 600,
+          "height": 95
+        },
+        "zOrder": 32,
+        "area": 57000,
+        "areaRatio": 0.038655598958333336,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-9-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:6",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Full Name",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 43,
+          "y": -278,
+          "width": 101,
+          "height": 30
+        },
+        "pageRelativeBounds": {
+          "x": 720,
+          "y": 215,
+          "width": 101,
+          "height": 30
+        },
+        "zOrder": 33,
+        "area": 3030,
+        "areaRatio": 0.0020548502604166665,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-6",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:8",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "NameInp",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": 41,
+          "y": -248,
+          "width": 600,
+          "height": 65
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 245,
+          "width": 600,
+          "height": 65
+        },
+        "zOrder": 34,
+        "area": 39000,
+        "areaRatio": 0.026448567708333332,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-8",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "2:7",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Enter your Fulll Name here",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 81,
+          "y": -231,
+          "width": 260,
+          "height": 30
+        },
+        "pageRelativeBounds": {
+          "x": 758,
+          "y": 262,
+          "width": 260,
+          "height": 30
+        },
+        "zOrder": 35,
+        "area": 7800,
+        "areaRatio": 0.005289713541666667,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-7",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "2:5",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Input",
+        "nodeKind": "vector",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": 41,
+          "y": -248,
+          "width": 600,
+          "height": 65
+        },
+        "pageRelativeBounds": {
+          "x": 718,
+          "y": 245,
+          "width": 600,
+          "height": 65
+        },
+        "zOrder": 36,
+        "area": 39000,
+        "areaRatio": 0.026448567708333332,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-5",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "2:4",
+        "sourcePageId": "2:2",
+        "sourceNodeName": "Title",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": 172,
+          "y": -369,
+          "width": 337,
+          "height": 39
+        },
+        "pageRelativeBounds": {
+          "x": 849,
+          "y": 124,
+          "width": 337,
+          "height": 39
+        },
+        "zOrder": 37,
+        "area": 13143,
+        "areaRatio": 0.008913167317708333,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-loginpage-2-4",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "11:2",
+        "sourcePageId": "11:2",
+        "sourceNodeName": "Thumbnail",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -684,
+          "y": -1560,
+          "width": 1440,
+          "height": 1024
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1024
+        },
+        "zOrder": 0,
+        "area": 1474560,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-thumbnail-11-2",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "11:4",
+        "sourcePageId": "11:2",
+        "sourceNodeName": "ImgPage",
+        "nodeKind": "image",
+        "decision": "visual_asset",
+        "reasonCode": "image_fill",
+        "bounds": {
+          "x": -492,
+          "y": -1423,
+          "width": 1056,
+          "height": 750
+        },
+        "pageRelativeBounds": {
+          "x": 192,
+          "y": 137,
+          "width": 1056,
+          "height": 750
+        },
+        "zOrder": 1,
+        "area": 792000,
+        "areaRatio": 0.537109375,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-thumbnail-11-4",
+        "impact": [
+          "visual"
+        ]
+      }
+    ],
+    "aggregate": {
+      "sourceNodeCount": 88,
+      "visibleNodeCount": 88,
+      "unsupportedCount": 0,
+      "unmappedCount": 6
+    },
+    "diagnostics": {
+      "unsupportedByReason": {},
+      "unsupportedByKind": {},
+      "topUnsupported": []
+    }
+  },
+  "pages": [
+    {
+      "pageId": "projectdata",
+      "sourcePageId": "9:41",
+      "sourceRootNodeId": "9:41",
+      "path": "/projectdata",
+      "viewportRole": "desktop",
+      "nodeCounts": {
+        "text": 21,
+        "input": 0,
+        "select": 0,
+        "button": 0,
+        "image": 3,
+        "pixelOverlay": 0,
+        "total": 48
+      },
+      "structuredCoverage": {
+        "textNodeCount": 21,
+        "interactiveNodeCount": 0,
+        "fullPageScreenshotFallback": false
+      },
+      "componentFidelity": {
+        "sourceComponentNodeCount": 3,
+        "byFamily": {
+          "icon": 3
+        },
+        "byState": {
+          "default": 3
+        }
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 9,
+        "renderedCount": 9,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    },
+    {
+      "pageId": "loginpage",
+      "sourcePageId": "2:2",
+      "sourceRootNodeId": "2:2",
+      "path": "/loginpage",
+      "viewportRole": "desktop",
+      "nodeCounts": {
+        "text": 13,
+        "input": 6,
+        "select": 0,
+        "button": 3,
+        "image": 3,
+        "pixelOverlay": 4,
+        "total": 47
+      },
+      "structuredCoverage": {
+        "textNodeCount": 13,
+        "interactiveNodeCount": 9,
+        "fullPageScreenshotFallback": false
+      },
+      "componentFidelity": {
+        "sourceComponentNodeCount": 11,
+        "byFamily": {
+          "button": 3,
+          "input": 8
+        },
+        "byState": {
+          "default": 11
+        }
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 10,
+        "renderedCount": 10,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "passed",
+          "notes": [
+            "检测到表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    },
+    {
+      "pageId": "thumbnail",
+      "sourcePageId": "11:2",
+      "sourceRootNodeId": "11:2",
+      "path": "/thumbnail",
+      "viewportRole": "desktop",
+      "nodeCounts": {
+        "text": 0,
+        "input": 0,
+        "select": 0,
+        "button": 0,
+        "image": 1,
+        "pixelOverlay": 0,
+        "total": 2
+      },
+      "structuredCoverage": {
+        "textNodeCount": 0,
+        "interactiveNodeCount": 0,
+        "fullPageScreenshotFallback": false
+      },
+      "componentFidelity": {
+        "sourceComponentNodeCount": 0,
+        "byFamily": {},
+        "byState": {}
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 0,
+        "renderedCount": 0,
+        "unsupportedCount": 0
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "not_applicable",
+          "notes": [
+            "无左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "not_applicable",
+          "notes": [
+            "无表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "not_applicable",
+          "notes": [
+            "无社交按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualLayers": [
+    {
+      "sourceNodeId": "10:46",
+      "uiSpecNodeId": "vl-projectdata-10-46",
+      "sourcePageId": "9:41",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 47,
+      "bounds": {
+        "x": 143.99999999999997,
+        "y": 681,
+        "width": 2.842170943040401e-14,
+        "height": 712.0028076171875
+      },
+      "pageRelativeBounds": {
+        "x": 821,
+        "y": 100,
+        "width": 2.842170943040401e-14,
+        "height": 712.0028076171875
+      },
+      "opacity": 0.8999999761581421,
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "10:12",
+      "uiSpecNodeId": "vl-projectdata-10-12",
+      "sourcePageId": "9:41",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 4,
+      "bounds": {
+        "x": -527,
+        "y": 1247,
+        "width": 60,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 150,
+        "y": 666,
+        "width": 60,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "10:31",
+      "uiSpecNodeId": "vl-projectdata-10-31",
+      "sourcePageId": "9:41",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 7,
+      "bounds": {
+        "x": -126,
+        "y": 1333,
+        "width": 60,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 551,
+        "y": 752,
+        "width": 60,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "10:28",
+      "uiSpecNodeId": "vl-projectdata-10-28",
+      "sourcePageId": "9:41",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 10,
+      "bounds": {
+        "x": -527,
+        "y": 1333,
+        "width": 60,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 150,
+        "y": 752,
+        "width": 60,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "10:24",
+      "uiSpecNodeId": "vl-projectdata-10-24",
+      "sourcePageId": "9:41",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 13,
+      "bounds": {
+        "x": -126,
+        "y": 1075,
+        "width": 60,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 551,
+        "y": 494,
+        "width": 60,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "10:17",
+      "uiSpecNodeId": "vl-projectdata-10-17",
+      "sourcePageId": "9:41",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 16,
+      "bounds": {
+        "x": -126,
+        "y": 1161,
+        "width": 60,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 551,
+        "y": 580,
+        "width": 60,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "10:14",
+      "uiSpecNodeId": "vl-projectdata-10-14",
+      "sourcePageId": "9:41",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 19,
+      "bounds": {
+        "x": -126,
+        "y": 1247,
+        "width": 60,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 551,
+        "y": 666,
+        "width": 60,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "10:5",
+      "uiSpecNodeId": "vl-projectdata-10-5",
+      "sourcePageId": "9:41",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 22,
+      "bounds": {
+        "x": -527,
+        "y": 1161,
+        "width": 60,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 150,
+        "y": 580,
+        "width": 60,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "10:7",
+      "uiSpecNodeId": "vl-projectdata-10-7",
+      "sourcePageId": "9:41",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 25,
+      "bounds": {
+        "x": -527,
+        "y": 1075,
+        "width": 60,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 150,
+        "y": 494,
+        "width": 60,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "2:3",
+      "uiSpecNodeId": "vl-loginpage-2-3",
+      "sourcePageId": "2:2",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 6,
+      "bounds": {
+        "x": -82,
+        "y": -493,
+        "width": 845,
+        "height": 1024
+      },
+      "pageRelativeBounds": {
+        "x": 595,
+        "y": 0,
+        "width": 845,
+        "height": 1024
+      },
+      "assetRef": "figma/screenshots/9bdabceaa5a789278f4a4f7511e468aed047c86c91f82d234f24f8e9766628e3.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "4:4",
+      "uiSpecNodeId": "vl-loginpage-4-4",
+      "sourcePageId": "2:2",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 1,
+      "bounds": {
+        "x": -653,
+        "y": -350,
+        "width": 526,
+        "height": 661
+      },
+      "pageRelativeBounds": {
+        "x": 24,
+        "y": 143,
+        "width": 526,
+        "height": 661
+      },
+      "assetRef": "figma/screenshots/b3cd37dfc641bf78f734facfba999bb529ea49ebe11e18d7a1ad2b13b5015f97.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "4:3",
+      "uiSpecNodeId": "vl-loginpage-4-3",
+      "sourcePageId": "2:2",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 2,
+      "bounds": {
+        "x": -574,
+        "y": -414,
+        "width": 530,
+        "height": 607
+      },
+      "pageRelativeBounds": {
+        "x": 103,
+        "y": 79,
+        "width": 530,
+        "height": 607
+      },
+      "assetRef": "figma/screenshots/a1335b5fc28b4ed420f65338dcc9cc87bdd25f9911ee2d22258ede0e04247925.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "4:2",
+      "uiSpecNodeId": "vl-loginpage-4-2",
+      "sourcePageId": "2:2",
+      "reason": "large_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 3,
+      "bounds": {
+        "x": -677,
+        "y": -5,
+        "width": 550,
+        "height": 469
+      },
+      "pageRelativeBounds": {
+        "x": 0,
+        "y": 488,
+        "width": 550,
+        "height": 469
+      },
+      "assetRef": "figma/screenshots/cbe3d014f878721d4d753f2a4b4d85ad9dd450d10ec56dfa2f172551d63a0153.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "2:14",
+      "uiSpecNodeId": "vl-loginpage-2-14",
+      "sourcePageId": "2:2",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 26,
+      "bounds": {
+        "x": 41,
+        "y": 23,
+        "width": 600,
+        "height": 65
+      },
+      "pageRelativeBounds": {
+        "x": 718,
+        "y": 516,
+        "width": 600,
+        "height": 65
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "2:19",
+      "uiSpecNodeId": "vl-loginpage-2-19",
+      "sourcePageId": "2:2",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 31,
+      "bounds": {
+        "x": 41,
+        "y": -112,
+        "width": 600,
+        "height": 65
+      },
+      "pageRelativeBounds": {
+        "x": 718,
+        "y": 381,
+        "width": 600,
+        "height": 65
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "2:5",
+      "uiSpecNodeId": "vl-loginpage-2-5",
+      "sourcePageId": "2:2",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 36,
+      "bounds": {
+        "x": 41,
+        "y": -248,
+        "width": 600,
+        "height": 65
+      },
+      "pageRelativeBounds": {
+        "x": 718,
+        "y": 245,
+        "width": 600,
+        "height": 65
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "2:20",
+      "uiSpecNodeId": "vl-loginpage-2-20",
+      "sourcePageId": "2:2",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 20,
+      "bounds": {
+        "x": 162,
+        "y": 128,
+        "width": 340,
+        "height": 60
+      },
+      "pageRelativeBounds": {
+        "x": 839,
+        "y": 621,
+        "width": 340,
+        "height": 60
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "2:26",
+      "uiSpecNodeId": "vl-loginpage-2-26",
+      "sourcePageId": "2:2",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 12,
+      "bounds": {
+        "x": 373,
+        "y": 325,
+        "width": 220,
+        "height": 55
+      },
+      "pageRelativeBounds": {
+        "x": 1050,
+        "y": 818,
+        "width": 220,
+        "height": 55
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "2:32",
+      "uiSpecNodeId": "vl-loginpage-2-32",
+      "sourcePageId": "2:2",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 16,
+      "bounds": {
+        "x": 72,
+        "y": 325,
+        "width": 220,
+        "height": 55
+      },
+      "pageRelativeBounds": {
+        "x": 749,
+        "y": 818,
+        "width": 220,
+        "height": 55
+      },
+      "rendered": true
+    }
+  ],
+  "unsupportedFeatures": [],
+  "warnings": [],
+  "residualRisks": [
+    "M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。",
+    "图标按钮缺少真实业务 action，仅保留静态语义。",
+    "复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。"
+  ]
+}

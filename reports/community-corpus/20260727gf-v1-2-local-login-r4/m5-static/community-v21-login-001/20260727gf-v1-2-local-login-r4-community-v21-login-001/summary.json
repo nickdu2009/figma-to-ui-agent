@@ -1,0 +1,3255 @@
+{
+  "schemaVersion": "1",
+  "runId": "20260727gf-v1-2-local-login-r4-community-v21-login-001",
+  "projectId": "community-v21-login-001",
+  "designBundleRevision": 1,
+  "uiSpecRevision": 72,
+  "status": "partial",
+  "scope": "static_generation_only",
+  "behaviorFlowVerified": false,
+  "m4ValidationStatus": "not_required",
+  "coverageVersion": "1",
+  "coverage": {
+    "coverageVersion": "1",
+    "pages": [
+      {
+        "sourceNodeCount": 82,
+        "visibleNodeCount": 77,
+        "byKind": {
+          "container": {
+            "total": 25,
+            "structuredDom": 10,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 15,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "vector": {
+            "total": 29,
+            "structuredDom": 0,
+            "visualAsset": 0,
+            "decorativeLayer": 19,
+            "layoutContainer": 0,
+            "ignoredSafe": 6,
+            "unsupported": 4
+          },
+          "text": {
+            "total": 14,
+            "structuredDom": 14,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 0,
+            "ignoredSafe": 0,
+            "unsupported": 0
+          },
+          "instance": {
+            "total": 14,
+            "structuredDom": 5,
+            "visualAsset": 0,
+            "decorativeLayer": 0,
+            "layoutContainer": 4,
+            "ignoredSafe": 5,
+            "unsupported": 0
+          }
+        },
+        "vector": {
+          "total": 29,
+          "rendered": 25,
+          "ignoredSafe": 0,
+          "unsupported": 4,
+          "unmapped": 0
+        },
+        "imageFill": {
+          "total": 0,
+          "rendered": 0,
+          "missingAsset": 0
+        },
+        "text": {
+          "total": 14,
+          "rendered": 14,
+          "styleComplete": 14
+        },
+        "pageId": "login-version-1",
+        "sourcePageId": "3:5123",
+        "pageSize": {
+          "expectedWidth": 375,
+          "expectedHeight": 812,
+          "actualWidth": 375,
+          "actualHeight": 812,
+          "widthMatched": true,
+          "heightMatched": true,
+          "policy": "full_page"
+        }
+      }
+    ],
+    "records": [
+      {
+        "sourceNodeId": "3:5123",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Login Version 1",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1673,
+          "y": -1636,
+          "width": 375,
+          "height": 812
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 812
+        },
+        "zOrder": 0,
+        "area": 304500,
+        "areaRatio": 1,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5123",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5124",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Content",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": -1568,
+          "width": 375,
+          "height": 710
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 68,
+          "width": 375,
+          "height": 710
+        },
+        "zOrder": 1,
+        "area": 266250,
+        "areaRatio": 0.874384236453202,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5124",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5125",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Field",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1568,
+          "width": 327,
+          "height": 623.3636474609375
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 327,
+          "height": 623.3636474609375
+        },
+        "zOrder": 2,
+        "area": 203839.91271972656,
+        "areaRatio": 0.6694250007215979,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5125",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5126",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Headline",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1568,
+          "width": 327,
+          "height": 163.36363220214844
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 327,
+          "height": 163.36363220214844
+        },
+        "zOrder": 3,
+        "area": 53419.90773010254,
+        "areaRatio": 0.17543483655206088,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5126",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16680",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Logo",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1568,
+          "width": 101,
+          "height": 18.363636016845703
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 101,
+          "height": 18.363636016845703
+        },
+        "zOrder": 4,
+        "area": 1854.727237701416,
+        "areaRatio": 0.006091058251892992,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16680",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16684",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1649,
+          "y": -1568,
+          "width": 18.363658905029297,
+          "height": 18.363636016845703
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 68,
+          "width": 18.363658905029297,
+          "height": 18.363636016845703
+        },
+        "zOrder": 5,
+        "area": 337.2235480694653,
+        "areaRatio": 0.0011074664961230388,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/520c873b8857d40b5b79c9d48bdb1e1aae1d0a400ef6dfc06609f93caa372665.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16683",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "structural_visual",
+        "bounds": {
+          "x": -1624.668212890625,
+          "y": -1566.1636962890625,
+          "width": 76.66818237304688,
+          "height": 15.15000057220459
+        },
+        "pageRelativeBounds": {
+          "x": 48.331787109375,
+          "y": 69.8363037109375,
+          "width": 76.66818237304688,
+          "height": 15.15000057220459
+        },
+        "zOrder": 6,
+        "area": 1161.523006821546,
+        "areaRatio": 0.003814525473962384,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/595c7680858823a9d72fc49a4afb63e8985709aaa70147457f18b02071f91107.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5128",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Text",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1517.6363525390625,
+          "width": 327,
+          "height": 113
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 118.3636474609375,
+          "width": 327,
+          "height": 113
+        },
+        "zOrder": 7,
+        "area": 36951,
+        "areaRatio": 0.12134975369458129,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5128",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5129",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Sign in to your Account",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1517.6363525390625,
+          "width": 327,
+          "height": 84
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 118.3636474609375,
+          "width": 327,
+          "height": 84
+        },
+        "zOrder": 8,
+        "area": 27468,
+        "areaRatio": 0.09020689655172413,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5129",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5130",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Enter your email and password to log in",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1421.6363525390625,
+          "width": 300,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 214.3636474609375,
+          "width": 300,
+          "height": 17
+        },
+        "zOrder": 9,
+        "area": 5100,
+        "areaRatio": 0.016748768472906402,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5130",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5131",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1372.6363525390625,
+          "width": 327,
+          "height": 428
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 263.3636474609375,
+          "width": 327,
+          "height": 428
+        },
+        "zOrder": 10,
+        "area": 139956,
+        "areaRatio": 0.4596256157635468,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5131",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5132",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Field",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1372.6363525390625,
+          "width": 327,
+          "height": 187
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 263.3636474609375,
+          "width": 327,
+          "height": 187
+        },
+        "zOrder": 11,
+        "area": 61149,
+        "areaRatio": 0.2008177339901478,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5132",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5133",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input Field",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1372.6363525390625,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 263.3636474609375,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 12,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5133-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6009",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1372.6363525390625,
+          "width": 30,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 263.3636474609375,
+          "width": 30,
+          "height": 21
+        },
+        "zOrder": 13,
+        "area": 630,
+        "areaRatio": 0.0020689655172413794,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6009",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6010",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1371.6363525390625,
+          "width": 30,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 264.3636474609375,
+          "width": 30,
+          "height": 19
+        },
+        "zOrder": 14,
+        "area": 570,
+        "areaRatio": 0.00187192118226601,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6010",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6011",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1349.6363525390625,
+          "width": 325,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 286.3636474609375,
+          "width": 325,
+          "height": 46
+        },
+        "zOrder": 15,
+        "area": 14950,
+        "areaRatio": 0.04909688013136289,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6011",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6012",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Frame 33825",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -1337.1363525390625,
+          "width": 271,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 298.8636474609375,
+          "width": 271,
+          "height": 21
+        },
+        "zOrder": 16,
+        "area": 5691,
+        "areaRatio": 0.018689655172413795,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6012",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6013",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "user",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1635,
+          "y": -1334.6363525390625,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 301.3636474609375,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 17,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6013;4:78376",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1631,
+          "y": -1332.6363525390625,
+          "width": 8,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 42,
+          "y": 303.3636474609375,
+          "width": 8,
+          "height": 12
+        },
+        "zOrder": 18,
+        "area": 96,
+        "areaRatio": 0.00031527093596059113,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/bb3a142fdb40ff83c7aa4305b381b921e4bfc74c5ac3a357ed9cc10a96de651f.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6014",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "yourname@gmail.com|",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1635,
+          "y": -1337.1363525390625,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 298.8636474609375,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 19,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5133-3-6014",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6015",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "eye-off",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1354,
+          "y": -1334.6363525390625,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 319,
+          "y": 301.3636474609375,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 20,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5133;3:6015;4:78000",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1352,
+          "y": -1332.6363525390625,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 321,
+          "y": 303.3636474609375,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 21,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/9a69802497d7e38a7d3d7178ac9ca6c8180d6aaf517f8ef3b82119a9702aecd2.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5134",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input Field",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1287.6363525390625,
+          "width": 327,
+          "height": 71
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 348.3636474609375,
+          "width": 327,
+          "height": 71
+        },
+        "zOrder": 22,
+        "area": 23217,
+        "areaRatio": 0.07624630541871921,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5134-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6009",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Title",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1287.6363525390625,
+          "width": 30,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 348.3636474609375,
+          "width": 30,
+          "height": 21
+        },
+        "zOrder": 23,
+        "area": 630,
+        "areaRatio": 0.0020689655172413794,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6009",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6010",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Email",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1286.6363525390625,
+          "width": 55,
+          "height": 19
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 349.3636474609375,
+          "width": 55,
+          "height": 19
+        },
+        "zOrder": 24,
+        "area": 1045,
+        "areaRatio": 0.003431855500821018,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6010",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6011",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Input Area",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "form_control",
+        "bounds": {
+          "x": -1649,
+          "y": -1264.6363525390625,
+          "width": 325,
+          "height": 46
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 371.3636474609375,
+          "width": 325,
+          "height": 46
+        },
+        "zOrder": 25,
+        "area": 14950,
+        "areaRatio": 0.04909688013136289,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6011",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6012",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Frame 33825",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1635,
+          "y": -1252.1363525390625,
+          "width": 271,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 383.8636474609375,
+          "width": 271,
+          "height": 21
+        },
+        "zOrder": 26,
+        "area": 5691,
+        "areaRatio": 0.018689655172413795,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6012",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6013",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "user",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1635,
+          "y": -1249.6363525390625,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 386.3636474609375,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 27,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6013;4:78376",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1631,
+          "y": -1247.6363525390625,
+          "width": 8,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 42,
+          "y": 388.3636474609375,
+          "width": 8,
+          "height": 12
+        },
+        "zOrder": 28,
+        "area": 96,
+        "areaRatio": 0.00031527093596059113,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/bb3a142fdb40ff83c7aa4305b381b921e4bfc74c5ac3a357ed9cc10a96de651f.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6014",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "yourname@gmail.com|",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1635,
+          "y": -1252.1363525390625,
+          "width": 207,
+          "height": 21
+        },
+        "pageRelativeBounds": {
+          "x": 38,
+          "y": 383.8636474609375,
+          "width": 207,
+          "height": 21
+        },
+        "zOrder": 29,
+        "area": 4347,
+        "areaRatio": 0.014275862068965518,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6014",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6015",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "eye-off",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1354,
+          "y": -1249.6363525390625,
+          "width": 16,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 319,
+          "y": 386.3636474609375,
+          "width": 16,
+          "height": 16
+        },
+        "zOrder": 30,
+        "area": 256,
+        "areaRatio": 0.0008407224958949097,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5134-3-6015",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5134;3:6015;4:78000",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1352,
+          "y": -1247.6363525390625,
+          "width": 12,
+          "height": 12
+        },
+        "pageRelativeBounds": {
+          "x": 321,
+          "y": 388.3636474609375,
+          "width": 12,
+          "height": 12
+        },
+        "zOrder": 31,
+        "area": 144,
+        "areaRatio": 0.0004729064039408867,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/9a69802497d7e38a7d3d7178ac9ca6c8180d6aaf517f8ef3b82119a9702aecd2.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5135",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Forgot Password ?",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1649,
+          "y": -1202.6363525390625,
+          "width": 327,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 433.3636474609375,
+          "width": 327,
+          "height": 17
+        },
+        "zOrder": 32,
+        "area": 5559,
+        "areaRatio": 0.01825615763546798,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5135",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5136",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Buttons",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1161.6363525390625,
+          "width": 327,
+          "height": 217
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 474.3636474609375,
+          "width": 327,
+          "height": 217
+        },
+        "zOrder": 33,
+        "area": 70959,
+        "areaRatio": 0.23303448275862068,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5136",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:5137",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Button",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1161.6363525390625,
+          "width": 327,
+          "height": 48
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 474.3636474609375,
+          "width": 327,
+          "height": 48
+        },
+        "zOrder": 34,
+        "area": 15696,
+        "areaRatio": 0.051546798029556654,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-5137-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6044",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "plus",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1548.5,
+          "y": -1146.6363525390625,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 124.5,
+          "y": 489.3636474609375,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 35,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6044;4:76017",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1544.75,
+          "y": -1142.8863525390625,
+          "width": 10.5,
+          "height": 10.5
+        },
+        "pageRelativeBounds": {
+          "x": 128.25,
+          "y": 493.1136474609375,
+          "width": 10.5,
+          "height": 10.5
+        },
+        "zOrder": 36,
+        "area": 110.25,
+        "areaRatio": 0.00036206896551724136,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/49c7a2ad293c8abfa1331e7634a00fb9d9ed3ee02c5d2233feca26344fc40718.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6045",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Label Text",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1506,
+          "y": -1147.6363525390625,
+          "width": 41,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 167,
+          "y": 488.3636474609375,
+          "width": 41,
+          "height": 20
+        },
+        "zOrder": 37,
+        "area": 820,
+        "areaRatio": 0.0026929392446633825,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-5137-3-6045",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6046",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "arrow-narrow-right",
+        "nodeKind": "instance",
+        "decision": "ignored_safe",
+        "reasonCode": "hidden",
+        "bounds": {
+          "x": -1442.5,
+          "y": -1146.6363525390625,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 230.5,
+          "y": 489.3636474609375,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 38,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:5137;3:6046;4:70831",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1438.75,
+          "y": -1140.6363525390625,
+          "width": 10.5,
+          "height": 6
+        },
+        "pageRelativeBounds": {
+          "x": 234.25,
+          "y": 495.3636474609375,
+          "width": 10.5,
+          "height": 6
+        },
+        "zOrder": 39,
+        "area": 63,
+        "areaRatio": 0.00020689655172413793,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "3:16696",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Or login With",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1089.6363525390625,
+          "width": 327,
+          "height": 145
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 546.3636474609375,
+          "width": 327,
+          "height": 145
+        },
+        "zOrder": 40,
+        "area": 47415,
+        "areaRatio": 0.15571428571428572,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16696",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4023",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "or",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1649,
+          "y": -1089.6363525390625,
+          "width": 327,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 546.3636474609375,
+          "width": 327,
+          "height": 18
+        },
+        "zOrder": 41,
+        "area": 5886,
+        "areaRatio": 0.019330049261083743,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4023",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4024",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Line",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_missing_asset",
+        "bounds": {
+          "x": -1649,
+          "y": -1080.6363525390625,
+          "width": 140.5,
+          "height": 0.000012282900115678785
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 555.3636474609375,
+          "width": 140.5,
+          "height": 0.000012282900115678785
+        },
+        "zOrder": 42,
+        "area": 0.0017257474662528693,
+        "areaRatio": 5.667479363720425e-9,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "28:4025",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Or",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1492.5,
+          "y": -1089.6363525390625,
+          "width": 14,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 180.5,
+          "y": 546.3636474609375,
+          "width": 14,
+          "height": 18
+        },
+        "zOrder": 43,
+        "area": 252,
+        "areaRatio": 0.0008275862068965517,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4025",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4026",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Line",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_missing_asset",
+        "bounds": {
+          "x": -1462.5,
+          "y": -1080.6363525390625,
+          "width": 140.5,
+          "height": 0.000012282900115678785
+        },
+        "pageRelativeBounds": {
+          "x": 210.5,
+          "y": 555.3636474609375,
+          "width": 140.5,
+          "height": 0.000012282900115678785
+        },
+        "zOrder": 44,
+        "area": 0.0017257474662528693,
+        "areaRatio": 5.667479363720425e-9,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "28:4027",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Button",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1055.6363525390625,
+          "width": 327,
+          "height": 111
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 580.3636474609375,
+          "width": 327,
+          "height": 111
+        },
+        "zOrder": 45,
+        "area": 36297,
+        "areaRatio": 0.11920197044334975,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4027",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4028",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Another Step login",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -1055.6363525390625,
+          "width": 327,
+          "height": 48
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 580.3636474609375,
+          "width": 327,
+          "height": 48
+        },
+        "zOrder": 46,
+        "area": 15696,
+        "areaRatio": 0.051546798029556654,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4028-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "google",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1571.5,
+          "y": -1040.6363525390625,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 101.5,
+          "y": 595.3636474609375,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 47,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I28-4028-3-6131",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131;136:155",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1562.3385009765625,
+          "y": -1033.0714111328125,
+          "width": 7.714277267456055,
+          "height": 7.402498245239258
+        },
+        "pageRelativeBounds": {
+          "x": 110.6614990234375,
+          "y": 602.9285888671875,
+          "width": 7.714277267456055,
+          "height": 7.402498245239258
+        },
+        "zOrder": 48,
+        "area": 57.10492393563254,
+        "areaRatio": 0.00018753669601192952,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131;136:156",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1569.517578125,
+          "y": -1030.078857421875,
+          "width": 12.499963760375977,
+          "height": 6.317561149597168
+        },
+        "pageRelativeBounds": {
+          "x": 103.482421875,
+          "y": 605.921142578125,
+          "width": 12.499963760375977,
+          "height": 6.317561149597168
+        },
+        "zOrder": 49,
+        "area": 78.9692854239238,
+        "areaRatio": 0.00025934083883062003,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/6710755ea85df54bb26bb6344f6da59261cd14a721a9c64b23c661ab92b0d9cb.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131;136:157",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1570.374267578125,
+          "y": -1035.209716796875,
+          "width": 3.464247703552246,
+          "height": 7.108308792114258
+        },
+        "pageRelativeBounds": {
+          "x": 102.625732421875,
+          "y": 600.790283203125,
+          "width": 3.464247703552246,
+          "height": 7.108308792114258
+        },
+        "zOrder": 50,
+        "area": 24.624942409222058,
+        "areaRatio": 0.00008087009001386555,
+        "confidence": "medium",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6131;136:158",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1569.517578125,
+          "y": -1039.5113525390625,
+          "width": 12.553585052490234,
+          "height": 6.3174920082092285
+        },
+        "pageRelativeBounds": {
+          "x": 103.482421875,
+          "y": 596.4886474609375,
+          "width": 12.553585052490234,
+          "height": 6.3174920082092285
+        },
+        "zOrder": 51,
+        "area": 79.30717324348188,
+        "areaRatio": 0.00026045048684230504,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/f1089b61fee37a4cbd2eab1f38a72a50dc72fcb2245c958229edd4723f496a45.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4028;3:6132",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Google",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1543.5,
+          "y": -1041.6363525390625,
+          "width": 144,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 129.5,
+          "y": 594.3636474609375,
+          "width": 144,
+          "height": 20
+        },
+        "zOrder": 52,
+        "area": 2880,
+        "areaRatio": 0.009458128078817733,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I28-4028-3-6132",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "28:4029",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Another Step login",
+        "nodeKind": "instance",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -992.6363525390625,
+          "width": 327,
+          "height": 48
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 643.3636474609375,
+          "width": 327,
+          "height": 48
+        },
+        "zOrder": 53,
+        "area": 15696,
+        "areaRatio": 0.051546798029556654,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-28-4029-control",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4029;3:6134",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "2021_Facebook_icon 1",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1580.5,
+          "y": -977.6363525390625,
+          "width": 18,
+          "height": 18
+        },
+        "pageRelativeBounds": {
+          "x": 92.5,
+          "y": 658.3636474609375,
+          "width": 18,
+          "height": 18
+        },
+        "zOrder": 54,
+        "area": 324,
+        "areaRatio": 0.001064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I28-4029-3-6134",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4029;3:6135",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1580.5,
+          "y": -977.6363525390625,
+          "width": 18,
+          "height": 17.90999984741211
+        },
+        "pageRelativeBounds": {
+          "x": 92.5,
+          "y": 658.3636474609375,
+          "width": 18,
+          "height": 17.90999984741211
+        },
+        "zOrder": 55,
+        "area": 322.37999725341797,
+        "areaRatio": 0.0010587192028026862,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/c5ed1a7f26dc24f82db816cfbadf61aed65729ec71fb224c2045c4c02c42b7b7.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4029;3:6136",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Vector",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1575.18994140625,
+          "y": -974.1263427734375,
+          "width": 7.740000247955322,
+          "height": 14.49000072479248
+        },
+        "pageRelativeBounds": {
+          "x": 97.81005859375,
+          "y": 661.8736572265625,
+          "width": 7.740000247955322,
+          "height": 14.49000072479248
+        },
+        "zOrder": 56,
+        "area": 112.1526092027666,
+        "areaRatio": 0.00036831727160186074,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/32b17727ef39782b6de1bf433f58ab7dc0c8bb6077c95b7e9104b739da533ec3.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I28:4029;3:6137",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Facebook",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1552.5,
+          "y": -978.6363525390625,
+          "width": 162,
+          "height": 20
+        },
+        "pageRelativeBounds": {
+          "x": 120.5,
+          "y": 657.3636474609375,
+          "width": 162,
+          "height": 20
+        },
+        "zOrder": 57,
+        "area": 3240,
+        "areaRatio": 0.01064039408866995,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I28-4029-3-6137",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16714",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Sign Up",
+        "nodeKind": "container",
+        "decision": "structured_dom",
+        "reasonCode": "button_or_link",
+        "bounds": {
+          "x": -1649,
+          "y": -891,
+          "width": 327,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 24,
+          "y": 745,
+          "width": 327,
+          "height": 17
+        },
+        "zOrder": 58,
+        "area": 5559,
+        "areaRatio": 0.01825615763546798,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16714",
+        "impact": [
+          "layout",
+          "interaction",
+          "accessibility"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16715",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Don’t have an account?",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1577,
+          "y": -891,
+          "width": 132,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 96,
+          "y": 745,
+          "width": 132,
+          "height": 17
+        },
+        "zOrder": 59,
+        "area": 2244,
+        "areaRatio": 0.007369458128078818,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16715",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16716",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Sign Up",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1439,
+          "y": -891,
+          "width": 45,
+          "height": 17
+        },
+        "pageRelativeBounds": {
+          "x": 234,
+          "y": 745,
+          "width": 45,
+          "height": 17
+        },
+        "zOrder": 60,
+        "area": 765,
+        "areaRatio": 0.0025123152709359605,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16716",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16736",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Native / Status Bar",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": -1636,
+          "width": 375,
+          "height": 44
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 44
+        },
+        "zOrder": 61,
+        "area": 16500,
+        "areaRatio": 0.054187192118226604,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16736",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6767",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "9:41",
+        "nodeKind": "text",
+        "decision": "structured_dom",
+        "reasonCode": "text_semantic",
+        "bounds": {
+          "x": -1643,
+          "y": -1622,
+          "width": 33,
+          "height": 16
+        },
+        "pageRelativeBounds": {
+          "x": 30,
+          "y": 14,
+          "width": 33,
+          "height": 16
+        },
+        "zOrder": 62,
+        "area": 528,
+        "areaRatio": 0.0017339901477832513,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6767",
+        "impact": [
+          "layout",
+          "text"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6768",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Status Phone",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1390,
+          "y": -1621,
+          "width": 70.25043487548828,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 15,
+          "width": 70.25043487548828,
+          "height": 13
+        },
+        "zOrder": 63,
+        "area": 913.2556533813477,
+        "areaRatio": 0.0029991975480504027,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6768",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6769",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Mobile Signal",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1390,
+          "y": -1619.5,
+          "width": 18,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 16.5,
+          "width": 18,
+          "height": 10
+        },
+        "zOrder": 64,
+        "area": 180,
+        "areaRatio": 0.0005911330049261083,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6769",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6770",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Mobile Signal",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1390,
+          "y": -1619.5,
+          "width": 18,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 16.5,
+          "width": 18,
+          "height": 10
+        },
+        "zOrder": 65,
+        "area": 180,
+        "areaRatio": 0.0005911330049261083,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/88b1bef13c2a036839e713ff8c251a8c00ba13e57337a7a20313882a2c7cc0ac.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6771",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1390,
+          "y": -1613.5,
+          "width": 3,
+          "height": 4
+        },
+        "pageRelativeBounds": {
+          "x": 283,
+          "y": 22.5,
+          "width": 3,
+          "height": 4
+        },
+        "zOrder": 66,
+        "area": 12,
+        "areaRatio": 0.00003940886699507389,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6772",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1385,
+          "y": -1615.5,
+          "width": 3,
+          "height": 6
+        },
+        "pageRelativeBounds": {
+          "x": 288,
+          "y": 20.5,
+          "width": 3,
+          "height": 6
+        },
+        "zOrder": 67,
+        "area": 18,
+        "areaRatio": 0.00005911330049261084,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6773",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1379.9998779296875,
+          "y": -1617.5,
+          "width": 3,
+          "height": 8
+        },
+        "pageRelativeBounds": {
+          "x": 293.0001220703125,
+          "y": 18.5,
+          "width": 3,
+          "height": 8
+        },
+        "zOrder": 68,
+        "area": 24,
+        "areaRatio": 0.00007881773399014778,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6774",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Cellular_Connection-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1375,
+          "y": -1619.5,
+          "width": 3,
+          "height": 10
+        },
+        "pageRelativeBounds": {
+          "x": 298,
+          "y": 16.5,
+          "width": 3,
+          "height": 10
+        },
+        "zOrder": 69,
+        "area": 30,
+        "areaRatio": 0.00009852216748768474,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6775",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Wifi",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1367,
+          "y": -1619.982666015625,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.017333984375,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "zOrder": 70,
+        "area": 167.46506181607765,
+        "areaRatio": 0.0005499673622859693,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6775",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6776",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Union",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1367,
+          "y": -1619.982666015625,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.017333984375,
+          "width": 15.272375106811523,
+          "height": 10.965227127075195
+        },
+        "zOrder": 71,
+        "area": 167.46506181607765,
+        "areaRatio": 0.0005499673622859693,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/7a885ece4250aef30068828ff45d532ca86abe217bf8971828830151710e0d46.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6777",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1367,
+          "y": -1619.982666015625,
+          "width": 15.27237606048584,
+          "height": 4.743237495422363
+        },
+        "pageRelativeBounds": {
+          "x": 306,
+          "y": 16.017333984375,
+          "width": 15.27237606048584,
+          "height": 4.743237495422363
+        },
+        "zOrder": 72,
+        "area": 72.44050677428731,
+        "areaRatio": 0.0002378998580436365,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/2e54dfaaf4b3e80b3f6efd4ffb387afccf60f9dcd5518d76e69389b919b5a95c.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6778",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1364.3367919921875,
+          "y": -1616.188720703125,
+          "width": 9.94901180267334,
+          "height": 3.6339809894561768
+        },
+        "pageRelativeBounds": {
+          "x": 308.6632080078125,
+          "y": 19.811279296875,
+          "width": 9.94901180267334,
+          "height": 3.6339809894561768
+        },
+        "zOrder": 73,
+        "area": 36.154519754790044,
+        "areaRatio": 0.00011873405502394103,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6779",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Wifi-path",
+        "nodeKind": "vector",
+        "decision": "ignored_safe",
+        "reasonCode": "covered_by_parent_asset",
+        "bounds": {
+          "x": -1361.6766357421875,
+          "y": -1612.391845703125,
+          "width": 4.626293659210205,
+          "height": 3.3744072914123535
+        },
+        "pageRelativeBounds": {
+          "x": 311.3233642578125,
+          "y": 23.608154296875,
+          "width": 4.626293659210205,
+          "height": 3.3744072914123535
+        },
+        "zOrder": 74,
+        "area": 15.610999055853654,
+        "areaRatio": 0.000051267648787696726,
+        "confidence": "high",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6780",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Battery",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -1621,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "zOrder": 75,
+        "area": 350.7148017883301,
+        "areaRatio": 0.0011517727480733337,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6780",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6781",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Battery",
+        "nodeKind": "container",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -1621,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 26.97806167602539,
+          "height": 13
+        },
+        "zOrder": 76,
+        "area": 350.7148017883301,
+        "areaRatio": 0.0011517727480733337,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-I3-16736-3-6781",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6782",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Rectangle",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1346.7276611328125,
+          "y": -1621,
+          "width": 25,
+          "height": 13
+        },
+        "pageRelativeBounds": {
+          "x": 326.2723388671875,
+          "y": 15,
+          "width": 25,
+          "height": 13
+        },
+        "zOrder": 77,
+        "area": 325,
+        "areaRatio": 0.0010673234811165845,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/f5434a7c0a4e4b1f7d81311f759fb7dcddc2f14cc14b00304bb7dfd132d6b6b2.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6783",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Combined Shape",
+        "nodeKind": "vector",
+        "decision": "unsupported",
+        "reasonCode": "unsupported_renderer_limit",
+        "bounds": {
+          "x": -1321.07763671875,
+          "y": -1617,
+          "width": 1.328037977218628,
+          "height": 4
+        },
+        "pageRelativeBounds": {
+          "x": 351.92236328125,
+          "y": 19,
+          "width": 1.328037977218628,
+          "height": 4
+        },
+        "zOrder": 78,
+        "area": 5.312151908874512,
+        "areaRatio": 0.000017445490669538627,
+        "confidence": "medium",
+        "impact": []
+      },
+      {
+        "sourceNodeId": "I3:16736;3:6784",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Rectangle",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1344.427734375,
+          "y": -1618.6669921875,
+          "width": 20.199951171875,
+          "height": 8.329999923706055
+        },
+        "pageRelativeBounds": {
+          "x": 328.572265625,
+          "y": 17.3330078125,
+          "width": 20.199951171875,
+          "height": 8.329999923706055
+        },
+        "zOrder": 79,
+        "area": 168.26559172058478,
+        "areaRatio": 0.0005525963603303277,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/89b7e83d3ffa15c91bb73042be36d080e115c25155d08938b5cdfc34c4142d1c.png",
+        "impact": [
+          "visual"
+        ]
+      },
+      {
+        "sourceNodeId": "3:16755",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "Native / Home Indicator",
+        "nodeKind": "instance",
+        "decision": "layout_container",
+        "reasonCode": "layout_only",
+        "bounds": {
+          "x": -1673,
+          "y": -858,
+          "width": 375,
+          "height": 34
+        },
+        "pageRelativeBounds": {
+          "x": 0,
+          "y": 778,
+          "width": 375,
+          "height": 34
+        },
+        "zOrder": 80,
+        "area": 12750,
+        "areaRatio": 0.04187192118226601,
+        "confidence": "high",
+        "uiSpecNodeId": "ui-login-version-1-3-16755",
+        "impact": [
+          "layout"
+        ]
+      },
+      {
+        "sourceNodeId": "I3:16755;3:6790",
+        "sourcePageId": "3:5123",
+        "sourceNodeName": "rectangle",
+        "nodeKind": "vector",
+        "decision": "decorative_layer",
+        "reasonCode": "decorative_shape",
+        "bounds": {
+          "x": -1559,
+          "y": -837,
+          "width": 148,
+          "height": 5
+        },
+        "pageRelativeBounds": {
+          "x": 114,
+          "y": 799,
+          "width": 148,
+          "height": 5
+        },
+        "zOrder": 81,
+        "area": 740,
+        "areaRatio": 0.0024302134646962234,
+        "confidence": "medium",
+        "assetRef": "figma/screenshots/e23e453f33298d083c1d6a4852fee23b1ac4765d06fed736f5c2d24b9427d6c0.png",
+        "impact": [
+          "visual"
+        ]
+      }
+    ],
+    "aggregate": {
+      "sourceNodeCount": 82,
+      "visibleNodeCount": 77,
+      "unsupportedCount": 4,
+      "unmappedCount": 0
+    },
+    "diagnostics": {
+      "unsupportedByReason": {
+        "unsupported_renderer_limit": 2,
+        "unsupported_missing_asset": 2
+      },
+      "unsupportedByKind": {
+        "vector": 4
+      },
+      "topUnsupported": [
+        {
+          "sourceNodeId": "I3:5137;3:6046;4:70831",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Vector",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 63,
+          "bounds": {
+            "x": -1438.75,
+            "y": -1140.6363525390625,
+            "width": 10.5,
+            "height": 6
+          }
+        },
+        {
+          "sourceNodeId": "I3:16736;3:6783",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Combined Shape",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_renderer_limit",
+          "area": 5.312151908874512,
+          "bounds": {
+            "x": -1321.07763671875,
+            "y": -1617,
+            "width": 1.328037977218628,
+            "height": 4
+          }
+        },
+        {
+          "sourceNodeId": "28:4024",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Line",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_missing_asset",
+          "area": 0.0017257474662528693,
+          "bounds": {
+            "x": -1649,
+            "y": -1080.6363525390625,
+            "width": 140.5,
+            "height": 0.000012282900115678785
+          }
+        },
+        {
+          "sourceNodeId": "28:4026",
+          "sourcePageId": "3:5123",
+          "sourceNodeName": "Line",
+          "nodeKind": "vector",
+          "reasonCode": "unsupported_missing_asset",
+          "area": 0.0017257474662528693,
+          "bounds": {
+            "x": -1462.5,
+            "y": -1080.6363525390625,
+            "width": 140.5,
+            "height": 0.000012282900115678785
+          }
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "pageId": "login-version-1",
+      "sourcePageId": "3:5123",
+      "sourceRootNodeId": "3:5123",
+      "path": "/login-version-1",
+      "viewportRole": "mobile",
+      "nodeCounts": {
+        "text": 14,
+        "input": 2,
+        "button": 3,
+        "image": 0,
+        "pixelOverlay": 12,
+        "total": 67
+      },
+      "structuredCoverage": {
+        "textNodeCount": 14,
+        "interactiveNodeCount": 5,
+        "fullPageScreenshotFallback": false
+      },
+      "visualLayerCoverage": {
+        "candidateCount": 21,
+        "renderedCount": 19,
+        "unsupportedCount": 2
+      },
+      "regions": [
+        {
+          "id": "left_visual",
+          "status": "passed",
+          "notes": [
+            "检测到左侧视觉层"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "status": "passed",
+          "notes": [
+            "检测到表单输入域"
+          ]
+        },
+        {
+          "id": "cta",
+          "status": "not_applicable",
+          "notes": [
+            "无明确 CTA"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "status": "passed",
+          "notes": [
+            "检测到社交登录按钮"
+          ]
+        },
+        {
+          "id": "footer",
+          "status": "not_applicable",
+          "notes": [
+            "无页脚文案"
+          ]
+        },
+        {
+          "id": "page",
+          "status": "passed",
+          "notes": [
+            "页面包含可渲染节点"
+          ]
+        }
+      ],
+      "comparison": {
+        "diffPixelRatio": 0.09472906403940887,
+        "diffPixels": 28845,
+        "screenshotPaths": [
+          "runs/ms2ekh65-61cf455c52e74df3998e3d7d39f08ec2/screenshots/000-fcb44a3d7f33-expected.png",
+          "runs/ms2ekh65-61cf455c52e74df3998e3d7d39f08ec2/screenshots/000-fcb44a3d7f33-actual.png",
+          "runs/ms2ekh65-61cf455c52e74df3998e3d7d39f08ec2/diffs/000-fcb44a3d7f33-diff.png"
+        ],
+        "regionDiffs": [
+          {
+            "id": "visual_assets",
+            "label": "visual assets",
+            "bounds": {
+              "x": 24,
+              "y": 15,
+              "width": 328,
+              "height": 789
+            },
+            "diffPixelCount": 28802,
+            "diffPixelRatio": 0.11129401217966552
+          },
+          {
+            "id": "text_regions",
+            "label": "text regions",
+            "bounds": {
+              "x": 24,
+              "y": 14,
+              "width": 327,
+              "height": 748
+            },
+            "diffPixelCount": 28756,
+            "diffPixelRatio": 0.11756529133755253
+          },
+          {
+            "id": "form_controls",
+            "label": "form controls",
+            "bounds": {
+              "x": 24,
+              "y": 263,
+              "width": 327,
+              "height": 157
+            },
+            "diffPixelCount": 4437,
+            "diffPixelRatio": 0.08642552445509262
+          },
+          {
+            "id": "button_icon_controls",
+            "label": "button and icon controls",
+            "bounds": {
+              "x": 24,
+              "y": 474,
+              "width": 327,
+              "height": 218
+            },
+            "diffPixelCount": 15685,
+            "diffPixelRatio": 0.2200291782397666
+          }
+        ],
+        "regionDiagnostics": [
+          {
+            "id": "social_buttons",
+            "contractBucket": "button_icon_controls",
+            "bounds": {
+              "x": 24,
+              "y": 474,
+              "width": 327,
+              "height": 218
+            },
+            "diffPixelRatio": 0.2200291782397666,
+            "diffPixels": 15685,
+            "sourceNodeIds": [],
+            "uiSpecNodeIds": [
+              "ui-login-version-1-3-5137-control",
+              "ui-login-version-1-28-4028-control",
+              "ui-login-version-1-28-4029-control"
+            ],
+            "suspectedCauses": [
+              "asset_layering",
+              "renderer_reset"
+            ]
+          },
+          {
+            "id": "dense_content",
+            "contractBucket": "text_regions",
+            "bounds": {
+              "x": 24,
+              "y": 14,
+              "width": 327,
+              "height": 748
+            },
+            "diffPixelRatio": 0.11756529133755253,
+            "diffPixels": 28756,
+            "sourceNodeIds": [],
+            "uiSpecNodeIds": [
+              "ui-login-version-1-3-5129",
+              "ui-login-version-1-3-5130",
+              "ui-login-version-1-I3-5133-3-6010",
+              "ui-login-version-1-I3-5133-3-6014",
+              "ui-login-version-1-I3-5134-3-6010",
+              "ui-login-version-1-I3-5134-3-6014",
+              "ui-login-version-1-3-5135",
+              "ui-login-version-1-I3-5137-3-6045",
+              "ui-login-version-1-28-4025",
+              "ui-login-version-1-I28-4028-3-6132",
+              "ui-login-version-1-I28-4029-3-6137",
+              "ui-login-version-1-3-16715",
+              "ui-login-version-1-3-16716",
+              "ui-login-version-1-I3-16736-3-6767"
+            ],
+            "suspectedCauses": [
+              "typography"
+            ]
+          },
+          {
+            "id": "dense_content",
+            "contractBucket": "visual_assets",
+            "bounds": {
+              "x": 24,
+              "y": 15,
+              "width": 328,
+              "height": 789
+            },
+            "diffPixelRatio": 0.11129401217966552,
+            "diffPixels": 28802,
+            "sourceNodeIds": [
+              "3:16684",
+              "I3:16736;3:6782",
+              "I28:4029;3:6135",
+              "I3:16736;3:6770",
+              "I3:16736;3:6784",
+              "I3:16736;3:6776",
+              "I3:5133;3:6015;4:78000",
+              "I3:5134;3:6015;4:78000",
+              "I28:4029;3:6136",
+              "I3:5137;3:6044;4:76017",
+              "I3:5133;3:6013;4:78376",
+              "I3:5134;3:6013;4:78376",
+              "I28:4028;3:6131;136:158",
+              "I28:4028;3:6131;136:156",
+              "I3:16736;3:6777",
+              "I28:4028;3:6131;136:155",
+              "I28:4028;3:6131;136:157",
+              "I3:16755;3:6790",
+              "28:4024",
+              "28:4026",
+              "3:16683"
+            ],
+            "uiSpecNodeIds": [
+              "vl-login-version-1-3-16684",
+              "vl-login-version-1-3-16683",
+              "vl-login-version-1-I3-5134-3-6015-4-78000",
+              "vl-login-version-1-I28-4028-3-6131-136-158",
+              "vl-login-version-1-I28-4028-3-6131-136-156",
+              "vl-login-version-1-I28-4029-3-6135",
+              "vl-login-version-1-I28-4029-3-6136",
+              "vl-login-version-1-I3-16736-3-6770",
+              "vl-login-version-1-I3-16736-3-6776",
+              "vl-login-version-1-I3-16736-3-6782",
+              "vl-login-version-1-I3-16736-3-6784",
+              "vl-login-version-1-I3-16755-3-6790",
+              "vl-login-version-1-I3-5133-3-6015-4-78000",
+              "vl-login-version-1-I3-5137-3-6044-4-76017",
+              "vl-login-version-1-I3-5133-3-6013-4-78376",
+              "vl-login-version-1-I3-5134-3-6013-4-78376",
+              "vl-login-version-1-I3-16736-3-6777",
+              "vl-login-version-1-I28-4028-3-6131-136-155",
+              "vl-login-version-1-I28-4028-3-6131-136-157"
+            ],
+            "suspectedCauses": [
+              "asset_layering"
+            ]
+          },
+          {
+            "id": "mobile_canvas",
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 375,
+              "height": 812
+            },
+            "diffPixelRatio": 0.09472906403940887,
+            "diffPixels": 28845,
+            "sourceNodeIds": [],
+            "uiSpecNodeIds": [],
+            "suspectedCauses": [
+              "canvas_mapping"
+            ]
+          },
+          {
+            "id": "form_fields",
+            "contractBucket": "form_controls",
+            "bounds": {
+              "x": 24,
+              "y": 263,
+              "width": 327,
+              "height": 157
+            },
+            "diffPixelRatio": 0.08642552445509262,
+            "diffPixels": 4437,
+            "sourceNodeIds": [],
+            "uiSpecNodeIds": [
+              "ui-login-version-1-3-5133-control",
+              "ui-login-version-1-3-5134-control"
+            ],
+            "suspectedCauses": [
+              "typography",
+              "renderer_reset"
+            ]
+          }
+        ],
+        "canvasMapping": {
+          "sourcePageId": "3:5123",
+          "pageId": "login-version-1",
+          "artboard": {
+            "width": 375,
+            "height": 812
+          },
+          "viewport": {
+            "id": "desktop",
+            "width": 1440,
+            "height": 900,
+            "deviceScaleFactor": 1
+          },
+          "scale": 1,
+          "origin": {
+            "x": 0,
+            "y": 0
+          },
+          "renderMode": "native_artboard"
+        }
+      }
+    }
+  ],
+  "visualLayers": [
+    {
+      "sourceNodeId": "3:16684",
+      "uiSpecNodeId": "vl-login-version-1-3-16684",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 5,
+      "bounds": {
+        "x": -1649,
+        "y": -1568,
+        "width": 18.363658905029297,
+        "height": 18.363636016845703
+      },
+      "pageRelativeBounds": {
+        "x": 24,
+        "y": 68,
+        "width": 18.363658905029297,
+        "height": 18.363636016845703
+      },
+      "assetRef": "figma/screenshots/520c873b8857d40b5b79c9d48bdb1e1aae1d0a400ef6dfc06609f93caa372665.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6782",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6782",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 77,
+      "bounds": {
+        "x": -1346.7276611328125,
+        "y": -1621,
+        "width": 25,
+        "height": 13
+      },
+      "pageRelativeBounds": {
+        "x": 326.2723388671875,
+        "y": 15,
+        "width": 25,
+        "height": 13
+      },
+      "opacity": 0.20000000298023224,
+      "assetRef": "figma/screenshots/f5434a7c0a4e4b1f7d81311f759fb7dcddc2f14cc14b00304bb7dfd132d6b6b2.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4029;3:6135",
+      "uiSpecNodeId": "vl-login-version-1-I28-4029-3-6135",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 55,
+      "bounds": {
+        "x": -1580.5,
+        "y": -977.6363525390625,
+        "width": 18,
+        "height": 17.90999984741211
+      },
+      "pageRelativeBounds": {
+        "x": 92.5,
+        "y": 658.3636474609375,
+        "width": 18,
+        "height": 17.90999984741211
+      },
+      "assetRef": "figma/screenshots/c5ed1a7f26dc24f82db816cfbadf61aed65729ec71fb224c2045c4c02c42b7b7.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6770",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6770",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 65,
+      "bounds": {
+        "x": -1390,
+        "y": -1619.5,
+        "width": 18,
+        "height": 10
+      },
+      "pageRelativeBounds": {
+        "x": 283,
+        "y": 16.5,
+        "width": 18,
+        "height": 10
+      },
+      "assetRef": "figma/screenshots/88b1bef13c2a036839e713ff8c251a8c00ba13e57337a7a20313882a2c7cc0ac.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6784",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6784",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 79,
+      "bounds": {
+        "x": -1344.427734375,
+        "y": -1618.6669921875,
+        "width": 20.199951171875,
+        "height": 8.329999923706055
+      },
+      "pageRelativeBounds": {
+        "x": 328.572265625,
+        "y": 17.3330078125,
+        "width": 20.199951171875,
+        "height": 8.329999923706055
+      },
+      "assetRef": "figma/screenshots/89b7e83d3ffa15c91bb73042be36d080e115c25155d08938b5cdfc34c4142d1c.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6776",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6776",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 71,
+      "bounds": {
+        "x": -1367,
+        "y": -1619.982666015625,
+        "width": 15.272375106811523,
+        "height": 10.965227127075195
+      },
+      "pageRelativeBounds": {
+        "x": 306,
+        "y": 16.017333984375,
+        "width": 15.272375106811523,
+        "height": 10.965227127075195
+      },
+      "assetRef": "figma/screenshots/7a885ece4250aef30068828ff45d532ca86abe217bf8971828830151710e0d46.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5133;3:6015;4:78000",
+      "uiSpecNodeId": "vl-login-version-1-I3-5133-3-6015-4-78000",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 21,
+      "bounds": {
+        "x": -1352,
+        "y": -1332.6363525390625,
+        "width": 12,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 321,
+        "y": 303.3636474609375,
+        "width": 12,
+        "height": 12
+      },
+      "assetRef": "figma/screenshots/9a69802497d7e38a7d3d7178ac9ca6c8180d6aaf517f8ef3b82119a9702aecd2.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5134;3:6015;4:78000",
+      "uiSpecNodeId": "vl-login-version-1-I3-5134-3-6015-4-78000",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 31,
+      "bounds": {
+        "x": -1352,
+        "y": -1247.6363525390625,
+        "width": 12,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 321,
+        "y": 388.3636474609375,
+        "width": 12,
+        "height": 12
+      },
+      "assetRef": "figma/screenshots/9a69802497d7e38a7d3d7178ac9ca6c8180d6aaf517f8ef3b82119a9702aecd2.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4029;3:6136",
+      "uiSpecNodeId": "vl-login-version-1-I28-4029-3-6136",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 56,
+      "bounds": {
+        "x": -1575.18994140625,
+        "y": -974.1263427734375,
+        "width": 7.740000247955322,
+        "height": 14.49000072479248
+      },
+      "pageRelativeBounds": {
+        "x": 97.81005859375,
+        "y": 661.8736572265625,
+        "width": 7.740000247955322,
+        "height": 14.49000072479248
+      },
+      "assetRef": "figma/screenshots/32b17727ef39782b6de1bf433f58ab7dc0c8bb6077c95b7e9104b739da533ec3.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5137;3:6044;4:76017",
+      "uiSpecNodeId": "vl-login-version-1-I3-5137-3-6044-4-76017",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 36,
+      "bounds": {
+        "x": -1544.75,
+        "y": -1142.8863525390625,
+        "width": 10.5,
+        "height": 10.5
+      },
+      "pageRelativeBounds": {
+        "x": 128.25,
+        "y": 493.1136474609375,
+        "width": 10.5,
+        "height": 10.5
+      },
+      "assetRef": "figma/screenshots/49c7a2ad293c8abfa1331e7634a00fb9d9ed3ee02c5d2233feca26344fc40718.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5133;3:6013;4:78376",
+      "uiSpecNodeId": "vl-login-version-1-I3-5133-3-6013-4-78376",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 18,
+      "bounds": {
+        "x": -1631,
+        "y": -1332.6363525390625,
+        "width": 8,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 42,
+        "y": 303.3636474609375,
+        "width": 8,
+        "height": 12
+      },
+      "assetRef": "figma/screenshots/bb3a142fdb40ff83c7aa4305b381b921e4bfc74c5ac3a357ed9cc10a96de651f.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:5134;3:6013;4:78376",
+      "uiSpecNodeId": "vl-login-version-1-I3-5134-3-6013-4-78376",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 28,
+      "bounds": {
+        "x": -1631,
+        "y": -1247.6363525390625,
+        "width": 8,
+        "height": 12
+      },
+      "pageRelativeBounds": {
+        "x": 42,
+        "y": 388.3636474609375,
+        "width": 8,
+        "height": 12
+      },
+      "assetRef": "figma/screenshots/bb3a142fdb40ff83c7aa4305b381b921e4bfc74c5ac3a357ed9cc10a96de651f.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4028;3:6131;136:158",
+      "uiSpecNodeId": "vl-login-version-1-I28-4028-3-6131-136-158",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 51,
+      "bounds": {
+        "x": -1569.517578125,
+        "y": -1039.5113525390625,
+        "width": 12.553585052490234,
+        "height": 6.3174920082092285
+      },
+      "pageRelativeBounds": {
+        "x": 103.482421875,
+        "y": 596.4886474609375,
+        "width": 12.553585052490234,
+        "height": 6.3174920082092285
+      },
+      "assetRef": "figma/screenshots/f1089b61fee37a4cbd2eab1f38a72a50dc72fcb2245c958229edd4723f496a45.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4028;3:6131;136:156",
+      "uiSpecNodeId": "vl-login-version-1-I28-4028-3-6131-136-156",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 49,
+      "bounds": {
+        "x": -1569.517578125,
+        "y": -1030.078857421875,
+        "width": 12.499963760375977,
+        "height": 6.317561149597168
+      },
+      "pageRelativeBounds": {
+        "x": 103.482421875,
+        "y": 605.921142578125,
+        "width": 12.499963760375977,
+        "height": 6.317561149597168
+      },
+      "assetRef": "figma/screenshots/6710755ea85df54bb26bb6344f6da59261cd14a721a9c64b23c661ab92b0d9cb.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16736;3:6777",
+      "uiSpecNodeId": "vl-login-version-1-I3-16736-3-6777",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 72,
+      "bounds": {
+        "x": -1367,
+        "y": -1619.982666015625,
+        "width": 15.27237606048584,
+        "height": 4.743237495422363
+      },
+      "pageRelativeBounds": {
+        "x": 306,
+        "y": 16.017333984375,
+        "width": 15.27237606048584,
+        "height": 4.743237495422363
+      },
+      "assetRef": "figma/screenshots/2e54dfaaf4b3e80b3f6efd4ffb387afccf60f9dcd5518d76e69389b919b5a95c.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4028;3:6131;136:155",
+      "uiSpecNodeId": "vl-login-version-1-I28-4028-3-6131-136-155",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 48,
+      "bounds": {
+        "x": -1562.3385009765625,
+        "y": -1033.0714111328125,
+        "width": 7.714277267456055,
+        "height": 7.402498245239258
+      },
+      "pageRelativeBounds": {
+        "x": 110.6614990234375,
+        "y": 602.9285888671875,
+        "width": 7.714277267456055,
+        "height": 7.402498245239258
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I28:4028;3:6131;136:157",
+      "uiSpecNodeId": "vl-login-version-1-I28-4028-3-6131-136-157",
+      "sourcePageId": "3:5123",
+      "reason": "button_icon",
+      "layerRole": "button_icon",
+      "zOrder": 50,
+      "bounds": {
+        "x": -1570.374267578125,
+        "y": -1035.209716796875,
+        "width": 3.464247703552246,
+        "height": 7.108308792114258
+      },
+      "pageRelativeBounds": {
+        "x": 102.625732421875,
+        "y": 600.790283203125,
+        "width": 3.464247703552246,
+        "height": 7.108308792114258
+      },
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "I3:16755;3:6790",
+      "uiSpecNodeId": "vl-login-version-1-I3-16755-3-6790",
+      "sourcePageId": "3:5123",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 81,
+      "bounds": {
+        "x": -1559,
+        "y": -837,
+        "width": 148,
+        "height": 5
+      },
+      "pageRelativeBounds": {
+        "x": 114,
+        "y": 799,
+        "width": 148,
+        "height": 5
+      },
+      "assetRef": "figma/screenshots/e23e453f33298d083c1d6a4852fee23b1ac4765d06fed736f5c2d24b9427d6c0.png",
+      "rendered": true
+    },
+    {
+      "sourceNodeId": "28:4024",
+      "sourcePageId": "3:5123",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 42,
+      "bounds": {
+        "x": -1649,
+        "y": -1080.6363525390625,
+        "width": 140.5,
+        "height": 0.000012282900115678785
+      },
+      "pageRelativeBounds": {
+        "x": 24,
+        "y": 555.3636474609375,
+        "width": 140.5,
+        "height": 0.000012282900115678785
+      },
+      "rendered": false,
+      "blockedReason": "没有可用的局部图片资产"
+    },
+    {
+      "sourceNodeId": "28:4026",
+      "sourcePageId": "3:5123",
+      "reason": "line_divider",
+      "layerRole": "line_or_divider",
+      "zOrder": 44,
+      "bounds": {
+        "x": -1462.5,
+        "y": -1080.6363525390625,
+        "width": 140.5,
+        "height": 0.000012282900115678785
+      },
+      "pageRelativeBounds": {
+        "x": 210.5,
+        "y": 555.3636474609375,
+        "width": 140.5,
+        "height": 0.000012282900115678785
+      },
+      "rendered": false,
+      "blockedReason": "没有可用的局部图片资产"
+    },
+    {
+      "sourceNodeId": "3:16683",
+      "uiSpecNodeId": "vl-login-version-1-3-16683",
+      "sourcePageId": "3:5123",
+      "reason": "structural_visual",
+      "layerRole": "decorative_background",
+      "zOrder": 6,
+      "bounds": {
+        "x": -1624.668212890625,
+        "y": -1566.1636962890625,
+        "width": 76.66818237304688,
+        "height": 15.15000057220459
+      },
+      "pageRelativeBounds": {
+        "x": 48.331787109375,
+        "y": 69.8363037109375,
+        "width": 76.66818237304688,
+        "height": 15.15000057220459
+      },
+      "assetRef": "figma/screenshots/595c7680858823a9d72fc49a4afb63e8985709aaa70147457f18b02071f91107.png",
+      "rendered": true
+    }
+  ],
+  "unsupportedFeatures": [
+    {
+      "code": "visual_layer_no_asset",
+      "severity": "fallback_ok",
+      "evidenceSource": "schema_limit",
+      "figmaNodeRefs": [
+        "28:4024"
+      ],
+      "impact": [
+        "visual"
+      ],
+      "recommendedAction": "defer"
+    },
+    {
+      "code": "visual_layer_no_asset",
+      "severity": "fallback_ok",
+      "evidenceSource": "schema_limit",
+      "figmaNodeRefs": [
+        "28:4026"
+      ],
+      "impact": [
+        "visual"
+      ],
+      "recommendedAction": "defer"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "unmapped_node_vector",
+      "detail": "未映射的节点类型 vector: I3:16736;3:6783"
+    }
+  ],
+  "residualRisks": [
+    "M5 仅验证静态页面生成，行为 Flow 未验证（M6/M7）。",
+    "图标按钮缺少真实业务 action，仅保留静态语义。",
+    "复杂 vector/decorative 层无可用资产时仅记录 unsupportedFeature。"
+  ]
+}

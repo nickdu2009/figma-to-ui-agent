@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1",
+  "runStamp": "20260725t120843",
+  "status": "blocked",
+  "scope": "live_m5_blind",
+  "openaiCalled": false,
+  "figmaRestCalled": true,
+  "tokenConfigured": true,
+  "checks": [
+    { "id": "me", "endpoint": "/v1/me", "httpStatus": 403 },
+    { "id": "case-a", "endpoint": "/v1/files/<fileKey>", "httpStatus": 403 },
+    { "id": "case-a", "endpoint": "/v1/files/<fileKey>/nodes", "httpStatus": 403 },
+    { "id": "case-b", "endpoint": "/v1/files/<fileKey>", "httpStatus": 403 },
+    { "id": "case-b", "endpoint": "/v1/files/<fileKey>/nodes", "httpStatus": 403 },
+    { "id": "case-c", "endpoint": "/v1/files/<fileKey>", "httpStatus": 403 },
+    { "id": "case-c", "endpoint": "/v1/files/<fileKey>/nodes", "httpStatus": 403 },
+    { "id": "login-ui-concept", "endpoint": "/v1/files/<fileKey>", "httpStatus": 403 },
+    { "id": "login-ui-concept", "endpoint": "/v1/files/<fileKey>/nodes", "httpStatus": 403 }
+  ],
+  "artifactsCreated": {
+    "designBundle": false,
+    "uiSpec": false,
+    "m5StaticReport": false,
+    "renderCompare": false
+  },
+  "recommendedNextStep": "Replace FIGMA_API_KEY with a token that can call /v1/me successfully and has file_content:read access to the target files, then rerun live M5 blind."
+}

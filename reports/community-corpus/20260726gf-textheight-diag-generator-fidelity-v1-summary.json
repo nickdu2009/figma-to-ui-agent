@@ -1,0 +1,1024 @@
+{
+  "schemaVersion": "1",
+  "runLabel": "20260726gf-textheight-diag",
+  "generatedAt": "2026-07-26T06:32:55.921Z",
+  "dataRoot": "data/community-corpus-v21",
+  "reportRoot": "reports/community-corpus",
+  "projectIds": [
+    "community-v21-login-001",
+    "community-v21-mobile-001",
+    "community-v21-dashboard-001",
+    "community-v21-ecommerce-001",
+    "community-v21-landing-001",
+    "community-v21-design-system-001"
+  ],
+  "baselineSummaryPath": "reports/community-corpus/20260726-m5-visual-v21-local-summary.json",
+  "threshold": 0.05,
+  "apiBoundary": {
+    "figma": false,
+    "openai": false
+  },
+  "aggregate": {
+    "resultCount": 6,
+    "comparableCount": 5,
+    "threshold": 0.05,
+    "passed5PctCount": 2,
+    "failed5PctCount": 3,
+    "averageDiff": 0.07474414387382249,
+    "minDiff": 0.020226600985221676,
+    "maxDiff": 0.1616080748120114
+  },
+  "results": [
+    {
+      "projectId": "community-v21-login-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726gf-textheight-diag/m5-static/community-v21-login-001/20260726gf-textheight-diag-community-v21-login-001/summary.json",
+      "pageId": "login-version-1",
+      "diffPixelRatio": 0.09658784893267652,
+      "diffPixels": 29411,
+      "passed5Pct": false,
+      "canvasMapping": {
+        "sourcePageId": "3:5123",
+        "pageId": "login-version-1",
+        "artboard": {
+          "width": 375,
+          "height": 812
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "native_artboard"
+      },
+      "topRegions": [
+        {
+          "id": "cta",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 24,
+            "y": 474,
+            "width": 327,
+            "height": 218
+          },
+          "diffPixelRatio": 0.2197205622422355,
+          "diffPixels": 15663,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-login-version-1-3-5137-control",
+            "ui-login-version-1-28-4028-control",
+            "ui-login-version-1-28-4029-control",
+            "ui-login-version-1-28-4027-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 24,
+            "y": 474,
+            "width": 327,
+            "height": 218
+          },
+          "diffPixelRatio": 0.2197205622422355,
+          "diffPixels": 15663,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-login-version-1-3-5137-control",
+            "ui-login-version-1-28-4028-control",
+            "ui-login-version-1-28-4029-control",
+            "ui-login-version-1-28-4027-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 24,
+            "y": 14,
+            "width": 327,
+            "height": 748
+          },
+          "diffPixelRatio": 0.11987931119069813,
+          "diffPixels": 29322,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-login-version-1-3-5129",
+            "ui-login-version-1-3-5130",
+            "ui-login-version-1-I3-5133-3-6010",
+            "ui-login-version-1-I3-5133-3-6014",
+            "ui-login-version-1-I3-5134-3-6010",
+            "ui-login-version-1-I3-5134-3-6014",
+            "ui-login-version-1-3-5135",
+            "ui-login-version-1-I3-5137-3-6045",
+            "ui-login-version-1-28-4025",
+            "ui-login-version-1-I28-4028-3-6132",
+            "ui-login-version-1-I28-4029-3-6137",
+            "ui-login-version-1-3-16715",
+            "ui-login-version-1-3-16716",
+            "ui-login-version-1-I3-16736-3-6767"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 24,
+            "y": 15,
+            "width": 328,
+            "height": 789
+          },
+          "diffPixelRatio": 0.1134810967881542,
+          "diffPixels": 29368,
+          "sourceNodeIds": [
+            "3:16684",
+            "I3:16736;3:6782",
+            "I28:4029;3:6135",
+            "I3:16736;3:6770",
+            "I3:16736;3:6784",
+            "I3:16736;3:6776",
+            "I3:5133;3:6015;4:78000",
+            "I3:5134;3:6015;4:78000",
+            "I28:4029;3:6136",
+            "I3:5137;3:6044;4:76017",
+            "I3:5133;3:6013;4:78376",
+            "I3:5134;3:6013;4:78376",
+            "I28:4028;3:6131;136:158",
+            "I28:4028;3:6131;136:156",
+            "I3:16736;3:6777",
+            "I3:16755;3:6790",
+            "3:16683"
+          ],
+          "uiSpecNodeIds": [
+            "vl-login-version-1-3-16684",
+            "vl-login-version-1-3-16683",
+            "vl-login-version-1-I3-5133-3-6015-4-78000",
+            "vl-login-version-1-I3-5133-3-6013-4-78376",
+            "vl-login-version-1-I3-5134-3-6015-4-78000",
+            "vl-login-version-1-I3-5134-3-6013-4-78376",
+            "vl-login-version-1-I3-5137-3-6044-4-76017",
+            "vl-login-version-1-I28-4028-3-6131-136-158",
+            "vl-login-version-1-I28-4028-3-6131-136-156",
+            "vl-login-version-1-I28-4029-3-6135",
+            "vl-login-version-1-I28-4029-3-6136",
+            "vl-login-version-1-I3-16736-3-6770",
+            "vl-login-version-1-I3-16736-3-6776",
+            "vl-login-version-1-I3-16736-3-6782",
+            "vl-login-version-1-I3-16736-3-6784",
+            "vl-login-version-1-I3-16755-3-6790",
+            "vl-login-version-1-I3-16736-3-6777"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        },
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 375,
+            "height": 812
+          },
+          "diffPixelRatio": 0.09658784893267652,
+          "diffPixels": 29411,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        },
+        {
+          "id": "form_fields",
+          "contractBucket": "form_controls",
+          "bounds": {
+            "x": 24,
+            "y": 263,
+            "width": 327,
+            "height": 157
+          },
+          "diffPixelRatio": 0.08552951946863009,
+          "diffPixels": 4391,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-login-version-1-I3-5133-3-6011-control",
+            "ui-login-version-1-3-5133-control",
+            "ui-login-version-1-I3-5134-3-6011-control",
+            "ui-login-version-1-3-5134-control"
+          ],
+          "suspectedCauses": [
+            "typography",
+            "renderer_reset"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-mobile-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726gf-textheight-diag/m5-static/community-v21-mobile-001/20260726gf-textheight-diag-community-v21-mobile-001/summary.json",
+      "pageId": "6-11---a---profile",
+      "diffPixelRatio": 0.055262526675519355,
+      "diffPixels": 22348,
+      "passed5Pct": false,
+      "canvasMapping": {
+        "sourcePageId": "3186:4543",
+        "pageId": "6-11---a---profile",
+        "artboard": {
+          "width": 393,
+          "height": 1029
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "scroll_canvas"
+      },
+      "topRegions": [
+        {
+          "id": "cta",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 124,
+            "y": 904,
+            "width": 142,
+            "height": 36
+          },
+          "diffPixelRatio": 0.1850547730829421,
+          "diffPixels": 946,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-6-11---a---profile-3186-4431-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 124,
+            "y": 904,
+            "width": 142,
+            "height": 36
+          },
+          "diffPixelRatio": 0.1850547730829421,
+          "diffPixels": 946,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-6-11---a---profile-3186-4431-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 35,
+            "y": 9,
+            "width": 310,
+            "height": 923
+          },
+          "diffPixelRatio": 0.06628805088596093,
+          "diffPixels": 18967,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-6-11---a---profile-3186-4551",
+            "ui-6-11---a---profile-3186-4560",
+            "ui-6-11---a---profile-3186-4561",
+            "ui-6-11---a---profile-3186-4562",
+            "ui-6-11---a---profile-3186-4563",
+            "ui-6-11---a---profile-I3186-4431-53-140",
+            "ui-6-11---a---profile-3186-4650",
+            "ui-6-11---a---profile-3186-4654",
+            "ui-6-11---a---profile-3186-4655",
+            "ui-6-11---a---profile-3186-4657",
+            "ui-6-11---a---profile-3186-4658",
+            "ui-6-11---a---profile-3186-4660",
+            "ui-6-11---a---profile-3186-4662",
+            "ui-6-11---a---profile-3186-4689",
+            "ui-6-11---a---profile-3186-4750",
+            "ui-6-11---a---profile-3186-4663",
+            "ui-6-11---a---profile-3186-4690",
+            "ui-6-11---a---profile-3186-4751",
+            "ui-6-11---a---profile-3250-4635",
+            "ui-6-11---a---profile-3250-4636",
+            "ui-6-11---a---profile-3250-4637",
+            "ui-6-11---a---profile-3250-4640",
+            "ui-6-11---a---profile-3250-4641",
+            "ui-6-11---a---profile-3250-4642"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 393,
+            "height": 1029
+          },
+          "diffPixelRatio": 0.055262526675519355,
+          "diffPixels": 22348,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 0,
+            "y": 30,
+            "width": 393,
+            "height": 999
+          },
+          "diffPixelRatio": 0.05428074384817387,
+          "diffPixels": 21311,
+          "sourceNodeIds": [
+            "I3186:4557;3096:2590;3071:2441",
+            "I3186:4557;3189:4744;3189:4296",
+            "I3186:4557;3096:2594;3071:2439",
+            "I3186:4557;3096:2596;3071:2445",
+            "3186:4547",
+            "I3186:4557;3096:2568",
+            "3250:4634",
+            "3186:4649",
+            "3186:4688",
+            "3186:4749",
+            "3186:4652",
+            "3186:4656",
+            "3186:4659",
+            "I3202:4758;2069:1252"
+          ],
+          "uiSpecNodeIds": [
+            "ui-6-11---a---profile-3186-4549",
+            "vl-6-11---a---profile-I3202-4758-2069-1252",
+            "vl-6-11---a---profile-I3186-4557-3096-2568",
+            "vl-6-11---a---profile-I3186-4557-3189-4744-3189-4296",
+            "vl-6-11---a---profile-I3186-4557-3096-2596-3071-2445",
+            "vl-6-11---a---profile-I3186-4557-3096-2594-3071-2439",
+            "vl-6-11---a---profile-I3186-4557-3096-2590-3071-2441",
+            "vl-6-11---a---profile-3186-4547",
+            "vl-6-11---a---profile-3250-4634",
+            "vl-6-11---a---profile-3186-4649",
+            "vl-6-11---a---profile-3186-4688",
+            "vl-6-11---a---profile-3186-4749",
+            "vl-6-11---a---profile-3186-4652",
+            "vl-6-11---a---profile-3186-4656",
+            "vl-6-11---a---profile-3186-4659"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-dashboard-001",
+      "status": "failed",
+      "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.implementation-canvas') to be visible\u001b[22m\n\n    at RenderAndCompareService.renderInternal (/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/src/validation/render-and-compare.ts:1003:26)\n    at async RenderAndCompareService.render (/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/src/validation/render-and-compare.ts:794:14)\n    at async main (/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/scripts/run-m5-static.mjs:331:28) {\n  log: [ \"  - waiting for locator('.implementation-canvas') to be visible\" ],\n  name: 'TimeoutError'\n}",
+      "passed5Pct": false,
+      "topRegions": []
+    },
+    {
+      "projectId": "community-v21-ecommerce-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726gf-textheight-diag/m5-static/community-v21-ecommerce-001/20260726gf-textheight-diag-community-v21-ecommerce-001/summary.json",
+      "pageId": "featured",
+      "diffPixelRatio": 0.020226600985221676,
+      "diffPixels": 6159,
+      "passed5Pct": true,
+      "canvasMapping": {
+        "sourcePageId": "0:303",
+        "pageId": "featured",
+        "artboard": {
+          "width": 375,
+          "height": 812
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "native_artboard"
+      },
+      "topRegions": [
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 24,
+            "y": 65,
+            "width": 327,
+            "height": 684
+          },
+          "diffPixelRatio": 0.026695817014503638,
+          "diffPixels": 5971,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-featured-0-310",
+            "ui-featured-0-311",
+            "ui-featured-0-312",
+            "ui-featured-0-313",
+            "ui-featured-0-314",
+            "ui-featured-0-315",
+            "ui-featured-0-316",
+            "ui-featured-0-317",
+            "ui-featured-0-318",
+            "ui-featured-0-319",
+            "ui-featured-0-320",
+            "ui-featured-0-321",
+            "ui-featured-0-322",
+            "ui-featured-0-323",
+            "ui-featured-0-324",
+            "ui-featured-0-325",
+            "ui-featured-0-327",
+            "ui-featured-0-328",
+            "ui-featured-0-329",
+            "ui-featured-0-330",
+            "ui-featured-0-365"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 375,
+            "height": 812
+          },
+          "diffPixelRatio": 0.020226600985221676,
+          "diffPixels": 6159,
+          "sourceNodeIds": [
+            "0:349",
+            "0:340",
+            "0:326",
+            "0:341",
+            "0:308",
+            "0:309",
+            "0:307",
+            "0:305",
+            "0:306",
+            "0:304",
+            "0:356",
+            "0:368",
+            "0:367",
+            "0:345",
+            "0:343",
+            "0:361",
+            "0:360"
+          ],
+          "uiSpecNodeIds": [
+            "vl-featured-0-349",
+            "vl-featured-0-356",
+            "vl-featured-0-368",
+            "vl-featured-0-345",
+            "vl-featured-0-340",
+            "vl-featured-0-326",
+            "vl-featured-0-341",
+            "vl-featured-0-308",
+            "vl-featured-0-309",
+            "vl-featured-0-307",
+            "vl-featured-0-305",
+            "vl-featured-0-306",
+            "vl-featured-0-304",
+            "vl-featured-0-367",
+            "vl-featured-0-343",
+            "vl-featured-0-361",
+            "vl-featured-0-360"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        },
+        {
+          "id": "mobile_canvas",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 375,
+            "height": 812
+          },
+          "diffPixelRatio": 0.020226600985221676,
+          "diffPixels": 6159,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "canvas_mapping"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-landing-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726gf-textheight-diag/m5-static/community-v21-landing-001/20260726gf-textheight-diag-community-v21-landing-001/summary.json",
+      "pageId": "home",
+      "diffPixelRatio": 0.040035667963683526,
+      "diffPixels": 74082,
+      "passed5Pct": true,
+      "canvasMapping": {
+        "sourcePageId": "10:948",
+        "pageId": "home",
+        "artboard": {
+          "width": 1440,
+          "height": 1285
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "scroll_canvas"
+      },
+      "topRegions": [
+        {
+          "id": "cta",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 144,
+            "y": 385,
+            "width": 128,
+            "height": 53
+          },
+          "diffPixelRatio": 0.11998820754716981,
+          "diffPixels": 814,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-home-10-918-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 144,
+            "y": 385,
+            "width": 128,
+            "height": 53
+          },
+          "diffPixelRatio": 0.11998820754716981,
+          "diffPixels": 814,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-home-10-918-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 0,
+            "y": 161,
+            "width": 1440,
+            "height": 1100
+          },
+          "diffPixelRatio": 0.04601830808080808,
+          "diffPixels": 72893,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-home-5-827",
+            "ui-home-5-828",
+            "ui-home-I10-918-1-724",
+            "ui-home-10-941",
+            "ui-home-10-942",
+            "ui-home-12-622",
+            "ui-home-12-623",
+            "ui-home-14-861",
+            "ui-home-14-902",
+            "ui-home-14-954",
+            "ui-home-14-956",
+            "ui-home-14-999",
+            "ui-home-14-1001"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "dense_content",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 1285
+          },
+          "diffPixelRatio": 0.040035667963683526,
+          "diffPixels": 74082,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 148,
+            "y": 96,
+            "width": 1153,
+            "height": 999
+          },
+          "diffPixelRatio": 0.03744420917014152,
+          "diffPixels": 43130,
+          "sourceNodeIds": [
+            "10:917",
+            "12:633",
+            "14:958",
+            "14:1003",
+            "211:825",
+            "211:853",
+            "211:819",
+            "13:637",
+            "211:822",
+            "211:846",
+            "14:976",
+            "211:826",
+            "211:854",
+            "211:849",
+            "211:850"
+          ],
+          "uiSpecNodeIds": [
+            "vl-home-10-917",
+            "vl-home-211-819",
+            "vl-home-211-822",
+            "vl-home-211-825",
+            "vl-home-211-826",
+            "vl-home-211-846",
+            "vl-home-211-849",
+            "vl-home-211-850",
+            "vl-home-211-853",
+            "vl-home-211-854",
+            "vl-home-13-637",
+            "vl-home-12-633",
+            "vl-home-14-976",
+            "vl-home-14-958",
+            "vl-home-14-1003"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-design-system-001",
+      "status": "completed",
+      "summaryPath": "/Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/20260726gf-textheight-diag/m5-static/community-v21-design-system-001/20260726gf-textheight-diag-community-v21-design-system-001/summary.json",
+      "pageId": "in-modals",
+      "diffPixelRatio": 0.1616080748120114,
+      "diffPixels": 273117,
+      "passed5Pct": false,
+      "canvasMapping": {
+        "sourcePageId": "5:37426",
+        "pageId": "in-modals",
+        "artboard": {
+          "width": 1829,
+          "height": 924
+        },
+        "viewport": {
+          "id": "desktop",
+          "width": 1440,
+          "height": 900,
+          "deviceScaleFactor": 1
+        },
+        "scale": 1,
+        "origin": {
+          "x": 0,
+          "y": 0
+        },
+        "renderMode": "scroll_canvas"
+      },
+      "topRegions": [
+        {
+          "id": "form_fields",
+          "contractBucket": "form_controls",
+          "bounds": {
+            "x": 598,
+            "y": 301,
+            "width": 584,
+            "height": 152
+          },
+          "diffPixelRatio": 0.1951491528478731,
+          "diffPixels": 17323,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-in-modals-14-4219-control",
+            "ui-in-modals-14-4292-control",
+            "ui-in-modals-14-4264-control",
+            "ui-in-modals-14-4334-control",
+            "ui-in-modals-14-4393-control",
+            "ui-in-modals-14-4365-control",
+            "ui-in-modals-14-4421-control",
+            "ui-in-modals-14-4483-control",
+            "ui-in-modals-14-4451-control"
+          ],
+          "suspectedCauses": [
+            "typography",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "modal_shell",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1829,
+            "height": 924
+          },
+          "diffPixelRatio": 0.1616080748120114,
+          "diffPixels": 273117,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [],
+          "suspectedCauses": [
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "footer",
+          "contractBucket": "text_regions",
+          "bounds": {
+            "x": 236,
+            "y": 77,
+            "width": 1306,
+            "height": 555
+          },
+          "diffPixelRatio": 0.053394589076059214,
+          "diffPixels": 38702,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-in-modals-I21-2366-5-37007",
+            "ui-in-modals-I21-2366-5-36999",
+            "ui-in-modals-I21-2366-5-37005",
+            "ui-in-modals-I21-2366-5-37008-1-745",
+            "ui-in-modals-I21-2366-5-37008-1-746",
+            "ui-in-modals-I21-2366-5-37008-1-747-2-1772",
+            "ui-in-modals-I21-2366-5-37405",
+            "ui-in-modals-I21-2366-5-37381",
+            "ui-in-modals-I21-2366-5-37037",
+            "ui-in-modals-I21-2366-5-37132",
+            "ui-in-modals-21-2374",
+            "ui-in-modals-21-2383",
+            "ui-in-modals-21-2396",
+            "ui-in-modals-21-2407",
+            "ui-in-modals-21-2418",
+            "ui-in-modals-21-2429",
+            "ui-in-modals-21-2442",
+            "ui-in-modals-21-2453",
+            "ui-in-modals-13-18309",
+            "ui-in-modals-14-4530",
+            "ui-in-modals-14-4222",
+            "ui-in-modals-14-4588",
+            "ui-in-modals-14-4295",
+            "ui-in-modals-14-4552",
+            "ui-in-modals-14-4267",
+            "ui-in-modals-14-4512",
+            "ui-in-modals-14-4570",
+            "ui-in-modals-14-4654",
+            "ui-in-modals-14-4721",
+            "ui-in-modals-14-4619",
+            "ui-in-modals-14-4689",
+            "ui-in-modals-13-18313",
+            "ui-in-modals-I13-18321-2-1584",
+            "ui-in-modals-14-4823",
+            "ui-in-modals-14-4816"
+          ],
+          "suspectedCauses": [
+            "typography"
+          ]
+        },
+        {
+          "id": "cta",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 192,
+            "y": 70,
+            "width": 1396,
+            "height": 572
+          },
+          "diffPixelRatio": 0.04903996433366061,
+          "diffPixels": 39159,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-in-modals-I21-2366-5-36973-control",
+            "ui-in-modals-I21-2366-5-36978-control",
+            "ui-in-modals-I21-2366-5-36992-control",
+            "ui-in-modals-I21-2366-5-37008-1-747-control",
+            "ui-in-modals-I21-2366-5-37118-control",
+            "ui-in-modals-I21-2366-5-37124-control",
+            "ui-in-modals-I21-2366-5-37130-control",
+            "ui-in-modals-I21-2366-5-37112-control",
+            "ui-in-modals-I21-2366-5-37043-control",
+            "ui-in-modals-21-2370-control",
+            "ui-in-modals-21-2376-control",
+            "ui-in-modals-21-2386-control",
+            "ui-in-modals-21-2398-control",
+            "ui-in-modals-21-2409-control",
+            "ui-in-modals-21-2420-control",
+            "ui-in-modals-21-2432-control",
+            "ui-in-modals-21-2444-control",
+            "ui-in-modals-14-4758-control",
+            "ui-in-modals-14-4782-control",
+            "ui-in-modals-14-4776-control",
+            "ui-in-modals-14-4822-control",
+            "ui-in-modals-14-4815-control",
+            "ui-in-modals-14-4796-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "social_buttons",
+          "contractBucket": "button_icon_controls",
+          "bounds": {
+            "x": 192,
+            "y": 70,
+            "width": 1396,
+            "height": 572
+          },
+          "diffPixelRatio": 0.04903996433366061,
+          "diffPixels": 39159,
+          "sourceNodeIds": [],
+          "uiSpecNodeIds": [
+            "ui-in-modals-I21-2366-5-36973-control",
+            "ui-in-modals-I21-2366-5-36978-control",
+            "ui-in-modals-I21-2366-5-36992-control",
+            "ui-in-modals-I21-2366-5-37008-1-747-control",
+            "ui-in-modals-I21-2366-5-37118-control",
+            "ui-in-modals-I21-2366-5-37124-control",
+            "ui-in-modals-I21-2366-5-37130-control",
+            "ui-in-modals-I21-2366-5-37112-control",
+            "ui-in-modals-I21-2366-5-37043-control",
+            "ui-in-modals-21-2370-control",
+            "ui-in-modals-21-2376-control",
+            "ui-in-modals-21-2386-control",
+            "ui-in-modals-21-2398-control",
+            "ui-in-modals-21-2409-control",
+            "ui-in-modals-21-2420-control",
+            "ui-in-modals-21-2432-control",
+            "ui-in-modals-21-2444-control",
+            "ui-in-modals-14-4758-control",
+            "ui-in-modals-14-4782-control",
+            "ui-in-modals-14-4776-control",
+            "ui-in-modals-14-4822-control",
+            "ui-in-modals-14-4815-control",
+            "ui-in-modals-14-4796-control"
+          ],
+          "suspectedCauses": [
+            "asset_layering",
+            "renderer_reset"
+          ]
+        },
+        {
+          "id": "left_visual",
+          "contractBucket": "visual_assets",
+          "bounds": {
+            "x": 191,
+            "y": 54,
+            "width": 1441,
+            "height": 785
+          },
+          "diffPixelRatio": 0.04847129337818305,
+          "diffPixels": 54830,
+          "sourceNodeIds": [
+            "I21:2366;5:36996",
+            "I21:2366;5:37146",
+            "21:2450",
+            "I21:2366;5:36990",
+            "14:4767",
+            "14:4791",
+            "14:4779",
+            "21:2381",
+            "21:2405",
+            "21:2416",
+            "21:2427",
+            "21:2394",
+            "21:2439",
+            "I21:2366;5:37154",
+            "I21:2366;5:37155",
+            "I21:2366;5:37148",
+            "14:4769",
+            "14:4793",
+            "14:4781",
+            "I21:2366;5:37008;1:747;2:1773;11:17049",
+            "I13:18307;1630:17;5:2312",
+            "I14:4824;11:17049",
+            "I14:4817;11:17049",
+            "21:2440",
+            "21:2372",
+            "I13:18306;2189:34",
+            "I13:18308;1235:359;5:2381",
+            "I21:2366;5:37108",
+            "I21:2366;5:37008;1:743;11:17029;11:17026",
+            "I13:18306;2189:36",
+            "I21:2366;5:37329",
+            "21:2534",
+            "5:37656",
+            "I14:4591;2:27099",
+            "I14:4586;2:27072"
+          ],
+          "uiSpecNodeIds": [
+            "vl-in-modals-I21-2366-5-36990",
+            "vl-in-modals-I21-2366-5-36996",
+            "vl-in-modals-I21-2366-5-37008-1-743-11-17029-11-17026",
+            "vl-in-modals-I21-2366-5-37008-1-747-2-1773-11-17049",
+            "vl-in-modals-I21-2366-5-37329",
+            "vl-in-modals-I21-2366-5-37108",
+            "vl-in-modals-I21-2366-5-37154",
+            "vl-in-modals-I21-2366-5-37155",
+            "vl-in-modals-I21-2366-5-37148",
+            "vl-in-modals-I21-2366-5-37146",
+            "vl-in-modals-21-2372",
+            "vl-in-modals-21-2381",
+            "vl-in-modals-21-2394",
+            "vl-in-modals-21-2405",
+            "vl-in-modals-21-2416",
+            "vl-in-modals-21-2427",
+            "vl-in-modals-21-2439",
+            "vl-in-modals-21-2440",
+            "vl-in-modals-21-2450",
+            "vl-in-modals-21-2534",
+            "vl-in-modals-I14-4586-2-27072",
+            "vl-in-modals-14-4767",
+            "vl-in-modals-14-4769",
+            "vl-in-modals-14-4791",
+            "vl-in-modals-14-4793",
+            "vl-in-modals-14-4779",
+            "vl-in-modals-14-4781",
+            "vl-in-modals-I14-4824-11-17049",
+            "vl-in-modals-I14-4817-11-17049",
+            "vl-in-modals-5-37656",
+            "vl-in-modals-I13-18307-1630-17-5-2312",
+            "vl-in-modals-I13-18306-2189-34",
+            "vl-in-modals-I13-18308-1235-359-5-2381",
+            "vl-in-modals-I13-18306-2189-36"
+          ],
+          "suspectedCauses": [
+            "asset_layering"
+          ]
+        }
+      ]
+    }
+  ]
+}

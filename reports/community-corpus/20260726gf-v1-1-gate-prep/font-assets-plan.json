@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "1",
+  "mode": "font-asset-plan",
+  "dataRoot": "data/community-corpus-v21",
+  "generatedAt": "2026-07-26T13:51:20.799Z",
+  "projects": [
+    {
+      "projectId": "community-v21-mobile-001",
+      "designBundleRevision": 1,
+      "faces": [
+        {
+          "family": "League Spartan",
+          "weight": 300,
+          "style": "normal",
+          "textNodeCount": 3,
+          "sampleTexts": [
+            "Weight",
+            "Years old",
+            "height"
+          ]
+        },
+        {
+          "family": "League Spartan",
+          "weight": 400,
+          "style": "normal",
+          "textNodeCount": 6,
+          "sampleTexts": [
+            "Madison Smith",
+            "madisons@example.com",
+            "+123 567 89000",
+            "01 / 04 / 199X",
+            "75 Kg"
+          ]
+        },
+        {
+          "family": "League Spartan",
+          "weight": 500,
+          "style": "normal",
+          "textNodeCount": 7,
+          "sampleTexts": [
+            "16:04",
+            "Full name",
+            "Email",
+            "Mobile Number",
+            "Date of birth"
+          ]
+        },
+        {
+          "family": "League Spartan",
+          "weight": 600,
+          "style": "normal",
+          "textNodeCount": 4,
+          "sampleTexts": [
+            "Update Profile",
+            "75 Kg",
+            "1.65 CM",
+            "28"
+          ]
+        },
+        {
+          "family": "Poppins",
+          "weight": 300,
+          "style": "normal",
+          "textNodeCount": 1,
+          "sampleTexts": [
+            "madisons@example.com"
+          ]
+        },
+        {
+          "family": "Poppins",
+          "weight": 600,
+          "style": "normal",
+          "textNodeCount": 1,
+          "sampleTexts": [
+            "Birthday: April 1st"
+          ]
+        },
+        {
+          "family": "Poppins",
+          "weight": 700,
+          "style": "normal",
+          "textNodeCount": 2,
+          "sampleTexts": [
+            "My Profile",
+            "Madison Smith"
+          ]
+        }
+      ]
+    },
+    {
+      "projectId": "community-v21-dashboard-001",
+      "designBundleRevision": 1,
+      "faces": [
+        {
+          "family": "Roboto",
+          "weight": 400,
+          "style": "normal",
+          "textNodeCount": 102,
+          "sampleTexts": [
+            "for",
+            "September 2019",
+            "Top cities",
+            "75%",
+            "100%"
+          ]
+        },
+        {
+          "family": "Roboto",
+          "weight": 700,
+          "style": "normal",
+          "textNodeCount": 12,
+          "sampleTexts": [
+            "81.57%",
+            "63.25%",
+            "52.95%",
+            "47.29%",
+            "4723 Points"
+          ]
+        }
+      ]
+    }
+  ],
+  "importRequires": "FONT_ASSET_IMPORT_AUTHORIZED=1 scripts/import-font-assets.mjs --apply --confirm"
+}

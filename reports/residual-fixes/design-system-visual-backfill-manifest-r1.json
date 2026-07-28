@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1",
+  "projectId": "community-v21-design-system-001",
+  "designBundleRevision": 4,
+  "fileKeyHash": "b08d5b365dbb2086c46c2965e99ce906c30f3a0bc390ab5248d1381fd7452a35",
+  "entries": [
+    {
+      "sourcePageId": "5:37426",
+      "sourceNodeId": "I14:4591;2:27096",
+      "sourceNodeIdHash": "8ad110705fe64fcee91f3d7719c995f7adf346f55544d4399840a88a42ee7d23",
+      "reasonCode": "diagnostic_missing_asset",
+      "priorityRank": 1,
+      "bounds": {
+        "x": 112.83332824707031,
+        "y": 1839.5,
+        "width": 15,
+        "height": 15
+      }
+    },
+    {
+      "sourcePageId": "5:37426",
+      "sourceNodeId": "I14:4591;2:27099",
+      "sourceNodeIdHash": "ac56bebe2d68c33bc6d1b14805a5b520aaf40a27fbaaae22ceccdf010c50952c",
+      "reasonCode": "structural_visual",
+      "priorityRank": 2,
+      "bounds": {
+        "x": 111.33332824707031,
+        "y": 1838,
+        "width": 75,
+        "height": 75
+      }
+    }
+  ]
+}

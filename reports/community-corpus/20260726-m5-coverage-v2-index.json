@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-07-26T01:40:32.080Z",
+  "manifestPath": "tests/fixtures/figma/community-sample-manifest.json",
+  "apiBoundary": {
+    "figmaRest": true,
+    "openai": false,
+    "figmaMe": false,
+    "variables": false
+  },
+  "reportRoot": "reports/community-corpus/m5-coverage-v2",
+  "targetSampleCount": 6,
+  "resultCounts": {
+    "completed": 6
+  },
+  "results": [
+    {
+      "sampleId": "community-login-001",
+      "projectId": "community-v2-login-001",
+      "code": 0,
+      "status": "completed",
+      "stdout": [
+        ""
+      ],
+      "stderr": [],
+      "summaryPath": "reports/community-corpus/m5-coverage-v2/community-login-001/ms14rl3d-c8f6c168ccad4079/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v2/community-login-001/ms14rl3d-c8f6c168ccad4079/summary.md"
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "projectId": "community-v2-mobile-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v2/community-mobile-001/ms14pfy5-62c97234a7094dbe/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v2/community-mobile-001/ms14pfy5-62c97234a7094dbe/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-mobile-001/ms14pfy5-62c97234a7094dbe/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-mobile-001/ms14pfy5-62c97234a7094dbe/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 5",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "projectId": "community-v2-dashboard-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v2/community-dashboard-001/ms14q3y9-434145e81ad94ed0/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v2/community-dashboard-001/ms14q3y9-434145e81ad94ed0/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-dashboard-001/ms14q3y9-434145e81ad94ed0/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-dashboard-001/ms14q3y9-434145e81ad94ed0/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 108",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "projectId": "community-v2-ecommerce-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v2/community-ecommerce-001/ms14qck7-9decd6cd6f024deb/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v2/community-ecommerce-001/ms14qck7-9decd6cd6f024deb/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-ecommerce-001/ms14qck7-9decd6cd6f024deb/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-ecommerce-001/ms14qck7-9decd6cd6f024deb/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 9",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-landing-001",
+      "projectId": "community-v2-landing-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v2/community-landing-001/ms14qogh-c7eea17806164121/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v2/community-landing-001/ms14qogh-c7eea17806164121/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-landing-001/ms14qogh-c7eea17806164121/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-landing-001/ms14qogh-c7eea17806164121/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 1",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "projectId": "community-v2-design-system-001",
+      "code": 0,
+      "status": "completed",
+      "summaryPath": "reports/community-corpus/m5-coverage-v2/community-design-system-001/ms14r0tw-bce54b94c3064ec5/summary.json",
+      "markdownPath": "reports/community-corpus/m5-coverage-v2/community-design-system-001/ms14r0tw-bce54b94c3064ec5/summary.md",
+      "stdout": [
+        "M5 live restricted report written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-design-system-001/ms14r0tw-bce54b94c3064ec5/summary.json",
+        "M5 live restricted markdown written to /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent/reports/community-corpus/m5-coverage-v2/community-design-system-001/ms14r0tw-bce54b94c3064ec5/summary.md",
+        "status: partial",
+        "pages: 1",
+        "visualLayers: 33",
+        "unsupportedFeatures: 0"
+      ],
+      "stderr": []
+    }
+  ]
+}
