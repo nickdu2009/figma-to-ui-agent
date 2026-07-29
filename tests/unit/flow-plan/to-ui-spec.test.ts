@@ -4,6 +4,8 @@ import { applyConfirmations } from "../../../src/flow-plan/apply-confirmations.t
 import { generateConfirmationQuestions } from "../../../src/flow-plan/confirmation-questions.ts";
 import { buildFlowPlanDraft } from "../../../src/flow-plan/interaction-candidates.ts";
 import { applyFlowPlanToUISpec } from "../../../src/flow-plan/to-ui-spec.ts";
+import { applyFlowM6RouteExecutionToUISpec } from "../../../src/flow-plan/route-execution.ts";
+import type { FlowPlan } from "../../../src/flow-plan/schema.ts";
 import {
   applyFlowConfirmations,
   buildFlowPlan,
@@ -271,5 +273,115 @@ describe("applyFlowPlanToUISpec", () => {
           Boolean(interaction.blockedReason),
       ),
     ).toBe(true);
+  });
+
+  it("Flow-M6 route execution 只转换 navigate interaction", () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const root = uiSpec.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("set-status", "status-text");
+    }
+    uiSpec.state.push({
+      key: "status",
+      valueType: "string",
+      initialValue: "idle",
+    });
+    uiSpec.nodes.push(
+      {
+        id: "set-status",
+        kind: "button",
+        label: "设置状态",
+        variant: "secondary",
+        designValueRefs: [],
+      },
+      {
+        id: "status-text",
+        kind: "text",
+        text: "已选择",
+        variant: "body",
+        designValueRefs: [],
+      },
+    );
+
+    const flowPlan: FlowPlan = {
+      schemaVersion: "1",
+      projectId: "demo-project",
+      revision: 7,
+      sourceDesignBundleRevision: 1,
+      sourceUISpecRevision: 1,
+      figmaInteractionSource: "present",
+      pages: [
+        {
+          id: "home",
+          sourcePageId: "page-home",
+          name: "首页",
+          role: "entry",
+          confidence: "medium",
+          reason: "fixture",
+        },
+        {
+          id: "quote",
+          sourcePageId: "page-quote",
+          name: "报价",
+          role: "screen",
+          confidence: "medium",
+          reason: "fixture",
+        },
+      ],
+      interactions: [
+        {
+          id: "continue",
+          source: "figma",
+          uiNodeId: "continue",
+          trigger: "click",
+          intent: "navigate",
+          fromPageId: "home",
+          targetPageId: "quote",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+        {
+          id: "set-status",
+          source: "figma",
+          uiNodeId: "set-status",
+          trigger: "click",
+          intent: "set_state",
+          fromPageId: "home",
+          stateKey: "status",
+          value: "selected",
+          targetNodeId: "status-text",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      confirmationQuestions: [],
+      confirmations: [],
+      report: {
+        unsupportedCount: 0,
+        unresolvedInteractionCount: 0,
+        convertedActionCount: 0,
+        behaviorFixtureCount: 0,
+        confirmationCount: 0,
+      },
+    };
+
+    const result = applyFlowM6RouteExecutionToUISpec(uiSpec, flowPlan);
+
+    expect(result.convertedNavigateActionIds).toHaveLength(1);
+    expect(result.uiSpec.actions).toEqual([
+      {
+        id: result.convertedNavigateActionIds[0],
+        kind: "navigate",
+        pageId: "quote",
+      },
+    ]);
+    expect(result.unresolvedInteractions).toMatchObject([
+      {
+        id: "set-status",
+        blockedReason: "flow_m6_non_navigate_out_of_scope",
+      },
+    ]);
   });
 });
