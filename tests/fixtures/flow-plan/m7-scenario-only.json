@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "fixtures": [
+    {
+      "id": "m7-scenario-only-fill",
+      "name": "scenario-only 表单填写",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        {
+          "kind": "fill",
+          "nodeId": "email",
+          "value": "scenario@example.com"
+        },
+        {
+          "kind": "expect_value",
+          "nodeId": "email",
+          "value": "scenario@example.com"
+        }
+      ]
+    }
+  ],
+  "submitLikeExpectations": []
+}

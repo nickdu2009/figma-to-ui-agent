@@ -479,7 +479,7 @@ const viewportSchema = z
   })
   .strict();
 
-const behaviorStepSchema = z.discriminatedUnion("kind", [
+export const behaviorStepSchema = z.discriminatedUnion("kind", [
   z
     .object({
       kind: z.literal("click"),
@@ -514,13 +514,27 @@ const behaviorStepSchema = z.discriminatedUnion("kind", [
     .strict(),
   z
     .object({
+      kind: z.literal("expect_value"),
+      nodeId: idSchema,
+      value: z.string().max(10_000),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_checked"),
+      nodeId: idSchema,
+      checked: z.boolean(),
+    })
+    .strict(),
+  z
+    .object({
       kind: z.literal("expect_page"),
       pageId: idSchema,
     })
     .strict(),
 ]);
 
-const behaviorFixtureSchema = z
+export const behaviorFixtureSchema = z
   .object({
     id: idSchema,
     name: z.string().min(1).max(512),
@@ -905,6 +919,12 @@ function validateUISpecReferences(
               ? target.kind === "input" || target.kind === "textarea"
               : step.kind === "toggle"
                 ? target.kind === "checkbox" || target.kind === "switch"
+                : step.kind === "expect_value"
+                  ? target.kind === "input" || target.kind === "textarea"
+                  : step.kind === "expect_checked"
+                    ? target.kind === "checkbox" ||
+                      target.kind === "switch" ||
+                      target.kind === "radio"
                 : step.kind === "click"
                   ? target.kind === "button" ||
                     target.kind === "link" ||

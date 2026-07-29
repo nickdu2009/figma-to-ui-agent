@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "1",
+  "catalogVersion": "1",
+  "projectId": "demo-project",
+  "sourceDesignBundleRevision": 1,
+  "designValueRefs": [],
+  "pages": [
+    {
+      "id": "home",
+      "sourcePageId": "page-home",
+      "path": "/",
+      "title": "首页",
+      "rootNodeId": "root"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "root",
+      "kind": "stack",
+      "direction": "vertical",
+      "childIds": [
+        "title",
+        "email",
+        "note",
+        "accepted",
+        "submitted-switch",
+        "set-status",
+        "status-text",
+        "open-dialog",
+        "submit-button",
+        "flow-dialog"
+      ],
+      "designValueRefs": []
+    },
+    {
+      "id": "title",
+      "kind": "text",
+      "text": "Flow-M7 Demo",
+      "variant": "heading",
+      "designValueRefs": []
+    },
+    {
+      "id": "email",
+      "kind": "input",
+      "label": "邮箱",
+      "stateKey": "email",
+      "inputType": "email",
+      "placeholder": "name@example.com",
+      "designValueRefs": []
+    },
+    {
+      "id": "note",
+      "kind": "textarea",
+      "label": "备注",
+      "stateKey": "note",
+      "placeholder": "备注",
+      "designValueRefs": []
+    },
+    {
+      "id": "accepted",
+      "kind": "checkbox",
+      "label": "接受条款",
+      "stateKey": "accepted",
+      "designValueRefs": []
+    },
+    {
+      "id": "submitted-switch",
+      "kind": "switch",
+      "label": "已提交",
+      "stateKey": "submitted",
+      "designValueRefs": []
+    },
+    {
+      "id": "set-status",
+      "kind": "button",
+      "label": "设置状态",
+      "variant": "secondary",
+      "designValueRefs": []
+    },
+    {
+      "id": "status-text",
+      "kind": "text",
+      "text": "状态区域",
+      "variant": "body",
+      "designValueRefs": []
+    },
+    {
+      "id": "open-dialog",
+      "kind": "button",
+      "label": "打开弹窗",
+      "variant": "secondary",
+      "designValueRefs": []
+    },
+    {
+      "id": "submit-button",
+      "kind": "button",
+      "label": "提交",
+      "variant": "primary",
+      "designValueRefs": []
+    },
+    {
+      "id": "flow-dialog",
+      "kind": "dialog",
+      "title": "确认",
+      "openStateKey": "dialog-open",
+      "childIds": ["dialog-title"],
+      "designValueRefs": []
+    },
+    {
+      "id": "dialog-title",
+      "kind": "text",
+      "text": "已打开弹窗",
+      "variant": "body",
+      "designValueRefs": []
+    }
+  ],
+  "state": [
+    {
+      "key": "email",
+      "valueType": "string",
+      "initialValue": ""
+    },
+    {
+      "key": "note",
+      "valueType": "string",
+      "initialValue": ""
+    },
+    {
+      "key": "accepted",
+      "valueType": "boolean",
+      "initialValue": false
+    },
+    {
+      "key": "submitted",
+      "valueType": "boolean",
+      "initialValue": false
+    },
+    {
+      "key": "dialog-open",
+      "valueType": "boolean",
+      "initialValue": false
+    },
+    {
+      "key": "status",
+      "valueType": "string",
+      "initialValue": "idle"
+    }
+  ],
+  "actions": [],
+  "viewports": [
+    {
+      "id": "desktop",
+      "width": 320,
+      "height": 240,
+      "deviceScaleFactor": 1
+    }
+  ],
+  "behaviorFixtures": []
+}

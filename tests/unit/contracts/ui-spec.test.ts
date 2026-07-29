@@ -94,6 +94,71 @@ describe("UISpec Schema", () => {
     ).toEqual([true, true, true]);
   });
 
+  it("支持表单行为断言 expect_value 和 expect_checked", () => {
+    const draft = createUISpecDraft();
+    draft.state.push(
+      {
+        key: "email",
+        valueType: "string",
+        initialValue: "",
+      },
+      {
+        key: "accepted",
+        valueType: "boolean",
+        initialValue: false,
+      },
+    );
+    draft.nodes.push(
+      {
+        id: "email",
+        kind: "input",
+        label: "邮箱",
+        stateKey: "email",
+        inputType: "email",
+        designValueRefs: [],
+      },
+      {
+        id: "accepted",
+        kind: "checkbox",
+        label: "接受",
+        stateKey: "accepted",
+        designValueRefs: [],
+      },
+    );
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("email", "accepted");
+    }
+    draft.behaviorFixtures.push({
+      id: "form-assertions",
+      name: "表单断言",
+      viewportId: "desktop",
+      initialPageId: "home",
+      steps: [
+        { kind: "fill", nodeId: "email", value: "tester@example.com" },
+        {
+          kind: "expect_value",
+          nodeId: "email",
+          value: "tester@example.com",
+        },
+        { kind: "toggle", nodeId: "accepted" },
+        { kind: "expect_checked", nodeId: "accepted", checked: true },
+      ],
+    });
+
+    const parsed = uiSpecDraftSchema.parse(draft);
+    expect(parsed.behaviorFixtures.at(-1)?.steps).toEqual([
+      { kind: "fill", nodeId: "email", value: "tester@example.com" },
+      {
+        kind: "expect_value",
+        nodeId: "email",
+        value: "tester@example.com",
+      },
+      { kind: "toggle", nodeId: "accepted" },
+      { kind: "expect_checked", nodeId: "accepted", checked: true },
+    ]);
+  });
+
   it("支持 button 图标资产和 pixel_overlay 节点", () => {
     const draft = createUISpecDraft();
     const button = draft.nodes.find(

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "fixtures": [
+    {
+      "id": "m7-form-fill",
+      "name": "表单填写",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        {
+          "kind": "fill",
+          "nodeId": "email",
+          "value": "tester@example.com"
+        },
+        {
+          "kind": "expect_value",
+          "nodeId": "email",
+          "value": "tester@example.com"
+        }
+      ]
+    },
+    {
+      "id": "m7-form-toggle",
+      "name": "表单切换",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        {
+          "kind": "toggle",
+          "nodeId": "accepted"
+        },
+        {
+          "kind": "expect_checked",
+          "nodeId": "accepted",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "id": "m7-submit-like",
+      "name": "提交类行为",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        {
+          "kind": "click",
+          "nodeId": "submit-button"
+        },
+        {
+          "kind": "expect_checked",
+          "nodeId": "submitted-switch",
+          "checked": true
+        }
+      ]
+    }
+  ],
+  "submitLikeExpectations": [
+    {
+      "fixtureId": "m7-submit-like",
+      "clickNodeId": "submit-button",
+      "convertedActionId": "flow-figma-submit"
+    }
+  ]
+}

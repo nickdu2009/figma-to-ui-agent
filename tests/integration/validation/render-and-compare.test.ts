@@ -796,6 +796,11 @@ describe("RenderAndCompareService", () => {
             nodeId: "email-input",
             value: "alex@example.com",
           },
+          {
+            kind: "expect_value",
+            nodeId: "email-input",
+            value: "alex@example.com",
+          },
         ],
       },
     ];
@@ -837,6 +842,11 @@ describe("RenderAndCompareService", () => {
         kind: "functional",
         passed: true,
         message: "direct-input-fill:fill",
+      });
+      expect(output.results[0]!.checks).toContainEqual({
+        kind: "functional",
+        passed: true,
+        message: "direct-input-fill:expect_value",
       });
     } finally {
       await service.close();

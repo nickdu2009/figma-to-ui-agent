@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "fixtures": [
+    {
+      "id": "m7-invalid-submit-like",
+      "name": "无效提交类行为",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        {
+          "kind": "click",
+          "nodeId": "submit-button"
+        },
+        {
+          "kind": "expect_visible",
+          "nodeId": "status-text"
+        }
+      ]
+    }
+  ],
+  "submitLikeExpectations": [
+    {
+      "fixtureId": "m7-invalid-submit-like",
+      "clickNodeId": "submit-button",
+      "convertedActionId": "flow-figma-submit"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "present",
+  "pages": [
+    {
+      "id": "home",
+      "sourcePageId": "page-home",
+      "name": "首页",
+      "role": "entry",
+      "confidence": "high",
+      "reason": "fixture"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "figma-set-status",
+      "source": "figma",
+      "uiNodeId": "set-status",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "home",
+      "targetNodeId": "status-text",
+      "stateKey": "status",
+      "value": "selected",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "fixture"
+    },
+    {
+      "id": "figma-open-dialog",
+      "source": "user_confirmed",
+      "uiNodeId": "open-dialog",
+      "trigger": "click",
+      "intent": "open_dialog",
+      "fromPageId": "home",
+      "dialogNodeId": "flow-dialog",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "fixture"
+    },
+    {
+      "id": "figma-submit",
+      "source": "figma",
+      "uiNodeId": "submit-button",
+      "trigger": "submit",
+      "intent": "set_state",
+      "fromPageId": "home",
+      "targetNodeId": "submitted-switch",
+      "stateKey": "submitted",
+      "value": true,
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "fixture"
+    },
+    {
+      "id": "inferred-missing",
+      "source": "inferred",
+      "uiNodeId": "submit-button",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "home",
+      "stateKey": "status",
+      "value": "ignored",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "fixture",
+      "blockedReason": "requires_confirmation"
+    }
+  ],
+  "confirmationQuestions": [],
+  "confirmations": [],
+  "report": {
+    "unsupportedCount": 0,
+    "unresolvedInteractionCount": 1,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}

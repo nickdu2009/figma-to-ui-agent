@@ -659,12 +659,38 @@ function targetForStep(
   );
 }
 
+function inputTargetForStep(page: Page, nodeId: string) {
+  const target = targetForStep(page, nodeId);
+  return target.locator("input,textarea").first();
+}
+
+function checkedTargetForStep(page: Page, nodeId: string) {
+  return targetForStep(page, nodeId)
+    .locator('input[type="checkbox"],input[type="radio"],[role="switch"]')
+    .first();
+}
+
+function hasPostcondition(
+  steps: UISpec["behaviorFixtures"][number]["steps"],
+  index: number,
+): boolean {
+  return steps
+    .slice(index + 1)
+    .some((step) =>
+      step.kind === "expect_value" ||
+      step.kind === "expect_checked" ||
+      step.kind === "expect_text" ||
+      step.kind === "expect_visible" ||
+      step.kind === "expect_page",
+    );
+}
+
 async function executeBehaviorFixture(
   page: Page,
   fixture: UISpec["behaviorFixtures"][number],
 ): Promise<ValidationCheck[]> {
   const checks: ValidationCheck[] = [];
-  for (const step of fixture.steps) {
+  for (const [stepIndex, step] of fixture.steps.entries()) {
     try {
       if (step.kind === "click") {
         await targetForStep(page, step.nodeId).click();
@@ -676,10 +702,14 @@ async function executeBehaviorFixture(
         } else {
           await target.fill(step.value);
         }
+        if (!hasPostcondition(fixture.steps, stepIndex)) {
+          throw new Error("fill 缺少后置断言");
+        }
       } else if (step.kind === "toggle") {
-        await targetForStep(page, step.nodeId)
-          .locator('input[type="checkbox"],input[type="radio"],[role="switch"]')
-          .click();
+        await checkedTargetForStep(page, step.nodeId).click();
+        if (!hasPostcondition(fixture.steps, stepIndex)) {
+          throw new Error("toggle 缺少后置断言");
+        }
       } else if (step.kind === "expect_visible") {
         if (!(await targetForStep(page, step.nodeId).isVisible())) {
           throw new Error("目标不可见");
@@ -691,6 +721,28 @@ async function executeBehaviorFixture(
         ).textContent();
         if (!text?.includes(step.text)) {
           throw new Error("文本不匹配");
+        }
+      } else if (step.kind === "expect_value") {
+        const target = targetForStep(page, step.nodeId);
+        const nestedField = inputTargetForStep(page, step.nodeId);
+        const actual =
+          (await nestedField.count()) > 0
+            ? await nestedField.inputValue()
+            : await target.inputValue();
+        if (actual !== step.value) {
+          throw new Error("输入值不匹配");
+        }
+      } else if (step.kind === "expect_checked") {
+        const target = checkedTargetForStep(page, step.nodeId);
+        const actual = await target.evaluate((element) => {
+          if (element instanceof HTMLInputElement) {
+            return element.checked;
+          }
+          const ariaChecked = element.getAttribute("aria-checked");
+          return ariaChecked === "true";
+        });
+        if (actual !== step.checked) {
+          throw new Error("选中状态不匹配");
         }
       } else {
         const activePageId = await page
