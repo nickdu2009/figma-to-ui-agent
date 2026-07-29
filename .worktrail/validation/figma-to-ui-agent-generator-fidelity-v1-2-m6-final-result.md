@@ -15,13 +15,13 @@
 
 ## 结论
 
-当前 post-commit 验收通过，提交为 `3c4c920 Complete generator fidelity M6 validation`。
+当前代码已完成 Generator Fidelity v1.2 到 M6 restricted live 的收口验收。
 
 - 固定 6 样本本地 corpus：`6/6` 达到 `<5%`，不调用 Figma，不调用 OpenAI。
-- M6 restricted live：`6/6` 可比较，`6/6` 达到 `<5%`。
+- M6 restricted live：`6/6` 可比较，`6/6` 达到 `<5%`；其中 Mobile 和 Dashboard 已在当前代码下重新调用 Figma live 验证。
 - LoginUIConcept live：`4.9678%`，`warnings=0`，`unsupportedFeatures=0`。
 - Design System live：`1.2615%`，`warnings=0`，`unsupportedFeatures=0`。
-- 当前本地 corpus 中 LoginUIConcept 为 `2.2220%`，Design System 为 `1.2201%`。
+- 当前本地 corpus 中 LoginUIConcept 进一步降至 `2.2220%`，Design System 为 `1.2201%`。
 - 未使用整页 screenshot/background fallback；结构化 UISpec/真实 DOM 控件仍保留。
 - OpenAI 未调用；Figma `/v1/me` 未调用；Variables 未调用。
 
@@ -56,12 +56,7 @@
 
 ## M6 Restricted Live 结果
 
-提交内聚合证据：
-
-- `reports/m6-live-blind/20260727gf-v2-final-live/aggregate.json`
-- `reports/m6-live-blind/20260727gf-v2-final-live/aggregate.md`
-
-明细证据路径：
+证据：
 
 - Login：`reports/m6-live-blind/20260727gf-v2-restricted-r1/community-login-001/ms2mv70x-8c762fe8f04044c3/summary.json`
 - Mobile：`reports/m6-live-blind/20260727gf-v2-final-live/community-mobile-001/ms2p00gx-ae38c4085b154695/summary.json`
@@ -81,7 +76,7 @@
 
 ## T04 Backfill Manifest
 
-不能笼统写作“两个 T04 manifest 都为空”。当前事实是：
+本轮不能再笼统写作“两个 T04 manifest 都为空”。当前事实是：
 
 - Login manifest：`reports/community-corpus/20260727gf-v1-2-gate-prep/login-visual-backfill-manifest.json`，`entries=[]`。
 - Design System manifest：`reports/community-corpus/20260727gf-v2-gate-prep/design-system-visual-backfill-manifest.json`，`entries.length=2`，但最终 Design System local/live 均已 `warnings=0`、`unsupportedFeatures=0` 且 diff 达标。
@@ -105,7 +100,6 @@ npm run test:unit
 npm run typecheck
 npx vitest run tests/integration/figma/visual-asset-backfill.test.ts tests/integration/static-generation/m5-static.test.ts tests/integration/validation/render-and-compare.test.ts --testTimeout=30000 --maxWorkers=1
 npm run test:e2e
-git diff --check
 ```
 
 验证摘要：
@@ -114,7 +108,6 @@ git diff --check
 - typecheck：通过。
 - integration：`3 files / 11 tests` 通过。
 - e2e：`6 tests` 通过。
-- `git diff --check`：通过。
 - e2e 输出仅有 `NO_COLOR` 被 `FORCE_COLOR` 覆盖的环境提示，不影响结果。
 
 ## 边界与剩余风险
