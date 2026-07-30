@@ -102,7 +102,7 @@ export function buildFlowM7InteractiveBehaviorReport(
     reasons: reportReasons(input),
     residualRisks: [
       "Flow-M7 v1 不新增 submit action kind；复杂业务状态机、select/radio 完整选择语义和真实后端仍不在本期范围。",
-      "当前 runner 为 local-only；restricted-live/live Figma 样本需要单独 gate。",
+      "restricted-live 只读取 Figma REST 且不调用 OpenAI；非点击控件或无法映射到 UISpec 可点击节点的 Figma interaction 仍会保持 rejected。",
     ],
   });
 }

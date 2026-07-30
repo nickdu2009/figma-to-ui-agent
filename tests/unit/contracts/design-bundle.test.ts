@@ -5,6 +5,7 @@ import {
   localFontRefSchema,
   localImageRefSchema,
   normalizedDesignValueSchema,
+  prototypeInteractionSchema,
 } from "../../../src/design-bundle/schema.ts";
 import {
   createDesignBundleDraft,
@@ -45,6 +46,31 @@ describe("DesignBundle Schema", () => {
       designBundleDraftSchema.parse({
         ...createDesignBundleDraft(),
         schemaVersion: "2",
+      }),
+    ).toThrow();
+  });
+
+  it("接受脱敏 prototype interaction 并拒绝 raw payload", () => {
+    expect(
+      prototypeInteractionSchema.parse({
+        id: "figma-interaction",
+        source: "figma_rest",
+        trigger: "click",
+        actionType: "change_to",
+        navigation: "CHANGE_TO",
+        transitionNodeId: "2:3",
+      }),
+    ).toMatchObject({
+      source: "figma_rest",
+      navigation: "CHANGE_TO",
+    });
+
+    expect(() =>
+      prototypeInteractionSchema.parse({
+        source: "figma_rest",
+        trigger: "click",
+        actionType: "node",
+        url: "https://example.invalid/raw",
       }),
     ).toThrow();
   });

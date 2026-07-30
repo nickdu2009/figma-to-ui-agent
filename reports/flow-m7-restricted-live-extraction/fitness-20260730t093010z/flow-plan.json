@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1",
+  "projectId": "flow-m7-fitness-restricted-live",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "present",
+  "pages": [
+    {
+      "id": "6-11---a---profile",
+      "sourcePageId": "3186:4543",
+      "name": "6.11 - A - Profile",
+      "role": "entry",
+      "confidence": "medium",
+      "reason": "DesignBundle 中的首个页面作为入口候选。"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "figma-f1e69831804cba1c",
+      "source": "figma",
+      "sourceNodeId": "I3186:4557;3189:4744",
+      "sourceNodeName": "Stars",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "3189:4303",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "figma-076a56448bf7956b",
+      "source": "figma",
+      "sourceNodeId": "I3186:4557;3096:2596",
+      "sourceNodeName": "Home Switch",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "3071:2452",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "figma-aad70f0e58a4873e",
+      "source": "figma",
+      "sourceNodeId": "I3186:4557;3096:2594;3071:2439",
+      "sourceNodeName": "Vector",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "3071:2455",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "figma-046f548ad78b98e0",
+      "source": "figma",
+      "sourceNodeId": "I3186:4557;3096:2590",
+      "sourceNodeName": "Support & Help Switch",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "3071:2461",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "figma-064cffbb9f8efd85",
+      "source": "figma",
+      "sourceNodeId": "3186:4431",
+      "uiNodeId": "ui-6-11---a---profile-3186-4431",
+      "sourceNodeName": "Main Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "53:137",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "missing-ui-6-11---a---profile-3186-4431-control",
+      "source": "missing",
+      "uiNodeId": "ui-6-11---a---profile-3186-4431-control",
+      "sourceNodeName": "Update Profile",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "confirmationQuestionId": "confirm-missing-ui-6-11---a---profile-3186-4431-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "blockedReason": "interaction_target_missing"
+    }
+  ],
+  "confirmationQuestions": [
+    {
+      "id": "confirm-missing-ui-6-11---a---profile-3186-4431-control",
+      "interactionId": "missing-ui-6-11---a---profile-3186-4431-control",
+      "question": "页面「6.11 - A - Profile」中的控件「Update Profile」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：6.11 - A - Profile",
+          "value": "target:6-11---a---profile"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    }
+  ],
+  "confirmations": [],
+  "report": {
+    "unsupportedCount": 6,
+    "unresolvedInteractionCount": 6,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}

@@ -100,6 +100,12 @@ function nowIso(): string {
   return new Date().toISOString();
 }
 
+function hasFigmaPrototypeInteractions(draft: LegacyFlowPlanDraft): boolean {
+  return draft.interactions.some(
+    (interaction) => interaction.source === "figma",
+  );
+}
+
 export function buildFlowPlan({
   bundle,
   uiSpec,
@@ -116,7 +122,9 @@ export function buildFlowPlan({
   return fromLegacyDraft(
     legacy,
     figmaInteractionSource ??
-      (interactionSupplement ? "present" : "absent"),
+      (interactionSupplement || hasFigmaPrototypeInteractions(legacy)
+        ? "present"
+        : "absent"),
   );
 }
 

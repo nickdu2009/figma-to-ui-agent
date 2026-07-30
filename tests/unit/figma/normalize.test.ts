@@ -383,6 +383,70 @@ describe("normalizeFigmaDocument", () => {
     });
   });
 
+  it("保留脱敏 Figma prototype interactions 并标记不可转换项", () => {
+    const fixture = createFigmaFileResponseFixture();
+    const document = fixture.document as {
+      children: Array<{
+        children: Array<{ children?: Array<Record<string, unknown>> }>;
+      }>;
+    };
+    const homeChildren = document.children[0]!.children[0]!.children!;
+    const button = homeChildren.find((node) => node.id === "1:4")!;
+    button.interactions = [
+      {
+        trigger: { type: "ON_CLICK" },
+        actions: [
+          {
+            type: "NODE",
+            navigation: "CHANGE_TO",
+            transitionNodeID: "2-1",
+            url: "https://example.invalid/raw",
+          },
+        ],
+      },
+      {
+        trigger: { type: "ON_CLICK" },
+        actions: [
+          {
+            type: "NODE",
+            navigation: "NAVIGATE",
+          },
+        ],
+      },
+    ];
+
+    const normalized = normalizeFigmaDocument(fixture);
+    const normalizedButton = normalized.pages[0]!.nodes.find(
+      (node) => node.id === "1:4",
+    );
+
+    expect(normalizedButton?.prototypeInteractions).toEqual([
+      expect.objectContaining({
+        source: "figma_rest",
+        trigger: "click",
+        actionType: "change_to",
+        navigation: "CHANGE_TO",
+        transitionNodeId: "2:1",
+      }),
+      expect.objectContaining({
+        source: "figma_rest",
+        trigger: "click",
+        actionType: "node",
+        navigation: "NAVIGATE",
+        reason: "prototype_target_missing",
+      }),
+    ]);
+    expect(normalizedButton?.prototypeInteractions?.[0]).not.toHaveProperty(
+      "url",
+    );
+    expect(normalized.warnings).toContainEqual(
+      expect.objectContaining({
+        code: "prototype_interaction_unresolved",
+        entityId: "1:4",
+      }),
+    );
+  });
+
   it("保留空 Canvas 作为可解释空页面", () => {
     const fixture = createFigmaFileResponseFixture();
     const document = fixture.document as {

@@ -57,6 +57,46 @@ describe("正式 FlowPlan service", () => {
     );
   });
 
+  it("DesignBundle 内有 prototype interaction 时标记 figmaInteractionSource present", () => {
+    const bundle = createStoredMultipageFlowDesignBundle();
+    bundle.pages[0]!.nodes.push({
+      id: "figma-live-source",
+      parentId: "figma-root",
+      kind: "instance",
+      name: "Live source",
+      visible: true,
+      styleRefs: [],
+      imageRefs: [],
+      boundVariableRefs: [],
+      designValueRefs: [],
+      prototypeInteractions: [
+        {
+          id: "figma-live-unsupported",
+          source: "figma_rest",
+          trigger: "click",
+          actionType: "unknown",
+          reason: "unsupported_figma_action",
+        },
+      ],
+      warningCodes: [],
+    });
+
+    const flowPlan = buildFlowPlan({
+      bundle,
+      uiSpec: createStoredMultipageFlowUISpec(),
+    });
+
+    expect(flowPlan.figmaInteractionSource).toBe("present");
+    expect(flowPlan.interactions).toContainEqual(
+      expect.objectContaining({
+        id: "figma-live-unsupported",
+        source: "figma",
+        confirmed: false,
+        blockedReason: "unsupported_figma_action",
+      }),
+    );
+  });
+
   it("应用合法确认后持久化 confirmation 并转为 user_confirmed", () => {
     const flowPlan = generateFlowConfirmationQuestions(
       buildFlowPlan({

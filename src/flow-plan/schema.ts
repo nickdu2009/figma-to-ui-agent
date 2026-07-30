@@ -81,6 +81,7 @@ export const flowPlanInteractionSchema = z
     stateKey: idSchema.optional(),
     dialogNodeId: idSchema.optional(),
     value: scalarSchema.optional(),
+    stateInitialValue: scalarSchema.optional(),
     confirmationQuestionId: idSchema.optional(),
     confirmed: z.boolean(),
     confidence: flowConfidenceSchema,
@@ -153,6 +154,7 @@ export const interactionSupplementSchema = z
             stateKey: idSchema.optional(),
             dialogNodeId: idSchema.optional(),
             value: scalarSchema.optional(),
+            stateInitialValue: scalarSchema.optional(),
           })
           .strict(),
       )

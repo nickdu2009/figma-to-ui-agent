@@ -1,4 +1,8 @@
-import type { DesignBundle } from "../design-bundle/schema.ts";
+import type {
+  DesignBundle,
+  NormalizedNode,
+  PrototypeInteraction,
+} from "../design-bundle/schema.ts";
 import type { UISpec, UISpecDraft, UINode } from "../ui-spec/schema.ts";
 import {
   FLOW_PLAN_DRAFT_SCHEMA_VERSION,
@@ -41,6 +45,12 @@ function labelForNode(node: UINode): string {
     return node.text;
   }
   return node.id;
+}
+
+function isClickableActionNode(
+  node: UINode | undefined,
+): node is Extract<UINode, { kind: "button" | "link" }> {
+  return node?.kind === "button" || node?.kind === "link";
 }
 
 function childIdsForNode(node: UINode): string[] {
@@ -96,6 +106,151 @@ function findTargetPageFromNode(
   return flowPages.find((page) => page.sourcePageId === sourcePageId)?.id;
 }
 
+function flowPageForDesignNode(
+  bundle: DesignBundle,
+  flowPages: readonly FlowPlanPage[],
+  sourceNodeId: string | undefined,
+): string | undefined {
+  const sourcePageId = findDesignPageForNode(bundle, sourceNodeId);
+  if (!sourcePageId) {
+    return undefined;
+  }
+  return flowPages.find((page) => page.sourcePageId === sourcePageId)?.id;
+}
+
+function buildUiNodeLookup(
+  uiSpec: UISpec | UISpecDraft | undefined,
+): Map<string, UINode> {
+  return new Map(uiSpec?.nodes.map((node) => [node.id, node]) ?? []);
+}
+
+function findUiNodeForDesignNode(
+  uiSpec: UISpec | UISpecDraft | undefined,
+  flowPageId: string | undefined,
+  sourceNodeId: string | undefined,
+  options: { preferClickable?: boolean } = {},
+): string | undefined {
+  if (!uiSpec || !sourceNodeId) {
+    return undefined;
+  }
+  const normalizedSource = safeId(sourceNodeId);
+  const candidateIds = [
+    sourceNodeId,
+    normalizedSource,
+    ...(flowPageId
+      ? [
+          `ui-${flowPageId}-${normalizedSource}-control`,
+          `ui-${flowPageId}-${normalizedSource}`,
+        ]
+      : []),
+  ];
+  const uiNodeById = new Map(uiSpec.nodes.map((node) => [node.id, node]));
+  const existingCandidates = candidateIds.filter((candidate) =>
+    uiNodeById.has(candidate),
+  );
+  if (options.preferClickable) {
+    const clickable = existingCandidates.find((candidate) =>
+      isClickableActionNode(uiNodeById.get(candidate)),
+    );
+    if (clickable) {
+      return clickable;
+    }
+  }
+  return existingCandidates[0];
+}
+
+function targetNodeIdForPrototype(
+  interaction: PrototypeInteraction,
+): string | undefined {
+  return interaction.transitionNodeId ?? interaction.destinationId;
+}
+
+function designNodeById(bundle: DesignBundle): Map<string, NormalizedNode> {
+  return new Map(
+    bundle.pages.flatMap((page) =>
+      page.nodes.map((node) => [node.id, node] as const),
+    ),
+  );
+}
+
+function variantPropertyCandidates(
+  node: NormalizedNode | undefined,
+): Array<readonly [string, string | number | boolean]> {
+  if (!node) {
+    return [];
+  }
+  const explicit: Array<readonly [string, string | number | boolean]> = [
+    ...Object.entries(node.variantProperties ?? {}),
+    ...(node.componentProperties ?? [])
+      .filter((property) => property.type === "VARIANT")
+      .map((property) => [property.name, property.value] as const),
+  ];
+  if (explicit.length > 0) {
+    return explicit;
+  }
+  if (
+    (node.kind === "component" || node.kind === "instance") &&
+    node.name?.includes("=")
+  ) {
+    const [rawKey, ...rawValueParts] = node.name.split("=");
+    const key = rawKey?.trim();
+    const value = rawValueParts.join("=").trim();
+    if (key && value) {
+      return [[key, value]];
+    }
+  }
+  return [];
+}
+
+function stateCandidateForChangeTo(
+  sourceDesignNode: NormalizedNode | undefined,
+  targetDesignNode: NormalizedNode | undefined,
+  uiSpec: UISpec | UISpecDraft | undefined,
+):
+  | {
+      stateKey: string;
+      value: string | number | boolean;
+      stateInitialValue?: string | number | boolean;
+    }
+  | undefined {
+  if (!targetDesignNode || !uiSpec) {
+    return undefined;
+  }
+  const stateByKey = new Map(uiSpec.state.map((state) => [state.key, state]));
+  const targetCandidates = variantPropertyCandidates(targetDesignNode);
+  for (const [rawKey, value] of targetCandidates) {
+    const keys = [rawKey, safeId(rawKey)];
+    for (const key of keys) {
+      const state = stateByKey.get(key);
+      if (state && typeof value === state.valueType) {
+        return { stateKey: key, value };
+      }
+    }
+  }
+  const sourceCandidates = new Map<
+    string,
+    string | number | boolean
+  >(variantPropertyCandidates(sourceDesignNode));
+  for (const [rawKey, value] of targetCandidates) {
+    const sourceValue = sourceCandidates.get(rawKey);
+    if (
+      sourceValue !== undefined &&
+      typeof sourceValue === typeof value &&
+      sourceValue !== value
+    ) {
+      return {
+        stateKey: `variant-${safeId(sourceDesignNode?.id ?? rawKey)}-${safeId(rawKey)}`.slice(
+          0,
+          256,
+        ),
+        value,
+        stateInitialValue: sourceValue,
+      };
+    }
+  }
+  return undefined;
+}
+
 function inferTargetPage(
   label: string,
   fromPageId: string | undefined,
@@ -146,6 +301,56 @@ function inferTargetPage(
   };
 }
 
+function figmaPrototypeIntent(
+  interaction: PrototypeInteraction,
+  targetPageId: string | undefined,
+  stateCandidate:
+    | { stateKey: string; value: string | number | boolean }
+    | undefined,
+): FlowIntent {
+  if (interaction.reason) {
+    return "unknown";
+  }
+  if (interaction.navigation === "CHANGE_TO") {
+    return stateCandidate ? "set_state" : "unknown";
+  }
+  if (interaction.navigation === "NAVIGATE" && targetPageId) {
+    return "navigate";
+  }
+  return "unknown";
+}
+
+function blockedReasonForPrototype(
+  interaction: PrototypeInteraction,
+  sourceUiNode: UINode | undefined,
+  targetNodeId: string | undefined,
+  targetUiNodeId: string | undefined,
+  targetPageId: string | undefined,
+  stateCandidate:
+    | { stateKey: string; value: string | number | boolean }
+    | undefined,
+): string | undefined {
+  if (interaction.reason) {
+    return interaction.reason;
+  }
+  if (!isClickableActionNode(sourceUiNode)) {
+    return "ui_node_not_clickable";
+  }
+  if (interaction.navigation === "CHANGE_TO") {
+    if (!targetNodeId) {
+      return "prototype_target_missing";
+    }
+    if (!targetUiNodeId || !stateCandidate) {
+      return "change_to_target_not_representable";
+    }
+    return undefined;
+  }
+  if (interaction.navigation === "NAVIGATE") {
+    return targetPageId ? undefined : "prototype_target_page_missing";
+  }
+  return "unsupported_figma_action";
+}
+
 function intentForSupplement(
   item: InteractionSupplement["interactions"][number],
   targetPageId: string | undefined,
@@ -183,8 +388,93 @@ export function buildFlowPlanDraft({
     pages.map((page) => [page.sourcePageId, page.id]),
   );
   const uiNodeToPage = uiSpec ? buildUiNodePageMap(uiSpec) : new Map();
+  const uiNodeById = buildUiNodeLookup(uiSpec);
+  const sourceNodeById = designNodeById(bundle);
   const coveredUiNodes = new Set<string>();
   const interactions: FlowPlanInteraction[] = [];
+
+  for (const page of bundle.pages) {
+    for (const sourceNode of page.nodes) {
+      for (const [index, prototype] of (
+        sourceNode.prototypeInteractions ?? []
+      ).entries()) {
+        const fromPageId = sourcePageToFlowPage.get(page.id);
+        const uiNodeId = findUiNodeForDesignNode(
+          uiSpec,
+          fromPageId,
+          sourceNode.id,
+          { preferClickable: true },
+        );
+        if (uiNodeId) {
+          coveredUiNodes.add(uiNodeId);
+        }
+        const sourceUiNode = uiNodeId ? uiNodeById.get(uiNodeId) : undefined;
+        const targetDesignNodeId = targetNodeIdForPrototype(prototype);
+        const targetPageId =
+          prototype.navigation === "NAVIGATE"
+            ? findTargetPageFromNode(bundle, pages, targetDesignNodeId)
+            : undefined;
+        const targetFlowPageId = flowPageForDesignNode(
+          bundle,
+          pages,
+          targetDesignNodeId,
+        );
+        const targetUiNodeId = findUiNodeForDesignNode(
+          uiSpec,
+          targetFlowPageId ?? fromPageId,
+          targetDesignNodeId,
+        );
+        const stateCandidate = stateCandidateForChangeTo(
+          sourceNode,
+          targetDesignNodeId
+            ? sourceNodeById.get(targetDesignNodeId)
+            : undefined,
+          uiSpec,
+        );
+        const intent = figmaPrototypeIntent(
+          prototype,
+          targetPageId,
+          stateCandidate,
+        );
+        const blockedReason = blockedReasonForPrototype(
+          prototype,
+          sourceUiNode,
+          targetDesignNodeId,
+          targetUiNodeId,
+          targetPageId,
+          stateCandidate,
+        );
+        interactions.push({
+          id:
+            prototype.id ??
+            `figma-${safeId(sourceNode.id)}-${String(index)}`,
+          source: "figma",
+          sourceNodeId: sourceNode.id,
+          uiNodeId,
+          sourceNodeName: sourceNode.name,
+          trigger: prototype.trigger,
+          intent,
+          fromPageId,
+          targetNodeId:
+            intent === "set_state" ? targetUiNodeId : targetDesignNodeId,
+          targetPageId,
+          stateKey: intent === "set_state" ? stateCandidate?.stateKey : undefined,
+          value: intent === "set_state" ? stateCandidate?.value : undefined,
+          stateInitialValue:
+            intent === "set_state"
+              ? stateCandidate?.stateInitialValue
+              : undefined,
+          confirmed: intent !== "unknown" && !blockedReason,
+          confidence: intent !== "unknown" && !blockedReason ? "high" : "low",
+          reason:
+            intent !== "unknown" && !blockedReason
+              ? "来自 Figma REST prototype interaction 的受控转换。"
+              : "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+          blockedReason,
+        });
+      }
+    }
+  }
 
   for (const [index, item] of (
     interactionSupplement?.interactions ?? []
@@ -217,6 +507,7 @@ export function buildFlowPlanDraft({
       stateKey: item.stateKey,
       dialogNodeId: item.dialogNodeId,
       value: item.value,
+      stateInitialValue: item.stateInitialValue,
       confirmed: intent !== "unknown",
       confidence: intent === "unknown" ? "low" : "high",
       reason:

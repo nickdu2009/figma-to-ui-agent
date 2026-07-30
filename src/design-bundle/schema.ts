@@ -211,6 +211,28 @@ const componentPropertySchema = z
   })
   .strict();
 
+export const prototypeInteractionSchema = z
+  .object({
+    id: idSchema.optional(),
+    source: z.literal("figma_rest"),
+    trigger: z.enum(["click", "hover", "timeout", "unknown"]),
+    actionType: z.enum([
+      "node",
+      "back",
+      "url",
+      "overlay",
+      "change_to",
+      "unknown",
+    ]),
+    navigation: z
+      .enum(["NAVIGATE", "CHANGE_TO", "OVERLAY", "SWAP", "SCROLL_TO", "UNKNOWN"])
+      .optional(),
+    transitionNodeId: idSchema.optional(),
+    destinationId: idSchema.optional(),
+    reason: z.string().min(1).max(512).optional(),
+  })
+  .strict();
+
 export const normalizedNodeSchema = z
   .object({
     id: idSchema,
@@ -239,6 +261,10 @@ export const normalizedNodeSchema = z
     imageRefs: z.array(safeRelativePathSchema).max(1_000),
     boundVariableRefs: z.array(sha256Schema).max(1_000),
     designValueRefs: idListSchema,
+    prototypeInteractions: z
+      .array(prototypeInteractionSchema)
+      .max(100)
+      .optional(),
     warningCodes: z.array(z.string().min(1).max(128)).max(100),
   })
   .strict();
@@ -794,6 +820,9 @@ export type VariablesCapability = z.infer<
 >;
 export type LocalImageRef = z.infer<typeof localImageRefSchema>;
 export type LocalFontRef = z.infer<typeof localFontRefSchema>;
+export type PrototypeInteraction = z.infer<
+  typeof prototypeInteractionSchema
+>;
 export type NormalizedNode = z.infer<typeof normalizedNodeSchema>;
 export type NormalizedPage = z.infer<typeof normalizedPageSchema>;
 export type NormalizedComponent = z.infer<

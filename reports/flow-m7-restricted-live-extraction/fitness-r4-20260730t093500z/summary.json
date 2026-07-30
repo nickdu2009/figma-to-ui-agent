@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M7",
+  "scope": "interactive_behavior",
+  "status": "partial",
+  "input": {
+    "projectId": "flow-m7-fitness-restricted-live-r4",
+    "runId": "fitness-r4-20260730t093500z",
+    "flowPlanPath": "project-store/current-flow-plan",
+    "uiSpecRevision": 1,
+    "flowPlanRevision": 1,
+    "figmaInteractionSource": "present"
+  },
+  "actions": {
+    "converted": [],
+    "rejected": [
+      {
+        "id": "figma-f1e69831804cba1c",
+        "source": "figma",
+        "sourceNodeId": "I3186:4557;3189:4744",
+        "sourceNodeName": "Stars",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "6-11---a---profile",
+        "targetNodeId": "3189:4303",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "ui_node_not_clickable"
+      },
+      {
+        "id": "figma-076a56448bf7956b",
+        "source": "figma",
+        "sourceNodeId": "I3186:4557;3096:2596",
+        "sourceNodeName": "Home Switch",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "6-11---a---profile",
+        "targetNodeId": "3071:2452",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "ui_node_not_clickable"
+      },
+      {
+        "id": "figma-aad70f0e58a4873e",
+        "source": "figma",
+        "sourceNodeId": "I3186:4557;3096:2594;3071:2439",
+        "sourceNodeName": "Vector",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "6-11---a---profile",
+        "targetNodeId": "3071:2455",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "ui_node_not_clickable"
+      },
+      {
+        "id": "figma-046f548ad78b98e0",
+        "source": "figma",
+        "sourceNodeId": "I3186:4557;3096:2590",
+        "sourceNodeName": "Support & Help Switch",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "6-11---a---profile",
+        "targetNodeId": "3071:2461",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "ui_node_not_clickable"
+      },
+      {
+        "id": "figma-064cffbb9f8efd85",
+        "source": "figma",
+        "sourceNodeId": "3186:4431",
+        "uiNodeId": "ui-6-11---a---profile-3186-4431-control",
+        "sourceNodeName": "Main Button",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "6-11---a---profile",
+        "targetNodeId": "53:137",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "change_to_target_not_representable"
+      },
+      {
+        "id": "figma-fa1c270553de5d33",
+        "source": "figma",
+        "sourceNodeId": "3189:4303",
+        "uiNodeId": "ui-property-1-bookmark-on-3189-4303",
+        "sourceNodeName": "Property 1=Bookmark-On",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "property-1-bookmark-on",
+        "targetNodeId": "3189:4300",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "ui_node_not_clickable"
+      },
+      {
+        "id": "figma-49d68f4313157af5",
+        "source": "figma",
+        "sourceNodeId": "3071:2455",
+        "uiNodeId": "ui-property-1-variant2-1-3071-2455",
+        "sourceNodeName": "Property 1=Variant2",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "property-1-variant2-1",
+        "targetNodeId": "3071:2450",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "ui_node_not_clickable"
+      },
+      {
+        "id": "figma-484398ff868da059",
+        "source": "figma",
+        "sourceNodeId": "3071:2461",
+        "uiNodeId": "ui-property-1-variant2-2-3071-2461",
+        "sourceNodeName": "Property 1=Variant2",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "property-1-variant2-2",
+        "targetNodeId": "3071:2448",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "ui_node_not_clickable"
+      },
+      {
+        "id": "figma-3093cd194c7d71a5",
+        "source": "figma",
+        "sourceNodeId": "53:137",
+        "uiNodeId": "ui-property-1-off-53-137",
+        "sourceNodeName": "Property 1=Off",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "property-1-off",
+        "targetNodeId": "53:139",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "ui_node_not_clickable"
+      }
+    ]
+  },
+  "behaviors": {
+    "fixtures": []
+  },
+  "counts": {
+    "trustedNonRouteConverted": 0,
+    "scenarioOnlyFixtures": 0,
+    "submitLikeVerified": 0,
+    "unresolved": 9
+  },
+  "reasons": [
+    "flow_m7_no_trusted_non_route_interaction",
+    "flow_m7_behavior_validation_missing"
+  ],
+  "residualRisks": [
+    "Flow-M7 v1 不新增 submit action kind；复杂业务状态机、select/radio 完整选择语义和真实后端仍不在本期范围。",
+    "restricted-live 只读取 Figma REST 且不调用 OpenAI；interactive component variant 的同页状态渲染仍需后续 UISpec/renderer 表达能力。"
+  ]
+}

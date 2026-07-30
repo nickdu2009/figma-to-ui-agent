@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1",
+  "projectId": "flow-m7-fitness-restricted-live-r2",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "present",
+  "pages": [
+    {
+      "id": "6-11---a---profile",
+      "sourcePageId": "3186:4543",
+      "name": "6.11 - A - Profile",
+      "role": "entry",
+      "confidence": "medium",
+      "reason": "DesignBundle 中的首个页面作为入口候选。"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "figma-f1e69831804cba1c",
+      "source": "figma",
+      "sourceNodeId": "I3186:4557;3189:4744",
+      "sourceNodeName": "Stars",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "3189:4303",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "figma-076a56448bf7956b",
+      "source": "figma",
+      "sourceNodeId": "I3186:4557;3096:2596",
+      "sourceNodeName": "Home Switch",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "3071:2452",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "figma-aad70f0e58a4873e",
+      "source": "figma",
+      "sourceNodeId": "I3186:4557;3096:2594;3071:2439",
+      "sourceNodeName": "Vector",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "3071:2455",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "figma-046f548ad78b98e0",
+      "source": "figma",
+      "sourceNodeId": "I3186:4557;3096:2590",
+      "sourceNodeName": "Support & Help Switch",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "3071:2461",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "ui_node_not_clickable"
+    },
+    {
+      "id": "figma-064cffbb9f8efd85",
+      "source": "figma",
+      "sourceNodeId": "3186:4431",
+      "uiNodeId": "ui-6-11---a---profile-3186-4431-control",
+      "sourceNodeName": "Main Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "6-11---a---profile",
+      "targetNodeId": "53:137",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "change_to_target_not_representable"
+    }
+  ],
+  "confirmationQuestions": [],
+  "confirmations": [],
+  "report": {
+    "unsupportedCount": 5,
+    "unresolvedInteractionCount": 5,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}

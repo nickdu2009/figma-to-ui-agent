@@ -4,6 +4,11 @@ import { projectIdSchema } from "../project-store/project-id.ts";
 
 const idSchema = z.string().min(1).max(256);
 const reasonSchema = z.string().min(1).max(2_000);
+const scalarSchema = z.union([
+  z.string().max(10_000),
+  z.number().finite(),
+  z.boolean(),
+]);
 
 export const FLOW_PLAN_DRAFT_SCHEMA_VERSION = "m4-spike";
 
@@ -69,9 +74,8 @@ export const flowPlanInteractionSchema = z
     targetPageId: idSchema.optional(),
     stateKey: idSchema.optional(),
     dialogNodeId: idSchema.optional(),
-    value: z
-      .union([z.string().max(10_000), z.number().finite(), z.boolean()])
-      .optional(),
+    value: scalarSchema.optional(),
+    stateInitialValue: scalarSchema.optional(),
     confirmationQuestionId: idSchema.optional(),
     confirmed: z.boolean(),
     confidence: flowConfidenceSchema,
@@ -147,13 +151,8 @@ export const interactionSupplementSchema = z
             rawSource: interactionSupplementRawSourceSchema.optional(),
             stateKey: idSchema.optional(),
             dialogNodeId: idSchema.optional(),
-            value: z
-              .union([
-                z.string().max(10_000),
-                z.number().finite(),
-                z.boolean(),
-              ])
-              .optional(),
+            value: scalarSchema.optional(),
+            stateInitialValue: scalarSchema.optional(),
           })
           .strict(),
       )

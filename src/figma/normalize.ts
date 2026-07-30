@@ -8,6 +8,7 @@ import type {
   NormalizedDesignValue,
   NormalizedNode,
   NormalizedPage,
+  PrototypeInteraction,
   NormalizedStyle,
   ProvenanceEntry,
 } from "../design-bundle/schema.ts";
@@ -62,6 +63,8 @@ const rawNodeSchema = z
     componentId: z.string().optional(),
     componentProperties: z.record(z.string(), z.unknown()).optional(),
     variantProperties: z.record(z.string(), z.unknown()).optional(),
+    interactions: z.array(z.unknown()).optional(),
+    reactions: z.array(z.unknown()).optional(),
   })
   .passthrough();
 
@@ -433,6 +436,156 @@ function normalizedVariantProperties(
       .sort(([left], [right]) => left.localeCompare(right)),
   );
   return Object.keys(result).length > 0 ? result : undefined;
+}
+
+function boundedString(value: unknown, maxLength: number): string | undefined {
+  return typeof value === "string" && value.length > 0 && value.length <= maxLength
+    ? value
+    : undefined;
+}
+
+function safeFigmaNodeId(value: unknown): string | undefined {
+  const raw = boundedString(value, 512);
+  if (!raw) {
+    return undefined;
+  }
+  try {
+    return normalizeFigmaNodeId(raw);
+  } catch {
+    return undefined;
+  }
+}
+
+function normalizedPrototypeTrigger(value: unknown): PrototypeInteraction["trigger"] {
+  const rawType =
+    value && typeof value === "object" ? Reflect.get(value, "type") : value;
+  if (rawType === "ON_CLICK") {
+    return "click";
+  }
+  if (rawType === "ON_HOVER" || rawType === "MOUSE_ENTER") {
+    return "hover";
+  }
+  if (rawType === "AFTER_TIMEOUT" || rawType === "ON_TIMEOUT") {
+    return "timeout";
+  }
+  return "unknown";
+}
+
+function normalizedPrototypeActionType(
+  value: unknown,
+  navigation: PrototypeInteraction["navigation"] | undefined,
+): PrototypeInteraction["actionType"] {
+  if (navigation === "CHANGE_TO") {
+    return "change_to";
+  }
+  if (value === "NODE") {
+    return "node";
+  }
+  if (value === "BACK") {
+    return "back";
+  }
+  if (value === "URL") {
+    return "url";
+  }
+  if (value === "OVERLAY") {
+    return "overlay";
+  }
+  return "unknown";
+}
+
+function normalizedPrototypeNavigation(
+  value: unknown,
+): PrototypeInteraction["navigation"] | undefined {
+  if (
+    value === "NAVIGATE" ||
+    value === "CHANGE_TO" ||
+    value === "OVERLAY" ||
+    value === "SWAP" ||
+    value === "SCROLL_TO"
+  ) {
+    return value;
+  }
+  if (typeof value === "string" && value.length > 0) {
+    return "UNKNOWN";
+  }
+  return undefined;
+}
+
+function rawPrototypeActions(item: unknown): unknown[] {
+  if (!item || typeof item !== "object") {
+    return [];
+  }
+  const actions = Reflect.get(item, "actions");
+  if (Array.isArray(actions)) {
+    return actions;
+  }
+  const action = Reflect.get(item, "action");
+  return action ? [action] : [];
+}
+
+function normalizedPrototypeInteractions(
+  node: RawNode,
+): PrototypeInteraction[] | undefined {
+  const rawItems = [...(node.interactions ?? []), ...(node.reactions ?? [])];
+  const output: PrototypeInteraction[] = [];
+  for (const [index, item] of rawItems.entries()) {
+    if (!item || typeof item !== "object" || output.length >= 100) {
+      continue;
+    }
+    const trigger = normalizedPrototypeTrigger(Reflect.get(item, "trigger"));
+    const actions = rawPrototypeActions(item);
+    if (actions.length === 0) {
+      output.push({
+        id: `figma-${stableHash(`${node.id}:${index}:missing-action`).slice(0, 16)}`,
+        source: "figma_rest",
+        trigger,
+        actionType: "unknown",
+        reason: "prototype_action_missing",
+      });
+      continue;
+    }
+    for (const [actionIndex, action] of actions.entries()) {
+      if (!action || typeof action !== "object" || output.length >= 100) {
+        continue;
+      }
+      const navigation = normalizedPrototypeNavigation(
+        Reflect.get(action, "navigation"),
+      );
+      const transitionNodeId = safeFigmaNodeId(
+        Reflect.get(action, "transitionNodeID") ??
+          Reflect.get(action, "transitionNodeId"),
+      );
+      const destinationId = safeFigmaNodeId(
+        Reflect.get(action, "destinationId") ??
+          Reflect.get(action, "destinationID"),
+      );
+      const actionType = normalizedPrototypeActionType(
+        Reflect.get(action, "type"),
+        navigation,
+      );
+      const reason =
+        trigger === "unknown"
+          ? "unsupported_figma_trigger"
+          : actionType === "unknown" || navigation === "UNKNOWN"
+            ? "unsupported_figma_action"
+            : actionType === "node" &&
+                !transitionNodeId &&
+                !destinationId
+              ? "prototype_target_missing"
+              : undefined;
+      output.push({
+        id: `figma-${stableHash(`${node.id}:${index}:${actionIndex}`).slice(0, 16)}`,
+        source: "figma_rest",
+        trigger,
+        actionType,
+        ...(navigation ? { navigation } : {}),
+        ...(transitionNodeId ? { transitionNodeId } : {}),
+        ...(destinationId ? { destinationId } : {}),
+        ...(reason ? { reason } : {}),
+      });
+    }
+  }
+  return output.length > 0 ? output : undefined;
 }
 
 function nodeKind(node: RawNode, hasImageFill: boolean): NormalizedNode["kind"] {
@@ -1140,6 +1293,15 @@ export function normalizeFigmaDocument(
         directFillDesignValues.set(value.id, value);
       }
       const boundVariableRefs = [...variableIds].map(stableHash);
+      const prototypeInteractions = normalizedPrototypeInteractions(node);
+      if (prototypeInteractions?.some((interaction) => interaction.reason)) {
+        warningCodes.push("prototype_interaction_unresolved");
+        warnings.push({
+          code: "prototype_interaction_unresolved",
+          entityId: node.id,
+          detail: "Figma prototype interaction 存在，但部分 trigger/action/target 无法安全标准化",
+        });
+      }
       pageNodes.push({
         id: node.id,
         parentId,
@@ -1160,6 +1322,7 @@ export function normalizeFigmaDocument(
         }),
         boundVariableRefs,
         designValueRefs: directFillRefs.map((value) => value.id),
+        prototypeInteractions,
         warningCodes,
       });
       for (const child of node.children ?? []) {

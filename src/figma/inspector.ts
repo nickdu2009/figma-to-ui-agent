@@ -253,19 +253,112 @@ function targetedNodesPayload(
   };
 }
 
+function mergeNodePayloads(
+  basePayload: Record<string, unknown>,
+  extraPayload: Record<string, unknown>,
+): Record<string, unknown> {
+  return {
+    ...basePayload,
+    nodes: {
+      ...recordFromUnknown(basePayload.nodes),
+      ...recordFromUnknown(extraPayload.nodes),
+    },
+    components: mergeRecords([
+      basePayload.components,
+      extraPayload.components,
+    ]),
+    componentSets: mergeRecords([
+      basePayload.componentSets,
+      extraPayload.componentSets,
+    ]),
+    styles: mergeRecords([basePayload.styles, extraPayload.styles]),
+  };
+}
+
+function prototypeTargetNodeIds(
+  normalized: NormalizedFigmaDocument,
+  existingNodeIds: ReadonlySet<string>,
+): string[] {
+  const output = new Set<string>();
+  for (const node of normalized.pages.flatMap((page) => page.nodes)) {
+    for (const interaction of node.prototypeInteractions ?? []) {
+      const targetId =
+        interaction.transitionNodeId ?? interaction.destinationId;
+      if (targetId && !existingNodeIds.has(targetId)) {
+        output.add(targetId);
+      }
+    }
+  }
+  return [...output].slice(0, 100);
+}
+
+async function loadTargetedFigmaPayload(
+  restClient: FigmaRestClient,
+  fileKey: string,
+  targetNodeIds: readonly string[],
+  signal?: AbortSignal,
+): Promise<{
+  payload: Record<string, unknown>;
+  normalizationTargetNodeIds: string[];
+}> {
+  const nodesPayload = await restClient.getNodes(
+    fileKey,
+    targetNodeIds,
+    signal,
+  );
+  const initialPayload = targetedNodesPayload(
+    nodesPayload,
+    targetNodeIds,
+  );
+  const initial = normalizeFigmaDocument(initialPayload, {
+    targetNodeIds,
+  });
+  const existingNodeIds = new Set(
+    initial.pages.flatMap((page) => page.nodes.map((node) => node.id)),
+  );
+  const extraNodeIds = prototypeTargetNodeIds(initial, existingNodeIds);
+  if (extraNodeIds.length < 1) {
+    return {
+      payload: initialPayload,
+      normalizationTargetNodeIds: [...targetNodeIds],
+    };
+  }
+  const extraPayload = await restClient.getNodes(
+    fileKey,
+    extraNodeIds,
+    signal,
+  );
+  const normalizationTargetNodeIds = [...targetNodeIds, ...extraNodeIds];
+  return {
+    payload: targetedNodesPayload(
+      mergeNodePayloads(nodesPayload, extraPayload),
+      normalizationTargetNodeIds,
+    ),
+    normalizationTargetNodeIds,
+  };
+}
+
 async function loadFigmaPayload(
   restClient: FigmaRestClient,
   fileKey: string,
   targetNodeIds: readonly string[],
   signal?: AbortSignal,
-): Promise<Record<string, unknown>> {
+): Promise<{
+  payload: Record<string, unknown>;
+  normalizationTargetNodeIds: string[];
+}> {
   if (targetNodeIds.length > 0) {
-    return targetedNodesPayload(
-      await restClient.getNodes(fileKey, targetNodeIds, signal),
+    return await loadTargetedFigmaPayload(
+      restClient,
+      fileKey,
       targetNodeIds,
+      signal,
     );
   }
-  return await restClient.getFile(fileKey, signal);
+  return {
+    payload: await restClient.getFile(fileKey, signal),
+    normalizationTargetNodeIds: [],
+  };
 }
 
 async function currentDesignBundleRevision(
@@ -339,14 +432,15 @@ export class FigmaInspector {
       input.targetNodes,
     );
 
-    const filePayload = await loadFigmaPayload(
+    const loadedPayload = await loadFigmaPayload(
       this.restClient,
       parsedUrl.fileKey,
       targetNodeIds,
       signal,
     );
+    const filePayload = loadedPayload.payload;
     const initial = normalizeFigmaDocument(filePayload, {
-      targetNodeIds,
+      targetNodeIds: loadedPayload.normalizationTargetNodeIds,
     });
 
     const remoteImages: FigmaRemoteImage[] = [];
@@ -455,7 +549,7 @@ export class FigmaInspector {
       imagePathBySourceRef.set(sourceRef, local.path);
     }
     const normalized = normalizeFigmaDocument(filePayload, {
-      targetNodeIds,
+      targetNodeIds: loadedPayload.normalizationTargetNodeIds,
       imagePathBySourceRef,
     });
 
