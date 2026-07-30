@@ -495,7 +495,7 @@ function ImplementationCanvas(props: {
           props.onNavigate(action.pageId);
         } else if (action.kind === "set_state") {
           store.set(`/${action.stateKey}`, action.value);
-        } else {
+        } else if (action.kind === "open_dialog") {
           const dialog = props.uiSpec.nodes.find(
             (node) =>
               node.id === action.dialogNodeId &&
@@ -503,6 +503,22 @@ function ImplementationCanvas(props: {
           );
           if (dialog?.kind === "dialog") {
             store.set(`/${dialog.openStateKey}`, true);
+          }
+        } else if (action.kind === "submit") {
+          const effect = action.effect;
+          if (effect.kind === "navigate") {
+            props.onNavigate(effect.pageId);
+          } else if (effect.kind === "set_state") {
+            store.set(`/${effect.stateKey}`, effect.value);
+          } else if (effect.kind === "open_dialog") {
+            const dialog = props.uiSpec.nodes.find(
+              (node) =>
+                node.id === effect.dialogNodeId &&
+                node.kind === "dialog",
+            );
+            if (dialog?.kind === "dialog") {
+              store.set(`/${dialog.openStateKey}`, true);
+            }
           }
         }
       },

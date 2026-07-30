@@ -670,30 +670,149 @@ function checkedTargetForStep(page: Page, nodeId: string) {
     .first();
 }
 
+async function selectTargetForStep(page: Page, nodeId: string) {
+  const target = targetForStep(page, nodeId);
+  const nested = target.locator("select").first();
+  return (await nested.count()) > 0 ? nested : target;
+}
+
+async function radioTargetForStep(
+  page: Page,
+  nodeId: string,
+) {
+  const target = targetForStep(page, nodeId);
+  const radios = target.locator('input[type="radio"]');
+  return (await radios.count()) > 0 ? radios.first() : target;
+}
+
+function isExpectationStep(
+  step: UISpec["behaviorFixtures"][number]["steps"][number],
+): boolean {
+  return (
+    step.kind === "expect_value" ||
+    step.kind === "expect_checked" ||
+    step.kind === "expect_selected" ||
+    step.kind === "expect_text" ||
+    step.kind === "expect_visible" ||
+    step.kind === "expect_page"
+  );
+}
+
 function hasPostcondition(
   steps: UISpec["behaviorFixtures"][number]["steps"],
   index: number,
 ): boolean {
   return steps
     .slice(index + 1)
-    .some((step) =>
-      step.kind === "expect_value" ||
-      step.kind === "expect_checked" ||
-      step.kind === "expect_text" ||
-      step.kind === "expect_visible" ||
-      step.kind === "expect_page",
+    .some(isExpectationStep);
+}
+
+async function expectationSatisfied(
+  page: Page,
+  step: UISpec["behaviorFixtures"][number]["steps"][number],
+): Promise<boolean> {
+  if (step.kind === "expect_page") {
+    return (
+      (await page
+        .locator(".implementation-canvas")
+        .getAttribute("data-page-id")) === step.pageId
     );
+  }
+  if (step.kind === "expect_visible") {
+    return targetForStep(page, step.nodeId).isVisible();
+  }
+  if (step.kind === "expect_text") {
+    return Boolean(
+      (await targetForStep(page, step.nodeId).textContent())?.includes(
+        step.text,
+      ),
+    );
+  }
+  if (step.kind === "expect_value") {
+    const target = targetForStep(page, step.nodeId);
+    const nestedField = inputTargetForStep(page, step.nodeId);
+    const actual =
+      (await nestedField.count()) > 0
+        ? await nestedField.inputValue()
+        : await target.inputValue();
+    return actual === step.value;
+  }
+  if (step.kind === "expect_checked") {
+    const target = checkedTargetForStep(page, step.nodeId);
+    const actual = await target.evaluate((element) => {
+      if (element instanceof HTMLInputElement) {
+        return element.checked;
+      }
+      const ariaChecked = element.getAttribute("aria-checked");
+      return ariaChecked === "true";
+    });
+    return actual === step.checked;
+  }
+  if (step.kind === "expect_selected") {
+    const target = targetForStep(page, step.nodeId);
+    const nestedSelect = target.locator("select").first();
+    const select = (await nestedSelect.count()) > 0 ? nestedSelect : target;
+    if (
+      await select.evaluate(
+        (element) => element instanceof HTMLSelectElement,
+      )
+    ) {
+      return (await select.inputValue()) === step.value;
+    }
+    const nestedRadio = target.locator('input[type="radio"]').first();
+    const radio = (await nestedRadio.count()) > 0 ? nestedRadio : target;
+    return (
+      (await radio.inputValue()) === step.value &&
+      (await radio.isChecked())
+    );
+  }
+  return false;
 }
 
 async function executeBehaviorFixture(
   page: Page,
   fixture: UISpec["behaviorFixtures"][number],
+  uiSpec: UISpec,
 ): Promise<ValidationCheck[]> {
   const checks: ValidationCheck[] = [];
+  const actionById = new Map(uiSpec.actions.map((action) => [action.id, action]));
+  const nodeById = new Map(uiSpec.nodes.map((node) => [node.id, node]));
   for (const [stepIndex, step] of fixture.steps.entries()) {
     try {
       if (step.kind === "click") {
+        const node = nodeById.get(step.nodeId);
+        const actionId =
+          node && "actionId" in node ? node.actionId : undefined;
+        const action = actionId ? actionById.get(actionId) : undefined;
+        const submitPostconditions =
+          action?.kind === "submit"
+            ? fixture.steps.slice(stepIndex + 1).filter(isExpectationStep)
+            : [];
+        const before =
+          submitPostconditions.length > 0
+            ? await Promise.all(
+                submitPostconditions.map((candidate) =>
+                  expectationSatisfied(page, candidate),
+                ),
+              )
+            : [];
         await targetForStep(page, step.nodeId).click();
+        if (action?.kind === "submit") {
+          if (submitPostconditions.length === 0) {
+            throw new Error("submit 缺少后置断言");
+          }
+          const after = await Promise.all(
+            submitPostconditions.map((candidate) =>
+              expectationSatisfied(page, candidate),
+            ),
+          );
+          if (!after.every(Boolean)) {
+            throw new Error("submit 后置断言未满足");
+          }
+          if (before.every(Boolean)) {
+            throw new Error("submit 后置断言在点击前已满足");
+          }
+        }
       } else if (step.kind === "fill") {
         const target = targetForStep(page, step.nodeId);
         const nestedField = target.locator("input,textarea").first();
@@ -709,6 +828,20 @@ async function executeBehaviorFixture(
         await checkedTargetForStep(page, step.nodeId).click();
         if (!hasPostcondition(fixture.steps, stepIndex)) {
           throw new Error("toggle 缺少后置断言");
+        }
+      } else if (step.kind === "select_option") {
+        await (
+          await selectTargetForStep(page, step.nodeId)
+        ).selectOption(step.value);
+        if (!hasPostcondition(fixture.steps, stepIndex)) {
+          throw new Error("select_option 缺少后置断言");
+        }
+      } else if (step.kind === "choose_radio") {
+        await (
+          await radioTargetForStep(page, step.nodeId)
+        ).check();
+        if (!hasPostcondition(fixture.steps, stepIndex)) {
+          throw new Error("choose_radio 缺少后置断言");
         }
       } else if (step.kind === "expect_visible") {
         if (!(await targetForStep(page, step.nodeId).isVisible())) {
@@ -743,6 +876,10 @@ async function executeBehaviorFixture(
         });
         if (actual !== step.checked) {
           throw new Error("选中状态不匹配");
+        }
+      } else if (step.kind === "expect_selected") {
+        if (!(await expectationSatisfied(page, step))) {
+          throw new Error("选择值不匹配");
         }
       } else {
         const activePageId = await page
@@ -1149,6 +1286,7 @@ export class RenderAndCompareService {
                 ...(await executeBehaviorFixture(
                   page,
                   fixture,
+                  uiSpec,
                 )),
               );
             }

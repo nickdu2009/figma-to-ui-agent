@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "fixtures": [
+    {
+      "id": "m8-fill-email",
+      "name": "填写邮箱",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        { "kind": "fill", "nodeId": "email", "value": "agent@example.com" },
+        { "kind": "expect_value", "nodeId": "email", "value": "agent@example.com" }
+      ]
+    },
+    {
+      "id": "m8-select-plan",
+      "name": "选择套餐",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        { "kind": "select_option", "nodeId": "plan-select", "value": "pro" },
+        { "kind": "expect_selected", "nodeId": "plan-select", "value": "pro" }
+      ]
+    },
+    {
+      "id": "m8-radio-role",
+      "name": "选择角色",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        { "kind": "choose_radio", "nodeId": "role-admin", "value": "admin" },
+        { "kind": "expect_selected", "nodeId": "role-admin", "value": "admin" }
+      ]
+    }
+  ]
+}

@@ -52,4 +52,54 @@ describe("applyConfirmations", () => {
       blockedReason: "user_declined_interaction",
     });
   });
+
+  it("把用户确认的 submit 答案写回带 postcondition 的交互", () => {
+    const draft = generateConfirmationQuestions(
+      buildFlowPlanDraft({
+        bundle: createStoredMultipageFlowDesignBundle(),
+        uiSpec: createStoredMultipageFlowUISpec(),
+      }),
+    );
+    const confirmed = applyConfirmations(draft, [
+      {
+        questionId: draft.confirmationQuestions[0]!.id,
+        value: "submit:set_state:submitted:true:expect_visible:success-message",
+      },
+    ]);
+
+    expect(confirmed.interactions[0]).toMatchObject({
+      source: "user_confirmed",
+      confirmed: true,
+      trigger: "submit",
+      intent: "submit",
+      stateKey: "submitted",
+      value: true,
+      postconditions: [
+        {
+          kind: "expect_visible",
+          nodeId: "success-message",
+        },
+      ],
+    });
+  });
+
+  it("拒绝缺少 postcondition 的 submit 确认答案", () => {
+    const draft = generateConfirmationQuestions(
+      buildFlowPlanDraft({
+        bundle: createStoredMultipageFlowDesignBundle(),
+        uiSpec: createStoredMultipageFlowUISpec(),
+      }),
+    );
+    const confirmed = applyConfirmations(draft, [
+      {
+        questionId: draft.confirmationQuestions[0]!.id,
+        value: "submit:set_state:submitted:true",
+      },
+    ]);
+
+    expect(confirmed.interactions[0]).toMatchObject({
+      confirmed: false,
+      blockedReason: "invalid_submit_confirmation_answer",
+    });
+  });
 });

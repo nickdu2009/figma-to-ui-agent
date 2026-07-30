@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "present",
+  "pages": [
+    {
+      "id": "home",
+      "sourcePageId": "page-home",
+      "name": "登录",
+      "role": "entry",
+      "confidence": "high",
+      "reason": "fixture"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "submit-without-postcondition",
+      "source": "figma",
+      "uiNodeId": "submit-review",
+      "trigger": "submit",
+      "intent": "submit",
+      "fromPageId": "home",
+      "stateKey": "form-status",
+      "value": "review",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "fixture invalid submit"
+    }
+  ],
+  "confirmationQuestions": [],
+  "confirmations": [],
+  "stateMachines": [],
+  "report": {
+    "unsupportedCount": 0,
+    "unresolvedInteractionCount": 0,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}

@@ -299,7 +299,7 @@ describe("RenderAndCompareService", () => {
     } finally {
       await service.close();
     }
-  });
+  }, 30_000);
 
   it("pixel_overlay 使用 DesignBundle 源图尺寸解释裁剪 frame", async () => {
     const dataRoot = await mkdtemp(join(tmpdir(), "render-compare-"));

@@ -41,6 +41,7 @@ export const flowIntentSchema = z.enum([
   "navigate",
   "set_state",
   "open_dialog",
+  "submit",
   "unknown",
 ]);
 export const figmaInteractionSourceSchema = z.enum([
@@ -54,6 +55,81 @@ export const interactionSupplementRawSourceSchema = z.enum([
   "fixture",
   "manual",
 ]);
+
+export const flowPostconditionSchema = z.discriminatedUnion("kind", [
+  z
+    .object({
+      kind: z.literal("expect_page"),
+      pageId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_visible"),
+      nodeId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_text"),
+      nodeId: idSchema,
+      text: z.string().max(100_000),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_value"),
+      nodeId: idSchema,
+      value: z.string().max(10_000),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_checked"),
+      nodeId: idSchema,
+      checked: z.boolean(),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_selected"),
+      nodeId: idSchema,
+      value: z.string().min(1).max(1_000),
+    })
+    .strict(),
+]);
+
+export const flowStateMachineSchema = z
+  .object({
+    id: idSchema,
+    initialState: idSchema,
+    states: z
+      .array(
+        z
+          .object({
+            id: idSchema,
+            pageId: idSchema.optional(),
+            visibleNodeIds: z.array(idSchema).max(10_000).optional(),
+          })
+          .strict(),
+      )
+      .min(1)
+      .max(1_000),
+    transitions: z
+      .array(
+        z
+          .object({
+            id: idSchema,
+            from: idSchema,
+            to: idSchema,
+            triggerInteractionId: idSchema,
+            postconditions: z.array(flowPostconditionSchema).min(1).max(100),
+          })
+          .strict(),
+      )
+      .max(10_000),
+  })
+  .strict();
 
 export const flowPlanPageSchema = z
   .object({
@@ -82,6 +158,8 @@ export const flowPlanInteractionSchema = z
     dialogNodeId: idSchema.optional(),
     value: scalarSchema.optional(),
     stateInitialValue: scalarSchema.optional(),
+    postconditions: z.array(flowPostconditionSchema).max(100).optional(),
+    stateMachineTransitionId: idSchema.optional(),
     confirmationQuestionId: idSchema.optional(),
     confirmed: z.boolean(),
     confidence: flowConfidenceSchema,
@@ -175,6 +253,7 @@ const flowPlanShape = {
     .array(flowConfirmationQuestionSchema)
     .max(10_000),
   confirmations: z.array(flowConfirmationAnswerSchema).max(10_000),
+  stateMachines: z.array(flowStateMachineSchema).max(1_000).default([]),
   report: flowPlanReportSchema,
 };
 
@@ -228,6 +307,11 @@ function validateFlowPlanReferences(
   const questionIds = new Set(
     value.confirmationQuestions.map((question) => question.id),
   );
+  const stateMachineTransitionIds = new Set(
+    value.stateMachines.flatMap((machine) =>
+      machine.transitions.map((transition) => transition.id),
+    ),
+  );
 
   value.interactions.forEach((interaction, index) => {
     for (const [field, pageId] of [
@@ -263,6 +347,96 @@ function validateFlowPlanReferences(
         message: "inferred/missing interaction 不能被标记为已确认",
       });
     }
+    if (interaction.intent === "submit") {
+      if (!interaction.postconditions?.length) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["interactions", index, "postconditions"],
+          message: "submit interaction 必须包含可观察 postcondition",
+        });
+      }
+      if (
+        interaction.stateMachineTransitionId &&
+        !stateMachineTransitionIds.has(interaction.stateMachineTransitionId)
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["interactions", index, "stateMachineTransitionId"],
+          message: `悬空状态机 transition 引用：${interaction.stateMachineTransitionId}`,
+        });
+      }
+    }
+  });
+
+  value.stateMachines.forEach((machine, machineIndex) => {
+    addDuplicateIssues(
+      machine.states.map((state) => state.id),
+      ["stateMachines", machineIndex, "states"],
+      ctx,
+    );
+    addDuplicateIssues(
+      machine.transitions.map((transition) => transition.id),
+      ["stateMachines", machineIndex, "transitions"],
+      ctx,
+    );
+    const machineStateIds = new Set(machine.states.map((state) => state.id));
+    if (!machineStateIds.has(machine.initialState)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["stateMachines", machineIndex, "initialState"],
+        message: `悬空状态机初始状态：${machine.initialState}`,
+      });
+    }
+    machine.states.forEach((state, stateIndex) => {
+      if (state.pageId && !pageIds.has(state.pageId)) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["stateMachines", machineIndex, "states", stateIndex, "pageId"],
+          message: `悬空状态机页面引用：${state.pageId}`,
+        });
+      }
+    });
+    machine.transitions.forEach((transition, transitionIndex) => {
+      if (!machineStateIds.has(transition.from)) {
+        ctx.addIssue({
+          code: "custom",
+          path: [
+            "stateMachines",
+            machineIndex,
+            "transitions",
+            transitionIndex,
+            "from",
+          ],
+          message: `悬空状态机来源状态：${transition.from}`,
+        });
+      }
+      if (!machineStateIds.has(transition.to)) {
+        ctx.addIssue({
+          code: "custom",
+          path: [
+            "stateMachines",
+            machineIndex,
+            "transitions",
+            transitionIndex,
+            "to",
+          ],
+          message: `悬空状态机目标状态：${transition.to}`,
+        });
+      }
+      if (!interactionIds.has(transition.triggerInteractionId)) {
+        ctx.addIssue({
+          code: "custom",
+          path: [
+            "stateMachines",
+            machineIndex,
+            "transitions",
+            transitionIndex,
+            "triggerInteractionId",
+          ],
+          message: `悬空状态机触发 interaction：${transition.triggerInteractionId}`,
+        });
+      }
+    });
   });
 
   value.confirmationQuestions.forEach((question, index) => {
@@ -338,6 +512,8 @@ export type FlowPlanPage = z.infer<typeof flowPlanPageSchema>;
 export type FlowPlanInteraction = z.infer<
   typeof flowPlanInteractionSchema
 >;
+export type FlowPostcondition = z.infer<typeof flowPostconditionSchema>;
+export type FlowStateMachine = z.infer<typeof flowStateMachineSchema>;
 export type FlowConfirmationQuestion = z.infer<
   typeof flowConfirmationQuestionSchema
 >;

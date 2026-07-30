@@ -48,6 +48,10 @@ export function generateConfirmationQuestions(
       options: [
         ...pageOptions,
         {
+          label: "提交表单并验证本地可观察结果",
+          value: "submit:set_state:<stateKey>:true:expect_visible:<nodeId>",
+        },
+        {
           label: "保持静态，不生成交互",
           value: "static",
         },

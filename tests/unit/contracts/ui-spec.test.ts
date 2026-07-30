@@ -159,6 +159,119 @@ describe("UISpec Schema", () => {
     ]);
   });
 
+  it("支持 Flow-M8 submit action 和 select/radio 行为断言", () => {
+    const draft = createUISpecDraft();
+    draft.state.push(
+      {
+        key: "status",
+        valueType: "string",
+        initialValue: "idle",
+      },
+      {
+        key: "plan",
+        valueType: "string",
+        initialValue: "",
+      },
+      {
+        key: "role",
+        valueType: "string",
+        initialValue: "",
+      },
+    );
+    draft.nodes.push(
+      {
+        id: "status-text",
+        kind: "text",
+        text: "正在审核",
+        variant: "body",
+        visibleWhen: {
+          stateKey: "status",
+          equals: "review",
+        },
+        designValueRefs: [],
+      },
+      {
+        id: "plan-select",
+        kind: "select",
+        label: "套餐",
+        stateKey: "plan",
+        options: [{ value: "pro", label: "Pro" }],
+        designValueRefs: [],
+      },
+      {
+        id: "role-admin",
+        kind: "radio",
+        label: "管理员",
+        stateKey: "role",
+        value: "admin",
+        designValueRefs: [],
+      },
+    );
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("status-text", "plan-select", "role-admin");
+    }
+    const button = draft.nodes.find((node) => node.kind === "button");
+    if (button?.kind === "button") {
+      button.actionId = "submit-review";
+    }
+    draft.actions.push({
+      id: "submit-review",
+      kind: "submit",
+      effect: {
+        kind: "set_state",
+        stateKey: "status",
+        value: "review",
+      },
+      postconditions: [
+        {
+          kind: "expect_visible",
+          nodeId: "status-text",
+        },
+      ],
+    });
+    draft.behaviorFixtures.push({
+      id: "m8-select-radio",
+      name: "M8 选择控件",
+      viewportId: "desktop",
+      initialPageId: "home",
+      steps: [
+        { kind: "select_option", nodeId: "plan-select", value: "pro" },
+        { kind: "expect_selected", nodeId: "plan-select", value: "pro" },
+        { kind: "choose_radio", nodeId: "role-admin", value: "admin" },
+        { kind: "expect_selected", nodeId: "role-admin", value: "admin" },
+      ],
+    });
+
+    const parsed = uiSpecDraftSchema.parse(draft);
+    expect(parsed.actions.at(-1)).toMatchObject({
+      kind: "submit",
+      effect: { kind: "set_state", stateKey: "status", value: "review" },
+    });
+    expect(parsed.behaviorFixtures.at(-1)?.steps).toEqual(
+      expect.arrayContaining([
+        { kind: "expect_selected", nodeId: "plan-select", value: "pro" },
+        { kind: "expect_selected", nodeId: "role-admin", value: "admin" },
+      ]),
+    );
+  });
+
+  it("拒绝缺少 postcondition 的 Flow-M8 submit action", () => {
+    const draft = createUISpecDraft();
+    const button = draft.nodes.find((node) => node.kind === "button");
+    if (button?.kind === "button") {
+      button.actionId = "submit-review";
+    }
+    draft.actions.push({
+      id: "submit-review",
+      kind: "submit",
+      effect: { kind: "none" },
+      postconditions: [],
+    });
+
+    expect(() => uiSpecDraftSchema.parse(draft)).toThrow();
+  });
+
   it("支持 button 图标资产和 pixel_overlay 节点", () => {
     const draft = createUISpecDraft();
     const button = draft.nodes.find(

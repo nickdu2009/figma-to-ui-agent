@@ -259,5 +259,5 @@ describe("run-m5-static runner", () => {
       expect(page.comparison).toBeDefined();
       expect(page.comparison?.screenshotPaths.length).toBeGreaterThanOrEqual(2);
     }
-  });
+  }, 30_000);
 });

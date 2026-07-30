@@ -123,6 +123,53 @@ function interactionStateInitialValue(
     : undefined;
 }
 
+function interactionPostconditions(
+  interaction: FlowPlanInteraction | LegacyFlowPlanInteraction,
+): FlowPlanInteraction["postconditions"] {
+  return "postconditions" in interaction
+    ? interaction.postconditions
+    : undefined;
+}
+
+function postconditionsAreVerifiable(
+  postconditions: NonNullable<FlowPlanInteraction["postconditions"]>,
+  pages: readonly UISpecDraft["pages"][number][],
+  nodeById: ReadonlyMap<string, UISpecDraft["nodes"][number]>,
+): boolean {
+  const pageIds = new Set(pages.map((page) => page.id));
+  return postconditions.every((postcondition) => {
+    if (postcondition.kind === "expect_page") {
+      return pageIds.has(postcondition.pageId);
+    }
+    const target = nodeById.get(postcondition.nodeId);
+    if (!target) {
+      return false;
+    }
+    if (postcondition.kind === "expect_visible") {
+      return true;
+    }
+    if (postcondition.kind === "expect_text") {
+      return (
+        target.kind === "text" ||
+        target.kind === "button" ||
+        target.kind === "badge" ||
+        target.kind === "link"
+      );
+    }
+    if (postcondition.kind === "expect_value") {
+      return target.kind === "input" || target.kind === "textarea";
+    }
+    if (postcondition.kind === "expect_checked") {
+      return (
+        target.kind === "checkbox" ||
+        target.kind === "switch" ||
+        target.kind === "radio"
+      );
+    }
+    return target.kind === "select" || target.kind === "radio";
+  });
+}
+
 function ensureStateEntry(
   next: UISpecDraft,
   stateByKey: Map<string, UISpecDraft["state"][number]>,
@@ -419,10 +466,64 @@ export function applyFlowPlanToUISpec(
       });
       continue;
     }
+    if (interaction.intent === "submit") {
+      const postconditions = interactionPostconditions(interaction);
+      if (!postconditions?.length) {
+        unresolvedInteractions.push({
+          ...interaction,
+          blockedReason: "submit_postcondition_missing",
+        });
+        continue;
+      }
+      if (!postconditionsAreVerifiable(postconditions, next.pages, nodeById)) {
+        unresolvedInteractions.push({
+          ...interaction,
+          blockedReason: "submit_postcondition_not_verifiable",
+        });
+        continue;
+      }
+      if (
+        interaction.targetPageId &&
+        !next.pages.some((page) => page.id === interaction.targetPageId)
+      ) {
+        unresolvedInteractions.push({
+          ...interaction,
+          blockedReason: "submit_target_page_missing",
+        });
+        continue;
+      }
+      if (
+        interaction.dialogNodeId &&
+        nodeById.get(interaction.dialogNodeId)?.kind !== "dialog"
+      ) {
+        unresolvedInteractions.push({
+          ...interaction,
+          blockedReason: "submit_dialog_not_verifiable",
+        });
+        continue;
+      }
+      if (
+        interaction.stateKey &&
+        !ensureStateEntry(
+          next,
+          stateByKey,
+          interaction.stateKey,
+          interaction.value,
+          interactionStateInitialValue(interaction),
+        )
+      ) {
+        unresolvedInteractions.push({
+          ...interaction,
+          blockedReason: "submit_state_effect_not_verifiable",
+        });
+        continue;
+      }
+    }
     if (
       interaction.intent !== "navigate" &&
       interaction.intent !== "set_state" &&
-      interaction.intent !== "open_dialog"
+      interaction.intent !== "open_dialog" &&
+      interaction.intent !== "submit"
     ) {
       unresolvedInteractions.push({
         ...interaction,
@@ -475,11 +576,29 @@ export function applyFlowPlanToUISpec(
         stateKey: interaction.stateKey!,
         value: interaction.value!,
       });
-    } else {
+    } else if (interaction.intent === "open_dialog") {
       next.actions.push({
         id: actionId,
         kind: "open_dialog",
         dialogNodeId: interaction.dialogNodeId!,
+      });
+    } else if (interaction.intent === "submit") {
+      const postconditions = interactionPostconditions(interaction)!;
+      next.actions.push({
+        id: actionId,
+        kind: "submit",
+        effect: interaction.targetPageId
+          ? { kind: "navigate", pageId: interaction.targetPageId }
+          : interaction.dialogNodeId
+            ? { kind: "open_dialog", dialogNodeId: interaction.dialogNodeId }
+            : interaction.stateKey && interaction.value !== undefined
+              ? {
+                  kind: "set_state",
+                  stateKey: interaction.stateKey,
+                  value: interaction.value,
+                }
+              : { kind: "none" },
+        postconditions,
       });
     }
     const fixtureId = `${actionId}-fixture`.slice(0, 256);
@@ -497,13 +616,18 @@ export function applyFlowPlanToUISpec(
                 nodeId: interaction.dialogNodeId!,
               },
             ]
-          : [
-              { kind: "click" as const, nodeId: node.id },
-              {
-                kind: "expect_visible" as const,
-                nodeId: setStateFixtureTargetNodeId!,
-              },
-            ];
+          : interaction.intent === "submit"
+            ? [
+                { kind: "click" as const, nodeId: node.id },
+                ...interactionPostconditions(interaction)!,
+              ]
+            : [
+                { kind: "click" as const, nodeId: node.id },
+                {
+                  kind: "expect_visible" as const,
+                  nodeId: setStateFixtureTargetNodeId!,
+                },
+              ];
     next.behaviorFixtures.push({
       id: fixtureId,
       name: `Flow: ${actionNodeLabel(node)} -> ${

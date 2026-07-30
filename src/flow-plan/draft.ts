@@ -41,12 +41,56 @@ export const flowIntentSchema = z.enum([
   "navigate",
   "set_state",
   "open_dialog",
+  "submit",
   "unknown",
 ]);
 export const interactionSupplementRawSourceSchema = z.enum([
   "figma_rest_probe",
   "fixture",
   "manual",
+]);
+
+export const flowPostconditionSchema = z.discriminatedUnion("kind", [
+  z
+    .object({
+      kind: z.literal("expect_page"),
+      pageId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_visible"),
+      nodeId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_text"),
+      nodeId: idSchema,
+      text: z.string().max(100_000),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_value"),
+      nodeId: idSchema,
+      value: z.string().max(10_000),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_checked"),
+      nodeId: idSchema,
+      checked: z.boolean(),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_selected"),
+      nodeId: idSchema,
+      value: z.string().min(1).max(1_000),
+    })
+    .strict(),
 ]);
 
 export const flowPlanPageSchema = z
@@ -76,6 +120,8 @@ export const flowPlanInteractionSchema = z
     dialogNodeId: idSchema.optional(),
     value: scalarSchema.optional(),
     stateInitialValue: scalarSchema.optional(),
+    postconditions: z.array(flowPostconditionSchema).max(100).optional(),
+    stateMachineTransitionId: idSchema.optional(),
     confirmationQuestionId: idSchema.optional(),
     confirmed: z.boolean(),
     confidence: flowConfidenceSchema,
@@ -195,6 +241,7 @@ export type FlowPlanPage = z.infer<typeof flowPlanPageSchema>;
 export type FlowPlanInteraction = z.infer<
   typeof flowPlanInteractionSchema
 >;
+export type FlowPostcondition = z.infer<typeof flowPostconditionSchema>;
 export type ConfirmationQuestion = z.infer<
   typeof confirmationQuestionSchema
 >;

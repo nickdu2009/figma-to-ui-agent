@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "1",
+  "catalogVersion": "1",
+  "projectId": "demo-project",
+  "sourceDesignBundleRevision": 1,
+  "designValueRefs": [],
+  "pages": [
+    {
+      "id": "home",
+      "sourcePageId": "page-home",
+      "path": "/",
+      "title": "登录",
+      "rootNodeId": "home-root"
+    },
+    {
+      "id": "success",
+      "sourcePageId": "page-quote",
+      "path": "/success",
+      "title": "完成",
+      "rootNodeId": "success-root"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "home-root",
+      "kind": "stack",
+      "direction": "vertical",
+      "childIds": [
+        "title",
+        "email",
+        "plan-select",
+        "role-admin",
+        "terms",
+        "submit-review",
+        "review-text",
+        "finish-submit",
+        "flow-dialog"
+      ],
+      "designValueRefs": []
+    },
+    {
+      "id": "title",
+      "kind": "text",
+      "text": "Flow-M8 Demo",
+      "variant": "heading",
+      "designValueRefs": []
+    },
+    {
+      "id": "email",
+      "kind": "input",
+      "label": "邮箱",
+      "stateKey": "email",
+      "inputType": "email",
+      "placeholder": "name@example.com",
+      "designValueRefs": []
+    },
+    {
+      "id": "plan-select",
+      "kind": "select",
+      "label": "套餐",
+      "stateKey": "plan",
+      "placeholder": "选择套餐",
+      "options": [
+        { "value": "basic", "label": "Basic" },
+        { "value": "pro", "label": "Pro" }
+      ],
+      "designValueRefs": []
+    },
+    {
+      "id": "role-admin",
+      "kind": "radio",
+      "label": "管理员",
+      "stateKey": "role",
+      "value": "admin",
+      "designValueRefs": []
+    },
+    {
+      "id": "terms",
+      "kind": "checkbox",
+      "label": "同意条款",
+      "stateKey": "terms",
+      "designValueRefs": []
+    },
+    {
+      "id": "submit-review",
+      "kind": "button",
+      "label": "提交审核",
+      "variant": "primary",
+      "designValueRefs": []
+    },
+    {
+      "id": "review-text",
+      "kind": "text",
+      "text": "正在审核",
+      "variant": "body",
+      "visibleWhen": {
+        "stateKey": "form-status",
+        "equals": "review"
+      },
+      "designValueRefs": []
+    },
+    {
+      "id": "finish-submit",
+      "kind": "button",
+      "label": "完成",
+      "variant": "secondary",
+      "designValueRefs": []
+    },
+    {
+      "id": "flow-dialog",
+      "kind": "dialog",
+      "title": "提交成功",
+      "openStateKey": "dialog-open",
+      "childIds": ["dialog-text"],
+      "designValueRefs": []
+    },
+    {
+      "id": "dialog-text",
+      "kind": "text",
+      "text": "本地提交完成",
+      "variant": "body",
+      "designValueRefs": []
+    },
+    {
+      "id": "success-root",
+      "kind": "stack",
+      "direction": "vertical",
+      "childIds": ["success-title"],
+      "designValueRefs": []
+    },
+    {
+      "id": "success-title",
+      "kind": "text",
+      "text": "完成页",
+      "variant": "heading",
+      "designValueRefs": []
+    }
+  ],
+  "state": [
+    { "key": "email", "valueType": "string", "initialValue": "" },
+    { "key": "plan", "valueType": "string", "initialValue": "" },
+    { "key": "role", "valueType": "string", "initialValue": "" },
+    { "key": "terms", "valueType": "boolean", "initialValue": false },
+    { "key": "form-status", "valueType": "string", "initialValue": "idle" },
+    { "key": "dialog-open", "valueType": "boolean", "initialValue": false }
+  ],
+  "actions": [],
+  "viewports": [
+    {
+      "id": "desktop",
+      "width": 320,
+      "height": 240,
+      "deviceScaleFactor": 1
+    }
+  ],
+  "behaviorFixtures": []
+}

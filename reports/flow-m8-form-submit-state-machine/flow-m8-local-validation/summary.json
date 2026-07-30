@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M8",
+  "scope": "form_submit_state_machine",
+  "status": "passed",
+  "input": {
+    "projectId": "demo-project",
+    "runId": "flow-m8-local-validation",
+    "flowPlanPath": "project-store/current-flow-plan",
+    "uiSpecRevision": 1,
+    "flowPlanRevision": 1,
+    "savedUISpecRevision": 2,
+    "figmaInteractionSource": "present"
+  },
+  "actions": {
+    "converted": [
+      {
+        "interactionId": "figma-submit-review",
+        "actionId": "flow-figma-submit-review",
+        "intent": "submit",
+        "trusted": true,
+        "source": "figma"
+      },
+      {
+        "interactionId": "user-confirmed-finish",
+        "actionId": "flow-user-confirmed-finish",
+        "intent": "submit",
+        "trusted": true,
+        "source": "user_confirmed"
+      }
+    ],
+    "rejected": [
+      {
+        "id": "inferred-submit",
+        "source": "inferred",
+        "uiNodeId": "submit-review",
+        "trigger": "submit",
+        "intent": "submit",
+        "fromPageId": "home",
+        "postconditions": [
+          {
+            "kind": "expect_visible",
+            "nodeId": "review-text"
+          }
+        ],
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "fixture must not convert",
+        "blockedReason": "requires_confirmation"
+      }
+    ]
+  },
+  "behaviors": {
+    "fixtures": [
+      {
+        "fixtureId": "m8-fill-email",
+        "source": "scenario",
+        "selectRadioAssertionCount": 0
+      },
+      {
+        "fixtureId": "m8-select-plan",
+        "source": "scenario",
+        "selectRadioAssertionCount": 2
+      },
+      {
+        "fixtureId": "m8-radio-role",
+        "source": "scenario",
+        "selectRadioAssertionCount": 2
+      },
+      {
+        "fixtureId": "flow-figma-submit-review-fixture",
+        "source": "flow_plan",
+        "intent": "submit",
+        "submit": true,
+        "stateMachineTransition": true,
+        "selectRadioAssertionCount": 0
+      },
+      {
+        "fixtureId": "flow-user-confirmed-finish-fixture",
+        "source": "flow_plan",
+        "intent": "submit",
+        "submit": true,
+        "stateMachineTransition": true,
+        "selectRadioAssertionCount": 0
+      }
+    ]
+  },
+  "counts": {
+    "trustedSubmitConverted": 2,
+    "userConfirmedConverted": 1,
+    "stateMachineTransitions": 2,
+    "selectRadioAssertions": 4,
+    "scenarioOnlyFixtures": 3,
+    "unresolved": 1
+  },
+  "validation": {
+    "schemaVersion": "1",
+    "runId": "flow-m8-local-validation",
+    "previewUrl": "http://127.0.0.1:5174/?projectId=demo-project&pageId=home&viewportId=desktop&specRevision=2&designRevision=1&runId=flow-m8-local-validation",
+    "passed": true,
+    "resultCount": 1,
+    "failedCheckCount": 0,
+    "successfulFixtureIds": [
+      "m8-fill-email",
+      "m8-select-plan",
+      "m8-radio-role",
+      "flow-figma-submit-review-fixture",
+      "flow-user-confirmed-finish-fixture"
+    ],
+    "failedFixtureIds": []
+  },
+  "reasons": [
+    "flow_m8_scenario_used_as_fixture_input_only"
+  ],
+  "residualRisks": [
+    "Flow-M8 submit 只表示本地 UI effect 和 Playwright postcondition，不表示真实后端业务成功。",
+    "默认本地验证不调用 Figma/OpenAI；restricted-live submit 样本仍需要后续单独 gate。"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "fixtures": [
+    {
+      "id": "m8-scenario-only-select",
+      "name": "仅场景选择套餐",
+      "viewportId": "desktop",
+      "initialPageId": "home",
+      "steps": [
+        { "kind": "select_option", "nodeId": "plan-select", "value": "basic" },
+        { "kind": "expect_selected", "nodeId": "plan-select", "value": "basic" }
+      ]
+    }
+  ]
+}

@@ -707,6 +707,7 @@ describe("applyFlowPlanToUISpec", () => {
           reason: "fixture",
         },
       ],
+      stateMachines: [],
       confirmationQuestions: [],
       confirmations: [],
       report: {

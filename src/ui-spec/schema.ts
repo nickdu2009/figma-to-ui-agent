@@ -456,6 +456,76 @@ const stateEntrySchema = z.discriminatedUnion("valueType", [
     .strict(),
 ]);
 
+export const uiPostconditionSchema = z.discriminatedUnion("kind", [
+  z
+    .object({
+      kind: z.literal("expect_page"),
+      pageId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_visible"),
+      nodeId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_text"),
+      nodeId: idSchema,
+      text: z.string().max(100_000),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_value"),
+      nodeId: idSchema,
+      value: z.string().max(10_000),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_checked"),
+      nodeId: idSchema,
+      checked: z.boolean(),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_selected"),
+      nodeId: idSchema,
+      value: z.string().min(1).max(1_000),
+    })
+    .strict(),
+]);
+
+const submitEffectSchema = z.discriminatedUnion("kind", [
+  z
+    .object({
+      kind: z.literal("set_state"),
+      stateKey: idSchema,
+      value: scalarSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("open_dialog"),
+      dialogNodeId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("navigate"),
+      pageId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("none"),
+    })
+    .strict(),
+]);
+
 const uiActionSchema = z.discriminatedUnion("kind", [
   z
     .object({
@@ -477,6 +547,14 @@ const uiActionSchema = z.discriminatedUnion("kind", [
       id: idSchema,
       kind: z.literal("open_dialog"),
       dialogNodeId: idSchema,
+    })
+    .strict(),
+  z
+    .object({
+      id: idSchema,
+      kind: z.literal("submit"),
+      effect: submitEffectSchema,
+      postconditions: z.array(uiPostconditionSchema).min(1).max(100),
     })
     .strict(),
 ]);
@@ -512,6 +590,20 @@ export const behaviorStepSchema = z.discriminatedUnion("kind", [
     .strict(),
   z
     .object({
+      kind: z.literal("select_option"),
+      nodeId: idSchema,
+      value: z.string().min(1).max(1_000),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("choose_radio"),
+      nodeId: idSchema,
+      value: z.string().min(1).max(1_000).optional(),
+    })
+    .strict(),
+  z
+    .object({
       kind: z.literal("expect_visible"),
       nodeId: idSchema,
     })
@@ -535,6 +627,13 @@ export const behaviorStepSchema = z.discriminatedUnion("kind", [
       kind: z.literal("expect_checked"),
       nodeId: idSchema,
       checked: z.boolean(),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("expect_selected"),
+      nodeId: idSchema,
+      value: z.string().min(1).max(1_000),
     })
     .strict(),
   z
@@ -600,6 +699,56 @@ type UISpecReferenceValue = Omit<
   z.infer<z.ZodObject<typeof uiSpecShape>>,
   "revision"
 >;
+
+function validatePostconditionReference(
+  input: {
+    postcondition: z.infer<typeof uiPostconditionSchema>;
+    nodeById: ReadonlyMap<string, z.infer<typeof uiNodeSchema>>;
+    pageIds: ReadonlySet<string>;
+  },
+): string | undefined {
+  if (input.postcondition.kind === "expect_page") {
+    return input.pageIds.has(input.postcondition.pageId)
+      ? undefined
+      : `悬空页面引用：${input.postcondition.pageId}`;
+  }
+  const target = input.nodeById.get(input.postcondition.nodeId);
+  if (!target) {
+    return `悬空行为节点引用：${input.postcondition.nodeId}`;
+  }
+  if (
+    input.postcondition.kind === "expect_text" &&
+    target.kind !== "text" &&
+    target.kind !== "button" &&
+    target.kind !== "badge" &&
+    target.kind !== "link"
+  ) {
+    return `行为 ${input.postcondition.kind} 与目标组件 ${target.kind} 不兼容`;
+  }
+  if (
+    input.postcondition.kind === "expect_value" &&
+    target.kind !== "input" &&
+    target.kind !== "textarea"
+  ) {
+    return `行为 ${input.postcondition.kind} 与目标组件 ${target.kind} 不兼容`;
+  }
+  if (
+    input.postcondition.kind === "expect_checked" &&
+    target.kind !== "checkbox" &&
+    target.kind !== "switch" &&
+    target.kind !== "radio"
+  ) {
+    return `行为 ${input.postcondition.kind} 与目标组件 ${target.kind} 不兼容`;
+  }
+  if (
+    input.postcondition.kind === "expect_selected" &&
+    target.kind !== "select" &&
+    target.kind !== "radio"
+  ) {
+    return `行为 ${input.postcondition.kind} 与目标组件 ${target.kind} 不兼容`;
+  }
+  return undefined;
+}
 
 function validateUISpecReferences(
   value: UISpecReferenceValue,
@@ -903,6 +1052,57 @@ function validateUISpecReferences(
         });
       }
     }
+    if (action.kind === "submit") {
+      if (action.effect.kind === "navigate" && !pageIds.has(action.effect.pageId)) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["actions", actionIndex, "effect", "pageId"],
+          message: `悬空页面引用：${action.effect.pageId}`,
+        });
+      }
+      if (action.effect.kind === "set_state") {
+        const stateEntry = stateByKey.get(action.effect.stateKey);
+        if (
+          !stateEntry ||
+          !scalarMatchesState(stateEntry.valueType, action.effect.value)
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["actions", actionIndex, "effect", "stateKey"],
+            message: "submit 状态效果引用不存在或值类型不匹配",
+          });
+        }
+      }
+      if (action.effect.kind === "open_dialog") {
+        const target = nodeById.get(action.effect.dialogNodeId);
+        if (!target || target.kind !== "dialog") {
+          ctx.addIssue({
+            code: "custom",
+            path: ["actions", actionIndex, "effect", "dialogNodeId"],
+            message: "submit 打开对话框效果必须引用 dialog 节点",
+          });
+        }
+      }
+      action.postconditions.forEach((postcondition, postconditionIndex) => {
+        const issue = validatePostconditionReference({
+          postcondition,
+          nodeById,
+          pageIds,
+        });
+        if (issue) {
+          ctx.addIssue({
+            code: "custom",
+            path: [
+              "actions",
+              actionIndex,
+              "postconditions",
+              postconditionIndex,
+            ],
+            message: issue,
+          });
+        }
+      });
+    }
   });
 
   value.behaviorFixtures.forEach((fixture, fixtureIndex) => {
@@ -941,12 +1141,18 @@ function validateUISpecReferences(
               ? target.kind === "input" || target.kind === "textarea"
               : step.kind === "toggle"
                 ? target.kind === "checkbox" || target.kind === "switch"
+                : step.kind === "select_option"
+                  ? target.kind === "select"
+                  : step.kind === "choose_radio"
+                    ? target.kind === "radio"
                 : step.kind === "expect_value"
                   ? target.kind === "input" || target.kind === "textarea"
                   : step.kind === "expect_checked"
                     ? target.kind === "checkbox" ||
                       target.kind === "switch" ||
                       target.kind === "radio"
+                    : step.kind === "expect_selected"
+                      ? target.kind === "select" || target.kind === "radio"
                 : step.kind === "click"
                   ? target.kind === "button" ||
                     target.kind === "link" ||

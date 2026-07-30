@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "present",
+  "pages": [
+    {
+      "id": "home",
+      "sourcePageId": "page-home",
+      "name": "登录",
+      "role": "entry",
+      "confidence": "high",
+      "reason": "fixture"
+    },
+    {
+      "id": "success",
+      "sourcePageId": "page-quote",
+      "name": "完成",
+      "role": "screen",
+      "confidence": "high",
+      "reason": "fixture"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "figma-submit-review",
+      "source": "figma",
+      "uiNodeId": "submit-review",
+      "trigger": "submit",
+      "intent": "submit",
+      "fromPageId": "home",
+      "stateKey": "form-status",
+      "value": "review",
+      "stateMachineTransitionId": "transition-review",
+      "postconditions": [
+        {
+          "kind": "expect_visible",
+          "nodeId": "review-text"
+        }
+      ],
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "fixture trusted submit"
+    },
+    {
+      "id": "user-confirmed-finish",
+      "source": "user_confirmed",
+      "uiNodeId": "finish-submit",
+      "trigger": "submit",
+      "intent": "submit",
+      "fromPageId": "home",
+      "targetPageId": "success",
+      "stateMachineTransitionId": "transition-success",
+      "postconditions": [
+        {
+          "kind": "expect_page",
+          "pageId": "success"
+        }
+      ],
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "fixture user confirmed submit"
+    },
+    {
+      "id": "inferred-submit",
+      "source": "inferred",
+      "uiNodeId": "submit-review",
+      "trigger": "submit",
+      "intent": "submit",
+      "fromPageId": "home",
+      "postconditions": [
+        {
+          "kind": "expect_visible",
+          "nodeId": "review-text"
+        }
+      ],
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "fixture must not convert",
+      "blockedReason": "requires_confirmation"
+    }
+  ],
+  "confirmationQuestions": [],
+  "confirmations": [],
+  "stateMachines": [
+    {
+      "id": "login-flow",
+      "initialState": "idle",
+      "states": [
+        { "id": "idle", "pageId": "home" },
+        { "id": "review", "pageId": "home", "visibleNodeIds": ["review-text"] },
+        { "id": "success", "pageId": "success" }
+      ],
+      "transitions": [
+        {
+          "id": "transition-review",
+          "from": "idle",
+          "to": "review",
+          "triggerInteractionId": "figma-submit-review",
+          "postconditions": [
+            {
+              "kind": "expect_visible",
+              "nodeId": "review-text"
+            }
+          ]
+        },
+        {
+          "id": "transition-success",
+          "from": "review",
+          "to": "success",
+          "triggerInteractionId": "user-confirmed-finish",
+          "postconditions": [
+            {
+              "kind": "expect_page",
+              "pageId": "success"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "report": {
+    "unsupportedCount": 0,
+    "unresolvedInteractionCount": 1,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}

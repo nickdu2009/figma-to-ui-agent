@@ -82,6 +82,7 @@ function createFlowPlanDraft(
         blockedReason: "prototype_absent",
       },
     ],
+    stateMachines: [],
     confirmationQuestions: [
       {
         id: "confirm-continue",

@@ -29,6 +29,60 @@ export function applyConfirmations(
         reason: `${interaction.reason} 用户确认保持静态。`,
       };
     }
+    const submitStateVisibleMatch =
+      /^submit:set_state:([^:]+):(true|false):expect_visible:([^:]+)$/.exec(
+        answer,
+      );
+    if (submitStateVisibleMatch) {
+      return {
+        ...interaction,
+        source: "user_confirmed" as const,
+        confirmed: true,
+        trigger: "submit" as const,
+        intent: "submit" as const,
+        stateKey: submitStateVisibleMatch[1],
+        value: submitStateVisibleMatch[2] === "true",
+        postconditions: [
+          {
+            kind: "expect_visible" as const,
+            nodeId: submitStateVisibleMatch[3]!,
+          },
+        ],
+        blockedReason: undefined,
+        reason: "用户确认该控件提交表单并产生本地可见结果。",
+      };
+    }
+    const submitNavigateMatch =
+      /^submit:navigate:([^:]+):expect_page:([^:]+)$/.exec(answer);
+    if (
+      submitNavigateMatch &&
+      pageIds.has(submitNavigateMatch[1]!) &&
+      submitNavigateMatch[1] === submitNavigateMatch[2]
+    ) {
+      return {
+        ...interaction,
+        source: "user_confirmed" as const,
+        confirmed: true,
+        trigger: "submit" as const,
+        intent: "submit" as const,
+        targetPageId: submitNavigateMatch[1],
+        postconditions: [
+          {
+            kind: "expect_page" as const,
+            pageId: submitNavigateMatch[2]!,
+          },
+        ],
+        blockedReason: undefined,
+        reason: "用户确认该控件提交表单并跳转页面。",
+      };
+    }
+    if (answer.startsWith("submit:")) {
+      return {
+        ...interaction,
+        confirmed: false,
+        blockedReason: "invalid_submit_confirmation_answer",
+      };
+    }
     const targetMatch = /^target:(.+)$/.exec(answer);
     if (!targetMatch || !pageIds.has(targetMatch[1]!)) {
       return {

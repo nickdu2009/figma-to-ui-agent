@@ -180,4 +180,90 @@ describe("正式 FlowPlan schema", () => {
       confirmationCount: 0,
     });
   });
+
+  it("支持 Flow-M8 submit interaction 和本地状态机", () => {
+    const draft = createFlowPlanDraft();
+    const parsed = parseFlowPlanDraft({
+      ...draft,
+      interactions: [
+        {
+          id: "submit-review",
+          source: "figma",
+          uiNodeId: "submit-button",
+          trigger: "submit",
+          intent: "submit",
+          fromPageId: "home",
+          stateKey: "status",
+          value: "review",
+          stateMachineTransitionId: "transition-review",
+          postconditions: [
+            {
+              kind: "expect_visible",
+              nodeId: "review-text",
+            },
+          ],
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      confirmationQuestions: [],
+      confirmations: [],
+      stateMachines: [
+        {
+          id: "login-flow",
+          initialState: "idle",
+          states: [
+            { id: "idle", pageId: "home" },
+            { id: "review", pageId: "home", visibleNodeIds: ["review-text"] },
+          ],
+          transitions: [
+            {
+              id: "transition-review",
+              from: "idle",
+              to: "review",
+              triggerInteractionId: "submit-review",
+              postconditions: [
+                {
+                  kind: "expect_visible",
+                  nodeId: "review-text",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(parsed.interactions[0]).toMatchObject({
+      intent: "submit",
+      postconditions: [{ kind: "expect_visible", nodeId: "review-text" }],
+    });
+    expect(parsed.stateMachines).toHaveLength(1);
+  });
+
+  it("拒绝缺少 postcondition 的 Flow-M8 submit interaction", () => {
+    const draft = createFlowPlanDraft();
+
+    expect(() =>
+      parseFlowPlanDraft({
+        ...draft,
+        interactions: [
+          {
+            id: "submit-review",
+            source: "figma",
+            uiNodeId: "submit-button",
+            trigger: "submit",
+            intent: "submit",
+            fromPageId: "home",
+            confirmed: true,
+            confidence: "high",
+            reason: "fixture",
+          },
+        ],
+        confirmationQuestions: [],
+        confirmations: [],
+      }),
+    ).toThrow("submit interaction 必须包含可观察 postcondition");
+  });
 });

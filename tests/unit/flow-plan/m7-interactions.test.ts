@@ -89,6 +89,7 @@ describe("Flow-M7 interaction executor", () => {
         },
       ],
       interactions: [],
+      stateMachines: [],
       confirmationQuestions: [],
       confirmations: [],
       report: {
