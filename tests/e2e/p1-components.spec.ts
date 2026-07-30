@@ -54,10 +54,12 @@ async function seedProject(): Promise<void> {
     { key: "notify", valueType: "boolean", initialValue: false },
     { key: "plan", valueType: "string", initialValue: "" },
     { key: "activeTab", valueType: "string", initialValue: "general" },
+    { key: "variantState", valueType: "string", initialValue: "source" },
   );
   draft.actions.push(
     { id: "go-details", kind: "navigate", pageId: "details" },
     { id: "go-home", kind: "navigate", pageId: "home" },
+    { id: "show-target", kind: "set_state", stateKey: "variantState", value: "target" },
   );
   draft.pages = [
     {
@@ -96,6 +98,8 @@ async function seedProject(): Promise<void> {
         "plan-radio-a",
         "plan-radio-b",
         "tabs",
+        "variant-source",
+        "variant-target",
         "details-link",
       ],
       designValueRefs: [],
@@ -223,6 +227,36 @@ async function seedProject(): Promise<void> {
       designValueRefs: [],
     },
     {
+      id: "variant-source",
+      kind: "stack",
+      direction: "vertical",
+      childIds: ["variant-button"],
+      visibleWhen: {
+        stateKey: "variantState",
+        equals: "source",
+      },
+      designValueRefs: [],
+    },
+    {
+      id: "variant-button",
+      kind: "button",
+      label: "切换 Variant",
+      actionId: "show-target",
+      variant: "secondary",
+      designValueRefs: [],
+    },
+    {
+      id: "variant-target",
+      kind: "text",
+      text: "Target Variant",
+      variant: "body",
+      visibleWhen: {
+        stateKey: "variantState",
+        equals: "target",
+      },
+      designValueRefs: [],
+    },
+    {
       id: "details-root",
       kind: "stack",
       direction: "vertical",
@@ -293,6 +327,13 @@ test("P1 组件支持受控输入、状态、选项卡和链接导航", async ({
   await page.getByRole("tab", { name: "高级" }).click();
   await expect(page.getByText("高级面板")).toBeVisible();
   await expect(page.getByText("常规面板")).not.toBeVisible();
+
+  await expect(page.getByText("Target Variant")).not.toBeVisible();
+  await page.getByRole("button", { name: "切换 Variant" }).click();
+  await expect(page.getByText("Target Variant")).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "切换 Variant" }),
+  ).not.toBeVisible();
 
   await page.getByRole("link", { name: "去详情" }).click();
   await expect(

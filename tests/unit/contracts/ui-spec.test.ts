@@ -419,6 +419,40 @@ describe("UISpec Schema", () => {
     );
   });
 
+  it("支持条件可见性并拒绝状态类型不匹配", () => {
+    const draft = createUISpecDraft();
+    draft.state.push({
+      key: "variant",
+      valueType: "string",
+      initialValue: "source",
+    });
+    const target = draft.nodes.find((node) => node.id === "title");
+    if (target) {
+      target.visibleWhen = {
+        stateKey: "variant",
+        equals: "target",
+      };
+    }
+    expect(uiSpecDraftSchema.parse(draft).nodes[1]).toMatchObject({
+      visibleWhen: {
+        stateKey: "variant",
+        equals: "target",
+      },
+    });
+
+    const invalid = structuredClone(draft);
+    const invalidTarget = invalid.nodes.find((node) => node.id === "title");
+    if (invalidTarget) {
+      invalidTarget.visibleWhen = {
+        stateKey: "variant",
+        equals: true,
+      };
+    }
+    expect(() => uiSpecDraftSchema.parse(invalid)).toThrow(
+      "条件可见性引用不存在或值类型不匹配",
+    );
+  });
+
   it("拒绝行为步骤与目标组件类型不匹配", () => {
     const draft = createUISpecDraft();
     draft.behaviorFixtures[0]!.steps = [

@@ -243,6 +243,129 @@ describe("applyFlowPlanToUISpec", () => {
     ]);
   });
 
+  it("把跨页面 component variant 目标克隆到源页面并用状态切换显隐", () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const root = uiSpec.nodes.find((node) => node.id === "root");
+    const quoteRoot = uiSpec.nodes.find((node) => node.id === "quote-root");
+    if (root?.kind === "stack") {
+      root.childIds.push("source-variant");
+    }
+    if (quoteRoot?.kind === "stack") {
+      quoteRoot.childIds.push("target-variant");
+    }
+    uiSpec.nodes.push(
+      {
+        id: "source-variant",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["source-button"],
+        style: { position: "absolute", left: 10, top: 20, width: 160 },
+        designValueRefs: [],
+      },
+      {
+        id: "source-button",
+        kind: "button",
+        label: "On",
+        variant: "primary",
+        designValueRefs: [],
+      },
+      {
+        id: "target-variant",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["target-label"],
+        style: { position: "absolute", left: 300, top: 400 },
+        designValueRefs: [],
+      },
+      {
+        id: "target-label",
+        kind: "text",
+        text: "Off",
+        variant: "body",
+        designValueRefs: [],
+      },
+    );
+
+    const result = applyFlowPlanToUISpec(uiSpec, {
+      schemaVersion: "m4-spike",
+      projectId: "demo-project",
+      sourceDesignBundleRevision: 1,
+      sourceUISpecRevision: 1,
+      pages: [
+        {
+          id: "home",
+          sourcePageId: "page-home",
+          name: "首页",
+          role: "entry",
+          confidence: "medium",
+          reason: "fixture",
+        },
+        {
+          id: "quote",
+          sourcePageId: "page-quote",
+          name: "报价",
+          role: "component",
+          confidence: "medium",
+          reason: "fixture",
+        },
+      ],
+      interactions: [
+        {
+          id: "figma-change-to-off",
+          source: "figma",
+          uiNodeId: "source-button",
+          trigger: "click",
+          intent: "set_state",
+          fromPageId: "home",
+          stateKey: "variant-source-state",
+          value: "Off",
+          stateInitialValue: "On",
+          targetNodeId: "target-variant",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      confirmationQuestions: [],
+      report: {
+        unsupportedCount: 0,
+        unresolvedInteractionCount: 0,
+        convertedActionCount: 0,
+        behaviorFixtureCount: 0,
+      },
+    });
+
+    const clonedRootId =
+      "variant-figma-change-to-off-target-variant";
+    expect(result.uiSpec.state).toContainEqual({
+      key: "variant-source-state",
+      valueType: "string",
+      initialValue: "On",
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === "source-variant")).toMatchObject({
+      visibleWhen: {
+        stateKey: "variant-source-state",
+        equals: "On",
+      },
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === clonedRootId)).toMatchObject({
+      kind: "stack",
+      childIds: ["variant-figma-change-to-off-target-label"],
+      style: { position: "absolute", left: 10, top: 20, width: 160 },
+      visibleWhen: {
+        stateKey: "variant-source-state",
+        equals: "Off",
+      },
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === "root")).toMatchObject({
+      childIds: expect.arrayContaining(["source-variant", clonedRootId]),
+    });
+    expect(result.uiSpec.behaviorFixtures[0]!.steps).toEqual([
+      { kind: "click", nodeId: "source-button" },
+      { kind: "expect_visible", nodeId: clonedRootId },
+    ]);
+  });
+
   it("正式 FlowPlan 写入 sourceFlowPlanRevision 且只转换已确认 interaction", () => {
     const uiSpec = createStoredMultipageFlowUISpec();
     const draft = generateFormalFlowConfirmationQuestions(

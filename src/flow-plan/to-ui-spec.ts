@@ -72,6 +72,235 @@ function scalarMatchesState(
   );
 }
 
+function valueTypeFor(
+  value: string | number | boolean,
+): UISpecDraft["state"][number]["valueType"] {
+  if (typeof value === "string") {
+    return "string";
+  }
+  if (typeof value === "number") {
+    return "number";
+  }
+  return "boolean";
+}
+
+function interactionStateInitialValue(
+  interaction: FlowPlanInteraction | LegacyFlowPlanInteraction,
+): string | number | boolean | undefined {
+  return "stateInitialValue" in interaction
+    ? interaction.stateInitialValue
+    : undefined;
+}
+
+function ensureStateEntry(
+  next: UISpecDraft,
+  stateByKey: Map<string, UISpecDraft["state"][number]>,
+  stateKey: string | undefined,
+  value: string | number | boolean | undefined,
+  initialValue: string | number | boolean | undefined,
+): boolean {
+  if (!stateKey || value === undefined) {
+    return false;
+  }
+  const existing = stateByKey.get(stateKey);
+  if (existing) {
+    return scalarMatchesState(existing, value);
+  }
+  if (initialValue === undefined || typeof initialValue !== typeof value) {
+    return false;
+  }
+  const entry = {
+    key: stateKey,
+    valueType: valueTypeFor(value),
+    initialValue,
+  } as UISpecDraft["state"][number];
+  next.state.push(entry);
+  stateByKey.set(stateKey, entry);
+  return true;
+}
+
+function childIdsForNode(node: UISpecDraft["nodes"][number]): string[] {
+  const direct = "childIds" in node ? node.childIds : [];
+  const tabs =
+    node.kind === "tabs"
+      ? node.tabs.flatMap((tab) => tab.childIds)
+      : [];
+  return [...direct, ...tabs];
+}
+
+function buildParentByChild(
+  nodes: readonly UISpecDraft["nodes"][number][],
+): Map<string, string> {
+  const parentByChild = new Map<string, string>();
+  for (const node of nodes) {
+    for (const childId of childIdsForNode(node)) {
+      parentByChild.set(childId, node.id);
+    }
+  }
+  return parentByChild;
+}
+
+function buildNodePageMap(
+  pages: readonly UISpecDraft["pages"][number][],
+  nodeById: ReadonlyMap<string, UISpecDraft["nodes"][number]>,
+): Map<string, string> {
+  const nodeToPage = new Map<string, string>();
+  const visit = (nodeId: string, pageId: string): void => {
+    if (nodeToPage.has(nodeId)) {
+      return;
+    }
+    nodeToPage.set(nodeId, pageId);
+    const node = nodeById.get(nodeId);
+    if (!node) {
+      return;
+    }
+    for (const childId of childIdsForNode(node)) {
+      visit(childId, pageId);
+    }
+  };
+  for (const page of pages) {
+    visit(page.rootNodeId, page.id);
+  }
+  return nodeToPage;
+}
+
+function remapChildReferences(
+  node: UISpecDraft["nodes"][number],
+  remapId: (id: string) => string,
+): void {
+  if ("childIds" in node) {
+    node.childIds = node.childIds.map(remapId);
+  }
+  if (node.kind === "tabs") {
+    node.tabs = node.tabs.map((tab) => ({
+      ...tab,
+      childIds: tab.childIds.map(remapId),
+    }));
+  }
+}
+
+function insertSiblingAfter(
+  parent: UISpecDraft["nodes"][number],
+  sourceId: string,
+  siblingId: string,
+): boolean {
+  if (!("childIds" in parent)) {
+    return false;
+  }
+  const index = parent.childIds.indexOf(sourceId);
+  if (index < 0 || parent.childIds.includes(siblingId)) {
+    return false;
+  }
+  parent.childIds.splice(index + 1, 0, siblingId);
+  return true;
+}
+
+function cloneVariantTargetIntoSourcePage(input: {
+  readonly next: UISpecDraft;
+  readonly nodeById: Map<string, UISpecDraft["nodes"][number]>;
+  readonly actionNodeId: string;
+  readonly interactionId: string;
+  readonly targetNodeId: string;
+  readonly stateKey: string;
+  readonly sourceValue: string | number | boolean;
+  readonly targetValue: string | number | boolean;
+}): string | undefined {
+  const parentByChild = buildParentByChild(input.next.nodes);
+  const nodeToPage = buildNodePageMap(input.next.pages, input.nodeById);
+  const sourcePageId = nodeToPage.get(input.actionNodeId);
+  const targetPageId = nodeToPage.get(input.targetNodeId);
+  if (!sourcePageId || !targetPageId || sourcePageId === targetPageId) {
+    return input.targetNodeId;
+  }
+
+  const sourceVariantRootId =
+    parentByChild.get(input.actionNodeId) ?? input.actionNodeId;
+  const sourceVariantRoot = input.nodeById.get(sourceVariantRootId);
+  const sourceParentId = parentByChild.get(sourceVariantRootId);
+  const sourceParent = sourceParentId
+    ? input.nodeById.get(sourceParentId)
+    : undefined;
+  const targetRoot = input.nodeById.get(input.targetNodeId);
+  if (!sourceVariantRoot || !sourceParent || !targetRoot) {
+    return undefined;
+  }
+
+  const existingIds = new Set(input.next.nodes.map((node) => node.id));
+  const cloneIdFor = (nodeId: string): string => {
+    const base = `variant-${safeId(input.interactionId)}-${safeId(nodeId)}`.slice(
+      0,
+      248,
+    );
+    if (!existingIds.has(base)) {
+      existingIds.add(base);
+      return base;
+    }
+    for (let index = 1; index < 1000; index += 1) {
+      const candidate = `${base}-${index}`.slice(0, 256);
+      if (!existingIds.has(candidate)) {
+        existingIds.add(candidate);
+        return candidate;
+      }
+    }
+    throw new Error("variant_clone_id_exhausted");
+  };
+  const cloneIdByOriginalId = new Map<string, string>();
+  const targetSubtreeIds: string[] = [];
+  const collect = (nodeId: string): void => {
+    if (cloneIdByOriginalId.has(nodeId)) {
+      return;
+    }
+    const node = input.nodeById.get(nodeId);
+    if (!node) {
+      return;
+    }
+    cloneIdByOriginalId.set(nodeId, cloneIdFor(nodeId));
+    targetSubtreeIds.push(nodeId);
+    for (const childId of childIdsForNode(node)) {
+      collect(childId);
+    }
+  };
+  collect(input.targetNodeId);
+  if (!cloneIdByOriginalId.has(input.targetNodeId)) {
+    return undefined;
+  }
+
+  for (const originalId of targetSubtreeIds) {
+    const original = input.nodeById.get(originalId)!;
+    const clone = structuredClone(original) as UISpecDraft["nodes"][number];
+    clone.id = cloneIdByOriginalId.get(originalId)!;
+    remapChildReferences(
+      clone,
+      (childId) => cloneIdByOriginalId.get(childId) ?? childId,
+    );
+    if (originalId === input.targetNodeId) {
+      clone.style = {
+        ...clone.style,
+        ...sourceVariantRoot.style,
+      };
+      clone.visibleWhen = {
+        stateKey: input.stateKey,
+        equals: input.targetValue,
+      };
+    }
+    input.next.nodes.push(clone);
+    input.nodeById.set(clone.id, clone);
+  }
+
+  sourceVariantRoot.visibleWhen = {
+    stateKey: input.stateKey,
+    equals: input.sourceValue,
+  };
+  const clonedTargetRootId = cloneIdByOriginalId.get(input.targetNodeId)!;
+  return insertSiblingAfter(
+    sourceParent,
+    sourceVariantRootId,
+    clonedTargetRootId,
+  )
+    ? clonedTargetRootId
+    : undefined;
+}
+
 export function applyFlowPlanToUISpec(
   uiSpec: UISpec | UISpecDraft,
   draft: FlowPlanDraft | FlowPlan | LegacyFlowPlanDraft,
@@ -129,11 +358,12 @@ export function applyFlowPlanToUISpec(
     }
     if (
       interaction.intent === "set_state" &&
-      (!scalarMatchesState(
-        interaction.stateKey
-          ? stateByKey.get(interaction.stateKey)
-          : undefined,
+      (!ensureStateEntry(
+        next,
+        stateByKey,
+        interaction.stateKey,
         interaction.value,
+        interactionStateInitialValue(interaction),
       ) ||
         !interaction.targetNodeId ||
         !nodeById.has(interaction.targetNodeId))
@@ -165,6 +395,35 @@ export function applyFlowPlanToUISpec(
         blockedReason: "unsupported_flow_intent",
       });
       continue;
+    }
+    let setStateFixtureTargetNodeId = interaction.targetNodeId;
+    if (
+      interaction.intent === "set_state" &&
+      interaction.stateKey &&
+      interaction.value !== undefined
+    ) {
+      const initialValue = interactionStateInitialValue(interaction);
+      const hydratedTarget =
+        initialValue !== undefined
+          ? cloneVariantTargetIntoSourcePage({
+              next,
+              nodeById,
+              actionNodeId: node.id,
+              interactionId: interaction.id,
+              targetNodeId: interaction.targetNodeId!,
+              stateKey: interaction.stateKey,
+              sourceValue: initialValue,
+              targetValue: interaction.value,
+            })
+          : interaction.targetNodeId;
+      if (!hydratedTarget) {
+        unresolvedInteractions.push({
+          ...interaction,
+          blockedReason: "state_action_not_verifiable",
+        });
+        continue;
+      }
+      setStateFixtureTargetNodeId = hydratedTarget;
     }
     const actionId = existingActionIdFor(actionIds, interaction.id);
     actionIds.add(actionId);
@@ -208,7 +467,7 @@ export function applyFlowPlanToUISpec(
               { kind: "click" as const, nodeId: node.id },
               {
                 kind: "expect_visible" as const,
-                nodeId: interaction.targetNodeId!,
+                nodeId: setStateFixtureTargetNodeId!,
               },
             ];
     next.behaviorFixtures.push({

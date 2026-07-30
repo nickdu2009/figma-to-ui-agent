@@ -992,7 +992,7 @@ export function generateComponentFixtures(): ComponentFixture[] {
   const componentNames = Object.keys(catalog.data.components);
 
   return componentNames
-    .filter((name) => name !== "TabPanel")
+    .filter((name) => name !== "TabPanel" && name !== "Conditional")
     .map((name) => {
       const builder = builders[name];
       if (!builder) {

@@ -62,6 +62,10 @@ function tabPanelId(tabsId: string, value: string): string {
   return `__tabpanel__${tabsId}__${value}`;
 }
 
+function conditionalId(nodeId: string): string {
+  return `__conditional__${nodeId}`.slice(0, 256);
+}
+
 interface ToElementResult {
   element: UIElement;
   extra?: Record<string, UIElement>;
@@ -495,7 +499,17 @@ export function toPreviewJsonSpec(
   }
   const nodeById = new Map(uiSpec.nodes.map((node) => [node.id, node]));
   const elements: Record<string, UIElement> = {};
-  for (const nodeId of reachableNodeIds(page.rootNodeId, nodeById)) {
+  const reachableIds = reachableNodeIds(page.rootNodeId, nodeById);
+  const conditionalByNodeId = new Map(
+    reachableIds
+      .map((nodeId) => nodeById.get(nodeId)!)
+      .filter((node) => node.visibleWhen)
+      .map((node) => [node.id, conditionalId(node.id)] as const),
+  );
+  const renderedNodeId = (nodeId: string): string =>
+    conditionalByNodeId.get(nodeId) ?? nodeId;
+
+  for (const nodeId of reachableIds) {
     const { element, extra } = toElement(nodeById.get(nodeId)!, options);
     elements[nodeId] = {
       ...element,
@@ -512,6 +526,26 @@ export function toPreviewJsonSpec(
       }
     }
   }
+  for (const [elementId, element] of Object.entries(elements)) {
+    elements[elementId] = {
+      ...element,
+      children: (element.children ?? []).map(renderedNodeId),
+    };
+  }
+  for (const [nodeId, wrapperId] of conditionalByNodeId) {
+    const node = nodeById.get(nodeId)!;
+    elements[wrapperId] = {
+      type: "Conditional",
+      props: {
+        nodeId: wrapperId,
+        designValueRefs: [],
+        stateKey: node.visibleWhen!.stateKey,
+        equals: node.visibleWhen!.equals,
+      },
+      children: [nodeId],
+      visible: true,
+    };
+  }
   for (const node of uiSpec.nodes) {
     if (
       node.kind !== "form_field" ||
@@ -527,7 +561,7 @@ export function toPreviewJsonSpec(
     }
   }
   const spec: PreviewJsonSpec = {
-    root: page.rootNodeId,
+    root: renderedNodeId(page.rootNodeId),
     elements,
     state: Object.fromEntries(
       uiSpec.state.map((entry) => [entry.key, entry.initialValue]),

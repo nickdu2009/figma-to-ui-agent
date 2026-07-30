@@ -117,6 +117,48 @@ describe("toPreviewJsonSpec", () => {
     });
   });
 
+  it("把 visibleWhen 节点包成 Conditional 并重写父子引用", () => {
+    const draft = createUISpecDraft();
+    draft.state.push({
+      key: "variant",
+      valueType: "string",
+      initialValue: "source",
+    });
+    const title = draft.nodes.find((node) => node.id === "title");
+    if (title) {
+      title.visibleWhen = {
+        stateKey: "variant",
+        equals: "target",
+      };
+    }
+    const uiSpec = uiSpecSchema.parse({
+      ...draft,
+      revision: 1,
+    });
+
+    const preview = toPreviewJsonSpec(uiSpec, "home", {
+      imageUrl: (path) => `/project-image/${path}`,
+    });
+
+    expect(preview.root).toBe("root");
+    expect(preview.elements.root?.children).toEqual([
+      "__conditional__title",
+      "image",
+      "continue",
+    ]);
+    expect(preview.elements.__conditional__title).toMatchObject({
+      type: "Conditional",
+      props: {
+        stateKey: "variant",
+        equals: "target",
+      },
+      children: ["title"],
+    });
+    expect(preview.elements.title).toMatchObject({
+      type: "Text",
+    });
+  });
+
   it("绝对定位 form_field 内的输入框隐藏内置标签", () => {
     const draft = createUISpecDraft();
     draft.state.push({

@@ -7,6 +7,11 @@ const designValueRefs = z.array(nodeId).max(10_000);
 const stateBinding = z
   .object({ $bindState: z.string().min(1).max(512) })
   .strict();
+const scalar = z.union([
+  z.string().max(10_000),
+  z.number().finite(),
+  z.boolean(),
+]);
 const color = z
   .string()
   .regex(/^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$/);
@@ -396,6 +401,16 @@ export const previewCatalog = defineCatalog(schema, {
         })
         .strict(),
       description: "选项卡面板，按 stateKey/value 显示",
+    },
+    Conditional: {
+      props: z
+        .object({
+          ...common,
+          stateKey: nodeId,
+          equals: scalar,
+        })
+        .strict(),
+      description: "按 stateKey/equals 条件渲染子元素",
     },
     Nav: {
       props: z

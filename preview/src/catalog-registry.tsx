@@ -6,6 +6,7 @@ import {
 import { previewCatalog } from "../../src/preview/catalog.ts";
 import {
   Dialog,
+  Conditional,
   Divider,
   Grid,
   Section,
@@ -41,6 +42,7 @@ const components = {
   Grid,
   Section,
   Dialog,
+  Conditional,
   Text,
   Image,
   PixelOverlay,

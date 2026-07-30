@@ -5,13 +5,13 @@ import { previewCatalog } from "../../../src/preview/catalog.ts";
 import { toPreviewJsonSpec } from "../../../src/preview/json-render-adapter.ts";
 
 describe("generateComponentFixtures", () => {
-  it("为每个 previewCatalog 组件生成 fixture（TabPanel 除外）", () => {
+  it("为每个公开 previewCatalog 组件生成 fixture", () => {
     const fixtures = generateComponentFixtures();
     const catalog = previewCatalog as unknown as {
       data: { components: Record<string, unknown> };
     };
     const expectedKinds = Object.keys(catalog.data.components).filter(
-      (name) => name !== "TabPanel",
+      (name) => name !== "TabPanel" && name !== "Conditional",
     );
 
     expect(fixtures.map((fixture) => fixture.kind).sort()).toEqual(

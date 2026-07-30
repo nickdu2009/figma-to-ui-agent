@@ -13,6 +13,12 @@ const scalarSchema = z.union([
   z.number().finite(),
   z.boolean(),
 ]);
+const visibleWhenSchema = z
+  .object({
+    stateKey: idSchema,
+    equals: scalarSchema,
+  })
+  .strict();
 
 const routePathSchema = z
   .string()
@@ -107,6 +113,7 @@ const uiStyleSchema = z
 const nodeBaseShape = {
   id: idSchema,
   designValueRefs: idListSchema,
+  visibleWhen: visibleWhenSchema.optional(),
   style: uiStyleSchema.optional(),
   sourceComponent: z
     .object({
@@ -663,6 +670,20 @@ function validateUISpecReferences(
         });
       }
     });
+
+    if (node.visibleWhen) {
+      const stateEntry = stateByKey.get(node.visibleWhen.stateKey);
+      if (
+        !stateEntry ||
+        !scalarMatchesState(stateEntry.valueType, node.visibleWhen.equals)
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["nodes", nodeIndex, "visibleWhen", "stateKey"],
+          message: "条件可见性引用不存在或值类型不匹配",
+        });
+      }
+    }
 
     const directChildIds = "childIds" in node ? node.childIds : [];
     const tabChildIds =

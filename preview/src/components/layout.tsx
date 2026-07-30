@@ -1,5 +1,5 @@
 import { createElement, type CSSProperties } from "react";
-import type { ComponentFn } from "@json-render/react";
+import { useStateValue, type ComponentFn } from "@json-render/react";
 
 import { previewCatalog } from "../../../src/preview/catalog.ts";
 import {
@@ -95,6 +95,25 @@ export const Dialog: ComponentFn<
     {children}
   </section>
 );
+
+export const Conditional: ComponentFn<
+  typeof previewCatalog,
+  "Conditional"
+> = ({ props, children }) => {
+  const currentValue = useStateValue<string | number | boolean>(
+    `/${props.stateKey}`,
+  );
+  if (currentValue !== props.equals) {
+    return (
+      <div
+        className="ui-conditional"
+        data-ui-node-id={props.nodeId}
+        hidden
+      />
+    );
+  }
+  return <>{children}</>;
+};
 
 export const Spacer: ComponentFn<typeof previewCatalog, "Spacer"> = ({
   props,
