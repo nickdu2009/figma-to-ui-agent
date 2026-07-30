@@ -236,6 +236,105 @@ describe("buildFlowPlanDraft", () => {
     );
   });
 
+  it("从子 vector 的 CHANGE_TO interaction 回溯到祖先结构化控件", () => {
+    const bundle = createStoredMultipageFlowDesignBundle();
+    const homePage = bundle.pages[0]!;
+    homePage.nodes.push(
+      {
+        id: "I3186:4557;3096:2594",
+        parentId: "figma-root",
+        kind: "instance",
+        name: "Resources Switch",
+        visible: true,
+        componentProperties: [
+          { name: "State", type: "VARIANT", value: "Off" },
+        ],
+        styleRefs: [],
+        imageRefs: [],
+        boundVariableRefs: [],
+        designValueRefs: [],
+        warningCodes: [],
+      },
+      {
+        id: "I3186:4557;3096:2594;3071:2439",
+        parentId: "I3186:4557;3096:2594",
+        kind: "vector",
+        name: "Knob",
+        visible: true,
+        styleRefs: [],
+        imageRefs: [],
+        boundVariableRefs: [],
+        designValueRefs: [],
+        prototypeInteractions: [
+          {
+            id: "figma-change-to-resources-on",
+            source: "figma_rest",
+            trigger: "click",
+            actionType: "change_to",
+            navigation: "CHANGE_TO",
+            transitionNodeId: "figma-resources-on",
+          },
+        ],
+        warningCodes: [],
+      },
+      {
+        id: "figma-resources-on",
+        parentId: "figma-root",
+        kind: "component",
+        name: "State=On",
+        visible: true,
+        styleRefs: [],
+        imageRefs: [],
+        boundVariableRefs: [],
+        designValueRefs: [],
+        warningCodes: [],
+      },
+    );
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const root = uiSpec.nodes.find((node) => node.id === "root");
+    const sourceControlId = "ui-home-I3186-4557-3096-2594-control";
+    if (root?.kind === "stack") {
+      root.childIds.push(sourceControlId, "ui-home-figma-resources-on");
+    }
+    uiSpec.state.push({
+      key: "state-i3186-4557-3096-2594-state",
+      valueType: "string",
+      initialValue: "Off",
+    });
+    uiSpec.nodes.push(
+      {
+        id: sourceControlId,
+        kind: "switch",
+        label: "Resources",
+        stateKey: "state-i3186-4557-3096-2594-state",
+        designValueRefs: [],
+      },
+      {
+        id: "ui-home-figma-resources-on",
+        kind: "text",
+        text: "On",
+        variant: "body",
+        designValueRefs: [],
+      },
+    );
+
+    const draft = buildFlowPlanDraft({ bundle, uiSpec });
+
+    expect(draft.interactions).toContainEqual(
+      expect.objectContaining({
+        id: "figma-change-to-resources-on",
+        source: "figma",
+        uiNodeId: sourceControlId,
+        intent: "set_state",
+        targetNodeId: "ui-home-figma-resources-on",
+        stateKey: "variant-i3186-4557-3096-2594-state",
+        value: "On",
+        stateInitialValue: "Off",
+        confirmed: true,
+      }),
+    );
+  });
+
   it("保留不可表示的 Figma CHANGE_TO 为 unresolved，不按名称猜测", () => {
     const bundle = createStoredMultipageFlowDesignBundle();
     bundle.pages[0]!.nodes.push({

@@ -243,6 +243,122 @@ describe("applyFlowPlanToUISpec", () => {
     ]);
   });
 
+  it("把 set_state interaction 写入 Switch 和 Stack 可点击源", () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const root = uiSpec.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("source-switch", "source-stack", "target-text");
+    }
+    uiSpec.state.push(
+      {
+        key: "enabled",
+        valueType: "boolean",
+        initialValue: false,
+      },
+      {
+        key: "status",
+        valueType: "string",
+        initialValue: "idle",
+      },
+    );
+    uiSpec.nodes.push(
+      {
+        id: "source-switch",
+        kind: "switch",
+        label: "启用",
+        stateKey: "enabled",
+        designValueRefs: [],
+      },
+      {
+        id: "source-stack",
+        kind: "stack",
+        direction: "vertical",
+        childIds: [],
+        designValueRefs: [],
+      },
+      {
+        id: "target-text",
+        kind: "text",
+        text: "已选择",
+        variant: "body",
+        designValueRefs: [],
+      },
+    );
+
+    const result = applyFlowPlanToUISpec(uiSpec, {
+      schemaVersion: "m4-spike",
+      projectId: "demo-project",
+      sourceDesignBundleRevision: 1,
+      sourceUISpecRevision: 1,
+      pages: [
+        {
+          id: "home",
+          sourcePageId: "page-home",
+          name: "首页",
+          role: "entry",
+          confidence: "medium",
+          reason: "fixture",
+        },
+      ],
+      interactions: [
+        {
+          id: "switch-status",
+          source: "figma",
+          uiNodeId: "source-switch",
+          trigger: "click",
+          intent: "set_state",
+          fromPageId: "home",
+          stateKey: "status",
+          value: "switch",
+          targetNodeId: "target-text",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+        {
+          id: "stack-status",
+          source: "figma",
+          uiNodeId: "source-stack",
+          trigger: "click",
+          intent: "set_state",
+          fromPageId: "home",
+          stateKey: "status",
+          value: "stack",
+          targetNodeId: "target-text",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      confirmationQuestions: [],
+      report: {
+        unsupportedCount: 0,
+        unresolvedInteractionCount: 0,
+        convertedActionCount: 0,
+        behaviorFixtureCount: 0,
+      },
+    });
+
+    const sourceSwitch = result.uiSpec.nodes.find(
+      (node) => node.id === "source-switch",
+    );
+    const sourceStack = result.uiSpec.nodes.find(
+      (node) => node.id === "source-stack",
+    );
+    expect(sourceSwitch).toMatchObject({
+      kind: "switch",
+      actionId: expect.stringMatching(/^flow-switch-status/),
+    });
+    expect(sourceStack).toMatchObject({
+      kind: "stack",
+      actionId: expect.stringMatching(/^flow-stack-status/),
+    });
+    expect(result.uiSpec.behaviorFixtures.map((fixture) => fixture.steps[0])).toEqual([
+      { kind: "click", nodeId: "source-switch" },
+      { kind: "click", nodeId: "source-stack" },
+    ]);
+  });
+
   it("把跨页面 component variant 目标克隆到源页面并用状态切换显隐", () => {
     const uiSpec = createStoredMultipageFlowUISpec();
     const root = uiSpec.nodes.find((node) => node.id === "root");
@@ -364,6 +480,118 @@ describe("applyFlowPlanToUISpec", () => {
       { kind: "click", nodeId: "source-button" },
       { kind: "expect_visible", nodeId: clonedRootId },
     ]);
+  });
+
+  it("actionable Stack 触发 variant 时只替换自身，不隐藏父容器", () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const root = uiSpec.nodes.find((node) => node.id === "root");
+    const quoteRoot = uiSpec.nodes.find((node) => node.id === "quote-root");
+    if (root?.kind === "stack") {
+      root.childIds.push("source-stack");
+    }
+    if (quoteRoot?.kind === "stack") {
+      quoteRoot.childIds.push("target-variant");
+    }
+    uiSpec.nodes.push(
+      {
+        id: "source-stack",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["source-label"],
+        style: { position: "absolute", left: 12, top: 34, width: 44 },
+        designValueRefs: [],
+      },
+      {
+        id: "source-label",
+        kind: "text",
+        text: "Off",
+        variant: "body",
+        designValueRefs: [],
+      },
+      {
+        id: "target-variant",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["target-label"],
+        style: { position: "absolute", left: 300, top: 400 },
+        designValueRefs: [],
+      },
+      {
+        id: "target-label",
+        kind: "text",
+        text: "On",
+        variant: "body",
+        designValueRefs: [],
+      },
+    );
+
+    const result = applyFlowPlanToUISpec(uiSpec, {
+      schemaVersion: "m4-spike",
+      projectId: "demo-project",
+      sourceDesignBundleRevision: 1,
+      sourceUISpecRevision: 1,
+      pages: [
+        {
+          id: "home",
+          sourcePageId: "page-home",
+          name: "首页",
+          role: "entry",
+          confidence: "medium",
+          reason: "fixture",
+        },
+        {
+          id: "quote",
+          sourcePageId: "page-quote",
+          name: "报价",
+          role: "component",
+          confidence: "medium",
+          reason: "fixture",
+        },
+      ],
+      interactions: [
+        {
+          id: "figma-stack-change-to-on",
+          source: "figma",
+          uiNodeId: "source-stack",
+          trigger: "click",
+          intent: "set_state",
+          fromPageId: "home",
+          stateKey: "variant-source-stack-state",
+          value: "On",
+          stateInitialValue: "Off",
+          targetNodeId: "target-variant",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      confirmationQuestions: [],
+      report: {
+        unsupportedCount: 0,
+        unresolvedInteractionCount: 0,
+        convertedActionCount: 0,
+        behaviorFixtureCount: 0,
+      },
+    });
+
+    const clonedRootId =
+      "variant-figma-stack-change-to-on-target-variant";
+    expect(result.uiSpec.nodes.find((node) => node.id === "root")).not.toHaveProperty(
+      "visibleWhen",
+    );
+    expect(result.uiSpec.nodes.find((node) => node.id === "source-stack")).toMatchObject({
+      visibleWhen: {
+        stateKey: "variant-source-stack-state",
+        equals: "Off",
+      },
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === clonedRootId)).toMatchObject({
+      style: { position: "absolute", left: 12, top: 34, width: 44 },
+      visibleWhen: {
+        stateKey: "variant-source-stack-state",
+        equals: "On",
+      },
+    });
   });
 
   it("正式 FlowPlan 写入 sourceFlowPlanRevision 且只转换已确认 interaction", () => {

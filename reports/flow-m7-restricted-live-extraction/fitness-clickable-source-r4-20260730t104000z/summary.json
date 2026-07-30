@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M7",
+  "scope": "interactive_behavior",
+  "status": "passed",
+  "input": {
+    "projectId": "flow-m7-fitness-clickable-source-r4",
+    "runId": "fitness-clickable-source-r4-20260730t104000z",
+    "flowPlanPath": "project-store/current-flow-plan",
+    "uiSpecRevision": 1,
+    "flowPlanRevision": 1,
+    "savedUISpecRevision": 2,
+    "figmaInteractionSource": "present"
+  },
+  "actions": {
+    "converted": [
+      {
+        "interactionId": "figma-f1e69831804cba1c",
+        "actionId": "flow-figma-f1e69831804cba1c",
+        "intent": "set_state",
+        "trusted": true
+      },
+      {
+        "interactionId": "figma-076a56448bf7956b",
+        "actionId": "flow-figma-076a56448bf7956b",
+        "intent": "set_state",
+        "trusted": true
+      },
+      {
+        "interactionId": "figma-aad70f0e58a4873e",
+        "actionId": "flow-figma-aad70f0e58a4873e",
+        "intent": "set_state",
+        "trusted": true
+      },
+      {
+        "interactionId": "figma-046f548ad78b98e0",
+        "actionId": "flow-figma-046f548ad78b98e0",
+        "intent": "set_state",
+        "trusted": true
+      },
+      {
+        "interactionId": "figma-064cffbb9f8efd85",
+        "actionId": "flow-figma-064cffbb9f8efd85",
+        "intent": "set_state",
+        "trusted": true
+      }
+    ],
+    "rejected": [
+      {
+        "id": "figma-fa1c270553de5d33",
+        "source": "figma",
+        "sourceNodeId": "3189:4303",
+        "uiNodeId": "ui-property-1-bookmark-on-3189-4303",
+        "sourceNodeName": "Property 1=Bookmark-On",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "property-1-bookmark-on",
+        "targetNodeId": "3189:4300",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "change_to_target_not_representable"
+      },
+      {
+        "id": "figma-49d68f4313157af5",
+        "source": "figma",
+        "sourceNodeId": "3071:2455",
+        "uiNodeId": "ui-property-1-variant2-1-3071-2455",
+        "sourceNodeName": "Property 1=Variant2",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "property-1-variant2-1",
+        "targetNodeId": "3071:2450",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "change_to_target_not_representable"
+      },
+      {
+        "id": "figma-484398ff868da059",
+        "source": "figma",
+        "sourceNodeId": "3071:2461",
+        "uiNodeId": "ui-property-1-variant2-2-3071-2461",
+        "sourceNodeName": "Property 1=Variant2",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "property-1-variant2-2",
+        "targetNodeId": "3071:2448",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "change_to_target_not_representable"
+      },
+      {
+        "id": "figma-3093cd194c7d71a5",
+        "source": "figma",
+        "sourceNodeId": "53:137",
+        "uiNodeId": "ui-property-1-off-53-137",
+        "sourceNodeName": "Property 1=Off",
+        "trigger": "click",
+        "intent": "unknown",
+        "fromPageId": "property-1-off",
+        "targetNodeId": "53:139",
+        "confirmed": false,
+        "confidence": "low",
+        "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+        "blockedReason": "change_to_target_not_representable"
+      }
+    ]
+  },
+  "behaviors": {
+    "fixtures": [
+      {
+        "fixtureId": "flow-figma-f1e69831804cba1c-fixture",
+        "source": "flow_plan",
+        "intent": "set_state"
+      },
+      {
+        "fixtureId": "flow-figma-076a56448bf7956b-fixture",
+        "source": "flow_plan",
+        "intent": "set_state"
+      },
+      {
+        "fixtureId": "flow-figma-aad70f0e58a4873e-fixture",
+        "source": "flow_plan",
+        "intent": "set_state"
+      },
+      {
+        "fixtureId": "flow-figma-046f548ad78b98e0-fixture",
+        "source": "flow_plan",
+        "intent": "set_state"
+      },
+      {
+        "fixtureId": "flow-figma-064cffbb9f8efd85-fixture",
+        "source": "flow_plan",
+        "intent": "set_state"
+      }
+    ]
+  },
+  "counts": {
+    "trustedNonRouteConverted": 5,
+    "scenarioOnlyFixtures": 0,
+    "submitLikeVerified": 0,
+    "unresolved": 4
+  },
+  "validation": {
+    "schemaVersion": "1",
+    "runId": "fitness-clickable-source-r4-20260730t104000z",
+    "previewUrl": "http://127.0.0.1:5173/?projectId=flow-m7-fitness-clickable-source-r4&pageId=6-11---a---profile&viewportId=desktop&specRevision=2&designRevision=1&runId=fitness-clickable-source-r4-20260730t104000z",
+    "passed": true,
+    "resultCount": 1,
+    "failedCheckCount": 0,
+    "successfulFixtureIds": [
+      "flow-figma-f1e69831804cba1c-fixture",
+      "flow-figma-076a56448bf7956b-fixture",
+      "flow-figma-aad70f0e58a4873e-fixture",
+      "flow-figma-046f548ad78b98e0-fixture",
+      "flow-figma-064cffbb9f8efd85-fixture"
+    ],
+    "failedFixtureIds": []
+  },
+  "reasons": [],
+  "residualRisks": [
+    "Flow-M7 v1 不新增 submit action kind；复杂业务状态机、select/radio 完整选择语义和真实后端仍不在本期范围。",
+    "restricted-live 只读取 Figma REST 且不调用 OpenAI；非点击控件或无法映射到 UISpec 可点击节点的 Figma interaction 仍会保持 rejected。"
+  ]
+}

@@ -151,6 +151,7 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       kind: z.literal("stack"),
       direction: z.enum(["horizontal", "vertical"]),
       childIds: idListSchema,
+      actionId: idSchema.optional(),
       gap: z.number().finite().nonnegative().max(10_000).optional(),
       padding: z.number().finite().nonnegative().max(10_000).optional(),
       align: z.enum(["start", "center", "end", "stretch"]).optional(),
@@ -242,6 +243,7 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       kind: z.literal("checkbox"),
       label: z.string().min(1).max(512),
       stateKey: idSchema,
+      actionId: idSchema.optional(),
       disabled: z.boolean().optional(),
       frame: overlayFrameSchema.optional(),
     })
@@ -263,6 +265,7 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       label: z.string().min(1).max(512),
       stateKey: idSchema,
       value: z.string().min(1).max(1_000),
+      actionId: idSchema.optional(),
       disabled: z.boolean().optional(),
       frame: overlayFrameSchema.optional(),
     })
@@ -273,6 +276,7 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       kind: z.literal("switch"),
       label: z.string().min(1).max(512),
       stateKey: idSchema,
+      actionId: idSchema.optional(),
       disabled: z.boolean().optional(),
       frame: overlayFrameSchema.optional(),
     })
@@ -718,15 +722,12 @@ function validateUISpecReferences(
       });
     }
 
-    if (
-      (node.kind === "button" || node.kind === "link") &&
-      node.actionId &&
-      !actionIds.has(node.actionId)
-    ) {
+    const nodeActionId = "actionId" in node ? node.actionId : undefined;
+    if (nodeActionId && !actionIds.has(nodeActionId)) {
       ctx.addIssue({
         code: "custom",
         path: ["nodes", nodeIndex, "actionId"],
-        message: `悬空动作引用：${node.actionId}`,
+        message: `悬空动作引用：${nodeActionId}`,
       });
     }
 
@@ -952,7 +953,8 @@ function validateUISpecReferences(
                     target.kind === "checkbox" ||
                     target.kind === "radio" ||
                     target.kind === "switch" ||
-                    target.kind === "select"
+                    target.kind === "select" ||
+                    (target.kind === "stack" && Boolean(target.actionId))
                   : step.kind === "expect_text"
                     ? target.kind === "text" ||
                       target.kind === "button" ||

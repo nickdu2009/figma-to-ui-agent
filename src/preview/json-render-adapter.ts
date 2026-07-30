@@ -94,11 +94,13 @@ function toElement(
         props: {
           ...common,
           direction: node.direction,
+          actionable: Boolean(node.actionId),
           gap: node.gap ?? null,
           padding: node.padding ?? null,
           align: node.align ?? null,
         },
         children: node.childIds,
+        on: actionBinding(node),
       },
     };
   }
@@ -234,6 +236,7 @@ function toElement(
           checked: { $bindState: `/${node.stateKey}` },
           disabled: node.disabled ?? false,
         },
+        on: actionBinding(node),
       },
     };
   }
@@ -261,6 +264,7 @@ function toElement(
           stateKey: node.stateKey,
           disabled: node.disabled ?? false,
         },
+        on: actionBinding(node),
       },
     };
   }
@@ -274,6 +278,7 @@ function toElement(
           checked: { $bindState: `/${node.stateKey}` },
           disabled: node.disabled ?? false,
         },
+        on: actionBinding(node),
       },
     };
   }

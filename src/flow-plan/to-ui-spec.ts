@@ -72,6 +72,37 @@ function scalarMatchesState(
   );
 }
 
+function isActionAttachableNode(
+  node: UISpecDraft["nodes"][number] | undefined,
+): node is Extract<
+  UISpecDraft["nodes"][number],
+  {
+    kind:
+      | "button"
+      | "link"
+      | "checkbox"
+      | "radio"
+      | "switch"
+      | "stack";
+  }
+> {
+  return (
+    node?.kind === "button" ||
+    node?.kind === "link" ||
+    node?.kind === "checkbox" ||
+    node?.kind === "radio" ||
+    node?.kind === "switch" ||
+    node?.kind === "stack"
+  );
+}
+
+function actionNodeLabel(node: UISpecDraft["nodes"][number]): string {
+  if ("label" in node) {
+    return node.label;
+  }
+  return node.id;
+}
+
 function valueTypeFor(
   value: string | number | boolean,
 ): UISpecDraft["state"][number]["valueType"] {
@@ -213,8 +244,11 @@ function cloneVariantTargetIntoSourcePage(input: {
     return input.targetNodeId;
   }
 
+  const actionNode = input.nodeById.get(input.actionNodeId);
   const sourceVariantRootId =
-    parentByChild.get(input.actionNodeId) ?? input.actionNodeId;
+    actionNode?.kind === "stack"
+      ? input.actionNodeId
+      : parentByChild.get(input.actionNodeId) ?? input.actionNodeId;
   const sourceVariantRoot = input.nodeById.get(sourceVariantRootId);
   const sourceParentId = parentByChild.get(sourceVariantRootId);
   const sourceParent = sourceParentId
@@ -342,7 +376,7 @@ export function applyFlowPlanToUISpec(
       continue;
     }
     const node = nodeById.get(interaction.uiNodeId!);
-    if (!node || (node.kind !== "button" && node.kind !== "link")) {
+    if (!isActionAttachableNode(node)) {
       unresolvedInteractions.push({
         ...interaction,
         blockedReason: "ui_node_not_clickable",
@@ -472,7 +506,7 @@ export function applyFlowPlanToUISpec(
             ];
     next.behaviorFixtures.push({
       id: fixtureId,
-      name: `Flow: ${node.label} -> ${
+      name: `Flow: ${actionNodeLabel(node)} -> ${
         interaction.intent === "navigate"
           ? next.pages.find((page) => page.id === interaction.targetPageId)
               ?.title ?? interaction.targetPageId

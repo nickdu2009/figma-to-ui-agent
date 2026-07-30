@@ -100,6 +100,7 @@ export const previewCatalog = defineCatalog(schema, {
         .object({
           ...common,
           direction: z.enum(["horizontal", "vertical"]),
+          actionable: z.boolean(),
           gap: z.number().nonnegative().max(10_000).nullable(),
           padding: z.number().nonnegative().max(10_000).nullable(),
           align: z

@@ -354,6 +354,111 @@ describe("UISpec Schema", () => {
     }
   });
 
+  it("允许 Stack 和 Switch 绑定动作并作为行为夹具点击目标", () => {
+    const draft = createUISpecDraft();
+    draft.actions.push({
+      id: "set-active",
+      kind: "set_state",
+      stateKey: "active",
+      value: "target",
+    });
+    draft.state.push(
+      {
+        key: "active",
+        valueType: "string",
+        initialValue: "source",
+      },
+      {
+        key: "enabled",
+        valueType: "boolean",
+        initialValue: false,
+      },
+    );
+    draft.nodes.push(
+      {
+        id: "clickable-stack",
+        kind: "stack",
+        direction: "vertical",
+        childIds: [],
+        actionId: "set-active",
+        designValueRefs: [],
+      },
+      {
+        id: "toggle-source",
+        kind: "switch",
+        label: "切换",
+        stateKey: "enabled",
+        actionId: "set-active",
+        designValueRefs: [],
+      },
+    );
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("clickable-stack", "toggle-source");
+    }
+    draft.behaviorFixtures.push({
+      id: "stack-click",
+      name: "Stack 点击",
+      viewportId: "desktop",
+      initialPageId: "home",
+      steps: [
+        { kind: "click", nodeId: "clickable-stack" },
+        { kind: "click", nodeId: "toggle-source" },
+      ],
+    });
+
+    const parsed = uiSpecDraftSchema.parse(draft);
+
+    expect(parsed.nodes.find((node) => node.id === "clickable-stack")).toMatchObject({
+      actionId: "set-active",
+    });
+    expect(parsed.nodes.find((node) => node.id === "toggle-source")).toMatchObject({
+      actionId: "set-active",
+    });
+  });
+
+  it("拒绝 Stack 和 Switch 悬空动作引用", () => {
+    const draft = createUISpecDraft();
+    draft.state.push({
+      key: "enabled",
+      valueType: "boolean",
+      initialValue: false,
+    });
+    draft.nodes.push(
+      {
+        id: "clickable-stack",
+        kind: "stack",
+        direction: "vertical",
+        childIds: [],
+        actionId: "missing-action",
+        designValueRefs: [],
+      },
+      {
+        id: "toggle-source",
+        kind: "switch",
+        label: "切换",
+        stateKey: "enabled",
+        actionId: "missing-action",
+        designValueRefs: [],
+      },
+    );
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("clickable-stack", "toggle-source");
+    }
+
+    const result = uiSpecDraftSchema.safeParse(draft);
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(
+        result.error.issues.filter(
+          (issue) => issue.message === "悬空动作引用：missing-action",
+        ),
+      ).toHaveLength(2);
+    }
+  });
+
   it("拒绝循环、多个父节点和不可达节点", () => {
     const draft = createUISpecDraft();
     const root = draft.nodes[0]!;

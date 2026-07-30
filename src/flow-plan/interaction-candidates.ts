@@ -49,8 +49,15 @@ function labelForNode(node: UINode): string {
 
 function isClickableActionNode(
   node: UINode | undefined,
-): node is Extract<UINode, { kind: "button" | "link" }> {
-  return node?.kind === "button" || node?.kind === "link";
+): node is UINode {
+  return (
+    node?.kind === "button" ||
+    node?.kind === "link" ||
+    node?.kind === "checkbox" ||
+    node?.kind === "radio" ||
+    node?.kind === "switch" ||
+    node?.kind === "stack"
+  );
 }
 
 function childIdsForNode(node: UINode): string[] {
@@ -145,9 +152,16 @@ function findUiNodeForDesignNode(
       : []),
   ];
   const uiNodeById = new Map(uiSpec.nodes.map((node) => [node.id, node]));
-  const existingCandidates = candidateIds.filter((candidate) =>
-    uiNodeById.has(candidate),
+  const uiNodeIdByLowerId = new Map(
+    uiSpec.nodes.map((node) => [node.id.toLowerCase(), node.id] as const),
   );
+  const existingCandidates = candidateIds
+    .map(
+      (candidate) =>
+        uiNodeById.get(candidate)?.id ??
+        uiNodeIdByLowerId.get(candidate.toLowerCase()),
+    )
+    .filter((candidate): candidate is string => candidate !== undefined);
   if (options.preferClickable) {
     const clickable = existingCandidates.find((candidate) =>
       isClickableActionNode(uiNodeById.get(candidate)),
@@ -157,6 +171,31 @@ function findUiNodeForDesignNode(
     }
   }
   return existingCandidates[0];
+}
+
+function findUiNodeForDesignNodeOrAncestor(
+  uiSpec: UISpec | UISpecDraft | undefined,
+  flowPageId: string | undefined,
+  sourceNodeById: ReadonlyMap<string, NormalizedNode>,
+  sourceNodeId: string | undefined,
+  options: { preferClickable?: boolean } = {},
+): { uiNodeId: string; designNodeId: string } | undefined {
+  let currentId = sourceNodeId;
+  const visited = new Set<string>();
+  while (currentId && !visited.has(currentId)) {
+    visited.add(currentId);
+    const candidate = findUiNodeForDesignNode(
+      uiSpec,
+      flowPageId,
+      currentId,
+      options,
+    );
+    if (candidate) {
+      return { uiNodeId: candidate, designNodeId: currentId };
+    }
+    currentId = sourceNodeById.get(currentId)?.parentId;
+  }
+  return undefined;
 }
 
 function targetNodeIdForPrototype(
@@ -399,16 +438,22 @@ export function buildFlowPlanDraft({
         sourceNode.prototypeInteractions ?? []
       ).entries()) {
         const fromPageId = sourcePageToFlowPage.get(page.id);
-        const uiNodeId = findUiNodeForDesignNode(
+        const uiNodeMapping = findUiNodeForDesignNodeOrAncestor(
           uiSpec,
           fromPageId,
+          sourceNodeById,
           sourceNode.id,
           { preferClickable: true },
         );
+        const uiNodeId = uiNodeMapping?.uiNodeId;
         if (uiNodeId) {
           coveredUiNodes.add(uiNodeId);
         }
         const sourceUiNode = uiNodeId ? uiNodeById.get(uiNodeId) : undefined;
+        const stateSourceNode =
+          uiNodeMapping?.designNodeId
+            ? sourceNodeById.get(uiNodeMapping.designNodeId)
+            : sourceNode;
         const targetDesignNodeId = targetNodeIdForPrototype(prototype);
         const targetPageId =
           prototype.navigation === "NAVIGATE"
@@ -425,7 +470,7 @@ export function buildFlowPlanDraft({
           targetDesignNodeId,
         );
         const stateCandidate = stateCandidateForChangeTo(
-          sourceNode,
+          stateSourceNode,
           targetDesignNodeId
             ? sourceNodeById.get(targetDesignNodeId)
             : undefined,

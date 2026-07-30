@@ -191,7 +191,7 @@ export const Input: ComponentFn<typeof previewCatalog, "Input"> = ({
 export const Checkbox: ComponentFn<
   typeof previewCatalog,
   "Checkbox"
-> = ({ props, bindings }) => {
+> = ({ props, bindings, emit }) => {
   const [checked, setChecked] = useBoundProp(
     props.checked,
     bindings?.checked,
@@ -210,7 +210,10 @@ export const Checkbox: ComponentFn<
         type="checkbox"
         checked={inputChecked}
         disabled={props.disabled}
-        onChange={(event) => setChecked(event.target.checked)}
+        onChange={(event) => {
+          setChecked(event.target.checked);
+          emit("press");
+        }}
       />
       <span>{props.label}</span>
     </label>
@@ -254,6 +257,7 @@ export const Link: ComponentFn<typeof previewCatalog, "Link"> = ({
 
 export const Radio: ComponentFn<typeof previewCatalog, "Radio"> = ({
   props,
+  emit,
 }) => {
   const store = useStateStore();
   const currentValue = useStateValue<string>(`/${props.stateKey}`);
@@ -273,7 +277,10 @@ export const Radio: ComponentFn<typeof previewCatalog, "Radio"> = ({
         value={props.value}
         checked={checked}
         disabled={props.disabled}
-        onChange={() => store.set(`/${props.stateKey}`, props.value)}
+        onChange={() => {
+          store.set(`/${props.stateKey}`, props.value);
+          emit("press");
+        }}
       />
       <span>{props.label}</span>
     </label>
@@ -283,6 +290,7 @@ export const Radio: ComponentFn<typeof previewCatalog, "Radio"> = ({
 export const Switch: ComponentFn<typeof previewCatalog, "Switch"> = ({
   props,
   bindings,
+  emit,
 }) => {
   const [checked, setChecked] = useBoundProp(
     props.checked,
@@ -303,7 +311,10 @@ export const Switch: ComponentFn<typeof previewCatalog, "Switch"> = ({
         role="switch"
         checked={inputChecked}
         disabled={props.disabled}
-        onChange={(event) => setChecked(event.target.checked)}
+        onChange={(event) => {
+          setChecked(event.target.checked);
+          emit("press");
+        }}
       />
       <span>{props.label}</span>
     </label>

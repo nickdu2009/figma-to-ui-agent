@@ -117,6 +117,69 @@ describe("toPreviewJsonSpec", () => {
     });
   });
 
+  it("把可点击 Stack 和 Switch 动作绑定为 press dispatch", () => {
+    const draft = createUISpecDraft();
+    draft.actions.push({
+      id: "toggle-variant",
+      kind: "set_state",
+      stateKey: "variant",
+      value: "target",
+    });
+    draft.state.push(
+      {
+        key: "variant",
+        valueType: "string",
+        initialValue: "source",
+      },
+      {
+        key: "enabled",
+        valueType: "boolean",
+        initialValue: false,
+      },
+    );
+    draft.nodes.push(
+      {
+        id: "clickable-stack",
+        kind: "stack",
+        direction: "vertical",
+        childIds: [],
+        actionId: "toggle-variant",
+        designValueRefs: [],
+      },
+      {
+        id: "variant-switch",
+        kind: "switch",
+        label: "启用",
+        stateKey: "enabled",
+        actionId: "toggle-variant",
+        designValueRefs: [],
+      },
+    );
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("clickable-stack", "variant-switch");
+    }
+    const uiSpec = uiSpecSchema.parse({ ...draft, revision: 1 });
+
+    const preview = toPreviewJsonSpec(uiSpec, "home", {
+      imageUrl: (path) => `/project-image/${path}`,
+    });
+
+    expect(preview.elements["clickable-stack"]).toMatchObject({
+      type: "Stack",
+      props: { actionable: true },
+      on: {
+        press: { action: "dispatch", params: { actionId: "toggle-variant" } },
+      },
+    });
+    expect(preview.elements["variant-switch"]).toMatchObject({
+      type: "Switch",
+      on: {
+        press: { action: "dispatch", params: { actionId: "toggle-variant" } },
+      },
+    });
+  });
+
   it("把 visibleWhen 节点包成 Conditional 并重写父子引用", () => {
     const draft = createUISpecDraft();
     draft.state.push({

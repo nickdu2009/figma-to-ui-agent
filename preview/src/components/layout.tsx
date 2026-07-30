@@ -31,10 +31,34 @@ function stackStyle(
 export const Stack: ComponentFn<
   typeof previewCatalog,
   "Stack"
-> = ({ props, children }) => (
+> = ({ props, children, emit }) => (
   <div
-    className="ui-stack"
+    className={`ui-stack${props.actionable ? " is-actionable" : ""}`}
     data-ui-node-id={props.nodeId}
+    role={props.actionable ? "button" : undefined}
+    tabIndex={props.actionable ? 0 : undefined}
+    onClick={(event) => {
+      if (!props.actionable) {
+        return;
+      }
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        target.closest("button,a,input,select,textarea,[role='switch']")
+      ) {
+        return;
+      }
+      emit("press");
+    }}
+    onKeyDown={(event) => {
+      if (!props.actionable) {
+        return;
+      }
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        emit("press");
+      }
+    }}
     style={stackStyle(
       props.direction,
       props.gap,
