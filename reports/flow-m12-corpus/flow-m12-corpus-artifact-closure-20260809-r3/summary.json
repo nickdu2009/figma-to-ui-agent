@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M12",
+  "scope": "corpus_regression",
+  "status": "partial",
+  "input": {
+    "runId": "flow-m12-corpus-artifact-closure-20260809-r3",
+    "manifestRef": "tests/fixtures/flow-plan/m12-corpus/manifest.json",
+    "networkBoundary": {
+      "figmaRestCalled": false,
+      "openaiCalled": false,
+      "mode": "local-corpus"
+    }
+  },
+  "counts": {
+    "sampleCount": 5,
+    "executableSampleCount": 2,
+    "passedExecutableSampleCount": 1,
+    "partialExecutableSampleCount": 1,
+    "failedExecutableSampleCount": 0,
+    "notExecutableSampleCount": 3,
+    "restrictedLiveSummarySampleCount": 0
+  },
+  "coverage": {
+    "navigate": true,
+    "setState": true,
+    "submit": true,
+    "stateMachine": true,
+    "selectRadioCheckbox": true,
+    "restrictedLiveSummary": false
+  },
+  "samples": [
+    {
+      "sampleId": "local-m11-submit-state-machine",
+      "category": "local-submit-state-machine",
+      "source": "local_fixture",
+      "status": "passed",
+      "capabilities": {
+        "navigate": true,
+        "setState": false,
+        "submit": true,
+        "stateMachine": true,
+        "selectRadioCheckbox": true,
+        "restrictedLiveSummary": false
+      },
+      "executionReportRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/m11/flow-m12-corpus-artifact-closure-20260809-r3-local-m11-submit-state-machine/summary.json",
+      "reasons": [
+        "flow_plan_untrusted_source"
+      ]
+    },
+    {
+      "sampleId": "restricted-live-fitness-set-state",
+      "category": "mobile-app",
+      "source": "restricted_live_artifact",
+      "status": "partial",
+      "capabilities": {
+        "navigate": false,
+        "setState": true,
+        "submit": false,
+        "stateMachine": false,
+        "selectRadioCheckbox": false,
+        "restrictedLiveSummary": false
+      },
+      "executionReportRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/m11/flow-m12-corpus-artifact-closure-20260809-r3-restricted-live-fitness-set-state/summary.json",
+      "reasons": [
+        "flow_plan_untrusted_source",
+        "flow_m11_trusted_submit_fixture_missing",
+        "flow_m11_multistep_submit_fixture_missing",
+        "flow_m11_select_radio_toggle_missing"
+      ]
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "source": "restricted_live_artifact",
+      "status": "not_executable",
+      "capabilities": {
+        "navigate": false,
+        "setState": true,
+        "submit": false,
+        "stateMachine": false,
+        "selectRadioCheckbox": false,
+        "restrictedLiveSummary": false
+      },
+      "executionReportRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/m11/flow-m12-corpus-artifact-closure-20260809-r3-community-mobile-001/summary.json",
+      "reasons": [
+        "flow_m11_artifact_rejected",
+        "flow_plan_reference_dangling"
+      ]
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "source": "restricted_live_artifact",
+      "status": "not_executable",
+      "capabilities": {
+        "navigate": false,
+        "setState": false,
+        "submit": true,
+        "stateMachine": false,
+        "selectRadioCheckbox": false,
+        "restrictedLiveSummary": false
+      },
+      "executionReportRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/m11/flow-m12-corpus-artifact-closure-20260809-r3-community-design-system-001/summary.json",
+      "reasons": [
+        "flow_m11_artifact_rejected",
+        "flow_plan_untrusted_source"
+      ]
+    },
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "source": "restricted_live_artifact",
+      "status": "not_executable",
+      "capabilities": {
+        "navigate": false,
+        "setState": false,
+        "submit": true,
+        "stateMachine": false,
+        "selectRadioCheckbox": false,
+        "restrictedLiveSummary": false
+      },
+      "executionReportRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/m11/flow-m12-corpus-artifact-closure-20260809-r3-community-login-001/summary.json",
+      "reasons": [
+        "flow_m11_artifact_rejected",
+        "flow_plan_untrusted_source"
+      ]
+    }
+  ],
+  "reasons": [
+    "flow_m12_non_executable_samples"
+  ],
+  "residualRisks": [
+    "Flow-M12 corpus runner 只执行本地已有 artifact，不调用 Figma/OpenAI；restricted-live summary 样本只能证明真实 provenance，不能替代 M11 可执行 artifact。"
+  ]
+}

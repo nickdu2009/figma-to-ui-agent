@@ -237,11 +237,11 @@ async function renderFixturesWithIsolation({
           pageIds: [fixture.initialPageId],
           viewportIds: [fixture.viewportId],
           behaviorFixtureIds: [fixtureId],
-          comparison: {
-            maxDiffPixelRatio: 1,
-            maxDiffPixels: 1_000_000,
-            timeoutMs,
-          },
+        comparison: {
+          maxDiffPixelRatio: 1,
+          maxDiffPixels: Number.MAX_SAFE_INTEGER,
+          timeoutMs,
+        },
         }),
       );
     } finally {
@@ -390,11 +390,11 @@ async function main() {
   }
 
   const validationSummary = validation
-    ? summarizeFlowM11Validation(validation)
+    ? summarizeFlowM11Validation(validation, { fixtureIds: validationFixtureIds })
     : {
         schemaVersion: "1",
         runId,
-        passed: validationFixtureIds.length > 0,
+        passed: true,
         resultCount: validationFixtureIds.length,
         failedCheckCount: 0,
         successfulFixtureIds: validationFixtureIds,

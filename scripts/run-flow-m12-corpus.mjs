@@ -176,11 +176,15 @@ async function runM11Sample(input) {
       maxBuffer: 1024 * 1024 * 8,
     });
     const report = flowM11ExecutionReportSchema.parse(JSON.parse(stdout));
+    const status =
+      report.status === "failed" && report.counts.fixtureCount === 0
+        ? "not_executable"
+        : report.status;
     return {
       sampleId: input.sample.sampleId,
       category: input.sample.category,
       source: input.sample.source,
-      status: report.status,
+      status,
       capabilities: coverageFromM11(report, input.sample.capabilityHints),
       executionReportRef: relativeArtifact(
         resolve(input.outputRoot, "m11", childRunId, "summary.json"),

@@ -200,6 +200,24 @@ async function loadRestrictedLiveSample(input) {
   return { projectId, bundle, uiSpec, flowPlan };
 }
 
+async function saveFlowPlanArtifact(store, projectId, flowPlan) {
+  let baseRevision = 0;
+  try {
+    const current = await store.loadFlowPlan(projectId);
+    baseRevision = current.revision;
+  } catch (error) {
+    if (!(error instanceof ProjectStoreError) || error.code !== "not_found") {
+      throw error;
+    }
+  }
+  await store.saveFlowPlan({
+    projectId,
+    baseRevision,
+    draft: flowPlan,
+  });
+  return `data/projects/${projectId}/flow/current.json`;
+}
+
 function skippedSampleReport(sample, reason) {
   return flowM9SampleReportSchema.parse({
     sampleId: sample.sampleId,
@@ -253,7 +271,11 @@ async function buildSampleReport(input) {
       artifactRefs: {
         designBundlePath: `data/projects/${loaded.projectId}/figma/current.json`,
         uiSpecPath: `data/projects/${loaded.projectId}/specs/current.json`,
-        flowPlanPath: "ephemeral-flow-plan",
+        flowPlanPath: await saveFlowPlanArtifact(
+          input.store,
+          loaded.projectId,
+          loaded.flowPlan,
+        ),
       },
     });
   } catch (error) {

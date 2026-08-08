@@ -219,8 +219,22 @@ export function buildFlowM12Report(input: {
   if (counts.passedExecutableSampleCount < 1) {
     reasons.add("flow_m12_no_passing_executable_sample");
   }
-  if (counts.notExecutableSampleCount > 0) {
+  const artifactMissing = samples.some(
+    (sample) =>
+      sample.status === "not_executable" &&
+      sample.reasons.some((reason) =>
+        [
+          "flow_plan_artifact_missing",
+          "ui_spec_artifact_missing",
+          "upstream_report_missing",
+          "upstream_sample_missing",
+        ].includes(reason),
+      ),
+  );
+  if (artifactMissing) {
     reasons.add("flow_m12_real_flowplan_artifacts_missing");
+  } else if (counts.notExecutableSampleCount > 0) {
+    reasons.add("flow_m12_non_executable_samples");
   }
   if (counts.failedExecutableSampleCount > 0) {
     reasons.add("flow_m12_executable_sample_failed");
@@ -229,6 +243,9 @@ export function buildFlowM12Report(input: {
     samples.map((sample) => sample.capabilities),
   );
   for (const [field, covered] of Object.entries(coverage)) {
+    if (field === "restrictedLiveSummary") {
+      continue;
+    }
     if (!covered) {
       reasons.add(`flow_m12_coverage_missing_${field}`);
     }

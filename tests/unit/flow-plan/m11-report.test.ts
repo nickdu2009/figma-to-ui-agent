@@ -6,6 +6,7 @@ import {
   buildFlowM11ExecutionReport,
   flowM11ExecutionReportSchema,
   redactionCheckFlowM11Report,
+  summarizeFlowM11Validation,
 } from "../../../src/flow-plan/m11-report.ts";
 import { createUISpecDraft } from "../../fixtures/contracts.ts";
 
@@ -142,6 +143,39 @@ describe("Flow-M11 report", () => {
         counts: { ...report.counts, fixtureCount: 2 },
       }),
     ).toThrow("fixtureCount");
+  });
+
+  it("把页面级失败归属到本次执行的 fixture，避免 summary 状态不一致", () => {
+    const summary = summarizeFlowM11Validation(
+      {
+        schemaVersion: "1",
+        runId: "flow-m11-visual-diagnostic",
+        passed: false,
+        results: [
+          {
+            checks: [
+              {
+                passed: true,
+                message: "flow-submit-fixture:click",
+              },
+              {
+                passed: false,
+                message: "差异像素 1200000，比例 0.812345",
+              },
+            ],
+          },
+        ],
+      },
+      { fixtureIds: ["flow-submit-fixture"] },
+    );
+
+    expect(summary).toMatchObject({
+      passed: false,
+      resultCount: 1,
+      successfulFixtureIds: [],
+      failedFixtureIds: ["flow-submit-fixture"],
+      failedCheckCount: 1,
+    });
   });
 
   it("拒绝敏感字段和绝对路径", () => {

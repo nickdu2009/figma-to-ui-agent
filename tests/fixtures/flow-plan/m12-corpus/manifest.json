@@ -29,35 +29,35 @@
     {
       "sampleId": "community-mobile-001",
       "category": "mobile-app",
-      "source": "restricted_live_summary",
+      "source": "restricted_live_artifact",
       "capabilityHints": [
-        "set_state",
-        "restricted_live_summary"
+        "set_state"
       ],
-      "upstreamReportPath": "reports/flow-m9-restricted-live-extraction/flow-m9-restricted-live-20260731t051320z/summary.json",
-      "upstreamSampleId": "community-mobile-001"
+      "flowPlanPath": "data/projects/flow-m9-community-mobile-001/flow/current.json",
+      "uiSpecPath": "data/projects/flow-m9-community-mobile-001/specs/current.json",
+      "seedStoreFrom": "data"
     },
     {
       "sampleId": "community-design-system-001",
       "category": "design-system",
-      "source": "restricted_live_summary",
+      "source": "restricted_live_artifact",
       "capabilityHints": [
-        "submit",
-        "restricted_live_summary"
+        "submit"
       ],
-      "upstreamReportPath": "reports/flow-m9-restricted-live-extraction/flow-m9-restricted-live-20260731t051320z/summary.json",
-      "upstreamSampleId": "community-design-system-001"
+      "flowPlanPath": "data/projects/flow-m9-community-design-system-001/flow/current.json",
+      "uiSpecPath": "data/projects/flow-m9-community-design-system-001/specs/current.json",
+      "seedStoreFrom": "data"
     },
     {
       "sampleId": "community-login-001",
       "category": "login-register",
-      "source": "restricted_live_summary",
+      "source": "restricted_live_artifact",
       "capabilityHints": [
-        "submit",
-        "restricted_live_summary"
+        "submit"
       ],
-      "upstreamReportPath": "reports/flow-m9-restricted-live-extraction/flow-m9-restricted-live-20260731t051320z/summary.json",
-      "upstreamSampleId": "community-login-001"
+      "flowPlanPath": "data/projects/flow-m9-community-login-001/flow/current.json",
+      "uiSpecPath": "data/projects/flow-m9-community-login-001/specs/current.json",
+      "seedStoreFrom": "data"
     }
   ]
 }

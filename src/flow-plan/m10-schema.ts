@@ -231,6 +231,12 @@ export const flowM10ConfirmationReportSchema = z
         userConfirmedStateMachineTransitions: z.number().int().nonnegative(),
       })
       .strict(),
+    artifacts: z
+      .object({
+        confirmedFlowPlanRef: artifactPathSchema.optional(),
+      })
+      .strict()
+      .optional(),
     samples: z
       .array(
         z

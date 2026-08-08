@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M11",
+  "scope": "multistep_execution",
+  "status": "failed",
+  "input": {
+    "runId": "flow-m12-corpus-artifact-closure-20260809-r3-community-mobile-001",
+    "mode": "restricted-live",
+    "flowPlanRef": "data/projects/flow-m9-community-mobile-001/flow/current.json",
+    "uiSpecRef": "data/projects/flow-m9-community-mobile-001/specs/current.json",
+    "reportRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/m11/flow-m12-corpus-artifact-closure-20260809-r3-community-mobile-001/summary.json",
+    "networkBoundary": {
+      "figmaRestCalled": false,
+      "openaiCalled": false,
+      "mode": "restricted-live"
+    }
+  },
+  "artifact": {
+    "status": "rejected",
+    "reasonCodes": [
+      "flow_plan_reference_dangling"
+    ],
+    "rejectionCount": 5
+  },
+  "counts": {
+    "fixtureCount": 0,
+    "successfulFixtureCount": 0,
+    "failedFixtureCount": 0,
+    "stepCount": 0,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "summaryOnlyRejectionCount": 0,
+    "scenarioOnlyRejectionCount": 0,
+    "untrustedSourceRejectionCount": 0,
+    "referenceDanglingRejectionCount": 5
+  },
+  "fixtures": [],
+  "successfulFixtureIds": [],
+  "failedFixtureIds": [],
+  "reasons": [
+    "flow_m11_artifact_rejected",
+    "flow_plan_reference_dangling"
+  ],
+  "residualRisks": [
+    "restricted-live 只证明真实样本 FlowPlan artifact 可执行，不代表真实后端业务提交成功。"
+  ]
+}

@@ -3,7 +3,7 @@ import {
   readFile,
   writeFile,
 } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { basename, dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { runFlowM10Confirmation } from "../src/flow-plan/m10-runner.ts";
@@ -37,6 +37,11 @@ function parseArgs(argv) {
 
 async function loadJson(path) {
   return JSON.parse(await readFile(resolve(projectRoot, path), "utf8"));
+}
+
+function relativeArtifact(path) {
+  const ref = relative(projectRoot, resolve(projectRoot, path)) || ".";
+  return ref.startsWith("..") ? basename(path) : ref;
 }
 
 function reportMarkdown(report) {
@@ -111,25 +116,32 @@ async function main() {
   );
   const outputRoot = resolve(reportRoot, runId);
   await mkdir(outputRoot, { recursive: true });
+  const confirmedFlowPlanPath = resolve(outputRoot, "confirmed-flow-plan.json");
+  const confirmedFlowPlanRef = relativeArtifact(confirmedFlowPlanPath);
 
-  const report = runFlowM10Confirmation({
+  const result = runFlowM10Confirmation({
     runId,
     mode: args.mode,
     flowPlanRef: args.flowPlan,
     uiSpecRef: args.uiSpec,
     answerRef: args.answers,
     m9ReportRef: args.m9Report,
+    confirmedFlowPlanRef,
     flowPlan: await loadJson(args.flowPlan),
     uiSpec: await loadJson(args.uiSpec),
     answers: await loadJson(args.answers),
     m9Report: args.m9Report ? await loadJson(args.m9Report) : undefined,
   });
   await writeFile(
-    resolve(outputRoot, "summary.json"),
-    `${JSON.stringify(report, null, 2)}\n`,
+    confirmedFlowPlanPath,
+    `${JSON.stringify(result.flowPlan, null, 2)}\n`,
   );
-  await writeFile(resolve(outputRoot, "summary.md"), reportMarkdown(report));
-  process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+  await writeFile(
+    resolve(outputRoot, "summary.json"),
+    `${JSON.stringify(result.report, null, 2)}\n`,
+  );
+  await writeFile(resolve(outputRoot, "summary.md"), reportMarkdown(result.report));
+  process.stdout.write(`${JSON.stringify(result.report, null, 2)}\n`);
 }
 
 main().catch((error) => {

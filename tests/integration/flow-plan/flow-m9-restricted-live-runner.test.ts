@@ -286,6 +286,20 @@ describe("Flow-M9 restricted-live extraction runner", () => {
     expect(JSON.stringify(summary)).not.toContain("https://www.figma.com");
     expect(JSON.stringify(summary)).not.toContain("fileKey");
     expect(JSON.stringify(summary)).not.toContain("designUrl");
+    expect(
+      summary.samples.map((sample: { artifactRefs: { flowPlanPath?: string } }) =>
+        sample.artifactRefs.flowPlanPath,
+      ),
+    ).toEqual([
+      "data/projects/m9-state-project/flow/current.json",
+      "data/projects/m9-login-project/flow/current.json",
+      "data/projects/m9-dashboard-project/flow/current.json",
+    ]);
+    const store = new ProjectStore(join(root, "data"));
+    await expect(store.loadFlowPlan("m9-state-project")).resolves.toMatchObject({
+      projectId: "m9-state-project",
+      revision: 1,
+    });
   });
 
   it("restricted-live 缺少网络 gate 时在触网前失败", async () => {

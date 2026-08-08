@@ -7,6 +7,7 @@ import { promisify } from "node:util";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { parseFlowM10ConfirmationReport } from "../../../src/flow-plan/m10-schema.ts";
+import { flowPlanDraftSchema } from "../../../src/flow-plan/schema.ts";
 
 const execFileAsync = promisify(execFile);
 const roots: string[] = [];
@@ -68,6 +69,12 @@ describe("Flow-M10 confirmation runner", () => {
     expect(report.reasons).toEqual(
       expect.arrayContaining(["m8_user_confirmed_converted=1"]),
     );
+    expect(report.artifacts?.confirmedFlowPlanRef).toBe(
+      "confirmed-flow-plan.json",
+    );
+    expect(report.appliedInteractions[0]?.artifactRefs).toContain(
+      report.artifacts?.confirmedFlowPlanRef,
+    );
 
     const saved = parseFlowM10ConfirmationReport(
       JSON.parse(
@@ -78,6 +85,21 @@ describe("Flow-M10 confirmation runner", () => {
       ),
     );
     expect(saved.status).toBe("passed");
+    const confirmed = flowPlanDraftSchema.parse(
+      JSON.parse(
+        await readFile(
+          join(reportRoot, "flow-m10-local", "confirmed-flow-plan.json"),
+          "utf8",
+        ),
+      ),
+    );
+    expect(
+      confirmed.interactions.some(
+        (interaction) =>
+          interaction.source === "user_confirmed" &&
+          interaction.intent === "submit",
+      ),
+    ).toBe(true);
   });
 
   it("restricted-live-regression 复用 Flow-M9 三样本报告且不重新触网", async () => {
@@ -129,6 +151,9 @@ describe("Flow-M10 confirmation runner", () => {
           reasonCode: "summary_only_apply_carrier",
         }),
       ]),
+    );
+    expect(report.artifacts?.confirmedFlowPlanRef).toBe(
+      "confirmed-flow-plan.json",
     );
   });
 });

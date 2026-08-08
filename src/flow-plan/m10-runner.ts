@@ -18,11 +18,17 @@ export interface RunFlowM10ConfirmationInput {
   readonly answers: unknown;
   readonly m9ReportRef?: string;
   readonly m9Report?: unknown;
+  readonly confirmedFlowPlanRef?: string;
+}
+
+export interface RunFlowM10ConfirmationResult {
+  readonly report: FlowM10ConfirmationReport;
+  readonly flowPlan: ReturnType<typeof parseFlowPlanDraft>;
 }
 
 export function runFlowM10Confirmation(
   input: RunFlowM10ConfirmationInput,
-): FlowM10ConfirmationReport {
+): RunFlowM10ConfirmationResult {
   const flowPlan = parseFlowPlanDraft(input.flowPlan);
   const uiSpec = uiSpecDraftSchema.parse(input.uiSpec);
   const m9Report = input.m9Report
@@ -42,13 +48,14 @@ export function runFlowM10Confirmation(
     uiSpec,
     applied.flowPlan,
   );
-  return buildFlowM10ConfirmationReport({
+  const report = buildFlowM10ConfirmationReport({
     runId: input.runId,
     mode: input.mode,
     flowPlanRef: input.flowPlanRef,
     uiSpecRef: input.uiSpecRef,
     m9ReportRef: input.m9ReportRef,
     answerRef: input.answerRef,
+    confirmedFlowPlanRef: input.confirmedFlowPlanRef,
     questions,
     results: applied.results,
     flowPlan: applied.flowPlan,
@@ -58,4 +65,8 @@ export function runFlowM10Confirmation(
       stateMachineTransitionCount: m8.stateMachineTransitionCount,
     },
   });
+  return {
+    report,
+    flowPlan: applied.flowPlan,
+  };
 }

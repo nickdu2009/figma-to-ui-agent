@@ -55,6 +55,7 @@ export function buildFlowM10ConfirmationReport(input: {
   readonly uiSpecRef?: string;
   readonly m9ReportRef?: string;
   readonly answerRef?: string;
+  readonly confirmedFlowPlanRef?: string;
   readonly figmaRestCalled?: boolean;
   readonly questions: readonly FlowM10ConfirmationQuestion[];
   readonly results: readonly FlowM10ApplyResult[];
@@ -116,6 +117,9 @@ export function buildFlowM10ConfirmationReport(input: {
       },
     },
     counts,
+    artifacts: input.confirmedFlowPlanRef
+      ? { confirmedFlowPlanRef: input.confirmedFlowPlanRef }
+      : undefined,
     samples: sampleIds.map((sampleId) => {
       const questions = input.questions.filter(
         (question) => question.sampleId === sampleId,
@@ -143,6 +147,7 @@ export function buildFlowM10ConfirmationReport(input: {
         (postcondition) => postcondition.kind,
       ),
       artifactRefs: [
+        input.confirmedFlowPlanRef,
         input.flowPlanRef,
         input.uiSpecRef,
       ].filter((value): value is string => Boolean(value)),

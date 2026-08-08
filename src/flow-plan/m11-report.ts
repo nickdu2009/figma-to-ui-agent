@@ -207,11 +207,14 @@ export function summarizeFlowM11Validation(validation: {
       readonly message: string;
     }[];
   }[];
-}): FlowM11ValidationSummary {
+}, options: {
+  readonly fixtureIds?: readonly string[];
+} = {}): FlowM11ValidationSummary {
   const successfulFixtureIds = new Set<string>();
   const failedFixtureIds = new Set<string>();
   let failedCheckCount = 0;
   let preSatisfiedExpectationCount = 0;
+  let hasUnattributedFailure = false;
   for (const result of validation.results) {
     for (const check of result.checks) {
       if (!check.passed) {
@@ -222,6 +225,9 @@ export function summarizeFlowM11Validation(validation: {
       }
       const match = check.message.match(/^([^:]+):/);
       if (!match) {
+        if (!check.passed) {
+          hasUnattributedFailure = true;
+        }
         continue;
       }
       if (check.passed) {
@@ -229,6 +235,11 @@ export function summarizeFlowM11Validation(validation: {
       } else {
         failedFixtureIds.add(match[1]!);
       }
+    }
+  }
+  if (hasUnattributedFailure) {
+    for (const fixtureId of options.fixtureIds ?? []) {
+      failedFixtureIds.add(fixtureId);
     }
   }
   for (const failedId of failedFixtureIds) {
