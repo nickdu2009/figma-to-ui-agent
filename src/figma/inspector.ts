@@ -60,6 +60,8 @@ const imageFillResponseSchema = z
 const TARGETED_NODES_CANVAS_ID =
   "__figma_to_ui_agent_targeted_nodes_canvas__";
 const MAX_VISUAL_LAYER_RENDERS = 160;
+const MAX_PROTOTYPE_TARGET_EXPANSION_ROUNDS = 4;
+const MAX_PROTOTYPE_TARGET_NODE_IDS = 160;
 
 export type FigmaInspectionErrorCode =
   | "invalid_response"
@@ -489,27 +491,49 @@ async function loadTargetedFigmaPayload(
       }
     }
   }
-  const existingNodeIds = new Set(
-    initial.pages.flatMap((page) => page.nodes.map((node) => node.id)),
-  );
-  const extraNodeIds = prototypeTargetNodeIds(initial, existingNodeIds);
-  if (extraNodeIds.length < 1) {
-    return {
-      payload,
-      normalizationTargetNodeIds: [...targetNodeIds],
-    };
-  }
-  const extraPayload = await restClient.getNodes(
-    fileKey,
-    extraNodeIds,
-    signal,
-  );
-  const normalizationTargetNodeIds = [...targetNodeIds, ...extraNodeIds];
-  return {
-    payload: targetedNodesPayloadFromNestedDocuments(
-      mergeNodePayloads(sourceNodesPayload, extraPayload),
+  const normalizationTargetNodeIds = [...targetNodeIds];
+  const requestedTargetNodeIds = new Set(normalizationTargetNodeIds);
+  for (
+    let round = 0;
+    round < MAX_PROTOTYPE_TARGET_EXPANSION_ROUNDS &&
+    normalizationTargetNodeIds.length < MAX_PROTOTYPE_TARGET_NODE_IDS;
+    round += 1
+  ) {
+    const existingNodeIds = new Set(
+      initial.pages.flatMap((page) => page.nodes.map((node) => node.id)),
+    );
+    const remainingCapacity =
+      MAX_PROTOTYPE_TARGET_NODE_IDS - normalizationTargetNodeIds.length;
+    const extraNodeIds = prototypeTargetNodeIds(
+      initial,
+      existingNodeIds,
+    )
+      .filter((nodeId) => !requestedTargetNodeIds.has(nodeId))
+      .slice(0, remainingCapacity);
+    if (extraNodeIds.length < 1) {
+      break;
+    }
+    for (const nodeId of extraNodeIds) {
+      requestedTargetNodeIds.add(nodeId);
+      normalizationTargetNodeIds.push(nodeId);
+    }
+    const extraPayload = await restClient.getNodes(
+      fileKey,
+      extraNodeIds,
+      signal,
+    );
+    sourceNodesPayload = mergeNodePayloads(sourceNodesPayload, extraPayload);
+    payload = targetedNodesPayloadFromNestedDocuments(
+      sourceNodesPayload,
       normalizationTargetNodeIds,
-    ),
+    );
+    initial = normalizeFigmaDocument(payload, {
+      targetNodeIds: normalizationTargetNodeIds,
+    });
+  }
+
+  return {
+    payload,
     normalizationTargetNodeIds,
   };
 }
