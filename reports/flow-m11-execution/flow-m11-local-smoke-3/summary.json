@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M11",
+  "scope": "multistep_execution",
+  "status": "passed",
+  "input": {
+    "runId": "flow-m11-local-smoke-3",
+    "mode": "local",
+    "flowPlanRef": "tests/fixtures/flow-plan/m8-form-submit-state-machine/flow-plan.json",
+    "uiSpecRef": "tests/fixtures/flow-plan/m8-form-submit-state-machine/ui-spec.json",
+    "reportRef": "reports/flow-m11-execution/flow-m11-local-smoke-3/summary.json",
+    "networkBoundary": {
+      "figmaRestCalled": false,
+      "openaiCalled": false,
+      "mode": "local"
+    }
+  },
+  "artifact": {
+    "status": "partial",
+    "reasonCodes": [
+      "flow_plan_untrusted_source"
+    ],
+    "rejectionCount": 1
+  },
+  "counts": {
+    "fixtureCount": 1,
+    "successfulFixtureCount": 1,
+    "failedFixtureCount": 0,
+    "stepCount": 10,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "summaryOnlyRejectionCount": 0,
+    "scenarioOnlyRejectionCount": 0,
+    "untrustedSourceRejectionCount": 1,
+    "referenceDanglingRejectionCount": 0
+  },
+  "fixtures": [
+    {
+      "fixtureId": "flow-figma-submit-review-fixture",
+      "interactionId": "figma-submit-review",
+      "intent": "submit",
+      "source": "figma",
+      "submit": true,
+      "inputStepCount": 1,
+      "selectRadioToggleStepCount": 3,
+      "postconditionStepCount": 5
+    },
+    {
+      "fixtureId": "flow-user-confirmed-finish-fixture",
+      "interactionId": "user-confirmed-finish",
+      "intent": "submit",
+      "source": "user_confirmed",
+      "submit": true,
+      "inputStepCount": 1,
+      "selectRadioToggleStepCount": 3,
+      "postconditionStepCount": 5
+    }
+  ],
+  "successfulFixtureIds": [
+    "flow-figma-submit-review-fixture"
+  ],
+  "failedFixtureIds": [],
+  "reasons": [
+    "flow_plan_untrusted_source"
+  ],
+  "residualRisks": [
+    "本地 fixture 证明多步骤行为执行链路，不代表真实 Figma 样本覆盖已完成。"
+  ]
+}

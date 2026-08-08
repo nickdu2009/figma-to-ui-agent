@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "description": "Flow-M11 reuses the Flow-M8 form submit state-machine fixture as a trusted local multistep execution sample.",
+  "flowPlanPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/flow-plan.json",
+  "uiSpecPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/ui-spec.json",
+  "expectedCoverage": {
+    "fillSubmitPostcondition": true,
+    "selectOption": true,
+    "chooseRadio": true,
+    "toggle": true,
+    "negativeUntrustedInteraction": true
+  }
+}

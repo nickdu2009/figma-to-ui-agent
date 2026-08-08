@@ -894,11 +894,12 @@ async function executeBehaviorFixture(
         passed: true,
         message: `${fixture.id}:${step.kind}`,
       });
-    } catch {
+    } catch (error) {
+      const reason = error instanceof Error ? `：${error.message}` : "";
       checks.push({
         kind: "functional",
         passed: false,
-        message: `${fixture.id}:${step.kind} 未通过`,
+        message: `${fixture.id}:${step.kind} 未通过${reason}`,
       });
       break;
     }
