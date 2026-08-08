@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1",
+  "projectId": "demo-project",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "absent",
+  "pages": [
+    {
+      "id": "home",
+      "sourcePageId": "page-home",
+      "name": "登录",
+      "role": "entry",
+      "confidence": "high",
+      "reason": "fixture"
+    },
+    {
+      "id": "success",
+      "sourcePageId": "page-quote",
+      "name": "完成",
+      "role": "screen",
+      "confidence": "high",
+      "reason": "fixture"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "missing-login-submit",
+      "source": "missing",
+      "uiNodeId": "submit-review",
+      "sourceNodeName": "Log In",
+      "trigger": "submit",
+      "intent": "unknown",
+      "fromPageId": "home",
+      "stateInitialValue": "idle",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "login submit-like candidate requires user confirmation",
+      "blockedReason": "interaction_target_missing"
+    }
+  ],
+  "confirmationQuestions": [],
+  "confirmations": [],
+  "stateMachines": [],
+  "report": {
+    "unsupportedCount": 1,
+    "unresolvedInteractionCount": 1,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}

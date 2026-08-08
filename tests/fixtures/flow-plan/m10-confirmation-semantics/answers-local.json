@@ -1,0 +1,36 @@
+[
+  {
+    "id": "answer-apply-submit",
+    "questionId": "m10-missing-login-submit",
+    "answerKind": "submit",
+    "effect": {
+      "kind": "set_state",
+      "stateKey": "form-status",
+      "value": "review"
+    },
+    "postconditions": [
+      {
+        "kind": "expect_visible",
+        "nodeId": "review-text"
+      }
+    ],
+    "reason": "本地提交后进入审核状态。"
+  },
+  {
+    "id": "answer-broken-ref",
+    "questionId": "m10-missing-login-submit",
+    "answerKind": "submit",
+    "effect": {
+      "kind": "set_state",
+      "stateKey": "form-status",
+      "value": "review"
+    },
+    "postconditions": [
+      {
+        "kind": "expect_visible",
+        "nodeId": "missing-node"
+      }
+    ],
+    "reason": "负例：postcondition 悬空。"
+  }
+]

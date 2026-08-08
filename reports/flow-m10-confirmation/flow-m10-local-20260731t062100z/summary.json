@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M10",
+  "scope": "confirmation_semantics",
+  "status": "passed",
+  "input": {
+    "runId": "flow-m10-local-20260731t062100z",
+    "mode": "local",
+    "flowPlanRef": "tests/fixtures/flow-plan/m10-confirmation-semantics/flow-plan.json",
+    "uiSpecRef": "tests/fixtures/flow-plan/m8-form-submit-state-machine/ui-spec.json",
+    "answerRef": "tests/fixtures/flow-plan/m10-confirmation-semantics/answers-local.json",
+    "networkBoundary": {
+      "figmaRestCalled": false,
+      "openaiCalled": false,
+      "mode": "local"
+    }
+  },
+  "counts": {
+    "generatedQuestions": 1,
+    "submitLikeQuestions": 1,
+    "answersReceived": 2,
+    "applied": 1,
+    "declined": 0,
+    "rejected": 1,
+    "invalid": 0,
+    "unmatched": 0,
+    "summaryOnlyQuestions": 0,
+    "userConfirmedSubmit": 1,
+    "userConfirmedStateMachineTransitions": 0
+  },
+  "samples": [],
+  "appliedInteractions": [
+    {
+      "interactionId": "missing-login-submit",
+      "source": "user_confirmed",
+      "intent": "submit",
+      "postconditionKinds": [
+        "expect_visible"
+      ],
+      "artifactRefs": [
+        "tests/fixtures/flow-plan/m10-confirmation-semantics/flow-plan.json",
+        "tests/fixtures/flow-plan/m8-form-submit-state-machine/ui-spec.json"
+      ]
+    }
+  ],
+  "rejections": [
+    {
+      "questionId": "m10-missing-login-submit",
+      "reasonCode": "postcondition_reference_missing",
+      "evidence": "answer answer-broken-ref rejected"
+    }
+  ],
+  "reasons": [
+    "m8_user_confirmed_converted=1",
+    "m8_trusted_submit_converted=1",
+    "m8_state_machine_transitions=0"
+  ],
+  "residualRisks": [
+    "本地 fixture 证明确认语义链路，不代表真实后端业务成功。"
+  ]
+}
