@@ -284,6 +284,158 @@ describe("normalizeFigmaDocument", () => {
     });
   });
 
+  it("忽略超出受控范围的 Figma 圆角值并保留告警", () => {
+    const fixture = createFigmaFileResponseFixture();
+    const document = fixture.document as {
+      children: Array<{
+        children?: Array<{
+          children?: unknown[];
+        }>;
+      }>;
+    };
+    document.children[0]?.children?.[0]?.children?.push(
+      {
+        id: "1:radius-large",
+        name: "Large radius",
+        type: "RECTANGLE",
+        absoluteBoundingBox: {
+          x: 16,
+          y: 16,
+          width: 100,
+          height: 40,
+        },
+        fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+        cornerRadius: 10_001,
+      },
+      {
+        id: "1:radius-negative",
+        name: "Negative radius",
+        type: "RECTANGLE",
+        absoluteBoundingBox: {
+          x: 16,
+          y: 72,
+          width: 100,
+          height: 40,
+        },
+        fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+        cornerRadius: -1,
+      },
+      {
+        id: "1:radius-nan",
+        name: "NaN radius",
+        type: "RECTANGLE",
+        absoluteBoundingBox: {
+          x: 16,
+          y: 128,
+          width: 100,
+          height: 40,
+        },
+        fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+        cornerRadius: Number.NaN,
+      },
+      {
+        id: "1:radius-normal",
+        name: "Normal radius",
+        type: "RECTANGLE",
+        absoluteBoundingBox: {
+          x: 16,
+          y: 240,
+          width: 100,
+          height: 40,
+        },
+        fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+        cornerRadius: 12,
+      },
+      {
+        id: "1:radius-string",
+        name: "String radius",
+        type: "RECTANGLE",
+        absoluteBoundingBox: {
+          x: 16,
+          y: 296,
+          width: 100,
+          height: 40,
+        },
+        fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }],
+        cornerRadius: "12",
+      },
+    );
+
+    const normalized = normalizeFigmaDocument(fixture);
+    const nodes = normalized.pages[0]!.nodes;
+
+    expect(
+      nodes.find((node) => node.id === "1:radius-large")?.visual,
+    ).not.toHaveProperty("cornerRadius");
+    expect(
+      nodes.find((node) => node.id === "1:radius-negative")?.visual,
+    ).not.toHaveProperty("cornerRadius");
+    expect(
+      nodes.find((node) => node.id === "1:radius-nan")?.visual,
+    ).not.toHaveProperty("cornerRadius");
+    expect(
+      nodes.find((node) => node.id === "1:radius-string")?.visual,
+    ).not.toHaveProperty("cornerRadius");
+    expect(
+      nodes.find((node) => node.id === "1:radius-normal")?.visual,
+    ).toHaveProperty("cornerRadius", 12);
+    expect(normalized.warnings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "figma_corner_radius_ignored",
+          entityId: "1:radius-large",
+        }),
+        expect.objectContaining({
+          code: "figma_corner_radius_ignored",
+          entityId: "1:radius-negative",
+        }),
+        expect.objectContaining({
+          code: "figma_corner_radius_ignored",
+          entityId: "1:radius-nan",
+        }),
+        expect.objectContaining({
+          code: "figma_corner_radius_ignored",
+          entityId: "1:radius-string",
+        }),
+      ]),
+    );
+    expect(() =>
+      designBundleDraftSchema.parse({
+        schemaVersion: "1",
+        projectId: "radius-project",
+        source: {
+          provider: "figma_rest",
+          fileKeyHash: "c".repeat(64),
+          targetNodeIds: [],
+          inspectedAt: "2026-08-09T00:00:00.000Z",
+        },
+        capabilities: {
+          variables: {
+            status: "unavailable_optional",
+            reasonCode: "plan_limited",
+          },
+        },
+        pages: normalized.pages,
+        components: normalized.components,
+        styles: normalized.styles,
+        designValues: normalized.designValues,
+        screenshots: [],
+        assets: [
+          {
+            path: FIXTURE_ASSET_PATH,
+            sha256: FIXTURE_ASSET_SHA,
+            byteCount: 128,
+            mimeType: "image/png",
+            width: 640,
+            height: 480,
+          },
+        ],
+        provenance: normalized.provenance,
+        warnings: normalized.warnings,
+      }),
+    ).not.toThrow();
+  });
+
   it("显式目标优先，并忽略已包含的后代目标", () => {
     const normalized = normalizeFigmaDocument(
       createFigmaFileResponseFixture(),

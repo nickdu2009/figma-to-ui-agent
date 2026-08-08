@@ -459,6 +459,186 @@ describe("FigmaInspector mock REST 纵向切片", () => {
     );
   });
 
+  it("显式目标节点跨 sibling 导航时用 Canvas 上下文恢复 prototype destination", async () => {
+    const root = await mkdtemp(join(tmpdir(), "figma-inspector-"));
+    temporaryRoots.push(root);
+    const store = new ProjectStore(root);
+    const nodesRequests: string[] = [];
+    const fileDepthRequests: string[] = [];
+    const fetchImpl = vi.fn<FigmaFetch>(async (input) => {
+      const url = new URL(String(input));
+      if (url.hostname === "api.figma.com") {
+        if (url.pathname === `/v1/files/${FILE_KEY}`) {
+          fileDepthRequests.push(url.searchParams.get("depth") ?? "");
+          const fixture = createFigmaFileResponseFixture();
+          const document = fixture.document as {
+            children: Array<{
+              children: Array<Record<string, unknown>>;
+            }>;
+          };
+          const home = document.children[0]!.children[0]!;
+          const settings = document.children[1]!.children[0]!;
+          document.children[0]!.children.push(settings);
+          document.children.splice(1, 1);
+          home.interactions = [
+            {
+              trigger: { type: "ON_CLICK" },
+              actions: [
+                {
+                  type: "NODE",
+                  navigation: "NAVIGATE",
+                  destinationId: "2:1",
+                },
+              ],
+            },
+          ];
+          return jsonResponse(fixture);
+        }
+        if (url.pathname === `/v1/files/${FILE_KEY}/nodes`) {
+          const ids = url.searchParams.get("ids") ?? "";
+          nodesRequests.push(ids);
+          const fixture = createFigmaFileResponseFixture();
+          const document = fixture.document as {
+            children: Array<{
+              children: Array<Record<string, unknown>>;
+            }>;
+          };
+          const productCanvas = document.children[0]!;
+          const home = productCanvas.children[0]!;
+          const settings = document.children[1]!.children[0]!;
+          productCanvas.children.push(settings);
+          const contextualHome = structuredClone(home);
+          contextualHome.interactions = [
+            {
+              trigger: { type: "ON_CLICK" },
+              actions: [
+                {
+                  type: "NODE",
+                  navigation: "NAVIGATE",
+                  destinationId: "2:1",
+                },
+              ],
+            },
+          ];
+          productCanvas.children[0] = contextualHome;
+          const isolatedHome = structuredClone(home);
+          isolatedHome.interactions = [
+            {
+              trigger: { type: "ON_CLICK" },
+              actions: [
+                {
+                  type: "NODE",
+                  navigation: "NAVIGATE",
+                  destinationId: null,
+                },
+              ],
+            },
+          ];
+          return jsonResponse({
+            nodes: Object.fromEntries(
+              ids.split(",").map((id) => [
+                id,
+                {
+                  document:
+                    id === "0:1"
+                      ? productCanvas
+                      : id === "2:1"
+                        ? settings
+                        : isolatedHome,
+                  components: fixture.components,
+                  componentSets: fixture.componentSets,
+                  styles: fixture.styles,
+                },
+              ]),
+            ),
+          });
+        }
+        if (url.pathname === `/v1/files/${FILE_KEY}/images`) {
+          return jsonResponse({
+            meta: {
+              images: {
+                "image-source-1":
+                  "https://s3-alpha.figma.com/assets/hero.png?signature=private",
+              },
+            },
+          });
+        }
+        if (url.pathname === `/v1/images/${FILE_KEY}`) {
+          const ids = url.searchParams.get("ids")?.split(",") ?? [];
+          return jsonResponse({
+            images: Object.fromEntries(
+              ids.map((id) => [
+                id,
+                `https://s3-alpha.figma.com/screenshots/${id.replaceAll(
+                  ":",
+                  "-",
+                )}.png?signature=private`,
+              ]),
+            ),
+          });
+        }
+        if (
+          url.pathname ===
+          `/v1/files/${FILE_KEY}/variables/local`
+        ) {
+          return new Response("scope details must stay private", {
+            status: 403,
+          });
+        }
+      }
+      if (url.pathname === "/assets/hero.png") {
+        return imageResponse(createPngBytes(640, 480));
+      }
+      if (url.pathname.startsWith("/screenshots/")) {
+        return imageResponse(createPngBytes(144, 144));
+      }
+      return new Response("unexpected", { status: 404 });
+    });
+    const inspector = new FigmaInspector({
+      restClient: new FigmaRestClient({
+        token: "private-token",
+        fetchImpl,
+        maxRetries: 0,
+      }),
+      imageDownloader: new FigmaImageDownloader({
+        projectStore: store,
+        fetchImpl,
+      }),
+      projectStore: store,
+      now: () => new Date("2026-08-09T09:32:00.000Z"),
+    });
+
+    await inspector.inspect(
+      {
+        schemaVersion: "1",
+        projectId: "canvas-prototype-context-project",
+        figmaUrl: `https://www.figma.com/design/${FILE_KEY}/Fixture?node-id=1-1`,
+      },
+      undefined,
+      { variablesMode: "disabled_restricted_live" },
+    );
+
+    expect(fileDepthRequests).toEqual(["3"]);
+    expect(nodesRequests).toEqual(["1:1", "0:1", "2:1"]);
+    const saved = await store.loadDesignBundle(
+      "canvas-prototype-context-project",
+    );
+    expect(saved.source.targetNodeIds).toEqual(["1:1"]);
+    expect(saved.pages.flatMap((page) => page.nodes.map((node) => node.id))).toEqual(
+      expect.arrayContaining(["1:1", "2:1"]),
+    );
+    expect(
+      saved.pages
+        .flatMap((page) => page.nodes)
+        .find((node) => node.id === "1:1")?.prototypeInteractions,
+    ).toContainEqual(
+      expect.objectContaining({
+        navigation: "NAVIGATE",
+        destinationId: "2:1",
+      }),
+    );
+  });
+
   it("显式目标节点为 CANVAS 时不会与内部包装节点冲突", async () => {
     const root = await mkdtemp(join(tmpdir(), "figma-inspector-"));
     temporaryRoots.push(root);

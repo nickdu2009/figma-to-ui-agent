@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M9",
+  "scope": "restricted_live_interaction_extraction",
+  "status": "partial",
+  "input": {
+    "runId": "20260809t0542",
+    "sampleManifestRef": "../../../../../tmp/flow-m13-cake-home-navigate-manifest-20260809.json",
+    "sampleIds": [
+      "reaction-cake-ordering-home-navigate-001"
+    ],
+    "networkBoundary": {
+      "figmaRestCalled": true,
+      "openaiCalled": false,
+      "mode": "restricted-live"
+    }
+  },
+  "samples": [
+    {
+      "sampleId": "reaction-cake-ordering-home-navigate-001",
+      "category": "food-ordering-navigate",
+      "expectedViewport": "mobile",
+      "accessStatus": "readable",
+      "interactionSource": "present",
+      "counts": {
+        "prototypeInteractionCount": 10,
+        "flowPlanInteractionCount": 15,
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 5,
+        "unsupported": 0,
+        "missingEvidence": 10
+      },
+      "classifications": [
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-dde2b50f99cc4409",
+          "intent": "unknown",
+          "sourceNodeId": "12:111",
+          "sourceNodeName": "Cake",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-0265f6f5146a1968",
+          "intent": "unknown",
+          "sourceNodeId": "12:115",
+          "sourceNodeName": "donuts",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-9a7b54a6e9c5b502",
+          "intent": "unknown",
+          "sourceNodeId": "12:119",
+          "sourceNodeName": "cookies",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-6c22f020608f4671",
+          "intent": "unknown",
+          "sourceNodeId": "12:123",
+          "sourceNodeName": "Card-One",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-00202911a8dbe704",
+          "intent": "unknown",
+          "sourceNodeId": "12:133",
+          "sourceNodeName": "Card-Two",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-1014036f4e8a1321",
+          "intent": "unknown",
+          "sourceNodeId": "12:143",
+          "sourceNodeName": "Card-Three",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-8cf64f5a3128ce17",
+          "intent": "unknown",
+          "sourceNodeId": "12:153",
+          "sourceNodeName": "Card-four",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-cceb6c4cc5c460d4",
+          "intent": "unknown",
+          "sourceNodeId": "12:164",
+          "sourceNodeName": "Home",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-e841d2739adebf23",
+          "intent": "unknown",
+          "sourceNodeId": "12:170",
+          "sourceNodeName": "favorite",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-e92837c78195ee94",
+          "intent": "unknown",
+          "sourceNodeId": "12:173",
+          "sourceNodeName": "profile",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-108-control",
+          "intent": "unknown",
+          "sourceNodeName": "filter button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-128-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-138-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-148-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-158-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        }
+      ],
+      "blockedReasons": [
+        "prototype_target_missing",
+        "interaction_target_missing"
+      ],
+      "artifactRefs": {
+        "designBundlePath": "data/projects/flow-m13-replacement-reaction-cake-ordering-home-navigate-001/figma/current.json",
+        "uiSpecPath": "data/projects/flow-m13-replacement-reaction-cake-ordering-home-navigate-001/specs/current.json",
+        "flowPlanPath": "data/projects/flow-m13-replacement-reaction-cake-ordering-home-navigate-001/flow/current.json"
+      }
+    }
+  ],
+  "aggregate": {
+    "totalSamples": 1,
+    "readableSamples": 1,
+    "trustedNavigate": 0,
+    "trustedStateChange": 0,
+    "submitLikeNeedsConfirmation": 5,
+    "unsupported": 0,
+    "missingEvidence": 10,
+    "notAccessible": 0
+  },
+  "reasons": [
+    "flow_m9_less_than_three_readable_samples",
+    "flow_m9_no_trusted_flowplan_candidate"
+  ],
+  "residualRisks": [
+    "Flow-M9 只证明 interaction 抽取与分类；submit-like 业务语义仍需 Flow-M10 用户确认。",
+    "restricted-live 样本权限和 Community 文件结构可能随时间变化。"
+  ]
+}

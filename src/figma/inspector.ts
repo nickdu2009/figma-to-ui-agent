@@ -253,6 +253,94 @@ function targetedNodesPayload(
   };
 }
 
+function findNestedDocumentById(
+  rawValue: unknown,
+  targetNodeId: string,
+): unknown | undefined {
+  const node = recordFromUnknown(rawValue);
+  if (node.id === targetNodeId) {
+    return rawValue;
+  }
+  const children = Array.isArray(node.children) ? node.children : [];
+  for (const child of children) {
+    const found = findNestedDocumentById(child, targetNodeId);
+    if (found) {
+      return found;
+    }
+  }
+  return undefined;
+}
+
+function targetDocumentFromNodeEntries(
+  nodes: Record<string, unknown>,
+  targetNodeId: string,
+): unknown | undefined {
+  for (const [entryId, rawEntry] of Object.entries(nodes)) {
+    if (entryId === targetNodeId) {
+      continue;
+    }
+    const nested = findNestedDocumentById(
+      recordFromUnknown(rawEntry).document,
+      targetNodeId,
+    );
+    if (nested) {
+      return nested;
+    }
+  }
+  return recordFromUnknown(nodes[targetNodeId]).document;
+}
+
+function targetedNodesPayloadFromNestedDocuments(
+  nodesPayload: Record<string, unknown>,
+  targetNodeIds: readonly string[],
+): Record<string, unknown> {
+  const nodes = recordFromUnknown(nodesPayload.nodes);
+  const documents = targetNodeIds.map((targetNodeId) => {
+    const document = targetDocumentFromNodeEntries(nodes, targetNodeId);
+    if (!document) {
+      throw new FigmaInspectionError(
+        "invalid_response",
+        `Figma 目标节点响应缺少 document：${targetNodeId}`,
+      );
+    }
+    return document;
+  });
+  return {
+    name: "Targeted Figma nodes",
+    document: {
+      id: "0:0",
+      name: "Document",
+      type: "DOCUMENT",
+      children: [
+        {
+          id: TARGETED_NODES_CANVAS_ID,
+          name: "Selected nodes",
+          type: "CANVAS",
+          children: documents,
+        },
+      ],
+    },
+    components: mergeRecords([
+      nodesPayload.components,
+      ...Object.values(nodes).map(
+        (entry) => recordFromUnknown(entry).components,
+      ),
+    ]),
+    componentSets: mergeRecords([
+      nodesPayload.componentSets,
+      ...Object.values(nodes).map(
+        (entry) => recordFromUnknown(entry).componentSets,
+      ),
+    ]),
+    styles: mergeRecords([
+      nodesPayload.styles,
+      ...Object.values(nodes).map(
+        (entry) => recordFromUnknown(entry).styles,
+      ),
+    ]),
+  };
+}
+
 function mergeNodePayloads(
   basePayload: Record<string, unknown>,
   extraPayload: Record<string, unknown>,
@@ -292,6 +380,62 @@ function prototypeTargetNodeIds(
   return [...output].slice(0, 100);
 }
 
+function hasPrototypeTargetMissing(
+  normalized: NormalizedFigmaDocument,
+): boolean {
+  return normalized.pages.some((page) =>
+    page.nodes.some((node) =>
+      node.prototypeInteractions?.some(
+        (interaction) => interaction.reason === "prototype_target_missing",
+      ),
+    ),
+  );
+}
+
+function prototypeKnownTargetCount(
+  normalized: NormalizedFigmaDocument,
+): number {
+  return normalized.pages.reduce(
+    (pageTotal, page) =>
+      pageTotal +
+      page.nodes.reduce(
+        (nodeTotal, node) =>
+          nodeTotal +
+          (node.prototypeInteractions ?? []).filter(
+            (interaction) =>
+              Boolean(
+                interaction.transitionNodeId ?? interaction.destinationId,
+              ),
+          ).length,
+        0,
+      ),
+    0,
+  );
+}
+
+function canvasIdsContainingTargets(
+  filePayload: Record<string, unknown>,
+  targetNodeIds: readonly string[],
+): string[] {
+  const targetSet = new Set(targetNodeIds);
+  const output = new Set<string>();
+  const visit = (rawValue: unknown, currentCanvasId?: string): void => {
+    const node = recordFromUnknown(rawValue);
+    const id = typeof node.id === "string" ? node.id : undefined;
+    const type = typeof node.type === "string" ? node.type : undefined;
+    const canvasId = type === "CANVAS" && id ? id : currentCanvasId;
+    if (id && targetSet.has(id) && canvasId) {
+      output.add(canvasId);
+    }
+    const children = Array.isArray(node.children) ? node.children : [];
+    for (const child of children) {
+      visit(child, canvasId);
+    }
+  };
+  visit(filePayload.document);
+  return [...output].slice(0, 20);
+}
+
 async function loadTargetedFigmaPayload(
   restClient: FigmaRestClient,
   fileKey: string,
@@ -310,16 +454,48 @@ async function loadTargetedFigmaPayload(
     nodesPayload,
     targetNodeIds,
   );
-  const initial = normalizeFigmaDocument(initialPayload, {
+  let payload = initialPayload;
+  let sourceNodesPayload = nodesPayload;
+  let initial = normalizeFigmaDocument(payload, {
     targetNodeIds,
   });
+  if (hasPrototypeTargetMissing(initial)) {
+    const initialKnownTargets = prototypeKnownTargetCount(initial);
+    const shallowFilePayload = await restClient.getFile(fileKey, signal, {
+      depth: 3,
+    });
+    const canvasNodeIds = canvasIdsContainingTargets(
+      shallowFilePayload,
+      targetNodeIds,
+    );
+    if (canvasNodeIds.length > 0) {
+      const canvasPayload = await restClient.getNodes(
+        fileKey,
+        canvasNodeIds,
+        signal,
+      );
+      const mergedPayload = mergeNodePayloads(nodesPayload, canvasPayload);
+      const contextualPayload = targetedNodesPayloadFromNestedDocuments(
+        mergedPayload,
+        targetNodeIds,
+      );
+      const contextual = normalizeFigmaDocument(contextualPayload, {
+        targetNodeIds,
+      });
+      if (prototypeKnownTargetCount(contextual) > initialKnownTargets) {
+        sourceNodesPayload = mergedPayload;
+        payload = contextualPayload;
+        initial = contextual;
+      }
+    }
+  }
   const existingNodeIds = new Set(
     initial.pages.flatMap((page) => page.nodes.map((node) => node.id)),
   );
   const extraNodeIds = prototypeTargetNodeIds(initial, existingNodeIds);
   if (extraNodeIds.length < 1) {
     return {
-      payload: initialPayload,
+      payload,
       normalizationTargetNodeIds: [...targetNodeIds],
     };
   }
@@ -330,8 +506,8 @@ async function loadTargetedFigmaPayload(
   );
   const normalizationTargetNodeIds = [...targetNodeIds, ...extraNodeIds];
   return {
-    payload: targetedNodesPayload(
-      mergeNodePayloads(nodesPayload, extraPayload),
+    payload: targetedNodesPayloadFromNestedDocuments(
+      mergeNodePayloads(sourceNodesPayload, extraPayload),
       normalizationTargetNodeIds,
     ),
     normalizationTargetNodeIds,

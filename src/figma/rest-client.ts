@@ -110,6 +110,10 @@ export interface FigmaImageRenderOptions {
   signal?: AbortSignal;
 }
 
+export interface FigmaFileOptions {
+  depth?: number;
+}
+
 function assertPositiveInteger(
   value: number,
   name: string,
@@ -401,11 +405,27 @@ export class FigmaRestClient {
   async getFile(
     fileKeyInput: string,
     signal?: AbortSignal,
+    options: FigmaFileOptions = {},
   ): Promise<Record<string, unknown>> {
     const fileKey = assertFigmaFileKey(fileKeyInput);
+    const url = this.buildUrl(`files/${encodeURIComponent(fileKey)}`);
+    if (options.depth !== undefined) {
+      if (
+        !Number.isInteger(options.depth) ||
+        options.depth < 1 ||
+        options.depth > 8
+      ) {
+        throw new FigmaRestError(
+          "invalid_configuration",
+          "depth 配置无效",
+        );
+      }
+      url.searchParams.set("depth", String(options.depth));
+    }
+    this.assertRequestUrlLength(url);
     return await this.requestJson(
       "file",
-      this.buildUrl(`files/${encodeURIComponent(fileKey)}`),
+      url,
       signal,
     );
   }

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M9",
+  "scope": "restricted_live_interaction_extraction",
+  "status": "failed",
+  "input": {
+    "runId": "20260809t0539",
+    "sampleManifestRef": "../../../../../tmp/flow-m13-cake-navigate-manifest-20260809.json",
+    "sampleIds": [
+      "reaction-cake-ordering-navigate-001"
+    ],
+    "networkBoundary": {
+      "figmaRestCalled": true,
+      "openaiCalled": false,
+      "mode": "restricted-live"
+    }
+  },
+  "samples": [
+    {
+      "sampleId": "reaction-cake-ordering-navigate-001",
+      "category": "food-ordering-navigate",
+      "expectedViewport": "mobile",
+      "accessStatus": "not_accessible",
+      "interactionSource": "unavailable",
+      "counts": {
+        "prototypeInteractionCount": 0,
+        "flowPlanInteractionCount": 0,
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0
+      },
+      "classifications": [
+        {
+          "classification": "not_accessible",
+          "evidence": "Could not map root node for page 6:21"
+        }
+      ],
+      "blockedReasons": [
+        "Could not map root node for page 6:21"
+      ],
+      "artifactRefs": {}
+    }
+  ],
+  "aggregate": {
+    "totalSamples": 1,
+    "readableSamples": 0,
+    "trustedNavigate": 0,
+    "trustedStateChange": 0,
+    "submitLikeNeedsConfirmation": 0,
+    "unsupported": 0,
+    "missingEvidence": 0,
+    "notAccessible": 1
+  },
+  "reasons": [
+    "flow_m9_less_than_three_readable_samples",
+    "flow_m9_no_trusted_flowplan_candidate",
+    "flow_m9_no_submit_like_needs_confirmation",
+    "flow_m9_some_samples_not_accessible"
+  ],
+  "residualRisks": [
+    "Flow-M9 只证明 interaction 抽取与分类；submit-like 业务语义仍需 Flow-M10 用户确认。",
+    "restricted-live 样本权限和 Community 文件结构可能随时间变化。"
+  ]
+}

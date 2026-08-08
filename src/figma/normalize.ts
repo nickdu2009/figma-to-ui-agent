@@ -19,6 +19,7 @@ import {
 
 const DEFAULT_MAX_NODES = 50_000;
 const DEFAULT_MAX_DEPTH = 100;
+const MAX_NORMALIZED_CORNER_RADIUS = 10_000;
 
 const rawNodeSchema = z
   .object({
@@ -684,9 +685,35 @@ function firstSolidPaintColor(values: readonly unknown[] | undefined):
   return undefined;
 }
 
-function normalizedCornerRadius(node: RawNode): number | undefined {
-  if (typeof node.cornerRadius === "number") {
-    return node.cornerRadius;
+function normalizedCornerRadius(
+  node: RawNode,
+  warnings: DesignBundleWarning[],
+): number | undefined {
+  const normalizeValue = (
+    value: unknown,
+    source: "cornerRadius" | "rectangleCornerRadii",
+  ): number | undefined => {
+    if (typeof value !== "number" || !Number.isFinite(value)) {
+      warnings.push({
+        code: "figma_corner_radius_ignored",
+        entityId: node.id,
+        detail: `Figma ${source} 不是有限数字，已忽略该圆角值`,
+      });
+      return undefined;
+    }
+    if (value < 0 || value > MAX_NORMALIZED_CORNER_RADIUS) {
+      warnings.push({
+        code: "figma_corner_radius_ignored",
+        entityId: node.id,
+        detail: `Figma ${source} 超出受控范围，已忽略该圆角值`,
+      });
+      return undefined;
+    }
+    return value;
+  };
+
+  if (node.cornerRadius !== undefined) {
+    return normalizeValue(node.cornerRadius, "cornerRadius");
   }
   if (!node.rectangleCornerRadii) {
     return undefined;
@@ -704,12 +731,13 @@ function normalizedCornerRadius(node: RawNode): number | undefined {
   return topLeft === topRight &&
     topLeft === bottomRight &&
     topLeft === bottomLeft
-    ? topLeft
+    ? normalizeValue(topLeft, "rectangleCornerRadii")
     : undefined;
 }
 
 function normalizedVisualMetadata(
   node: RawNode,
+  warnings: DesignBundleWarning[],
 ): NormalizedNode["visual"] | undefined {
   const opacity = typeof node.opacity === "number" ? node.opacity : undefined;
   const blendMode =
@@ -728,7 +756,7 @@ function normalizedVisualMetadata(
   const vectorPathCount = Array.isArray(node.vectorPaths)
     ? node.vectorPaths.length
     : 0;
-  const cornerRadius = normalizedCornerRadius(node);
+  const cornerRadius = normalizedCornerRadius(node, warnings);
   const hasSignal =
     opacity !== undefined ||
     blendMode !== undefined ||
@@ -1311,7 +1339,7 @@ export function normalizeFigmaDocument(
         bounds: normalizedBounds(node),
         layout: normalizedLayout(node),
         text: normalizedText(node),
-        visual: normalizedVisualMetadata(node),
+        visual: normalizedVisualMetadata(node, warnings),
         componentRef,
         componentProperties: normalizedComponentProperties(node),
         variantProperties: normalizedVariantProperties(node),
