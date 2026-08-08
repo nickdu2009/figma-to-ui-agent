@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "failed",
+  "mode": "restricted-live",
+  "projectId": "demo-project",
+  "runId": "product-m9-rate-limited",
+  "stages": {
+    "inspect": {
+      "status": "failed",
+      "message": "Figma REST 429",
+      "reasonCode": "figma_rate_limited"
+    }
+  },
+  "artifactRefs": {
+    "summaryJson": "reports/product-m9/product-m9-rate-limited/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-rate-limited/summary.md"
+  },
+  "metrics": {},
+  "error": {
+    "category": "figma_rate_limited",
+    "message": "Figma REST 429",
+    "recoverable": true,
+    "nextAction": "等待 Retry-After 或降低请求频率后重试。",
+    "retryPolicy": "retry_after_wait"
+  },
+  "nextAction": "等待 Retry-After 或降低请求频率后重试。"
+}

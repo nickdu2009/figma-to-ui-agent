@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "failed",
+  "mode": "local",
+  "projectId": "demo-project",
+  "runId": "product-m9-internal-error",
+  "stages": {
+    "report": {
+      "status": "failed",
+      "message": "Product-M9 internal error",
+      "reasonCode": "internal_error"
+    }
+  },
+  "artifactRefs": {
+    "summaryJson": "reports/product-m9/product-m9-internal-error/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-internal-error/summary.md"
+  },
+  "metrics": {},
+  "error": {
+    "category": "internal_error",
+    "message": "Product-M9 internal error",
+    "recoverable": false,
+    "nextAction": "上报实现缺陷，修复代码后再运行。",
+    "retryPolicy": "do_not_retry"
+  },
+  "nextAction": "上报实现缺陷，修复代码后再运行。"
+}

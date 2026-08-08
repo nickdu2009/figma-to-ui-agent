@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "partial",
+  "mode": "restricted-live",
+  "projectId": "demo-project",
+  "runId": "product-m9-partial-evidence",
+  "stages": {
+    "flowPlanExtraction": {
+      "status": "partial",
+      "message": "FlowPlan artifact contains partial evidence",
+      "reasonCode": "partial_evidence"
+    },
+    "report": {
+      "status": "passed",
+      "message": "summary written"
+    }
+  },
+  "artifactRefs": {
+    "designBundlePath": "data/projects/demo-project/figma/current.json",
+    "uiSpecPath": "data/projects/demo-project/specs/current.json",
+    "flowPlanPath": "data/projects/demo-project/flow/current.json",
+    "summaryJson": "reports/product-m9/product-m9-partial-evidence/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-partial-evidence/summary.md"
+  },
+  "metrics": {
+    "trustedNavigate": 1,
+    "missingEvidence": 1,
+    "successfulFixtureIds": [],
+    "failedFixtureIds": []
+  },
+  "error": {
+    "category": "partial_evidence",
+    "message": "FlowPlan artifact contains partial evidence",
+    "recoverable": true,
+    "nextAction": "查看 partial reasons，补样本、补确认或人工复核。",
+    "retryPolicy": "manual_review"
+  },
+  "nextAction": "查看 partial reasons，补样本、补确认或人工复核。"
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1",
+  "ok": true,
+  "status": "passed",
+  "mode": "local",
+  "projectId": "demo-project",
+  "runId": "product-m9-local-success",
+  "stages": {
+    "flowPlanExtraction": {
+      "status": "passed",
+      "message": "FlowPlan artifact loaded",
+      "artifactRef": "tests/fixtures/flow-plan/m8-form-submit-state-machine/flow-plan.json"
+    },
+    "execution": {
+      "status": "passed",
+      "message": "Flow behavior validation passed",
+      "artifactRef": "reports/product-m9/product-m9-local-success/validation.json"
+    },
+    "report": {
+      "status": "passed",
+      "message": "summary written"
+    }
+  },
+  "artifactRefs": {
+    "uiSpecPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/ui-spec.json",
+    "flowPlanPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/flow-plan.json",
+    "validationPath": "reports/product-m9/product-m9-local-success/validation.json",
+    "summaryJson": "reports/product-m9/product-m9-local-success/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-local-success/summary.md"
+  },
+  "metrics": {
+    "trustedNavigate": 0,
+    "trustedStateChange": 0,
+    "submitLikeNeedsConfirmation": 0,
+    "unsupported": 0,
+    "missingEvidence": 0,
+    "successfulFixtureIds": ["flow-figma-submit-review-fixture"],
+    "failedFixtureIds": []
+  },
+  "nextAction": "Product-M9 local FlowPlan validation passed; inspect summary and artifact refs before delivery."
+}

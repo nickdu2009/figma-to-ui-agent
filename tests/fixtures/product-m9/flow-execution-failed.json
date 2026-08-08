@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "failed",
+  "mode": "local",
+  "projectId": "demo-project",
+  "runId": "product-m9-flow-execution-failed",
+  "stages": {
+    "execution": {
+      "status": "failed",
+      "message": "Flow behavior validation failed",
+      "artifactRef": "reports/product-m9/product-m9-flow-execution-failed/validation.json",
+      "reasonCode": "flow_execution_failed"
+    }
+  },
+  "artifactRefs": {
+    "uiSpecPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/ui-spec.json",
+    "flowPlanPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/flow-plan.json",
+    "validationPath": "reports/product-m9/product-m9-flow-execution-failed/validation.json",
+    "summaryJson": "reports/product-m9/product-m9-flow-execution-failed/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-flow-execution-failed/summary.md"
+  },
+  "metrics": {
+    "successfulFixtureIds": [],
+    "failedFixtureIds": ["flow-figma-submit-review-fixture"]
+  },
+  "error": {
+    "category": "flow_execution_failed",
+    "message": "Flow behavior validation failed",
+    "recoverable": true,
+    "nextAction": "查看 validation artifact，修复行为 fixture 或生成结果后重跑。",
+    "retryPolicy": "manual_review"
+  },
+  "nextAction": "查看 validation artifact，修复行为 fixture 或生成结果后重跑。"
+}

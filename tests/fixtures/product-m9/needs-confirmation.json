@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "partial",
+  "mode": "local",
+  "projectId": "demo-project",
+  "runId": "product-m9-needs-confirmation",
+  "stages": {
+    "flowPlanExtraction": {
+      "status": "partial",
+      "message": "submit-like behavior needs user confirmation",
+      "artifactRef": "tests/fixtures/product-m9/needs-confirmation-flow-plan.json",
+      "reasonCode": "needs_confirmation"
+    },
+    "execution": {
+      "status": "skipped",
+      "message": "execution skipped until confirmation is provided"
+    },
+    "report": {
+      "status": "passed",
+      "message": "summary written"
+    }
+  },
+  "artifactRefs": {
+    "uiSpecPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/ui-spec.json",
+    "flowPlanPath": "tests/fixtures/product-m9/needs-confirmation-flow-plan.json",
+    "summaryJson": "reports/product-m9/product-m9-needs-confirmation/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-needs-confirmation/summary.md"
+  },
+  "metrics": {
+    "submitLikeNeedsConfirmation": 1,
+    "successfulFixtureIds": [],
+    "failedFixtureIds": []
+  },
+  "error": {
+    "category": "needs_confirmation",
+    "message": "FlowPlan contains submit-like interaction without trusted postcondition",
+    "recoverable": true,
+    "nextAction": "向用户展示 confirmation questions，等待结构化答案后重跑。",
+    "retryPolicy": "manual_review"
+  },
+  "nextAction": "向用户展示 confirmation questions，等待结构化答案后重跑。"
+}

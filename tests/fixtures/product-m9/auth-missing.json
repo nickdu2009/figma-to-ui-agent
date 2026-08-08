@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "failed",
+  "mode": "restricted-live",
+  "projectId": "demo-project",
+  "runId": "product-m9-auth-missing",
+  "stages": {
+    "inspect": {
+      "status": "failed",
+      "message": "restricted-live mode is missing Figma authorization",
+      "reasonCode": "auth_missing"
+    }
+  },
+  "artifactRefs": {
+    "summaryJson": "reports/product-m9/product-m9-auth-missing/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-auth-missing/summary.md"
+  },
+  "metrics": {},
+  "error": {
+    "category": "auth_missing",
+    "message": "restricted-live mode is missing Figma authorization",
+    "recoverable": true,
+    "nextAction": "补齐 Figma gate/token，或改用 local 模式。",
+    "retryPolicy": "retry_after_fix"
+  },
+  "nextAction": "补齐 Figma gate/token，或改用 local 模式。"
+}

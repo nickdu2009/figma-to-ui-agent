@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "failed",
+  "mode": "restricted-live",
+  "projectId": "demo-project",
+  "runId": "product-m9-not-found",
+  "stages": {
+    "inspect": {
+      "status": "failed",
+      "message": "Figma REST 404",
+      "reasonCode": "figma_not_found"
+    }
+  },
+  "artifactRefs": {
+    "summaryJson": "reports/product-m9/product-m9-not-found/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-not-found/summary.md"
+  },
+  "metrics": {},
+  "error": {
+    "category": "figma_not_found",
+    "message": "Figma REST 404",
+    "recoverable": true,
+    "nextAction": "检查 Figma URL、fileKey 或 nodeId 后重试。",
+    "retryPolicy": "retry_after_fix"
+  },
+  "nextAction": "检查 Figma URL、fileKey 或 nodeId 后重试。"
+}
