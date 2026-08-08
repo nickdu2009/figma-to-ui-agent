@@ -340,7 +340,10 @@ async function loadRestrictedLiveArtifacts(input: {
   }
   const inspector = new FigmaInspector({
     restClient: new FigmaRestClient(restClientOptions),
-    imageDownloader: new FigmaImageDownloader({ projectStore: store }),
+    imageDownloader: new FigmaImageDownloader({
+      projectStore: store,
+      fetchImpl: input.options.figmaFetchImpl,
+    }),
     projectStore: store,
   });
   const output = await inspector.inspect(
