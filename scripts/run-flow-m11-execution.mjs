@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import {
+  cp,
   mkdir,
   readFile,
   writeFile,
@@ -27,11 +28,17 @@ const defaultBrowserExecutablePath = resolve(
 function parseArgs(argv) {
   const parsed = {
     runCompare: true,
+    mode: "local",
+    reuseStore: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--no-run-compare") {
       parsed.runCompare = false;
+      continue;
+    }
+    if (arg === "--reuse-store") {
+      parsed.reuseStore = true;
       continue;
     }
     if (!arg.startsWith("--")) {
@@ -46,6 +53,9 @@ function parseArgs(argv) {
     }
     parsed[key] = value;
     index += 1;
+  }
+  if (parsed.mode !== "local" && parsed.mode !== "restricted-live") {
+    throw new Error(`invalid_mode:${parsed.mode}`);
   }
   return parsed;
 }
@@ -65,6 +75,17 @@ function relativeRef(path) {
     throw new Error("flow_m11_ref_outside_project");
   }
   return ref;
+}
+
+function flowPlanStoreDraft(rawFlowPlan, projectId) {
+  const cloned = structuredClone(rawFlowPlan);
+  delete cloned.revision;
+  delete cloned.sourceUISpecRevision;
+  return {
+    ...cloned,
+    projectId,
+    sourceDesignBundleRevision: 1,
+  };
 }
 
 async function createReferencePng(browserExecutablePath, width, height) {
@@ -171,27 +192,68 @@ async function createSyntheticDesignBundle({
   };
 }
 
-function validationPageIds(planner) {
-  return [
-    ...new Set(
-      planner.uiSpec.behaviorFixtures
-        .filter((fixture) => planner.executableFixtureIds.includes(fixture.id))
-        .map((fixture) => fixture.initialPageId),
-    ),
-  ];
+function safeId(value) {
+  return (
+    value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80) || "fixture"
+  );
 }
 
-function selectValidationFixtureIds(planner) {
-  const preferred = planner.behaviorFixtures.find(
-    (fixture) =>
-      fixture.submit &&
-      fixture.inputStepCount > 0 &&
-      fixture.selectRadioToggleStepCount > 0 &&
-      fixture.postconditionStepCount > 0,
-  );
-  return preferred
-    ? [preferred.fixtureId]
-    : planner.executableFixtureIds.slice(0, 1);
+async function renderFixturesWithIsolation({
+  runId,
+  dataRoot,
+  store,
+  browserExecutablePath,
+  previewPort,
+  projectId,
+  uiSpec,
+  fixtureIds,
+  timeoutMs,
+}) {
+  const outputs = [];
+  for (const fixtureId of fixtureIds) {
+    const fixture = uiSpec.behaviorFixtures.find(
+      (candidate) => candidate.id === fixtureId,
+    );
+    if (!fixture) {
+      throw new Error(`flow_m11_fixture_missing:${fixtureId}`);
+    }
+    const service = new RenderAndCompareService({
+      dataRoot,
+      projectStore: store,
+      browserExecutablePath,
+      previewPort,
+      runId: () => `${runId}-${safeId(fixtureId)}`,
+    });
+    try {
+      outputs.push(
+        await service.render({
+          schemaVersion: "1",
+          projectId,
+          pageIds: [fixture.initialPageId],
+          viewportIds: [fixture.viewportId],
+          behaviorFixtureIds: [fixtureId],
+          comparison: {
+            maxDiffPixelRatio: 1,
+            maxDiffPixels: 1_000_000,
+            timeoutMs,
+          },
+        }),
+      );
+    } finally {
+      await service.close();
+    }
+  }
+  return {
+    schemaVersion: "1",
+    runId,
+    passed: outputs.every((output) => output.passed),
+    results: outputs.flatMap((output) => output.results),
+  };
 }
 
 function reportMarkdown(report) {
@@ -262,18 +324,36 @@ async function main() {
   const rawFlowPlan = await loadJson(flowPlanPath);
   const uiSpec = await loadJson(uiSpecPath);
   const projectId = uiSpec.projectId;
+  if (args.seedStoreFrom) {
+    await cp(
+      resolve(projectRoot, args.seedStoreFrom, "projects", projectId),
+      resolve(dataRoot, "projects", projectId),
+      {
+        recursive: true,
+        errorOnExist: true,
+        force: false,
+      },
+    );
+  }
   const store = new ProjectStore(dataRoot);
-  const designBundle = await createSyntheticDesignBundle({
-    store,
-    projectId,
-    uiSpec,
-    browserExecutablePath,
-  });
-  await store.saveDesignBundle({
-    projectId,
-    baseRevision: 0,
-    draft: designBundle,
-  });
+  if (!args.reuseStore && !args.seedStoreFrom) {
+    const designBundle = await createSyntheticDesignBundle({
+      store,
+      projectId,
+      uiSpec,
+      browserExecutablePath,
+    });
+    await store.saveDesignBundle({
+      projectId,
+      baseRevision: 0,
+      draft: designBundle,
+    });
+    await store.saveFlowPlan({
+      projectId,
+      baseRevision: 0,
+      draft: flowPlanStoreDraft(rawFlowPlan, projectId),
+    });
+  }
 
   const artifact = await loadFlowM11Artifact({
     artifactRef: relativeRef(flowPlanPath),
@@ -285,45 +365,28 @@ async function main() {
     uiSpec,
     options: { viewportId: args.viewportId },
   });
-  const validationFixtureIds = selectValidationFixtureIds(planner);
-  const reportPlanner = {
-    ...planner,
-    executableFixtureIds: validationFixtureIds,
-  };
-  await store.saveUISpec({
-    projectId,
-    baseRevision: 0,
-    draft: planner.uiSpec,
-  });
+  const validationFixtureIds = planner.executableFixtureIds;
+  if (!args.reuseStore || args.seedStoreFrom) {
+    await store.saveUISpec({
+      projectId,
+      baseRevision: args.seedStoreFrom ? uiSpec.revision : 0,
+      draft: planner.uiSpec,
+    });
+  }
 
   let validation;
   if (args.runCompare && validationFixtureIds.length > 0) {
-    const pageIds = validationPageIds(reportPlanner);
-    const service = new RenderAndCompareService({
+    validation = await renderFixturesWithIsolation({
+      runId,
       dataRoot,
-      projectStore: store,
+      store,
       browserExecutablePath,
       previewPort: args.previewPort ? Number(args.previewPort) : undefined,
-      runId: () => runId,
+      projectId,
+      uiSpec: planner.uiSpec,
+      fixtureIds: validationFixtureIds,
+      timeoutMs: Number(args.timeoutMs ?? 10_000),
     });
-    try {
-      validation = await service.render({
-        schemaVersion: "1",
-        projectId,
-        pageIds,
-        viewportIds: [
-          args.viewportId ?? planner.uiSpec.viewports[0].id,
-        ],
-        behaviorFixtureIds: validationFixtureIds,
-        comparison: {
-          maxDiffPixelRatio: 1,
-          maxDiffPixels: 1_000_000,
-          timeoutMs: Number(args.timeoutMs ?? 10_000),
-        },
-      });
-    } finally {
-      await service.close();
-    }
   }
 
   const validationSummary = validation
@@ -340,13 +403,13 @@ async function main() {
       };
   const report = buildFlowM11ExecutionReport({
     runId,
-    mode: "local",
+    mode: args.mode,
     flowPlanRef: relativeRef(flowPlanPath),
     uiSpecRef: relativeRef(uiSpecPath),
     reportRef: relativeRef(resolve(outputRoot, "summary.json")),
     figmaRestCalled: false,
     artifact,
-    planner: reportPlanner,
+    planner,
     validation: validationSummary,
   });
 

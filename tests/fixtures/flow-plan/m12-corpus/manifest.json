@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1",
+  "corpusId": "flow-m12-default",
+  "samples": [
+    {
+      "sampleId": "local-m11-submit-state-machine",
+      "category": "local-submit-state-machine",
+      "source": "local_fixture",
+      "capabilityHints": [
+        "navigate",
+        "submit",
+        "state_machine",
+        "select_radio_checkbox"
+      ],
+      "flowPlanPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/flow-plan.json",
+      "uiSpecPath": "tests/fixtures/flow-plan/m8-form-submit-state-machine/ui-spec.json"
+    },
+    {
+      "sampleId": "restricted-live-fitness-set-state",
+      "category": "mobile-app",
+      "source": "restricted_live_artifact",
+      "capabilityHints": [
+        "set_state"
+      ],
+      "flowPlanPath": "data/projects/flow-m7-fitness-clickable-source-r4/flow/current.json",
+      "uiSpecPath": "data/projects/flow-m7-fitness-clickable-source-r4/specs/current.json",
+      "seedStoreFrom": "data"
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "source": "restricted_live_summary",
+      "capabilityHints": [
+        "set_state",
+        "restricted_live_summary"
+      ],
+      "upstreamReportPath": "reports/flow-m9-restricted-live-extraction/flow-m9-restricted-live-20260731t051320z/summary.json",
+      "upstreamSampleId": "community-mobile-001"
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "source": "restricted_live_summary",
+      "capabilityHints": [
+        "submit",
+        "restricted_live_summary"
+      ],
+      "upstreamReportPath": "reports/flow-m9-restricted-live-extraction/flow-m9-restricted-live-20260731t051320z/summary.json",
+      "upstreamSampleId": "community-design-system-001"
+    },
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "source": "restricted_live_summary",
+      "capabilityHints": [
+        "submit",
+        "restricted_live_summary"
+      ],
+      "upstreamReportPath": "reports/flow-m9-restricted-live-extraction/flow-m9-restricted-live-20260731t051320z/summary.json",
+      "upstreamSampleId": "community-login-001"
+    }
+  ]
+}

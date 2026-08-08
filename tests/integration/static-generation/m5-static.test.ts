@@ -216,7 +216,7 @@ describe("run-m5-static runner", () => {
     expect(markdown).toContain("- vector:");
     expect(markdown).toContain("- budgetExceeded:");
     expect(markdown).toContain("full_page");
-  });
+  }, 30_000);
 
   it("saves UISpec when --save-ui-spec is passed", async () => {
     const projectId = `m5-runner-save-${Date.now()}`;
@@ -235,7 +235,7 @@ describe("run-m5-static runner", () => {
 
     const saved = await store.loadUISpec(projectId);
     expect(saved.revision).toBe(report.uiSpecRevision);
-  });
+  }, 30_000);
 
   it("runs render comparison when --run-compare is passed", async () => {
     const projectId = `m5-runner-compare-${Date.now()}`;

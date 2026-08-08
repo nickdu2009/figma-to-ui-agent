@@ -63,8 +63,8 @@ describe("Flow-M11 execution runner", () => {
       mode: "local",
     });
     expect(report.counts).toMatchObject({
-      fixtureCount: 1,
-      successfulFixtureCount: 1,
+      fixtureCount: 2,
+      successfulFixtureCount: 2,
       failedFixtureCount: 0,
       failedCheckCount: 0,
       preSatisfiedExpectationCount: 0,
@@ -80,7 +80,7 @@ describe("Flow-M11 execution runner", () => {
         }),
       ]),
     );
-  });
+  }, 30_000);
 
   it("拒绝 submit 前已经满足的静态 postcondition", async () => {
     const runId = "flow-m11-integration-pre-satisfied";
@@ -110,5 +110,8 @@ describe("Flow-M11 execution runner", () => {
     expect(report.failedFixtureIds).toEqual([
       "flow-figma-submit-review-fixture",
     ]);
-  });
+    expect(report.successfulFixtureIds).toEqual([
+      "flow-user-confirmed-finish-fixture",
+    ]);
+  }, 30_000);
 });
