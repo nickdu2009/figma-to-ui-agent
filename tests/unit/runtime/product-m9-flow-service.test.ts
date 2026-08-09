@@ -169,6 +169,7 @@ describe("Product-M9 flow service", () => {
     expect(result.ok).toBe(false);
     expect(result.status).toBe("partial");
     expect(result.error?.category).toBe("needs_confirmation");
+    expect(result.metrics.unsupported).toBe(0);
     expect(result.error?.retryPolicy).toBe("manual_review");
     expect(result.stages.confirmation).toMatchObject({
       status: "partial",
@@ -329,6 +330,8 @@ describe("Product-M9 flow service", () => {
     expect(result.ok).toBe(false);
     expect(result.status).toBe("partial");
     expect(result.metrics.submitLikeNeedsConfirmation).toBe(0);
+    expect(result.metrics.unsupported).toBe(0);
+    expect(result.metrics.missingEvidence).toBe(0);
     expect(result.error?.category).toBe("partial_evidence");
     expect(result.stages.confirmation?.message).toContain("declined=1");
   });

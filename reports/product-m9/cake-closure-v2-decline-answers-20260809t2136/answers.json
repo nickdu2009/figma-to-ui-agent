@@ -1,0 +1,608 @@
+[
+  {
+    "id": "answer-1-m10-missing-ui-home-12-108-control",
+    "questionId": "m10-missing-ui-home-12-108-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-2-m10-missing-ui-home-12-128-control",
+    "questionId": "m10-missing-ui-home-12-128-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-3-m10-missing-ui-home-12-138-control",
+    "questionId": "m10-missing-ui-home-12-138-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-4-m10-missing-ui-home-12-148-control",
+    "questionId": "m10-missing-ui-home-12-148-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-5-m10-missing-ui-home-12-158-control",
+    "questionId": "m10-missing-ui-home-12-158-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-6-m10-missing-ui-cake-screen-36-522-control",
+    "questionId": "m10-missing-ui-cake-screen-36-522-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-7-m10-missing-ui-cake-screen-36-543-control",
+    "questionId": "m10-missing-ui-cake-screen-36-543-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-8-m10-missing-ui-cake-screen-36-553-control",
+    "questionId": "m10-missing-ui-cake-screen-36-553-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-9-m10-missing-ui-cake-screen-36-563-control",
+    "questionId": "m10-missing-ui-cake-screen-36-563-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-10-m10-missing-ui-cake-screen-36-573-control",
+    "questionId": "m10-missing-ui-cake-screen-36-573-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-11-m10-missing-ui-cake-screen-30-404-control",
+    "questionId": "m10-missing-ui-cake-screen-30-404-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-12-m10-missing-ui-cake-screen-30-414-control",
+    "questionId": "m10-missing-ui-cake-screen-30-414-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-13-m10-missing-ui-cake-screen-30-424-control",
+    "questionId": "m10-missing-ui-cake-screen-30-424-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-14-m10-missing-ui-cake-screen-30-434-control",
+    "questionId": "m10-missing-ui-cake-screen-30-434-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-15-m10-missing-ui-donuts-screen-39-182-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-182-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-16-m10-missing-ui-donuts-screen-39-217-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-217-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-17-m10-missing-ui-donuts-screen-39-227-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-227-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-18-m10-missing-ui-donuts-screen-39-237-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-237-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-19-m10-missing-ui-donuts-screen-39-247-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-247-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-20-m10-missing-ui-donuts-screen-39-257-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-257-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-21-m10-missing-ui-donuts-screen-39-267-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-267-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-22-m10-missing-ui-donuts-screen-39-277-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-277-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-23-m10-missing-ui-donuts-screen-39-287-control",
+    "questionId": "m10-missing-ui-donuts-screen-39-287-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-24-m10-missing-ui-donuts-screen-41-567-control",
+    "questionId": "m10-missing-ui-donuts-screen-41-567-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-25-m10-missing-ui-donuts-screen-41-577-control",
+    "questionId": "m10-missing-ui-donuts-screen-41-577-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-26-m10-missing-ui-cookies-screen-main-41-614-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-614-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-27-m10-missing-ui-cookies-screen-main-41-649-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-649-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-28-m10-missing-ui-cookies-screen-main-41-659-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-659-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-29-m10-missing-ui-cookies-screen-main-41-669-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-669-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-30-m10-missing-ui-cookies-screen-main-41-679-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-679-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-31-m10-missing-ui-cookies-screen-main-41-689-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-689-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-32-m10-missing-ui-cookies-screen-main-41-699-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-699-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-33-m10-missing-ui-cookies-screen-main-41-709-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-709-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-34-m10-missing-ui-cookies-screen-main-41-719-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-719-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-35-m10-missing-ui-cookies-screen-main-41-729-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-729-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-36-m10-missing-ui-cookies-screen-main-41-739-control",
+    "questionId": "m10-missing-ui-cookies-screen-main-41-739-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-37-m10-missing-ui-choclolate-ice-cake-screen-26-65-control",
+    "questionId": "m10-missing-ui-choclolate-ice-cake-screen-26-65-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-38-m10-missing-ui-choclolate-ice-cake-screen-26-66-control",
+    "questionId": "m10-missing-ui-choclolate-ice-cake-screen-26-66-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-39-m10-missing-ui-choclolate-ice-cake-screen-26-69-control",
+    "questionId": "m10-missing-ui-choclolate-ice-cake-screen-26-69-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-40-m10-missing-ui-bithday-cake-screen-28-289-control",
+    "questionId": "m10-missing-ui-bithday-cake-screen-28-289-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-41-m10-missing-ui-bithday-cake-screen-28-294-control",
+    "questionId": "m10-missing-ui-bithday-cake-screen-28-294-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-42-m10-missing-ui-bithday-cake-screen-28-286-control",
+    "questionId": "m10-missing-ui-bithday-cake-screen-28-286-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-43-m10-missing-ui-oreo-cake-screen-28-379-control",
+    "questionId": "m10-missing-ui-oreo-cake-screen-28-379-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-44-m10-missing-ui-oreo-cake-screen-28-384-control",
+    "questionId": "m10-missing-ui-oreo-cake-screen-28-384-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-45-m10-missing-ui-oreo-cake-screen-28-376-control",
+    "questionId": "m10-missing-ui-oreo-cake-screen-28-376-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-46-m10-missing-ui-lava-cake-screen-26-99-control",
+    "questionId": "m10-missing-ui-lava-cake-screen-26-99-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-47-m10-missing-ui-lava-cake-screen-26-104-control",
+    "questionId": "m10-missing-ui-lava-cake-screen-26-104-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-48-m10-missing-ui-lava-cake-screen-26-96-control",
+    "questionId": "m10-missing-ui-lava-cake-screen-26-96-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-49-m10-missing-ui-wedding-cake-screen-28-330-control",
+    "questionId": "m10-missing-ui-wedding-cake-screen-28-330-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-50-m10-missing-ui-wedding-cake-screen-28-335-control",
+    "questionId": "m10-missing-ui-wedding-cake-screen-28-335-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-51-m10-missing-ui-wedding-cake-screen-28-327-control",
+    "questionId": "m10-missing-ui-wedding-cake-screen-28-327-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-52-m10-missing-ui-fudge-cake-screen-28-143-control",
+    "questionId": "m10-missing-ui-fudge-cake-screen-28-143-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-53-m10-missing-ui-fudge-cake-screen-28-148-control",
+    "questionId": "m10-missing-ui-fudge-cake-screen-28-148-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-54-m10-missing-ui-fudge-cake-screen-28-140-control",
+    "questionId": "m10-missing-ui-fudge-cake-screen-28-140-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-55-m10-missing-ui-three-milk-cake-screen-28-184-control",
+    "questionId": "m10-missing-ui-three-milk-cake-screen-28-184-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-56-m10-missing-ui-three-milk-cake-screen-28-189-control",
+    "questionId": "m10-missing-ui-three-milk-cake-screen-28-189-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-57-m10-missing-ui-three-milk-cake-screen-28-181-control",
+    "questionId": "m10-missing-ui-three-milk-cake-screen-28-181-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-58-m10-missing-ui-black-forest-cake-screen-28-225-control",
+    "questionId": "m10-missing-ui-black-forest-cake-screen-28-225-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-59-m10-missing-ui-black-forest-cake-screen-28-230-control",
+    "questionId": "m10-missing-ui-black-forest-cake-screen-28-230-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-60-m10-missing-ui-black-forest-cake-screen-28-222-control",
+    "questionId": "m10-missing-ui-black-forest-cake-screen-28-222-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-61-m10-missing-ui-sprinkle-berry-donut-screen-41-363-control",
+    "questionId": "m10-missing-ui-sprinkle-berry-donut-screen-41-363-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-62-m10-missing-ui-sprinkle-berry-donut-screen-41-368-control",
+    "questionId": "m10-missing-ui-sprinkle-berry-donut-screen-41-368-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-63-m10-missing-ui-sprinkle-berry-donut-screen-41-360-control",
+    "questionId": "m10-missing-ui-sprinkle-berry-donut-screen-41-360-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-64-m10-missing-ui-choco-donut-screen-41-403-control",
+    "questionId": "m10-missing-ui-choco-donut-screen-41-403-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-65-m10-missing-ui-choco-donut-screen-41-408-control",
+    "questionId": "m10-missing-ui-choco-donut-screen-41-408-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-66-m10-missing-ui-choco-donut-screen-41-400-control",
+    "questionId": "m10-missing-ui-choco-donut-screen-41-400-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-67-m10-missing-ui-oreo-crunch-donut-screen-41-443-control",
+    "questionId": "m10-missing-ui-oreo-crunch-donut-screen-41-443-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-68-m10-missing-ui-oreo-crunch-donut-screen-41-448-control",
+    "questionId": "m10-missing-ui-oreo-crunch-donut-screen-41-448-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-69-m10-missing-ui-oreo-crunch-donut-screen-41-440-control",
+    "questionId": "m10-missing-ui-oreo-crunch-donut-screen-41-440-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-70-m10-missing-ui-muffin-41-483-control",
+    "questionId": "m10-missing-ui-muffin-41-483-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-71-m10-missing-ui-muffin-41-488-control",
+    "questionId": "m10-missing-ui-muffin-41-488-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-72-m10-missing-ui-muffin-41-480-control",
+    "questionId": "m10-missing-ui-muffin-41-480-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-73-m10-missing-ui-ferrero-donut-screen-41-526-control",
+    "questionId": "m10-missing-ui-ferrero-donut-screen-41-526-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-74-m10-missing-ui-ferrero-donut-screen-41-531-control",
+    "questionId": "m10-missing-ui-ferrero-donut-screen-41-531-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-75-m10-missing-ui-ferrero-donut-screen-41-523-control",
+    "questionId": "m10-missing-ui-ferrero-donut-screen-41-523-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-76-m10-missing-ui-choco-chip-screen-47-148-control",
+    "questionId": "m10-missing-ui-choco-chip-screen-47-148-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-77-m10-missing-ui-choco-chip-screen-47-153-control",
+    "questionId": "m10-missing-ui-choco-chip-screen-47-153-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-78-m10-missing-ui-choco-chip-screen-47-145-control",
+    "questionId": "m10-missing-ui-choco-chip-screen-47-145-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-79-m10-missing-ui-double-choco-screen-47-188-control",
+    "questionId": "m10-missing-ui-double-choco-screen-47-188-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-80-m10-missing-ui-double-choco-screen-47-193-control",
+    "questionId": "m10-missing-ui-double-choco-screen-47-193-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-81-m10-missing-ui-double-choco-screen-47-185-control",
+    "questionId": "m10-missing-ui-double-choco-screen-47-185-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-82-m10-missing-ui-triple-choc-screen-48-264-control",
+    "questionId": "m10-missing-ui-triple-choc-screen-48-264-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-83-m10-missing-ui-triple-choc-screen-48-269-control",
+    "questionId": "m10-missing-ui-triple-choc-screen-48-269-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-84-m10-missing-ui-triple-choc-screen-48-261-control",
+    "questionId": "m10-missing-ui-triple-choc-screen-48-261-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-85-m10-missing-ui-velvet-cookie-screen-48-226-control",
+    "questionId": "m10-missing-ui-velvet-cookie-screen-48-226-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-86-m10-missing-ui-velvet-cookie-screen-48-231-control",
+    "questionId": "m10-missing-ui-velvet-cookie-screen-48-231-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-87-m10-missing-ui-velvet-cookie-screen-48-223-control",
+    "questionId": "m10-missing-ui-velvet-cookie-screen-48-223-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-88-m10-missing-ui-cart-screen-54-831-control",
+    "questionId": "m10-missing-ui-cart-screen-54-831-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-89-m10-missing-ui-cart-screen-54-897-control",
+    "questionId": "m10-missing-ui-cart-screen-54-897-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-90-m10-missing-ui-cart-screen-54-864-control",
+    "questionId": "m10-missing-ui-cart-screen-54-864-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-91-m10-missing-ui-cart-screen-54-842-control",
+    "questionId": "m10-missing-ui-cart-screen-54-842-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-92-m10-missing-ui-cart-screen-54-853-control",
+    "questionId": "m10-missing-ui-cart-screen-54-853-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-93-m10-missing-ui-cart-screen-54-540-control",
+    "questionId": "m10-missing-ui-cart-screen-54-540-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-94-m10-missing-ui-cart-screen-54-550-control",
+    "questionId": "m10-missing-ui-cart-screen-54-550-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-95-m10-missing-ui-cart-screen-54-875-control",
+    "questionId": "m10-missing-ui-cart-screen-54-875-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-96-m10-missing-ui-cart-screen-54-886-control",
+    "questionId": "m10-missing-ui-cart-screen-54-886-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-97-m10-missing-ui-cart-screen-54-580-control",
+    "questionId": "m10-missing-ui-cart-screen-54-580-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-98-m10-missing-ui-cart-screen-54-652-control",
+    "questionId": "m10-missing-ui-cart-screen-54-652-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-99-m10-missing-ui-cart-screen-54-714-control",
+    "questionId": "m10-missing-ui-cart-screen-54-714-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-100-m10-missing-ui-cart-screen-54-612-control",
+    "questionId": "m10-missing-ui-cart-screen-54-612-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  },
+  {
+    "id": "answer-101-m10-missing-ui-cart-screen-54-694-control",
+    "questionId": "m10-missing-ui-cart-screen-54-694-control",
+    "answerKind": "decline",
+    "reason": "未获得用户确认，不从 Figma 文案推断 submit-like 业务后置条件"
+  }
+]

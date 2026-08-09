@@ -566,15 +566,24 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
   const interactionById = new Map(
     interactions.map((interaction) => [interaction.id, interaction]),
   );
+  const unresolvedConfirmationInteractionIds = new Set<string>();
   const unresolvedConfirmationQuestionCount =
     flowPlan?.confirmationQuestions.filter((question) => {
       const interaction = interactionById.get(question.interactionId);
-      return (
+      const unresolved =
         !interaction ||
         (interaction.source !== "user_confirmed" &&
-          interaction.blockedReason !== "user_declined_interaction")
-      );
+          interaction.blockedReason !== "user_declined_interaction");
+      if (unresolved) {
+        unresolvedConfirmationInteractionIds.add(question.interactionId);
+      }
+      return unresolved;
     }).length ?? 0;
+  const isResolvedAway = (
+    interaction: (typeof interactions)[number],
+  ): boolean =>
+    interaction.blockedReason === "user_declined_interaction" ||
+    unresolvedConfirmationInteractionIds.has(interaction.id);
   return {
     trustedNavigate: interactions.filter(
       (interaction) => isTrusted(interaction) && interaction.intent === "navigate",
@@ -592,11 +601,13 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
               (!isTrusted(interaction) || !interaction.postconditions?.length),
           ).length,
     unsupported: interactions.filter(
-      (interaction) => interaction.intent === "unknown",
+      (interaction) =>
+        interaction.intent === "unknown" && !isResolvedAway(interaction),
     ).length,
     missingEvidence: interactions.filter(
       (interaction) =>
-        interaction.source === "missing" || Boolean(interaction.blockedReason),
+        !isResolvedAway(interaction) &&
+        (interaction.source === "missing" || Boolean(interaction.blockedReason)),
     ).length,
     successfulFixtureIds: input.validation?.successfulFixtureIds ?? [],
     failedFixtureIds: input.validation?.failedFixtureIds ?? [],
