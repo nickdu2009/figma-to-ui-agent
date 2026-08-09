@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-08-09T22:21:00+08:00",
+  "scope": "product_m9_submit_dialog_candidate_screening",
+  "mode": "restricted-live-read-only",
+  "networkBoundary": {
+    "figmaRestCalled": true,
+    "openaiCalled": false,
+    "rawResponsesPersisted": false
+  },
+  "source": "tests/fixtures/figma/community-sample-manifest.json rest_readable_node_selected samples",
+  "decision": "现有 seed corpus 尚未提供 confirmed submit/dialog 正向 restricted-live 样本。community-mobile-001 可继续作为 Flow-M14 CHANGE_TO/variant 回归；login/ecommerce/design-system 不能直接作为 submit/dialog 正向证据。",
+  "findings": [
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "result": "change_to_only",
+      "evidence": "只读 full-file depth=8 scan 找到大量 NODE/CHANGE_TO target，其中包含 Log in/check out 命名按钮组件；这些仍是 variant state-change，不是 confirmed submit/dialog。",
+      "recommendedUse": "保留为 Flow-M14 CHANGE_TO/variant restricted-live 回归样本。"
+    },
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "result": "not_confirmed_submit_candidate",
+      "evidence": "depth=4 scan 没有 interaction nodes；depth=5 超过 Figma REST 响应大小上限。当前 selected node 只能产生 submit-like confirmation，不能证明原生 submit target。",
+      "recommendedUse": "除非改用更窄的已知子节点或补结构化 confirmation answer，否则不要作为正向 submit/dialog 证据。"
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "category": "ecommerce",
+      "result": "not_confirmed_submit_candidate",
+      "evidence": "depth=4 到 depth=8 scan 均为 interactionNodes=0。",
+      "recommendedUse": "不要作为 Product-M9 submit/dialog 正向样本；换 checkout/payment 样本。"
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "result": "not_confirmed_submit_candidate",
+      "evidence": "depth=4 到 depth=8 scan 有 3/10/23/23/26 个 interaction nodes，但 submit-like target candidates 均为 0。",
+      "recommendedUse": "保留为 confirmation/组件诊断样本，不作为 confirmed submit/dialog 正向样本。"
+    }
+  ],
+  "nextActions": [
+    "不要继续在当前 six-sample seed corpus 上强跑 confirmedSubmit 目标。",
+    "新增或替换一个真实 Community checkout/payment/booking/contact/form 样本，要求先通过只读筛选：存在 submit/dialog-like source node，且 action 为 NODE 并带 destinationId。",
+    "若选择使用现有 login/landing/design-system submit-like 样本，必须先提供结构化 confirmation answer，再通过 Product-M9 run 生成 confirmedSubmit > 0 且 fixture 成功的报告。"
+  ]
+}
