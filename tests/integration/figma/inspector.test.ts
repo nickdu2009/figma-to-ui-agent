@@ -17,6 +17,24 @@ import { createPngBytes } from "../../fixtures/images.ts";
 const FILE_KEY = "abcdefgh123";
 const temporaryRoots: string[] = [];
 
+async function removeTemporaryRoot(path: string): Promise<void> {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      await rm(path, { recursive: true, force: true });
+      return;
+    } catch (error) {
+      const code =
+        error instanceof Error && "code" in error
+          ? (error as NodeJS.ErrnoException).code
+          : undefined;
+      if (code !== "ENOTEMPTY" || attempt === 4) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 25));
+    }
+  }
+}
+
 function jsonResponse(
   value: unknown,
   init: ResponseInit = {},
@@ -40,9 +58,7 @@ function imageResponse(bytes: Uint8Array): Response {
 
 afterEach(async () => {
   await Promise.all(
-    temporaryRoots.splice(0).map((path) =>
-      rm(path, { recursive: true, force: true }),
-    ),
+    temporaryRoots.splice(0).map((path) => removeTemporaryRoot(path)),
   );
 });
 

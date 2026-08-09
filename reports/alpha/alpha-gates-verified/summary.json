@@ -1,0 +1,356 @@
+{
+  "schemaVersion": "1",
+  "runId": "alpha-gates-verified",
+  "generatedAt": "2026-08-09T21:13:18.643Z",
+  "mode": "local-gates",
+  "networkBoundary": {
+    "figmaRestCalled": false,
+    "openaiCalled": false
+  },
+  "git": {
+    "head": "acdbc56",
+    "statusShort": "M .env.example\n M package.json\n M tests/integration/figma/inspector.test.ts\n?? docs/alpha-launch-plan.md\n?? docs/alpha-release-notes.md\n?? docs/alpha-sample-matrix.md\n?? docs/alpha-troubleshooting.md\n?? docs/alpha-user-guide.md\n?? reports/alpha/\n?? scripts/run-alpha-readiness.mjs"
+  },
+  "alphaConclusion": {
+    "status": "passed",
+    "reason": "Alpha 可上线；未知真实 Figma 不保证 100% 成功，但 partial/failed 不伪装为 passed。",
+    "launchable": true
+  },
+  "checklist": [
+    {
+      "id": "AC1",
+      "label": "Alpha 验收标准定义 passed / partial / failed，禁止假通过",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "docs/alpha-launch-plan.md"
+      ]
+    },
+    {
+      "id": "AC2",
+      "label": "泛化样本证据覆盖至少 4-5 个真实 Community 样本和关键能力类型",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/summary.json",
+        "reports/product-m9/cake-navigation-only-passed-20260809t2146/summary.json",
+        "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.json",
+        "reports/product-m9/product-m9-nexkart-ecommerce-001-decline-template-apply-local-20260809t2115/summary.json",
+        "reports/product-m9/product-m9-booking-target-missing-classified-20260809t2154/summary.json",
+        "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/summary.json"
+      ]
+    },
+    {
+      "id": "AC3",
+      "label": "目标级完成审计覆盖 Figma REST、DesignBundle、UISpec、FlowPlan、Preview、Playwright、confirmation、报告、失败口径、Git、Worktrail",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "reports/project-completion/current-corpus-closure-v7-20260810t0054/summary.json",
+        "reports/project-completion/final-goal-completion-audit-20260810t0056/summary.json"
+      ]
+    },
+    {
+      "id": "AC4",
+      "label": "稳定运行入口清晰，支持 projectId/runId/Figma URL 输入和稳定报告路径",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "package.json",
+        "scripts/run-product-m9-flow.mjs",
+        "scripts/run-alpha-readiness.mjs"
+      ]
+    },
+    {
+      "id": "AC5",
+      "label": "配置和密钥管理完整，凭据只从环境读取，报告脱敏",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        ".env.example",
+        "docs/alpha-launch-plan.md",
+        "docs/alpha-user-guide.md",
+        "docs/alpha-troubleshooting.md",
+        "docs/alpha-sample-matrix.md",
+        "docs/alpha-release-notes.md"
+      ]
+    },
+    {
+      "id": "AC6",
+      "label": "错误诊断和恢复区分 rate limit、权限、不可访问、node missing、unsupported、missing target、needs confirmation",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "docs/product-m9-agent-usage.md",
+        "docs/alpha-troubleshooting.md"
+      ]
+    },
+    {
+      "id": "AC7",
+      "label": "固定回归样本矩阵包含 Trego、Cake、Nexkart、电商/Booking/Design system/component variant",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "docs/alpha-sample-matrix.md"
+      ]
+    },
+    {
+      "id": "AC8",
+      "label": "每次 run 有 summary.md 和 summary.json，报告可读且脱敏",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/summary.json",
+        "reports/product-m9/cake-navigation-only-passed-20260809t2146/summary.json",
+        "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.json",
+        "reports/product-m9/product-m9-nexkart-ecommerce-001-decline-template-apply-local-20260809t2115/summary.json",
+        "reports/product-m9/product-m9-booking-target-missing-classified-20260809t2154/summary.json",
+        "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/summary.json"
+      ]
+    },
+    {
+      "id": "AC9",
+      "label": "Preview 可启动、可查看、可交互，导航、状态切换、表单基本可验证",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "reports/project-completion/ui-control-smoke-community-mobile-switch-20260810t0046/summary.json",
+        "reports/project-completion/state-machine-smoke-trego-navigation-20260810t0053/summary.json",
+        "docs/alpha-user-guide.md"
+      ]
+    },
+    {
+      "id": "AC10",
+      "label": "测试和安全门禁覆盖 typecheck、unit、integration、e2e、restricted-live matrix、secret scan、脱敏检查",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "scripts/run-alpha-readiness.mjs"
+      ]
+    },
+    {
+      "id": "AC11",
+      "label": "发布与回滚说明存在，最终 commit/tag 在提交后确认",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "docs/alpha-release-notes.md"
+      ]
+    },
+    {
+      "id": "AC12",
+      "label": "Alpha 使用说明、验收报告、已知限制、故障排查、样本矩阵说明已落文档",
+      "status": "passed",
+      "reason": null,
+      "evidenceRefs": [
+        "docs/alpha-launch-plan.md",
+        "docs/alpha-user-guide.md",
+        "docs/alpha-troubleshooting.md",
+        "docs/alpha-sample-matrix.md",
+        "docs/alpha-release-notes.md"
+      ]
+    }
+  ],
+  "sampleMatrix": [
+    {
+      "id": "trego",
+      "label": "Trego ride hailing",
+      "category": "multi-page navigation + submit-like + target backfill",
+      "required": [
+        "multi_page_navigation",
+        "submit_like",
+        "target_backfill"
+      ],
+      "report": "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/summary.json",
+      "expectedStatus": "passed",
+      "status": "passed",
+      "metrics": {
+        "trustedNavigate": 48,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 1,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureCount": 49,
+        "failedFixtureCount": 0
+      },
+      "readiness": "accepted"
+    },
+    {
+      "id": "cake",
+      "label": "Cake / food app",
+      "category": "multi-page navigation",
+      "required": [
+        "multi_page_navigation"
+      ],
+      "report": "reports/product-m9/cake-navigation-only-passed-20260809t2146/summary.json",
+      "expectedStatus": "passed",
+      "status": "passed",
+      "metrics": {
+        "trustedNavigate": 66,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureCount": 66,
+        "failedFixtureCount": 0
+      },
+      "readiness": "accepted"
+    },
+    {
+      "id": "community-mobile",
+      "label": "Community mobile controls",
+      "category": "CHANGE_TO / variant state",
+      "required": [
+        "change_to",
+        "visual_node_action"
+      ],
+      "report": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.json",
+      "expectedStatus": "passed",
+      "status": "passed",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 12,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureCount": 12,
+        "failedFixtureCount": 0
+      },
+      "readiness": "accepted"
+    },
+    {
+      "id": "nexkart",
+      "label": "Nexkart ecommerce",
+      "category": "ecommerce / unsupported action boundary",
+      "required": [
+        "visual_node_action",
+        "missing_partial"
+      ],
+      "report": "reports/product-m9/product-m9-nexkart-ecommerce-001-decline-template-apply-local-20260809t2115/summary.json",
+      "expectedStatus": "partial",
+      "status": "partial",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 34,
+        "missingEvidence": 45,
+        "successfulFixtureCount": 0,
+        "failedFixtureCount": 0
+      },
+      "readiness": "accepted"
+    },
+    {
+      "id": "booking",
+      "label": "Booking / form-like sample",
+      "category": "form-like state change + missing target",
+      "required": [
+        "submit_like",
+        "missing_partial"
+      ],
+      "report": "reports/product-m9/product-m9-booking-target-missing-classified-20260809t2154/summary.json",
+      "expectedStatus": "partial",
+      "status": "partial",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 11,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 6,
+        "successfulFixtureCount": 11,
+        "failedFixtureCount": 0
+      },
+      "readiness": "accepted"
+    },
+    {
+      "id": "design-system",
+      "label": "Design system component variants",
+      "category": "component variant + needs confirmation",
+      "required": [
+        "change_to",
+        "missing_partial"
+      ],
+      "report": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/summary.json",
+      "expectedStatus": "partial",
+      "status": "partial",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 5,
+        "unsupported": 0,
+        "missingEvidence": 1,
+        "successfulFixtureCount": 0,
+        "failedFixtureCount": 0
+      },
+      "readiness": "accepted"
+    }
+  ],
+  "localGates": {
+    "requested": true,
+    "results": [
+      {
+        "id": "typecheck",
+        "command": "npm run typecheck",
+        "status": "passed",
+        "exitCode": 0,
+        "durationMs": 1238,
+        "stdoutTail": "> figma-to-ui-agent@0.0.0 typecheck\n> tsc --noEmit",
+        "stderrTail": ""
+      },
+      {
+        "id": "unit",
+        "command": "npm run test:unit",
+        "status": "passed",
+        "exitCode": 0,
+        "durationMs": 3278,
+        "stdoutTail": "> figma-to-ui-agent@0.0.0 test:unit\n> vitest run tests/unit\n\n\n RUN  v4.1.10 /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent\n\n\n Test Files  65 passed (65)\n      Tests  379 passed (379)\n   Start at  05:12:43\n   Duration  2.59s (transform 4.03s, setup 0ms, import 10.67s, tests 6.07s, environment 4ms)",
+        "stderrTail": ""
+      },
+      {
+        "id": "integration",
+        "command": "npm run test:integration",
+        "status": "passed",
+        "exitCode": 0,
+        "durationMs": 22691,
+        "stdoutTail": "> figma-to-ui-agent@0.0.0 test:integration\n> vitest run tests/integration\n\n\n RUN  v4.1.10 /Users/duxiaobo/workspaces/nickdu/figma-to-ui-agent\n\n\n Test Files  22 passed (22)\n      Tests  87 passed (87)\n   Start at  05:12:46\n   Duration  22.05s (transform 3.07s, setup 0ms, import 13.73s, tests 123.85s, environment 5ms)",
+        "stderrTail": ""
+      },
+      {
+        "id": "e2e",
+        "command": "npm run test:e2e",
+        "status": "passed",
+        "exitCode": 0,
+        "durationMs": 9714,
+        "stdoutTail": "\n\nRunning 6 tests using 1 worker\n\n  ✓  1 tests/e2e/p1-components.spec.ts:294:1 › P1 组件支持受控输入、状态、选项卡和链接导航 (501ms)\n  ✓  2 tests/e2e/p1-components.spec.ts:350:1 › P1 禁用控件不能修改状态或获得焦点 (261ms)\n  ✓  3 tests/e2e/preview.spec.ts:6:1 › 三栏 Preview 支持原生表单、键盘、页面交互和工具控制 (380ms)\n  ✓  4 tests/e2e/preview.spec.ts:50:1 › Preview 使用原生 disabled 并阻止动作、状态修改和键盘焦点 (292ms)\n  ✓  5 tests/e2e/preview.spec.ts:96:1 › Preview 明确呈现 loading、empty、error 和 stale 状态 (710ms)\n  ✓  6 tests/e2e/preview.spec.ts:129:1 › 移动视口按参考、实现、检查结果顺序堆叠 (249ms)\n\n  6 passed (9.3s)",
+        "stderrTail": "[WebServer] (node:82118) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)\n(node:82348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)"
+      },
+      {
+        "id": "diff-check",
+        "command": "git diff --check",
+        "status": "passed",
+        "exitCode": 0,
+        "durationMs": 21,
+        "stdoutTail": "",
+        "stderrTail": ""
+      }
+    ]
+  },
+  "secretScan": {
+    "status": "passed",
+    "findings": []
+  },
+  "evidence": {
+    "currentCorpusClosure": "reports/project-completion/current-corpus-closure-v7-20260810t0054/summary.json",
+    "finalGoalAudit": "reports/project-completion/final-goal-completion-audit-20260810t0056/summary.json",
+    "uiControlSmoke": "reports/project-completion/ui-control-smoke-community-mobile-switch-20260810t0046/summary.json",
+    "stateMachineSmoke": "reports/project-completion/state-machine-smoke-trego-navigation-20260810t0053/summary.json",
+    "productM9Usage": "docs/product-m9-agent-usage.md",
+    "productM9ManualTest": "docs/product-m9-manual-test.md"
+  }
+}
