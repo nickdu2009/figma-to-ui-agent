@@ -92,6 +92,19 @@ jq '{ok, status, mode, artifactRefs, metrics, error, nextAction}' \
 - 报告不包含 token、真实 Figma URL、file key、raw REST payload 或本机绝对路径。
 - `nextAction` 能指导下一步：修输入、补授权、等待限流、请求确认、人工复核或停止。
 
+生成结构化确认答案时，优先使用 helper，而不是手写 JSON：
+
+```bash
+node scripts/write-product-m9-answers.mjs \
+  --questions reports/product-m9/<runId>/confirmation-questions.json \
+  --out reports/product-m9/<runId>/answers.json \
+  --all \
+  --kind decline \
+  --reason "未确认业务行为，保持 fail-closed"
+```
+
+得到 `answers.json` 后，用原始 FlowPlan / UISpec 加 `--answers` 重跑 Product-M9。若要确认真实 submit 行为，必须显式提供 `--effect` 和至少一个 `--postcondition`。
+
 ## 6. 本地验证命令
 
 ```bash

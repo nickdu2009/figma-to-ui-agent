@@ -1,0 +1,569 @@
+{
+  "schemaVersion": "1",
+  "projectId": "flow-m13-screening-reaction-booking-change-to-001",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "present",
+  "pages": [
+    {
+      "id": "5-home-screen",
+      "sourcePageId": "7515:5935",
+      "name": "5. Home Screen",
+      "role": "entry",
+      "confidence": "medium",
+      "reason": "DesignBundle 中的首个页面作为入口候选。"
+    },
+    {
+      "id": "active-chip-false",
+      "sourcePageId": "7452:197",
+      "name": "Active Chip=False",
+      "role": "component",
+      "confidence": "medium",
+      "reason": "画布面积较小，更像组件或局部状态。"
+    },
+    {
+      "id": "active-chip-true",
+      "sourcePageId": "7452:203",
+      "name": "Active Chip=True",
+      "role": "component",
+      "confidence": "medium",
+      "reason": "画布面积较小，更像组件或局部状态。"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "figma-02d0d9f901e987ae",
+      "source": "figma",
+      "sourceNodeId": "7515:5941",
+      "uiNodeId": "ui-5-home-screen-7515-5941",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-false-7452-197",
+      "stateKey": "variant-7515-5941-active-chip",
+      "value": "False",
+      "stateInitialValue": "True",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-f5faec37a5db849c",
+      "source": "figma",
+      "sourceNodeId": "7515:5942",
+      "uiNodeId": "ui-5-home-screen-7515-5942",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7515-5942-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-0ec1b5b1bb362b56",
+      "source": "figma",
+      "sourceNodeId": "7515:5943",
+      "uiNodeId": "ui-5-home-screen-7515-5943",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7515-5943-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-161878381df77c4a",
+      "source": "figma",
+      "sourceNodeId": "7515:5944",
+      "uiNodeId": "ui-5-home-screen-7515-5944",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7515-5944-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-73c539f332dce8d0",
+      "source": "figma",
+      "sourceNodeId": "7515:5945",
+      "uiNodeId": "ui-5-home-screen-7515-5945",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7515-5945-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-715e3964be5df74c",
+      "source": "figma",
+      "sourceNodeId": "7515:5946",
+      "uiNodeId": "ui-5-home-screen-7515-5946",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7515-5946-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-d81358602d6e0a23",
+      "source": "figma",
+      "sourceNodeId": "7515:5947",
+      "uiNodeId": "ui-5-home-screen-7515-5947",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7515-5947-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-0c844eb80beab5da",
+      "source": "figma",
+      "sourceNodeId": "7515:5948",
+      "uiNodeId": "ui-5-home-screen-7515-5948",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7515-5948-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-439a34bb2755161a",
+      "source": "figma",
+      "sourceNodeId": "7515:5949",
+      "uiNodeId": "ui-5-home-screen-7515-5949",
+      "sourceNodeName": "My Chip",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "5-home-screen",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7515-5949-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-f95302529913af9f",
+      "source": "figma",
+      "sourceNodeId": "7515:5951",
+      "uiNodeId": "ui-5-home-screen-7515-5951",
+      "sourceNodeName": "Coffee Card",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-8fa33f3cca6a00c8",
+      "source": "figma",
+      "sourceNodeId": "7515:5960",
+      "uiNodeId": "ui-5-home-screen-7515-5960",
+      "sourceNodeName": "Coffee Card",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-be673472d393e82f",
+      "source": "figma",
+      "sourceNodeId": "7515:5969",
+      "uiNodeId": "ui-5-home-screen-7515-5969",
+      "sourceNodeName": "Coffee Card",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-96ca0d4bb54812a0",
+      "source": "figma",
+      "sourceNodeId": "7515:5978",
+      "uiNodeId": "ui-5-home-screen-7515-5978",
+      "sourceNodeName": "Coffee Card",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-bdfe3afbd8893cb7",
+      "source": "figma",
+      "sourceNodeId": "7515:5987",
+      "uiNodeId": "ui-5-home-screen-7515-5987",
+      "sourceNodeName": "Coffee Card",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-d1f21ea6c8d9e8a0",
+      "source": "figma",
+      "sourceNodeId": "7515:5996",
+      "uiNodeId": "ui-5-home-screen-7515-5996",
+      "sourceNodeName": "Coffee Card",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-134b1fac692a2fee",
+      "source": "figma",
+      "sourceNodeId": "7452:197",
+      "uiNodeId": "ui-active-chip-false-7452-197",
+      "sourceNodeName": "Active Chip=False",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "active-chip-false",
+      "targetNodeId": "ui-active-chip-true-7452-203",
+      "stateKey": "variant-7452-197-active-chip",
+      "value": "True",
+      "stateInitialValue": "False",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-12d1c2467aceebaa",
+      "source": "figma",
+      "sourceNodeId": "7452:203",
+      "uiNodeId": "ui-active-chip-true-7452-203",
+      "sourceNodeName": "Active Chip=True",
+      "trigger": "click",
+      "intent": "set_state",
+      "fromPageId": "active-chip-true",
+      "targetNodeId": "ui-active-chip-false-7452-197",
+      "stateKey": "variant-7452-203-active-chip",
+      "value": "False",
+      "stateInitialValue": "True",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "missing-ui-5-home-screen-7515-5959-control",
+      "source": "missing",
+      "uiNodeId": "ui-5-home-screen-7515-5959-control",
+      "sourceNodeName": "Follow",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-5-home-screen-7515-5959-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "未确认业务行为，保持 fail-closed",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-5-home-screen-7515-5968-control",
+      "source": "missing",
+      "uiNodeId": "ui-5-home-screen-7515-5968-control",
+      "sourceNodeName": "Follow",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-5-home-screen-7515-5968-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "未确认业务行为，保持 fail-closed",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-5-home-screen-7515-5977-control",
+      "source": "missing",
+      "uiNodeId": "ui-5-home-screen-7515-5977-control",
+      "sourceNodeName": "Follow",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-5-home-screen-7515-5977-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "未确认业务行为，保持 fail-closed",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-5-home-screen-7515-5986-control",
+      "source": "missing",
+      "uiNodeId": "ui-5-home-screen-7515-5986-control",
+      "sourceNodeName": "Follow",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-5-home-screen-7515-5986-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "未确认业务行为，保持 fail-closed",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-5-home-screen-7515-5995-control",
+      "source": "missing",
+      "uiNodeId": "ui-5-home-screen-7515-5995-control",
+      "sourceNodeName": "Follow",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-5-home-screen-7515-5995-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "未确认业务行为，保持 fail-closed",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-5-home-screen-7515-6004-control",
+      "source": "missing",
+      "uiNodeId": "ui-5-home-screen-7515-6004-control",
+      "sourceNodeName": "Follow",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "5-home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-5-home-screen-7515-6004-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "未确认业务行为，保持 fail-closed",
+      "blockedReason": "user_declined_interaction"
+    }
+  ],
+  "confirmationQuestions": [
+    {
+      "id": "confirm-missing-ui-5-home-screen-7515-5959-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5959-control",
+      "question": "页面「5. Home Screen」中的控件「Follow」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：5. Home Screen",
+          "value": "target:5-home-screen"
+        },
+        {
+          "label": "跳转到：Active Chip=False",
+          "value": "target:active-chip-false"
+        },
+        {
+          "label": "跳转到：Active Chip=True",
+          "value": "target:active-chip-true"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-5-home-screen-7515-5968-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5968-control",
+      "question": "页面「5. Home Screen」中的控件「Follow」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：5. Home Screen",
+          "value": "target:5-home-screen"
+        },
+        {
+          "label": "跳转到：Active Chip=False",
+          "value": "target:active-chip-false"
+        },
+        {
+          "label": "跳转到：Active Chip=True",
+          "value": "target:active-chip-true"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-5-home-screen-7515-5977-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5977-control",
+      "question": "页面「5. Home Screen」中的控件「Follow」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：5. Home Screen",
+          "value": "target:5-home-screen"
+        },
+        {
+          "label": "跳转到：Active Chip=False",
+          "value": "target:active-chip-false"
+        },
+        {
+          "label": "跳转到：Active Chip=True",
+          "value": "target:active-chip-true"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-5-home-screen-7515-5986-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5986-control",
+      "question": "页面「5. Home Screen」中的控件「Follow」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：5. Home Screen",
+          "value": "target:5-home-screen"
+        },
+        {
+          "label": "跳转到：Active Chip=False",
+          "value": "target:active-chip-false"
+        },
+        {
+          "label": "跳转到：Active Chip=True",
+          "value": "target:active-chip-true"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-5-home-screen-7515-5995-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5995-control",
+      "question": "页面「5. Home Screen」中的控件「Follow」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：5. Home Screen",
+          "value": "target:5-home-screen"
+        },
+        {
+          "label": "跳转到：Active Chip=False",
+          "value": "target:active-chip-false"
+        },
+        {
+          "label": "跳转到：Active Chip=True",
+          "value": "target:active-chip-true"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-5-home-screen-7515-6004-control",
+      "interactionId": "missing-ui-5-home-screen-7515-6004-control",
+      "question": "页面「5. Home Screen」中的控件「Follow」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：5. Home Screen",
+          "value": "target:5-home-screen"
+        },
+        {
+          "label": "跳转到：Active Chip=False",
+          "value": "target:active-chip-false"
+        },
+        {
+          "label": "跳转到：Active Chip=True",
+          "value": "target:active-chip-true"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    }
+  ],
+  "confirmations": [],
+  "stateMachines": [],
+  "report": {
+    "unsupportedCount": 12,
+    "unresolvedInteractionCount": 12,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}

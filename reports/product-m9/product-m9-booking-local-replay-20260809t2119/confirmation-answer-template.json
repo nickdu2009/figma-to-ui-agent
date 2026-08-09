@@ -1,0 +1,38 @@
+[
+  {
+    "id": "answer-1-m10-missing-ui-5-home-screen-7515-5959-control",
+    "questionId": "m10-missing-ui-5-home-screen-7515-5959-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-2-m10-missing-ui-5-home-screen-7515-5968-control",
+    "questionId": "m10-missing-ui-5-home-screen-7515-5968-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-3-m10-missing-ui-5-home-screen-7515-5977-control",
+    "questionId": "m10-missing-ui-5-home-screen-7515-5977-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-4-m10-missing-ui-5-home-screen-7515-5986-control",
+    "questionId": "m10-missing-ui-5-home-screen-7515-5986-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-5-m10-missing-ui-5-home-screen-7515-5995-control",
+    "questionId": "m10-missing-ui-5-home-screen-7515-5995-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-6-m10-missing-ui-5-home-screen-7515-6004-control",
+    "questionId": "m10-missing-ui-5-home-screen-7515-6004-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  }
+]

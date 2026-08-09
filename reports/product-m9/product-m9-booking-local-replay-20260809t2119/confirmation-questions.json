@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1",
+  "projectId": "flow-m13-screening-reaction-booking-change-to-001",
+  "runId": "product-m9-booking-local-replay-20260809t2119",
+  "questionCount": 6,
+  "questions": [
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-5-home-screen-7515-5959-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5959-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Follow」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-5-home-screen-7515-5959-control",
+      "fromPageId": "5-home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "5-home-screen"
+        ],
+        "nodeIds": [
+          "ui-5-home-screen-7515-5959-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-5-home-screen-7515-5968-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5968-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Follow」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-5-home-screen-7515-5968-control",
+      "fromPageId": "5-home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "5-home-screen"
+        ],
+        "nodeIds": [
+          "ui-5-home-screen-7515-5968-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-5-home-screen-7515-5977-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5977-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Follow」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-5-home-screen-7515-5977-control",
+      "fromPageId": "5-home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "5-home-screen"
+        ],
+        "nodeIds": [
+          "ui-5-home-screen-7515-5977-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-5-home-screen-7515-5986-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5986-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Follow」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-5-home-screen-7515-5986-control",
+      "fromPageId": "5-home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "5-home-screen"
+        ],
+        "nodeIds": [
+          "ui-5-home-screen-7515-5986-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-5-home-screen-7515-5995-control",
+      "interactionId": "missing-ui-5-home-screen-7515-5995-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Follow」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-5-home-screen-7515-5995-control",
+      "fromPageId": "5-home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "5-home-screen"
+        ],
+        "nodeIds": [
+          "ui-5-home-screen-7515-5995-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-5-home-screen-7515-6004-control",
+      "interactionId": "missing-ui-5-home-screen-7515-6004-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Follow」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-5-home-screen-7515-6004-control",
+      "fromPageId": "5-home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "5-home-screen"
+        ],
+        "nodeIds": [
+          "ui-5-home-screen-7515-6004-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    }
+  ]
+}

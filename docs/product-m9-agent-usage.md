@@ -73,7 +73,24 @@ coding agent 应读取这些字段：
 
 `partial` 不是系统崩溃。它通常表示真实设计证据不足、需要用户确认、存在 unsupported Figma action，或只有部分 FlowPlan 可以安全执行。agent 不应把 partial 当成功交付，也不应自动编造业务逻辑。
 
-当 `error.category=needs_confirmation` 时，优先读取 `artifactRefs.confirmationQuestionsPath`。该文件包含 `questionCount` 和 `questions[]`。同时读取 `artifactRefs.confirmationAnswerTemplatePath`，它是 schema-valid 的默认 `decline` 答案模板。agent 应把问题展示给用户，或在有明确授权的情况下把模板编辑成结构化答案后用 `--answers <path>` 重跑；不要从按钮文案自行生成业务后置条件。
+当 `error.category=needs_confirmation` 时，优先读取 `artifactRefs.confirmationQuestionsPath`。该文件包含 `questionCount` 和 `questions[]`。同时读取 `artifactRefs.confirmationAnswerTemplatePath`，它是 schema-valid 的默认 `decline` 答案模板。agent 应把问题展示给用户，或在有明确授权的情况下生成结构化答案后用 `--answers <path>` 重跑；不要从按钮文案自行生成业务后置条件。
+
+推荐用本地 helper 生成答案文件，避免手改 JSON：
+
+```bash
+node scripts/write-product-m9-answers.mjs \
+  --questions reports/product-m9/<runId>/confirmation-questions.json \
+  --out reports/product-m9/<runId>/answers.json \
+  --all \
+  --kind submit \
+  --effect set_state \
+  --state-key follow-status \
+  --value true \
+  --postcondition expect_visible:follow-success \
+  --reason "用户确认该控件提交后显示 follow-success"
+```
+
+该 helper 只校验问题 id、允许的 answerKind 和 Flow-M10 answer schema；它不会推断业务语义。`--postcondition` 支持 `expect_page:<pageId>`、`expect_visible:<nodeId>`、`expect_text:<nodeId>:<text>`、`expect_value:<nodeId>:<value>`、`expect_checked:<nodeId>:true|false`、`expect_selected:<nodeId>:<value>`。
 
 ## Reports
 
