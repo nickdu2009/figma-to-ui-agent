@@ -1,10 +1,12 @@
 import type { ComponentFn } from "@json-render/react";
+import type { KeyboardEvent } from "react";
 
 import { previewCatalog } from "../../../src/preview/catalog.ts";
 import { controlledStyle } from "./controlled-style.ts";
 
 export const Image: ComponentFn<typeof previewCatalog, "Image"> = ({
   props,
+  emit,
 }) => {
   const framedImageStyle =
     props.style?.position === "absolute"
@@ -15,10 +17,27 @@ export const Image: ComponentFn<typeof previewCatalog, "Image"> = ({
       : undefined;
   return (
     <img
-      className="ui-image"
+      className={`ui-image${props.actionable ? " is-actionable" : ""}`}
       data-ui-node-id={props.nodeId}
+      data-ui-actionable={props.actionable ? "true" : undefined}
       src={props.src}
       alt={props.alt}
+      role={props.actionable ? "button" : undefined}
+      tabIndex={props.actionable ? 0 : undefined}
+      onClick={() => {
+        if (props.actionable) {
+          emit("press");
+        }
+      }}
+      onKeyDown={(event) => {
+        if (!props.actionable) {
+          return;
+        }
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          emit("press");
+        }
+      }}
       style={{
         objectFit: props.fit,
         ...controlledStyle(props.style),
@@ -74,26 +93,58 @@ export const PixelOverlay: ComponentFn<
 
 export const Icon: ComponentFn<typeof previewCatalog, "Icon"> = ({
   props,
+  emit,
 }) => {
+  const actionProps = {
+    tabIndex: props.actionable ? 0 : undefined,
+    onClick: () => {
+      if (props.actionable) {
+        emit("press");
+      }
+    },
+    onKeyDown: (event: KeyboardEvent) => {
+      if (!props.actionable) {
+        return;
+      }
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        emit("press");
+      }
+    },
+  };
   if (props.src) {
     return (
       <img
-        className="ui-icon"
+        className={`ui-icon${props.actionable ? " is-actionable" : ""}`}
         data-ui-node-id={props.nodeId}
+        data-ui-actionable={props.actionable ? "true" : undefined}
         src={props.src}
         alt={props.decorative ? "" : props.alt}
-        aria-hidden={props.decorative}
+        aria-hidden={props.actionable ? undefined : props.decorative}
+        aria-label={
+          props.actionable && props.decorative ? props.alt : undefined
+        }
+        role={props.actionable ? "button" : undefined}
+        {...actionProps}
         style={controlledStyle(props.style)}
       />
     );
   }
   return (
     <span
-      className={`ui-icon ui-icon-symbol ui-icon-symbol-${props.symbol}`}
+      className={`ui-icon ui-icon-symbol ui-icon-symbol-${props.symbol}${
+        props.actionable ? " is-actionable" : ""
+      }`}
       data-ui-node-id={props.nodeId}
-      aria-hidden={props.decorative}
-      role={props.decorative ? undefined : "img"}
-      aria-label={props.decorative ? undefined : props.alt}
+      data-ui-actionable={props.actionable ? "true" : undefined}
+      aria-hidden={props.actionable ? undefined : props.decorative}
+      role={
+        props.actionable ? "button" : props.decorative ? undefined : "img"
+      }
+      aria-label={
+        props.actionable || !props.decorative ? props.alt : undefined
+      }
+      {...actionProps}
       style={controlledStyle(props.style)}
     />
   );

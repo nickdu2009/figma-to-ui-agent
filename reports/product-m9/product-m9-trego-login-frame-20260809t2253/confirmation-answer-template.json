@@ -1,0 +1,146 @@
+[
+  {
+    "id": "answer-1-m10-missing-ui-login-2-8943",
+    "questionId": "m10-missing-ui-login-2-8943",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-2-m10-missing-ui-login-2-8951",
+    "questionId": "m10-missing-ui-login-2-8951",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-3-m10-missing-ui-login-2-8955",
+    "questionId": "m10-missing-ui-login-2-8955",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-4-m10-inferred-ui-login-2-8963",
+    "questionId": "m10-inferred-ui-login-2-8963",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-5-m10-missing-ui-login-2-8978",
+    "questionId": "m10-missing-ui-login-2-8978",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-6-m10-missing-ui-home-screen-2-7577",
+    "questionId": "m10-missing-ui-home-screen-2-7577",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-7-m10-missing-ui-home-screen-2-7616",
+    "questionId": "m10-missing-ui-home-screen-2-7616",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-8-m10-missing-ui-home-screen-2-7622",
+    "questionId": "m10-missing-ui-home-screen-2-7622",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-9-m10-inferred-ui-forgot-password-2-9004",
+    "questionId": "m10-inferred-ui-forgot-password-2-9004",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-10-m10-inferred-ui-forgot-password-2-9013",
+    "questionId": "m10-inferred-ui-forgot-password-2-9013",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-11-m10-inferred-ui-login-signup-2-7715",
+    "questionId": "m10-inferred-ui-login-signup-2-7715",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-12-m10-missing-ui-menu-2-7906-control",
+    "questionId": "m10-missing-ui-menu-2-7906-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-13-m10-inferred-ui-otp-verification-2-9076",
+    "questionId": "m10-inferred-ui-otp-verification-2-9076",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-14-m10-inferred-ui-otp-verification-2-9093",
+    "questionId": "m10-inferred-ui-otp-verification-2-9093",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-15-m10-missing-ui-register-2-9120",
+    "questionId": "m10-missing-ui-register-2-9120",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-16-m10-missing-ui-register-2-9128",
+    "questionId": "m10-missing-ui-register-2-9128",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-17-m10-missing-ui-register-2-9132",
+    "questionId": "m10-missing-ui-register-2-9132",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-18-m10-missing-ui-register-2-9140",
+    "questionId": "m10-missing-ui-register-2-9140",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-19-m10-inferred-ui-register-2-9157",
+    "questionId": "m10-inferred-ui-register-2-9157",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-20-m10-missing-ui-profile-2-8184-control",
+    "questionId": "m10-missing-ui-profile-2-8184-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-21-m10-missing-ui-choose-ride-2-8021-control",
+    "questionId": "m10-missing-ui-choose-ride-2-8021-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-22-m10-missing-ui-create-new-password-2-9038",
+    "questionId": "m10-missing-ui-create-new-password-2-9038",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-23-m10-inferred-ui-create-new-password-2-9050",
+    "questionId": "m10-inferred-ui-create-new-password-2-9050",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-24-m10-inferred-ui-password-changed-2-9182",
+    "questionId": "m10-inferred-ui-password-changed-2-9182",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  }
+]

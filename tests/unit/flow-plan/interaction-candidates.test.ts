@@ -200,6 +200,61 @@ describe("buildFlowPlanDraft", () => {
     );
   });
 
+  it("把文本节点上的 Figma NAVIGATE prototype interaction 转为可信 navigate", () => {
+    const bundle = createStoredMultipageFlowDesignBundle();
+    const homePage = bundle.pages[0]!;
+    homePage.nodes.push({
+      id: "figma-forgot-password-text",
+      parentId: "figma-root",
+      kind: "text",
+      name: "Forgot Password?",
+      visible: true,
+      text: { characters: "Forgot Password?" },
+      styleRefs: [],
+      imageRefs: [],
+      boundVariableRefs: [],
+      designValueRefs: [],
+      prototypeInteractions: [
+        {
+          id: "figma-text-to-quote",
+          source: "figma_rest",
+          trigger: "click",
+          actionType: "node",
+          navigation: "NAVIGATE",
+          destinationId: "figma-quote-root",
+        },
+      ],
+      warningCodes: [],
+    });
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const root = uiSpec.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("ui-home-figma-forgot-password-text");
+    }
+    uiSpec.nodes.push({
+      id: "ui-home-figma-forgot-password-text",
+      kind: "text",
+      text: "Forgot Password?",
+      variant: "body",
+      designValueRefs: [],
+    });
+
+    const draft = buildFlowPlanDraft({ bundle, uiSpec });
+
+    expect(draft.interactions).toContainEqual(
+      expect.objectContaining({
+        id: "figma-text-to-quote",
+        source: "figma",
+        uiNodeId: "ui-home-figma-forgot-password-text",
+        intent: "navigate",
+        fromPageId: "home",
+        targetPageId: "quote",
+        confirmed: true,
+        blockedReason: undefined,
+      }),
+    );
+  });
+
   it("从同一 component 的不同 variant 自动生成 set_state 初始值", () => {
     const bundle = createStoredMultipageFlowDesignBundle();
     const homePage = bundle.pages[0]!;

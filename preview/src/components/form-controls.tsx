@@ -83,9 +83,16 @@ export const Button: ComponentFn<
     <button
       className={`ui-button ui-button-${props.variant}`}
       data-ui-node-id={props.nodeId}
+      data-ui-actionable={props.actionable ? "true" : undefined}
       type="button"
       disabled={props.disabled}
-      onClick={() => emit("press")}
+      tabIndex={props.actionable ? undefined : -1}
+      onClick={(event) => {
+        if (props.actionable) {
+          event.stopPropagation();
+        }
+        emit("press");
+      }}
       style={{ ...style, ...framedButtonStyle }}
     >
       {props.leadingIconSrc ? (

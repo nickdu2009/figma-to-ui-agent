@@ -359,6 +359,136 @@ describe("applyFlowPlanToUISpec", () => {
     ]);
   });
 
+  it("把 figma 原型挂载到可点击 Text/Image/Icon 源节点", () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const root = uiSpec.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("text-link", "image-link", "icon-link");
+    }
+    uiSpec.nodes.push(
+      {
+        id: "text-link",
+        kind: "text",
+        text: "Forgot Password?",
+        variant: "body",
+        designValueRefs: [],
+      },
+      {
+        id: "image-link",
+        kind: "image",
+        assetRef: "figma/assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+        alt: "Car",
+        fit: "contain",
+        designValueRefs: [],
+      },
+      {
+        id: "icon-link",
+        kind: "icon",
+        symbol: "generic",
+        alt: "Rewards",
+        designValueRefs: [],
+      },
+    );
+
+    const result = applyFlowPlanToUISpec(uiSpec, {
+      schemaVersion: "m4-spike",
+      projectId: "demo-project",
+      sourceDesignBundleRevision: 1,
+      sourceUISpecRevision: 1,
+      pages: [
+        {
+          id: "home",
+          sourcePageId: "page-home",
+          name: "首页",
+          role: "entry",
+          confidence: "medium",
+          reason: "fixture",
+        },
+        {
+          id: "quote",
+          sourcePageId: "page-quote",
+          name: "报价",
+          role: "screen",
+          confidence: "medium",
+          reason: "fixture",
+        },
+      ],
+      interactions: [
+        {
+          id: "text-to-quote",
+          source: "figma",
+          uiNodeId: "text-link",
+          trigger: "click",
+          intent: "navigate",
+          fromPageId: "home",
+          targetPageId: "quote",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+        {
+          id: "image-to-quote",
+          source: "figma",
+          uiNodeId: "image-link",
+          trigger: "click",
+          intent: "navigate",
+          fromPageId: "home",
+          targetPageId: "quote",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+        {
+          id: "icon-to-quote",
+          source: "figma",
+          uiNodeId: "icon-link",
+          trigger: "click",
+          intent: "navigate",
+          fromPageId: "home",
+          targetPageId: "quote",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      confirmationQuestions: [],
+      report: {
+        unsupportedCount: 0,
+        unresolvedInteractionCount: 0,
+        convertedActionCount: 0,
+        behaviorFixtureCount: 0,
+      },
+    });
+
+    expect(result.convertedActionIds).toHaveLength(3);
+    expect(result.uiSpec.nodes.find((node) => node.id === "text-link")).toMatchObject({
+      kind: "text",
+      actionId: expect.stringMatching(/^flow-text-to-quote/),
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === "image-link")).toMatchObject({
+      kind: "image",
+      actionId: expect.stringMatching(/^flow-image-to-quote/),
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === "icon-link")).toMatchObject({
+      kind: "icon",
+      actionId: expect.stringMatching(/^flow-icon-to-quote/),
+    });
+    expect(result.uiSpec.behaviorFixtures.map((fixture) => fixture.steps)).toEqual([
+      [
+        { kind: "click", nodeId: "text-link" },
+        { kind: "expect_page", pageId: "quote" },
+      ],
+      [
+        { kind: "click", nodeId: "image-link" },
+        { kind: "expect_page", pageId: "quote" },
+      ],
+      [
+        { kind: "click", nodeId: "icon-link" },
+        { kind: "expect_page", pageId: "quote" },
+      ],
+    ]);
+  });
+
   it("把跨页面 component variant 目标克隆到源页面并用状态切换显隐", () => {
     const uiSpec = createStoredMultipageFlowUISpec();
     const root = uiSpec.nodes.find((node) => node.id === "root");

@@ -31,45 +31,62 @@ function stackStyle(
 export const Stack: ComponentFn<
   typeof previewCatalog,
   "Stack"
-> = ({ props, children, emit }) => (
-  <div
-    className={`ui-stack${props.actionable ? " is-actionable" : ""}`}
-    data-ui-node-id={props.nodeId}
-    role={props.actionable ? "button" : undefined}
-    tabIndex={props.actionable ? 0 : undefined}
-    onClick={(event) => {
-      if (!props.actionable) {
-        return;
-      }
-      const target = event.target;
-      if (
-        target instanceof HTMLElement &&
-        target.closest("button,a,input,select,textarea,[role='switch']")
-      ) {
-        return;
-      }
-      emit("press");
-    }}
-    onKeyDown={(event) => {
-      if (!props.actionable) {
-        return;
-      }
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
+> = ({ props, children, emit }) => {
+  const pointerTransparent =
+    !props.actionable && props.style?.position === "absolute";
+  return (
+    <div
+      className={`ui-stack${props.actionable ? " is-actionable" : ""}${
+        pointerTransparent ? " is-pointer-transparent" : ""
+      }`}
+      data-ui-node-id={props.nodeId}
+      data-ui-actionable={props.actionable ? "true" : undefined}
+      role={props.actionable ? "button" : undefined}
+      tabIndex={props.actionable ? 0 : undefined}
+      onClick={(event) => {
+        if (!props.actionable) {
+          return;
+        }
+        const target = event.target;
+        const nestedActionable =
+          target instanceof HTMLElement
+            ? target.closest('[data-ui-actionable="true"]')
+            : null;
+        if (
+          nestedActionable instanceof HTMLElement &&
+          nestedActionable !== event.currentTarget
+        ) {
+          return;
+        }
+        if (
+          target instanceof HTMLElement &&
+          target.closest("input,select,textarea,[role='switch']")
+        ) {
+          return;
+        }
         emit("press");
-      }
-    }}
-    style={stackStyle(
-      props.direction,
-      props.gap,
-      props.padding,
-      props.align,
-      props.style,
-    )}
-  >
-    {children}
-  </div>
-);
+      }}
+      onKeyDown={(event) => {
+        if (!props.actionable) {
+          return;
+        }
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          emit("press");
+        }
+      }}
+      style={stackStyle(
+        props.direction,
+        props.gap,
+        props.padding,
+        props.align,
+        props.style,
+      )}
+    >
+      {children}
+    </div>
+  );
+};
 
 export const Grid: ComponentFn<typeof previewCatalog, "Grid"> = ({
   props,

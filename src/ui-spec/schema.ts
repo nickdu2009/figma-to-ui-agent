@@ -189,6 +189,7 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       kind: z.literal("text"),
       text: z.string().max(100_000),
       variant: z.enum(["heading", "body", "label", "caption"]),
+      actionId: idSchema.optional(),
     })
     .strict(),
   z
@@ -198,6 +199,7 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       assetRef: uiImagePathSchema,
       alt: z.string().min(1).max(1_000),
       fit: z.enum(["contain", "cover", "fill"]),
+      actionId: idSchema.optional(),
     })
     .strict(),
   z
@@ -333,6 +335,7 @@ export const uiNodeSchema = z.discriminatedUnion("kind", [
       symbol: uiIconSymbolSchema.optional(),
       alt: z.string().min(1).max(1_000).optional(),
       decorative: z.boolean().optional(),
+      actionId: idSchema.optional(),
     })
     .strict()
     .refine((node) => node.assetRef !== undefined || node.symbol !== undefined, {
@@ -1160,7 +1163,10 @@ function validateUISpecReferences(
                     target.kind === "radio" ||
                     target.kind === "switch" ||
                     target.kind === "select" ||
-                    (target.kind === "stack" && Boolean(target.actionId))
+                    (target.kind === "stack" && Boolean(target.actionId)) ||
+                    (target.kind === "text" && Boolean(target.actionId)) ||
+                    (target.kind === "image" && Boolean(target.actionId)) ||
+                    (target.kind === "icon" && Boolean(target.actionId))
                   : step.kind === "expect_text"
                     ? target.kind === "text" ||
                       target.kind === "button" ||

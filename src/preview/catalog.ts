@@ -100,7 +100,7 @@ export const previewCatalog = defineCatalog(schema, {
         .object({
           ...common,
           direction: z.enum(["horizontal", "vertical"]),
-          actionable: z.boolean(),
+          actionable: z.boolean().optional(),
           gap: z.number().nonnegative().max(10_000).nullable(),
           padding: z.number().nonnegative().max(10_000).nullable(),
           align: z
@@ -150,6 +150,7 @@ export const previewCatalog = defineCatalog(schema, {
           ...common,
           text: z.string().max(100_000),
           variant: z.enum(["heading", "body", "label", "caption"]),
+          actionable: z.boolean().optional(),
           visualOverlay: z
             .object({
               src: z.string().min(1).max(2_048),
@@ -178,6 +179,7 @@ export const previewCatalog = defineCatalog(schema, {
           src: z.string().min(1).max(2_048),
           alt: z.string().min(1).max(1_000),
           fit: z.enum(["contain", "cover", "fill"]),
+          actionable: z.boolean().optional(),
         })
         .strict(),
       description: "项目内 Figma 图片",
@@ -217,6 +219,7 @@ export const previewCatalog = defineCatalog(schema, {
             "danger",
           ]),
           disabled: z.boolean(),
+          actionable: z.boolean().optional(),
           leadingIconSrc: z.string().min(1).max(2_048).nullable(),
           trailingIconSrc: z.string().min(1).max(2_048).nullable(),
         })
@@ -326,6 +329,7 @@ export const previewCatalog = defineCatalog(schema, {
           symbol: iconSymbol.nullable(),
           alt: z.string().min(1).max(1_000),
           decorative: z.boolean(),
+          actionable: z.boolean(),
         })
         .refine((props) => props.src !== null || props.symbol !== null, {
           message: "Icon requires src or symbol",

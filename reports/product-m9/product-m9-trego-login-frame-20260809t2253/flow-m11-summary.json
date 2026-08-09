@@ -1,0 +1,403 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M11",
+  "scope": "multistep_execution",
+  "status": "partial",
+  "input": {
+    "runId": "product-m9-trego-login-frame-20260809t2253",
+    "mode": "restricted-live",
+    "flowPlanRef": "data/projects/product-m9-trego-login-frame-002/flow/current.json",
+    "uiSpecRef": "data/projects/product-m9-trego-login-frame-002/specs/current.json",
+    "reportRef": "reports/product-m9/product-m9-trego-login-frame-20260809t2253/flow-m11-summary.json",
+    "networkBoundary": {
+      "figmaRestCalled": true,
+      "openaiCalled": false,
+      "mode": "restricted-live"
+    }
+  },
+  "artifact": {
+    "status": "partial",
+    "reasonCodes": [
+      "flow_plan_untrusted_source"
+    ],
+    "rejectionCount": 28
+  },
+  "counts": {
+    "fixtureCount": 32,
+    "successfulFixtureCount": 32,
+    "failedFixtureCount": 0,
+    "stepCount": 64,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "summaryOnlyRejectionCount": 0,
+    "scenarioOnlyRejectionCount": 0,
+    "untrustedSourceRejectionCount": 28,
+    "referenceDanglingRejectionCount": 0
+  },
+  "fixtures": [
+    {
+      "fixtureId": "flow-figma-d5e7fe5be3195937-fixture",
+      "interactionId": "figma-d5e7fe5be3195937",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-79f7f3f27a0bff85-fixture",
+      "interactionId": "figma-79f7f3f27a0bff85",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-16c95e11156fa57d-fixture",
+      "interactionId": "figma-16c95e11156fa57d",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-c349c922178502e4-fixture",
+      "interactionId": "figma-c349c922178502e4",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-339fce85cd937c6d-fixture",
+      "interactionId": "figma-339fce85cd937c6d",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-9695d177b8a1b88b-fixture",
+      "interactionId": "figma-9695d177b8a1b88b",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-7e4d71cf477d292a-fixture",
+      "interactionId": "figma-7e4d71cf477d292a",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-39400948316dd3a7-fixture",
+      "interactionId": "figma-39400948316dd3a7",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-db27a49e201b1341-fixture",
+      "interactionId": "figma-db27a49e201b1341",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-c14386712c752856-fixture",
+      "interactionId": "figma-c14386712c752856",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-fb0e68d02befa7ad-fixture",
+      "interactionId": "figma-fb0e68d02befa7ad",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-bcf1e514e2490200-fixture",
+      "interactionId": "figma-bcf1e514e2490200",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-4526dee46b1c64b7-fixture",
+      "interactionId": "figma-4526dee46b1c64b7",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-b9c21f1e86732f92-fixture",
+      "interactionId": "figma-b9c21f1e86732f92",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-0d13910960409b7e-fixture",
+      "interactionId": "figma-0d13910960409b7e",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-36e2c456cec86cca-fixture",
+      "interactionId": "figma-36e2c456cec86cca",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-9baa464d4cc24403-fixture",
+      "interactionId": "figma-9baa464d4cc24403",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-3aa90cddacb27279-fixture",
+      "interactionId": "figma-3aa90cddacb27279",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-426ed96ae279460a-fixture",
+      "interactionId": "figma-426ed96ae279460a",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-4e2a538a6ff27d0a-fixture",
+      "interactionId": "figma-4e2a538a6ff27d0a",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-7e3b12694b30e4fe-fixture",
+      "interactionId": "figma-7e3b12694b30e4fe",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-cd187e5fc2314ce9-fixture",
+      "interactionId": "figma-cd187e5fc2314ce9",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-dd087e83d31b91c2-fixture",
+      "interactionId": "figma-dd087e83d31b91c2",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-5b397c5bd1ebf642-fixture",
+      "interactionId": "figma-5b397c5bd1ebf642",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-d4949995b2a5e18b-fixture",
+      "interactionId": "figma-d4949995b2a5e18b",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-ed825e5d9278fb31-fixture",
+      "interactionId": "figma-ed825e5d9278fb31",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-66f1ebc087e1d53f-fixture",
+      "interactionId": "figma-66f1ebc087e1d53f",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-cd2af240e808cd87-fixture",
+      "interactionId": "figma-cd2af240e808cd87",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-9f60ad22ec21d0cc-fixture",
+      "interactionId": "figma-9f60ad22ec21d0cc",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-b1b218c48ebb641b-fixture",
+      "interactionId": "figma-b1b218c48ebb641b",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-a753de0a98f1c602-fixture",
+      "interactionId": "figma-a753de0a98f1c602",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-703bb7e4891275ae-fixture",
+      "interactionId": "figma-703bb7e4891275ae",
+      "intent": "navigate",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    }
+  ],
+  "successfulFixtureIds": [
+    "flow-figma-d5e7fe5be3195937-fixture",
+    "flow-figma-79f7f3f27a0bff85-fixture",
+    "flow-figma-16c95e11156fa57d-fixture",
+    "flow-figma-c349c922178502e4-fixture",
+    "flow-figma-339fce85cd937c6d-fixture",
+    "flow-figma-9695d177b8a1b88b-fixture",
+    "flow-figma-7e4d71cf477d292a-fixture",
+    "flow-figma-39400948316dd3a7-fixture",
+    "flow-figma-db27a49e201b1341-fixture",
+    "flow-figma-c14386712c752856-fixture",
+    "flow-figma-fb0e68d02befa7ad-fixture",
+    "flow-figma-bcf1e514e2490200-fixture",
+    "flow-figma-4526dee46b1c64b7-fixture",
+    "flow-figma-b9c21f1e86732f92-fixture",
+    "flow-figma-0d13910960409b7e-fixture",
+    "flow-figma-36e2c456cec86cca-fixture",
+    "flow-figma-9baa464d4cc24403-fixture",
+    "flow-figma-3aa90cddacb27279-fixture",
+    "flow-figma-426ed96ae279460a-fixture",
+    "flow-figma-4e2a538a6ff27d0a-fixture",
+    "flow-figma-7e3b12694b30e4fe-fixture",
+    "flow-figma-cd187e5fc2314ce9-fixture",
+    "flow-figma-dd087e83d31b91c2-fixture",
+    "flow-figma-5b397c5bd1ebf642-fixture",
+    "flow-figma-d4949995b2a5e18b-fixture",
+    "flow-figma-ed825e5d9278fb31-fixture",
+    "flow-figma-66f1ebc087e1d53f-fixture",
+    "flow-figma-cd2af240e808cd87-fixture",
+    "flow-figma-9f60ad22ec21d0cc-fixture",
+    "flow-figma-b1b218c48ebb641b-fixture",
+    "flow-figma-a753de0a98f1c602-fixture",
+    "flow-figma-703bb7e4891275ae-fixture"
+  ],
+  "failedFixtureIds": [],
+  "reasons": [
+    "flow_plan_untrusted_source",
+    "flow_m11_trusted_submit_fixture_missing",
+    "flow_m11_multistep_submit_fixture_missing",
+    "flow_m11_select_radio_toggle_missing"
+  ],
+  "residualRisks": [
+    "restricted-live 只证明真实样本 FlowPlan artifact 可执行，不代表真实后端业务提交成功。"
+  ]
+}

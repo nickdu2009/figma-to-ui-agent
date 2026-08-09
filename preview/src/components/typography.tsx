@@ -5,6 +5,7 @@ import { controlledStyle } from "./controlled-style.ts";
 
 export const Text: ComponentFn<typeof previewCatalog, "Text"> = ({
   props,
+  emit,
 }) => {
   const Tag = props.variant === "heading" ? "h1" : "p";
   const style = controlledStyle(props.style);
@@ -54,9 +55,28 @@ export const Text: ComponentFn<typeof previewCatalog, "Text"> = ({
     : undefined;
   return (
     <Tag
-      className={`ui-text ui-text-${props.variant}`}
+      className={`ui-text ui-text-${props.variant}${
+        props.actionable ? " is-actionable" : ""
+      }`}
       aria-label={visualOverlay ? props.text : undefined}
       data-ui-node-id={props.nodeId}
+      data-ui-actionable={props.actionable ? "true" : undefined}
+      role={props.actionable ? "button" : undefined}
+      tabIndex={props.actionable ? 0 : undefined}
+      onClick={() => {
+        if (props.actionable) {
+          emit("press");
+        }
+      }}
+      onKeyDown={(event) => {
+        if (!props.actionable) {
+          return;
+        }
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          emit("press");
+        }
+      }}
       style={{
         ...style,
         overflow: visualOverlay || framedText ? "hidden" : style?.overflow,

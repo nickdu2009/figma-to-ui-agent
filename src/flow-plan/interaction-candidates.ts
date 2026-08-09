@@ -52,6 +52,9 @@ function isClickableActionNode(
 ): node is UINode {
   return (
     node?.kind === "button" ||
+    node?.kind === "text" ||
+    node?.kind === "image" ||
+    node?.kind === "icon" ||
     node?.kind === "link" ||
     node?.kind === "checkbox" ||
     node?.kind === "radio" ||

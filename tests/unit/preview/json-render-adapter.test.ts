@@ -117,7 +117,7 @@ describe("toPreviewJsonSpec", () => {
     });
   });
 
-  it("把可点击 Stack 和 Switch 动作绑定为 press dispatch", () => {
+  it("把可点击 Stack、Switch 和视觉节点动作绑定为 press dispatch", () => {
     const draft = createUISpecDraft();
     draft.actions.push({
       id: "toggle-variant",
@@ -125,6 +125,14 @@ describe("toPreviewJsonSpec", () => {
       stateKey: "variant",
       value: "target",
     });
+    const title = draft.nodes.find((node) => node.id === "title");
+    if (title?.kind === "text") {
+      title.actionId = "toggle-variant";
+    }
+    const image = draft.nodes.find((node) => node.id === "image");
+    if (image?.kind === "image") {
+      image.actionId = "toggle-variant";
+    }
     draft.state.push(
       {
         key: "variant",
@@ -154,10 +162,18 @@ describe("toPreviewJsonSpec", () => {
         actionId: "toggle-variant",
         designValueRefs: [],
       },
+      {
+        id: "clickable-icon",
+        kind: "icon",
+        symbol: "generic",
+        alt: "打开",
+        actionId: "toggle-variant",
+        designValueRefs: [],
+      },
     );
     const root = draft.nodes.find((node) => node.id === "root");
     if (root?.kind === "stack") {
-      root.childIds.push("clickable-stack", "variant-switch");
+      root.childIds.push("clickable-stack", "variant-switch", "clickable-icon");
     }
     const uiSpec = uiSpecSchema.parse({ ...draft, revision: 1 });
 
@@ -174,6 +190,27 @@ describe("toPreviewJsonSpec", () => {
     });
     expect(preview.elements["variant-switch"]).toMatchObject({
       type: "Switch",
+      on: {
+        press: { action: "dispatch", params: { actionId: "toggle-variant" } },
+      },
+    });
+    expect(preview.elements.title).toMatchObject({
+      type: "Text",
+      props: { actionable: true },
+      on: {
+        press: { action: "dispatch", params: { actionId: "toggle-variant" } },
+      },
+    });
+    expect(preview.elements.image).toMatchObject({
+      type: "Image",
+      props: { actionable: true },
+      on: {
+        press: { action: "dispatch", params: { actionId: "toggle-variant" } },
+      },
+    });
+    expect(preview.elements["clickable-icon"]).toMatchObject({
+      type: "Icon",
+      props: { actionable: true },
       on: {
         press: { action: "dispatch", params: { actionId: "toggle-variant" } },
       },

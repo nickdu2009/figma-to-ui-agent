@@ -1,0 +1,758 @@
+{
+  "schemaVersion": "1",
+  "projectId": "product-m9-trego-login-frame-002",
+  "runId": "product-m9-trego-login-frame-20260809t2253",
+  "questionCount": 24,
+  "questions": [
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-login-2-8943",
+      "interactionId": "missing-ui-login-2-8943",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Google Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-login-2-8943",
+      "fromPageId": "login",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "login"
+        ],
+        "nodeIds": [
+          "ui-login-2-8943"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-login-2-8951",
+      "interactionId": "missing-ui-login-2-8951",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Facebook Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-login-2-8951",
+      "fromPageId": "login",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "login"
+        ],
+        "nodeIds": [
+          "ui-login-2-8951"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-login-2-8955",
+      "interactionId": "missing-ui-login-2-8955",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Apple Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-login-2-8955",
+      "fromPageId": "login",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "login"
+        ],
+        "nodeIds": [
+          "ui-login-2-8955"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-login-2-8963",
+      "interactionId": "inferred-ui-login-2-8963",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Login Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 Home Screen。",
+      "uiNodeId": "ui-login-2-8963",
+      "fromPageId": "login",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "login",
+          "home-screen"
+        ],
+        "nodeIds": [
+          "ui-login-2-8963"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-login-2-8978",
+      "interactionId": "missing-ui-login-2-8978",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Back Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-login-2-8978",
+      "fromPageId": "login",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "login"
+        ],
+        "nodeIds": [
+          "ui-login-2-8978"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-home-screen-2-7577",
+      "interactionId": "missing-ui-home-screen-2-7577",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Promo Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-home-screen-2-7577",
+      "fromPageId": "home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "home-screen"
+        ],
+        "nodeIds": [
+          "ui-home-screen-2-7577"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-home-screen-2-7616",
+      "interactionId": "missing-ui-home-screen-2-7616",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Grocery Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-home-screen-2-7616",
+      "fromPageId": "home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "home-screen"
+        ],
+        "nodeIds": [
+          "ui-home-screen-2-7616"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-home-screen-2-7622",
+      "interactionId": "missing-ui-home-screen-2-7622",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Grocery Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-home-screen-2-7622",
+      "fromPageId": "home-screen",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "home-screen"
+        ],
+        "nodeIds": [
+          "ui-home-screen-2-7622"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-forgot-password-2-9004",
+      "interactionId": "inferred-ui-forgot-password-2-9004",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Button Background」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 Login。",
+      "uiNodeId": "ui-forgot-password-2-9004",
+      "fromPageId": "forgot-password",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "forgot-password",
+          "login"
+        ],
+        "nodeIds": [
+          "ui-forgot-password-2-9004"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-forgot-password-2-9013",
+      "interactionId": "inferred-ui-forgot-password-2-9013",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Back Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 Login。",
+      "uiNodeId": "ui-forgot-password-2-9013",
+      "fromPageId": "forgot-password",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "forgot-password",
+          "login"
+        ],
+        "nodeIds": [
+          "ui-forgot-password-2-9013"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-login-signup-2-7715",
+      "interactionId": "inferred-ui-login-signup-2-7715",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Login Button Background」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案与页面 Login 匹配，仍需用户确认。",
+      "uiNodeId": "ui-login-signup-2-7715",
+      "fromPageId": "login-signup",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "login-signup",
+          "login"
+        ],
+        "nodeIds": [
+          "ui-login-signup-2-7715"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-menu-2-7906-control",
+      "interactionId": "missing-ui-menu-2-7906-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Close Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-menu-2-7906-control",
+      "fromPageId": "menu",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "menu"
+        ],
+        "nodeIds": [
+          "ui-menu-2-7906-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-otp-verification-2-9076",
+      "interactionId": "inferred-ui-otp-verification-2-9076",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Verify button background」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 Login。",
+      "uiNodeId": "ui-otp-verification-2-9076",
+      "fromPageId": "otp-verification",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "otp-verification",
+          "login"
+        ],
+        "nodeIds": [
+          "ui-otp-verification-2-9076"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-otp-verification-2-9093",
+      "interactionId": "inferred-ui-otp-verification-2-9093",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Back Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 Login。",
+      "uiNodeId": "ui-otp-verification-2-9093",
+      "fromPageId": "otp-verification",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "otp-verification",
+          "login"
+        ],
+        "nodeIds": [
+          "ui-otp-verification-2-9093"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-register-2-9120",
+      "interactionId": "missing-ui-register-2-9120",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Google button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-register-2-9120",
+      "fromPageId": "register",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "register"
+        ],
+        "nodeIds": [
+          "ui-register-2-9120"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-register-2-9128",
+      "interactionId": "missing-ui-register-2-9128",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Facebook button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-register-2-9128",
+      "fromPageId": "register",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "register"
+        ],
+        "nodeIds": [
+          "ui-register-2-9128"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-register-2-9132",
+      "interactionId": "missing-ui-register-2-9132",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Apple button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-register-2-9132",
+      "fromPageId": "register",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "register"
+        ],
+        "nodeIds": [
+          "ui-register-2-9132"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-register-2-9140",
+      "interactionId": "missing-ui-register-2-9140",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Register button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-register-2-9140",
+      "fromPageId": "register",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "register"
+        ],
+        "nodeIds": [
+          "ui-register-2-9140"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-register-2-9157",
+      "interactionId": "inferred-ui-register-2-9157",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Back Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 Login。",
+      "uiNodeId": "ui-register-2-9157",
+      "fromPageId": "register",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "register",
+          "login"
+        ],
+        "nodeIds": [
+          "ui-register-2-9157"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-profile-2-8184-control",
+      "interactionId": "missing-ui-profile-2-8184-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Update Profile」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-profile-2-8184-control",
+      "fromPageId": "profile",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "profile"
+        ],
+        "nodeIds": [
+          "ui-profile-2-8184-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-choose-ride-2-8021-control",
+      "interactionId": "missing-ui-choose-ride-2-8021-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Button icon container」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-choose-ride-2-8021-control",
+      "fromPageId": "choose-ride",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "choose-ride"
+        ],
+        "nodeIds": [
+          "ui-choose-ride-2-8021-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-create-new-password-2-9038",
+      "interactionId": "missing-ui-create-new-password-2-9038",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Reset Password button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-create-new-password-2-9038",
+      "fromPageId": "create-new-password",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "create-new-password"
+        ],
+        "nodeIds": [
+          "ui-create-new-password-2-9038"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-create-new-password-2-9050",
+      "interactionId": "inferred-ui-create-new-password-2-9050",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Back Button」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 Login。",
+      "uiNodeId": "ui-create-new-password-2-9050",
+      "fromPageId": "create-new-password",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "create-new-password",
+          "login"
+        ],
+        "nodeIds": [
+          "ui-create-new-password-2-9050"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-password-changed-2-9182",
+      "interactionId": "inferred-ui-password-changed-2-9182",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Button background」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 Login。",
+      "uiNodeId": "ui-password-changed-2-9182",
+      "fromPageId": "password-changed",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "password-changed",
+          "login"
+        ],
+        "nodeIds": [
+          "ui-password-changed-2-9182"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    }
+  ]
+}

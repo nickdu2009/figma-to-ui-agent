@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "1",
+  "scope": "product_m9_candidate_screening",
+  "runId": "product-m9-known-candidate-screening-20260809t2240",
+  "status": "candidate_found",
+  "sourceRef": "data/product-m9-candidate-screening/known-candidates-manifest.json",
+  "networkBoundary": {
+    "figmaRestCalled": true,
+    "openaiCalled": false,
+    "rawResponsesPersisted": false
+  },
+  "aggregate": {
+    "sampleCount": 2,
+    "submitDialogCandidates": 1,
+    "changeToOnly": 0,
+    "noSubmitDialogCandidate": 1,
+    "notScreenable": 0
+  },
+  "samples": [
+    {
+      "sampleId": "known-trego-ride-hailing-001",
+      "category": "booking-ride-hailing",
+      "title": "Trego Ride Hailing User App",
+      "status": "submit_dialog_candidate",
+      "selectedNodeId": "2:9634",
+      "attempts": [
+        {
+          "depth": 1,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 2,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 3,
+          "interactionNodes": 1,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 4,
+          "interactionNodes": 26,
+          "submitDialogCandidateCount": 11,
+          "changeToCandidateCount": 0
+        }
+      ],
+      "submitDialogCandidates": [
+        {
+          "nodeId": "2:7714",
+          "nodeName": "Login Button Container",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Login/SignUp",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:7718",
+          "nodeName": "Create Account Text",
+          "nodeType": "TEXT",
+          "parentTrail": "Document > UI > UI > Login/SignUp",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:7796",
+          "nodeName": "Button",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Ride Book",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:8800",
+          "nodeName": "Close",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Rating",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:8854",
+          "nodeName": "Close",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Rating",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:8962",
+          "nodeName": "Login (Button)",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Login",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:8965",
+          "nodeName": "Forgot Password Link",
+          "nodeType": "TEXT",
+          "parentTrail": "Document > UI > UI > Login",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:8977",
+          "nodeName": "back",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Login",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:9003",
+          "nodeName": "Send Code (Button)",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Forgot Password?",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:9156",
+          "nodeName": "back",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Register",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "2:9181",
+          "nodeName": "Back to Login (Button)",
+          "nodeType": "GROUP",
+          "parentTrail": "Document > UI > UI > Password Changed!",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "NAVIGATE",
+              "hasDestination": true
+            }
+          ]
+        }
+      ],
+      "changeToCandidates": []
+    },
+    {
+      "sampleId": "known-nexkart-ecommerce-001",
+      "category": "ecommerce-checkout",
+      "title": "Nexkart Premium Ecommerce App UI Kit",
+      "status": "no_submit_dialog_candidate",
+      "selectedNodeId": "0:1",
+      "attempts": [
+        {
+          "depth": 1,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 2,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 3,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 4,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 5,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 6,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        }
+      ],
+      "submitDialogCandidates": [],
+      "changeToCandidates": []
+    }
+  ],
+  "nextActions": [
+    "选择 submit_dialog_candidate 样本中的 nodeId 跑 Product-M9 restricted-live。",
+    "验收 confirmedSubmit > 0、successfulFixtureIds > 0、failedFixtureIds = 0。"
+  ]
+}

@@ -145,6 +145,7 @@ function toElement(
           ...common,
           text: node.text,
           variant: node.variant,
+          actionable: Boolean(node.actionId),
           visualOverlay: visualOverlay
             ? {
                 src: options.imageUrl(visualOverlay.assetRef),
@@ -154,6 +155,7 @@ function toElement(
               }
             : null,
         },
+        on: actionBinding(node),
       },
     };
   }
@@ -166,7 +168,9 @@ function toElement(
           src: options.imageUrl(node.assetRef),
           alt: node.alt,
           fit: node.fit,
+          actionable: Boolean(node.actionId),
         },
+        on: actionBinding(node),
       },
     };
   }
@@ -198,6 +202,7 @@ function toElement(
           label: node.label,
           variant: node.variant,
           disabled: node.disabled ?? false,
+          actionable: Boolean(node.actionId),
           leadingIconSrc: node.leadingIconAssetRef
             ? options.imageUrl(node.leadingIconAssetRef)
             : null,
@@ -336,7 +341,9 @@ function toElement(
           symbol: node.symbol ?? null,
           alt: node.alt ?? "",
           decorative: node.decorative ?? false,
+          actionable: Boolean(node.actionId),
         },
+        on: actionBinding(node),
       },
     };
   }

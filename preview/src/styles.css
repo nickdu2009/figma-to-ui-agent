@@ -34,7 +34,8 @@ select {
 
 button:focus-visible,
 select:focus-visible,
-input:focus-visible {
+input:focus-visible,
+[role="button"]:focus-visible {
   outline: 3px solid #1677b8;
   outline-offset: 2px;
 }
@@ -332,6 +333,15 @@ input:focus-visible {
   width: 100%;
 }
 
+.ui-stack.is-actionable {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.ui-stack.is-pointer-transparent {
+  pointer-events: none;
+}
+
 .ui-grid {
   display: grid;
   width: 100%;
@@ -381,6 +391,10 @@ input:focus-visible {
   font-size: 12px;
 }
 
+.ui-text:not(.is-actionable) {
+  pointer-events: none;
+}
+
 .ui-image {
   display: block;
   width: 100%;
@@ -388,6 +402,21 @@ input:focus-visible {
   max-width: 100%;
   min-height: 1px;
   pointer-events: none;
+}
+
+.ui-text.is-actionable,
+.ui-image.is-actionable,
+.ui-icon.is-actionable {
+  cursor: pointer;
+}
+
+.ui-text.is-actionable,
+.ui-image.is-actionable {
+  pointer-events: auto;
+}
+
+.ui-icon.is-actionable {
+  pointer-events: auto;
 }
 
 .ui-pixel-overlay {
@@ -428,6 +457,10 @@ input:focus-visible {
   border: 1px solid transparent;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.ui-button:not([data-ui-actionable="true"]) {
+  pointer-events: none;
 }
 
 .ui-button > span {
@@ -704,6 +737,10 @@ input:focus-visible {
   width: 20px;
   height: 20px;
   object-fit: contain;
+}
+
+.ui-icon:not(.is-actionable) {
+  pointer-events: none;
 }
 
 .ui-icon-symbol {
