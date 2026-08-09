@@ -472,6 +472,7 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
     (interaction.source === "figma" ||
       interaction.source === "user_confirmed") &&
     interaction.confirmed;
+  const confirmationQuestionCount = flowPlan?.confirmationQuestions.length ?? 0;
   return {
     trustedNavigate: interactions.filter(
       (interaction) => isTrusted(interaction) && interaction.intent === "navigate",
@@ -480,12 +481,13 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
       (interaction) => isTrusted(interaction) && interaction.intent === "set_state",
     ).length,
     submitLikeNeedsConfirmation:
-      flowPlan?.confirmationQuestions.length ??
-      interactions.filter(
-        (interaction) =>
-          interaction.intent === "submit" &&
-          (!isTrusted(interaction) || !interaction.postconditions?.length),
-      ).length,
+      confirmationQuestionCount > 0
+        ? confirmationQuestionCount
+        : interactions.filter(
+            (interaction) =>
+              interaction.intent === "submit" &&
+              (!isTrusted(interaction) || !interaction.postconditions?.length),
+          ).length,
     unsupported: interactions.filter(
       (interaction) => interaction.intent === "unknown",
     ).length,
@@ -512,17 +514,17 @@ function statusAndErrorFor(input: {
         "Product-M9 FlowPlan validation passed; inspect summary and artifact refs before delivery.",
     };
   }
-  if ((input.metrics.unsupported ?? 0) > 0) {
-    const error = productM9Error(
-      "unsupported_figma_action",
-      "FlowPlan contains unsupported Figma actions",
-    );
-    return { ok: false, status: "partial", error, nextAction: error.nextAction };
-  }
   if (reasonCodes.includes("flow_plan_untrusted_source")) {
     const error = productM9Error(
       "needs_confirmation",
       "FlowPlan contains interactions that require user confirmation",
+    );
+    return { ok: false, status: "partial", error, nextAction: error.nextAction };
+  }
+  if ((input.metrics.unsupported ?? 0) > 0) {
+    const error = productM9Error(
+      "unsupported_figma_action",
+      "FlowPlan contains unsupported Figma actions",
     );
     return { ok: false, status: "partial", error, nextAction: error.nextAction };
   }

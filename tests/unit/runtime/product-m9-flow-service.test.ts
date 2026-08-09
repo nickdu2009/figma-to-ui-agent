@@ -53,6 +53,30 @@ async function createNoExecutableFlowPlan(root: string): Promise<string> {
   return path;
 }
 
+async function createNeedsConfirmationAndUnsupportedFlowPlan(
+  root: string,
+): Promise<string> {
+  const dir = join(root, "fixtures");
+  await mkdir(dir, { recursive: true });
+  const raw = JSON.parse(await readFile(`${BASE}/flow-plan.json`, "utf8"));
+  raw.interactions.push({
+    id: "figma-unsupported-action",
+    source: "figma",
+    uiNodeId: "submit-review",
+    trigger: "click",
+    intent: "unknown",
+    fromPageId: "home",
+    confirmed: true,
+    confidence: "low",
+    reason: "fixture unsupported Figma action",
+  });
+  raw.report.unsupportedCount = 1;
+  raw.report.unresolvedInteractionCount = 2;
+  const path = join(dir, "flow-plan-needs-confirmation-and-unsupported.json");
+  await writeFile(path, `${JSON.stringify(raw, null, 2)}\n`);
+  return path;
+}
+
 function relative(path: string): string {
   return path.replace(`${process.cwd()}/`, "");
 }
@@ -145,6 +169,27 @@ describe("Product-M9 flow service", () => {
     expect(result.status).toBe("partial");
     expect(result.error?.category).toBe("needs_confirmation");
     expect(result.error?.retryPolicy).toBe("manual_review");
+  });
+
+  it("prioritizes confirmation when untrusted submit-like evidence coexists with unsupported actions", async () => {
+    const root = "data/test-product-m9-service-confirmation-with-unsupported";
+    roots.push(root);
+    const flowPlanPath = await createNeedsConfirmationAndUnsupportedFlowPlan(root);
+
+    const result = await runProductM9Flow({
+      projectId: "demo-project",
+      mode: "local",
+      runId: "product-m9-service-confirmation-with-unsupported",
+      flowPlanPath: relative(flowPlanPath),
+      uiSpecPath: `${BASE}/ui-spec.json`,
+      reportRoot: `${root}/reports`,
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.status).toBe("partial");
+    expect(result.metrics.submitLikeNeedsConfirmation).toBeGreaterThan(0);
+    expect(result.metrics.unsupported).toBeGreaterThan(0);
+    expect(result.error?.category).toBe("needs_confirmation");
   });
 
   it("applies Flow-M10 answers before Product-M9 execution", async () => {
