@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1",
+  "scope": "figma_to_ui_agent_goal_progress_audit",
+  "runId": "goal-progress-audit-20260810t0030",
+  "status": "partial",
+  "objective": "未知真实 Figma 文件到可交互 UI / FlowPlan / 验证闭环达到可交付状态。",
+  "evidenceRefs": {
+    "productM9CurrentEvidence": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+    "productM9CurrentMatrix": "reports/product-m9/product-m9-current-evidence-matrix-20260810t0025/summary.json",
+    "flowM14SixSampleExtraction": "reports/flow-m14-next/flow-m14-next-six-sample-extraction-20260809t2030/summary.json",
+    "flowM12CorpusArtifactClosure": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/summary.json",
+    "productM9OldRestrictedLiveManifestMatrix": "reports/product-m9/product-m9-restricted-live-manifest-matrix-20260809t2212/summary.json"
+  },
+  "requirements": [
+    {
+      "id": "R1",
+      "requirement": "真实 Figma restricted-live 输入可生成本地 DesignBundle / UISpec / FlowPlan / validation report。",
+      "status": "proven_current",
+      "evidence": "Product-M9 Trego 和 community-mobile 当前 evidence 均引用 restricted-live 产物链；current evidence classification status=passed。"
+    },
+    {
+      "id": "R2",
+      "requirement": "CHANGE_TO / variant target 可执行化，并通过行为 fixture 证明。",
+      "status": "proven_current",
+      "evidence": "Product-M9 current evidence 中 community-mobile-change-to-001: trustedStateChange=12, successfulFixtureCount=12, failedFixtureCount=0；Flow-M14 six-sample extraction status=passed。"
+    },
+    {
+      "id": "R3",
+      "requirement": "confirmed submit / dialog 正向样本可执行，并通过行为 fixture 证明。",
+      "status": "proven_current",
+      "evidence": "Product-M9 current evidence 中 trego-confirmed-submit-001: confirmedSubmit=1, successfulFixtureCount=49, failedFixtureCount=0。"
+    },
+    {
+      "id": "R4",
+      "requirement": "Flow 能力矩阵覆盖 navigate、set_state、submit、stateMachine、select/radio/checkbox。",
+      "status": "partially_proven",
+      "evidence": "Flow-M12 corpus r3 coverage 中 navigate/setState/submit/stateMachine/selectRadioCheckbox 均为 true，但整体 status=partial 且 restrictedLiveSummary=false；其中 stateMachine 与 select/radio/checkbox 当前主要来自本地/受控 corpus，不是最新 current Product-M9 evidence。"
+    },
+    {
+      "id": "R5",
+      "requirement": "真实样本 corpus 的 passed/partial/failed 结论反映当前最新修复和 Product-M9 evidence。",
+      "status": "missing_current_artifact",
+      "evidence": "旧 Product-M9 restricted-live manifest matrix 仍为 partial，结论仍写 seed corpus 缺少 clean submit；该结论已被 Trego current evidence supersede，但尚未生成新的全 corpus/current manifest closure 报告。"
+    },
+    {
+      "id": "R6",
+      "requirement": "失败或弱样本有稳定分类和下一步建议。",
+      "status": "partially_proven",
+      "evidence": "Flow-M14 six-sample extraction 和旧 Product-M9 manifest matrix 已分类 missing_evidence / needs_confirmation / no executable flow evidence；但未与最新 Trego confirmed submit passed 证据合并成当前总账。"
+    },
+    {
+      "id": "R7",
+      "requirement": "完成结论可经当前仓库命令和报告重复审计。",
+      "status": "incomplete",
+      "evidence": "当前新增 Product-M9 evidence classification 可重复运行；但尚缺一个 project-level closure runner/report，将 Flow-M12、Flow-M14、Product-M9 current evidence 聚合并给出最终 pass/fail。"
+    }
+  ],
+  "currentConclusion": "项目目标尚未完成。Product-M9 最小正向证据面已从 partial 推进到 passed，但全项目仍缺当前化的 corpus/manifest closure 和要求级最终审计。",
+  "nextActions": [
+    "生成 current corpus closure v4：合并 Flow-M12 r3、Flow-M14 six-sample extraction、Product-M9 current evidence classification，替代旧 partial manifest 结论。",
+    "让 closure 报告明确哪些能力是 restricted-live 真实样本证明，哪些仍只由 local/controlled corpus 证明。",
+    "如果 closure 仍显示 select/radio/checkbox 或 stateMachine 只停留在本地证据，则补一个真实 Community 样本或明确将其列为交付后续项。",
+    "为最终 goal completion 增加可重复的项目级验证命令或脚本，避免依赖人工拼报告。"
+  ]
+}
