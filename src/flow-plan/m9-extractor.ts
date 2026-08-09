@@ -58,7 +58,7 @@ function classifyInteraction(
       intent: interaction.intent,
       sourceNodeId: interaction.sourceNodeId,
       sourceNodeName: interaction.sourceNodeName,
-      evidence: "Figma prototype NAVIGATE 已映射到 FlowPlan targetPageId。",
+      evidence: "Figma prototype navigation 已映射到 FlowPlan targetPageId。",
     };
   }
   if (

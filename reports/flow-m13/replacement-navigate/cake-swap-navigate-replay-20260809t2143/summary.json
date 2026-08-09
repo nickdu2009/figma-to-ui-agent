@@ -1,0 +1,1399 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M9",
+  "scope": "restricted_live_interaction_extraction",
+  "status": "partial",
+  "input": {
+    "runId": "cake-swap-navigate-replay-20260809t2143",
+    "sampleManifestRef": "../../../../../tmp/flow-m13-cake-home-navigate-manifest-20260809.json",
+    "sampleIds": [
+      "reaction-cake-ordering-home-navigate-001"
+    ],
+    "networkBoundary": {
+      "figmaRestCalled": false,
+      "openaiCalled": false,
+      "mode": "local"
+    }
+  },
+  "samples": [
+    {
+      "sampleId": "reaction-cake-ordering-home-navigate-001",
+      "category": "food-ordering-navigate",
+      "expectedViewport": "mobile",
+      "accessStatus": "readable",
+      "interactionSource": "present",
+      "counts": {
+        "prototypeInteractionCount": 66,
+        "flowPlanInteractionCount": 167,
+        "trustedNavigate": 66,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 101,
+        "unsupported": 0,
+        "missingEvidence": 0
+      },
+      "classifications": [
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-dde2b50f99cc4409",
+          "intent": "navigate",
+          "sourceNodeId": "12:111",
+          "sourceNodeName": "Cake",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-0265f6f5146a1968",
+          "intent": "navigate",
+          "sourceNodeId": "12:115",
+          "sourceNodeName": "donuts",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-9a7b54a6e9c5b502",
+          "intent": "navigate",
+          "sourceNodeId": "12:119",
+          "sourceNodeName": "cookies",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-6c22f020608f4671",
+          "intent": "navigate",
+          "sourceNodeId": "12:123",
+          "sourceNodeName": "Card-One",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-00202911a8dbe704",
+          "intent": "navigate",
+          "sourceNodeId": "12:133",
+          "sourceNodeName": "Card-Two",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-1014036f4e8a1321",
+          "intent": "navigate",
+          "sourceNodeId": "12:143",
+          "sourceNodeName": "Card-Three",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-8cf64f5a3128ce17",
+          "intent": "navigate",
+          "sourceNodeId": "12:153",
+          "sourceNodeName": "Card-four",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-cceb6c4cc5c460d4",
+          "intent": "navigate",
+          "sourceNodeId": "12:164",
+          "sourceNodeName": "Home",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-e841d2739adebf23",
+          "intent": "navigate",
+          "sourceNodeId": "12:170",
+          "sourceNodeName": "favorite",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-e92837c78195ee94",
+          "intent": "navigate",
+          "sourceNodeId": "12:173",
+          "sourceNodeName": "profile",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-e023814939bce7b5",
+          "intent": "navigate",
+          "sourceNodeId": "36:529",
+          "sourceNodeName": "donuts",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-75028b6f2de3f32c",
+          "intent": "navigate",
+          "sourceNodeId": "36:533",
+          "sourceNodeName": "cookies",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-e0023c09d5e99c40",
+          "intent": "navigate",
+          "sourceNodeId": "36:579",
+          "sourceNodeName": "Home",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-4fa3851c0b933828",
+          "intent": "navigate",
+          "sourceNodeId": "36:585",
+          "sourceNodeName": "favorite",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-50b3da03d74ed92a",
+          "intent": "navigate",
+          "sourceNodeId": "36:588",
+          "sourceNodeName": "profile",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-86e65d8c146d833a",
+          "intent": "navigate",
+          "sourceNodeId": "36:538",
+          "sourceNodeName": "Card-One",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-cc4add100f34c525",
+          "intent": "navigate",
+          "sourceNodeId": "36:548",
+          "sourceNodeName": "Card-Two",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-efcec32388ce2b22",
+          "intent": "navigate",
+          "sourceNodeId": "36:558",
+          "sourceNodeName": "Card-Three",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-819032b6f0aa81d5",
+          "intent": "navigate",
+          "sourceNodeId": "36:568",
+          "sourceNodeName": "Card-four",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-0523a57d251d9959",
+          "intent": "navigate",
+          "sourceNodeId": "30:399",
+          "sourceNodeName": "Card-five",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-3ab84fe059408b53",
+          "intent": "navigate",
+          "sourceNodeId": "30:409",
+          "sourceNodeName": "Card-six",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-9c71aff43301182e",
+          "intent": "navigate",
+          "sourceNodeId": "30:419",
+          "sourceNodeName": "Card-seven",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-162d19af07d5c4e6",
+          "intent": "navigate",
+          "sourceNodeId": "30:429",
+          "sourceNodeName": "Card-eight",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-c7ebf7d85ee5da0a",
+          "intent": "navigate",
+          "sourceNodeId": "39:185",
+          "sourceNodeName": "Cake",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-89e183669d6d8910",
+          "intent": "navigate",
+          "sourceNodeId": "39:193",
+          "sourceNodeName": "cookies",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-17fa3fff81f76a8f",
+          "intent": "navigate",
+          "sourceNodeId": "39:199",
+          "sourceNodeName": "Home",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-832bfa08f8b8ae36",
+          "intent": "navigate",
+          "sourceNodeId": "39:205",
+          "sourceNodeName": "favorite",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-e40ea6bd9aa73b56",
+          "intent": "navigate",
+          "sourceNodeId": "39:208",
+          "sourceNodeName": "profile",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-828983aaae7d3c35",
+          "intent": "navigate",
+          "sourceNodeId": "39:212",
+          "sourceNodeName": "Card-One",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-0baf685d4258e33a",
+          "intent": "navigate",
+          "sourceNodeId": "39:222",
+          "sourceNodeName": "Card-Two",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-03006dad0758a756",
+          "intent": "navigate",
+          "sourceNodeId": "39:232",
+          "sourceNodeName": "Card-Three",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-4424094ceea2b3f3",
+          "intent": "navigate",
+          "sourceNodeId": "39:242",
+          "sourceNodeName": "Card-four",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-2d8a8f6150d7c6bd",
+          "intent": "navigate",
+          "sourceNodeId": "39:272",
+          "sourceNodeName": "Card-seven",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-852f993bcbebbe4d",
+          "intent": "navigate",
+          "sourceNodeId": "41:617",
+          "sourceNodeName": "Cake",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-137dc5b22d3502bc",
+          "intent": "navigate",
+          "sourceNodeId": "41:621",
+          "sourceNodeName": "donuts",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-33193cc9e3602ab1",
+          "intent": "navigate",
+          "sourceNodeId": "41:631",
+          "sourceNodeName": "Home",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-1eeee8a44f52da1b",
+          "intent": "navigate",
+          "sourceNodeId": "41:637",
+          "sourceNodeName": "favorite",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-a24550879e7273a0",
+          "intent": "navigate",
+          "sourceNodeId": "41:640",
+          "sourceNodeName": "profile",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-fb599b9b44fc80c2",
+          "intent": "navigate",
+          "sourceNodeId": "41:644",
+          "sourceNodeName": "Card-One",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-a07c92a63dfedb1f",
+          "intent": "navigate",
+          "sourceNodeId": "41:654",
+          "sourceNodeName": "Card-Two",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-c955533ff9dc5c1c",
+          "intent": "navigate",
+          "sourceNodeId": "41:704",
+          "sourceNodeName": "Card-seven",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-b2c6df8015c97c43",
+          "intent": "navigate",
+          "sourceNodeId": "41:714",
+          "sourceNodeName": "Card-eight",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-704a781bba306e2e",
+          "intent": "navigate",
+          "sourceNodeId": "24:33",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-53850000408581e9",
+          "intent": "navigate",
+          "sourceNodeId": "28:264",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-8caeab542144536f",
+          "intent": "navigate",
+          "sourceNodeId": "28:354",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-d9c69e103aa71095",
+          "intent": "navigate",
+          "sourceNodeId": "26:74",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-55ef662f4e6b6fd1",
+          "intent": "navigate",
+          "sourceNodeId": "16:206",
+          "sourceNodeName": "Rectangle 13",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-0b8fa00d6ba0fc70",
+          "intent": "navigate",
+          "sourceNodeId": "16:241",
+          "sourceNodeName": "cta",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-7e1ca50399711d78",
+          "intent": "navigate",
+          "sourceNodeId": "54:293",
+          "sourceNodeName": "add to cart",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-22d5b80fa7820dd2",
+          "intent": "navigate",
+          "sourceNodeId": "54:467",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-84d0607172834f77",
+          "intent": "navigate",
+          "sourceNodeId": "54:912",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-2d98cc31a4409ff5",
+          "intent": "navigate",
+          "sourceNodeId": "28:305",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-77c08d73d785412f",
+          "intent": "navigate",
+          "sourceNodeId": "28:118",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-5df78ec759d80688",
+          "intent": "navigate",
+          "sourceNodeId": "28:159",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-b264538a05c445e9",
+          "intent": "navigate",
+          "sourceNodeId": "28:200",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-9bd368656a1f860b",
+          "intent": "navigate",
+          "sourceNodeId": "41:338",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-23e0b87e8551be7a",
+          "intent": "navigate",
+          "sourceNodeId": "41:378",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-dd9bdf620bacdd2d",
+          "intent": "navigate",
+          "sourceNodeId": "41:418",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-f5ea4d04e2d066eb",
+          "intent": "navigate",
+          "sourceNodeId": "41:458",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-ade060751f614e03",
+          "intent": "navigate",
+          "sourceNodeId": "41:501",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-be726540425c1af7",
+          "intent": "navigate",
+          "sourceNodeId": "47:123",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-3fb093a555c423f4",
+          "intent": "navigate",
+          "sourceNodeId": "47:163",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-2b809d60aac1b73c",
+          "intent": "navigate",
+          "sourceNodeId": "48:239",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-ddc6016282683733",
+          "intent": "navigate",
+          "sourceNodeId": "48:201",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-a4a8496fb40b8a96",
+          "intent": "navigate",
+          "sourceNodeId": "54:300",
+          "sourceNodeName": "Order now",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "trusted.navigate",
+          "interactionId": "figma-c0a3920089790013",
+          "intent": "navigate",
+          "sourceNodeId": "54:479",
+          "sourceNodeName": "Back button",
+          "evidence": "Figma prototype navigation 已映射到 FlowPlan targetPageId。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-108-control",
+          "intent": "unknown",
+          "sourceNodeName": "filter button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-128-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-138-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-148-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-12-158-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-36-522-control",
+          "intent": "unknown",
+          "sourceNodeName": "filter button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-36-543-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-36-553-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-36-563-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-36-573-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-30-404-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-30-414-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-30-424-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cake-screen-30-434-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-182-control",
+          "intent": "unknown",
+          "sourceNodeName": "filter button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-217-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-227-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-237-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-247-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-257-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-267-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-277-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-39-287-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-41-567-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-donuts-screen-41-577-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-614-control",
+          "intent": "unknown",
+          "sourceNodeName": "filter button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-649-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-659-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-669-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-679-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-689-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-699-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-709-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-719-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-729-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cookies-screen-main-41-739-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choclolate-ice-cake-screen-26-65-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choclolate-ice-cake-screen-26-66-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choclolate-ice-cake-screen-26-69-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-bithday-cake-screen-28-289-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-bithday-cake-screen-28-294-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-bithday-cake-screen-28-286-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-oreo-cake-screen-28-379-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-oreo-cake-screen-28-384-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-oreo-cake-screen-28-376-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-lava-cake-screen-26-99-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-lava-cake-screen-26-104-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-lava-cake-screen-26-96-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-wedding-cake-screen-28-330-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-wedding-cake-screen-28-335-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-wedding-cake-screen-28-327-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-fudge-cake-screen-28-143-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-fudge-cake-screen-28-148-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-fudge-cake-screen-28-140-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-three-milk-cake-screen-28-184-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-three-milk-cake-screen-28-189-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-three-milk-cake-screen-28-181-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-black-forest-cake-screen-28-225-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-black-forest-cake-screen-28-230-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-black-forest-cake-screen-28-222-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-sprinkle-berry-donut-screen-41-363-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-sprinkle-berry-donut-screen-41-368-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-sprinkle-berry-donut-screen-41-360-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choco-donut-screen-41-403-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choco-donut-screen-41-408-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choco-donut-screen-41-400-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-oreo-crunch-donut-screen-41-443-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-oreo-crunch-donut-screen-41-448-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-oreo-crunch-donut-screen-41-440-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-muffin-41-483-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-muffin-41-488-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-muffin-41-480-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-ferrero-donut-screen-41-526-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-ferrero-donut-screen-41-531-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-ferrero-donut-screen-41-523-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choco-chip-screen-47-148-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choco-chip-screen-47-153-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-choco-chip-screen-47-145-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-double-choco-screen-47-188-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-double-choco-screen-47-193-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-double-choco-screen-47-185-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-triple-choc-screen-48-264-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-triple-choc-screen-48-269-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-triple-choc-screen-48-261-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-velvet-cookie-screen-48-226-control",
+          "intent": "unknown",
+          "sourceNodeName": "Add button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-velvet-cookie-screen-48-231-control",
+          "intent": "unknown",
+          "sourceNodeName": "Less button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-velvet-cookie-screen-48-223-control",
+          "intent": "unknown",
+          "sourceNodeName": "1",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-831-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-897-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-864-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-842-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-853-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-540-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-550-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-875-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-886-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-580-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-652-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-714-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-612-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-cart-screen-54-694-control",
+          "intent": "unknown",
+          "sourceNodeName": "cart button",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        }
+      ],
+      "blockedReasons": [
+        "interaction_target_missing"
+      ],
+      "artifactRefs": {
+        "designBundlePath": "data/projects/flow-m13-closure-v2-reaction-cake-ordering-home-navigate-001/figma/current.json",
+        "uiSpecPath": "data/projects/flow-m13-closure-v2-reaction-cake-ordering-home-navigate-001/specs/current.json",
+        "flowPlanPath": "data/projects/flow-m13-closure-v2-reaction-cake-ordering-home-navigate-001/flow/current.json"
+      }
+    }
+  ],
+  "aggregate": {
+    "totalSamples": 1,
+    "readableSamples": 1,
+    "trustedNavigate": 66,
+    "trustedStateChange": 0,
+    "submitLikeNeedsConfirmation": 101,
+    "unsupported": 0,
+    "missingEvidence": 0,
+    "notAccessible": 0
+  },
+  "reasons": [
+    "flow_m9_less_than_three_readable_samples"
+  ],
+  "residualRisks": [
+    "Flow-M9 只证明 interaction 抽取与分类；submit-like 业务语义仍需 Flow-M10 用户确认。",
+    "restricted-live 样本权限和 Community 文件结构可能随时间变化。"
+  ]
+}

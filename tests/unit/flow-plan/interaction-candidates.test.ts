@@ -145,6 +145,61 @@ describe("buildFlowPlanDraft", () => {
     );
   });
 
+  it("把可解析到页面的 Figma SWAP prototype interaction 转为可信 navigate", () => {
+    const bundle = createStoredMultipageFlowDesignBundle();
+    const homePage = bundle.pages[0]!;
+    homePage.nodes.push({
+      id: "figma-swap-source",
+      parentId: "figma-root",
+      kind: "instance",
+      name: "Open quote",
+      visible: true,
+      styleRefs: [],
+      imageRefs: [],
+      boundVariableRefs: [],
+      designValueRefs: [],
+      prototypeInteractions: [
+        {
+          id: "figma-swap-to-quote",
+          source: "figma_rest",
+          trigger: "click",
+          actionType: "node",
+          navigation: "SWAP",
+          destinationId: "figma-quote-root",
+        },
+      ],
+      warningCodes: [],
+    });
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const root = uiSpec.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("ui-home-figma-swap-source-control");
+    }
+    uiSpec.nodes.push({
+      id: "ui-home-figma-swap-source-control",
+      kind: "button",
+      label: "打开报价",
+      variant: "primary",
+      designValueRefs: [],
+    });
+
+    const draft = buildFlowPlanDraft({ bundle, uiSpec });
+
+    expect(draft.interactions).toContainEqual(
+      expect.objectContaining({
+        id: "figma-swap-to-quote",
+        source: "figma",
+        uiNodeId: "ui-home-figma-swap-source-control",
+        intent: "navigate",
+        fromPageId: "home",
+        targetNodeId: "figma-quote-root",
+        targetPageId: "quote",
+        confirmed: true,
+        blockedReason: undefined,
+      }),
+    );
+  });
+
   it("从同一 component 的不同 variant 自动生成 set_state 初始值", () => {
     const bundle = createStoredMultipageFlowDesignBundle();
     const homePage = bundle.pages[0]!;

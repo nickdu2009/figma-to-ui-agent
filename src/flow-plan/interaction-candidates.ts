@@ -353,7 +353,11 @@ function figmaPrototypeIntent(
   if (interaction.navigation === "CHANGE_TO") {
     return stateCandidate ? "set_state" : "unknown";
   }
-  if (interaction.navigation === "NAVIGATE" && targetPageId) {
+  if (
+    (interaction.navigation === "NAVIGATE" ||
+      interaction.navigation === "SWAP") &&
+    targetPageId
+  ) {
     return "navigate";
   }
   return "unknown";
@@ -384,7 +388,10 @@ function blockedReasonForPrototype(
     }
     return undefined;
   }
-  if (interaction.navigation === "NAVIGATE") {
+  if (
+    interaction.navigation === "NAVIGATE" ||
+    interaction.navigation === "SWAP"
+  ) {
     return targetPageId ? undefined : "prototype_target_page_missing";
   }
   return "unsupported_figma_action";
@@ -456,7 +463,8 @@ export function buildFlowPlanDraft({
             : sourceNode;
         const targetDesignNodeId = targetNodeIdForPrototype(prototype);
         const targetPageId =
-          prototype.navigation === "NAVIGATE"
+          prototype.navigation === "NAVIGATE" ||
+          prototype.navigation === "SWAP"
             ? findTargetPageFromNode(bundle, pages, targetDesignNodeId)
             : undefined;
         const targetFlowPageId = flowPageForDesignNode(
