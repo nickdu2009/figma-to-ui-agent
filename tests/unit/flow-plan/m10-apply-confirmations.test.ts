@@ -106,4 +106,46 @@ describe("Flow-M10 answer applier", () => {
       confirmed: false,
     });
   });
+
+  it("为布尔 submit set_state effect 推导可 hydrate 的初始值", async () => {
+    const { flowPlan, uiSpec } = await loadFixture();
+    const questions = generateFlowM10ConfirmationQuestions({ flowPlan });
+    const result = applyFlowM10Confirmations({
+      flowPlan,
+      questions,
+      rawAnswers: [
+        {
+          id: "answer-boolean-submit",
+          questionId: "m10-missing-login-submit",
+          answerKind: "submit",
+          effect: {
+            kind: "set_state",
+            stateKey: "invite-submitted",
+            value: true,
+          },
+          postconditions: [
+            {
+              kind: "expect_visible",
+              nodeId: "review-text",
+            },
+          ],
+        },
+      ],
+      uiSpec,
+    });
+
+    expect(result.results).toEqual([
+      expect.objectContaining({
+        answerId: "answer-boolean-submit",
+        result: "applied",
+      }),
+    ]);
+    expect(result.flowPlan.interactions[0]).toMatchObject({
+      source: "user_confirmed",
+      intent: "submit",
+      stateKey: "invite-submitted",
+      value: true,
+      stateInitialValue: false,
+    });
+  });
 });

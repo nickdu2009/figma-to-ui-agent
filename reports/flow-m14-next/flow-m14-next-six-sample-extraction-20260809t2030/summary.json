@@ -1,0 +1,392 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M9",
+  "scope": "restricted_live_interaction_extraction",
+  "status": "passed",
+  "input": {
+    "runId": "flow-m14-next-six-sample-extraction-20260809t2030",
+    "sampleManifestRef": "tests/fixtures/figma/community-sample-manifest.json",
+    "sampleIds": [
+      "community-login-001",
+      "community-mobile-001",
+      "community-dashboard-001",
+      "community-ecommerce-001",
+      "community-landing-001",
+      "community-design-system-001"
+    ],
+    "networkBoundary": {
+      "figmaRestCalled": true,
+      "openaiCalled": false,
+      "mode": "restricted-live"
+    }
+  },
+  "samples": [
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "expectedViewport": "mobile",
+      "accessStatus": "readable",
+      "interactionSource": "absent",
+      "counts": {
+        "prototypeInteractionCount": 0,
+        "flowPlanInteractionCount": 3,
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 3,
+        "unsupported": 0,
+        "missingEvidence": 1
+      },
+      "classifications": [
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-login-version-1-3-5137-control",
+          "intent": "unknown",
+          "sourceNodeName": "Log In",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-login-version-1-28-4028-control",
+          "intent": "unknown",
+          "sourceNodeName": "Continue with Google",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-login-version-1-28-4029-control",
+          "intent": "unknown",
+          "sourceNodeName": "Continue with Facebook",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "missing_evidence",
+          "evidence": "DesignBundle 中没有 prototypeInteractions。"
+        }
+      ],
+      "blockedReasons": [
+        "interaction_target_missing"
+      ],
+      "artifactRefs": {
+        "designBundlePath": "data/projects/flow-m14-next-community-login-001/figma/current.json",
+        "uiSpecPath": "data/projects/flow-m14-next-community-login-001/specs/current.json",
+        "flowPlanPath": "data/projects/flow-m14-next-community-login-001/flow/current.json"
+      }
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "expectedViewport": "mobile",
+      "accessStatus": "readable",
+      "interactionSource": "present",
+      "counts": {
+        "prototypeInteractionCount": 12,
+        "flowPlanInteractionCount": 12,
+        "trustedNavigate": 0,
+        "trustedStateChange": 12,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0
+      },
+      "classifications": [
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-f1e69831804cba1c",
+          "intent": "set_state",
+          "sourceNodeId": "I3186:4557;3189:4744",
+          "sourceNodeName": "Stars",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-076a56448bf7956b",
+          "intent": "set_state",
+          "sourceNodeId": "I3186:4557;3096:2596",
+          "sourceNodeName": "Home Switch",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-aad70f0e58a4873e",
+          "intent": "set_state",
+          "sourceNodeId": "I3186:4557;3096:2594;3071:2439",
+          "sourceNodeName": "Vector",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-046f548ad78b98e0",
+          "intent": "set_state",
+          "sourceNodeId": "I3186:4557;3096:2590",
+          "sourceNodeName": "Support & Help Switch",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-064cffbb9f8efd85",
+          "intent": "set_state",
+          "sourceNodeId": "3186:4431",
+          "sourceNodeName": "Main Button",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-fa1c270553de5d33",
+          "intent": "set_state",
+          "sourceNodeId": "3189:4303",
+          "sourceNodeName": "Property 1=Bookmark-On",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-49d68f4313157af5",
+          "intent": "set_state",
+          "sourceNodeId": "3071:2455",
+          "sourceNodeName": "Property 1=Variant2",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-484398ff868da059",
+          "intent": "set_state",
+          "sourceNodeId": "3071:2461",
+          "sourceNodeName": "Property 1=Variant2",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-3093cd194c7d71a5",
+          "intent": "set_state",
+          "sourceNodeId": "53:137",
+          "sourceNodeName": "Property 1=Off",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-77ddf8af1b68916e",
+          "intent": "set_state",
+          "sourceNodeId": "3189:4300",
+          "sourceNodeName": "Property 1=Bookmark-Off",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-aa9f07674b99bb04",
+          "intent": "set_state",
+          "sourceNodeId": "3071:2448",
+          "sourceNodeName": "Property 1=Default",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        },
+        {
+          "classification": "trusted.set_state",
+          "interactionId": "figma-77e94cf4e20e4887",
+          "intent": "set_state",
+          "sourceNodeId": "53:139",
+          "sourceNodeName": "Property 1=On",
+          "evidence": "Figma prototype CHANGE_TO 已映射到 FlowPlan set_state。"
+        }
+      ],
+      "blockedReasons": [],
+      "artifactRefs": {
+        "designBundlePath": "data/projects/flow-m14-next-community-mobile-001/figma/current.json",
+        "uiSpecPath": "data/projects/flow-m14-next-community-mobile-001/specs/current.json",
+        "flowPlanPath": "data/projects/flow-m14-next-community-mobile-001/flow/current.json"
+      }
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "category": "dashboard",
+      "expectedViewport": "desktop",
+      "accessStatus": "readable",
+      "interactionSource": "absent",
+      "counts": {
+        "prototypeInteractionCount": 0,
+        "flowPlanInteractionCount": 0,
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 2
+      },
+      "classifications": [
+        {
+          "classification": "missing_evidence",
+          "evidence": "样本可读，但没有 FlowPlan interaction。"
+        },
+        {
+          "classification": "missing_evidence",
+          "evidence": "DesignBundle 中没有 prototypeInteractions。"
+        }
+      ],
+      "blockedReasons": [],
+      "artifactRefs": {
+        "designBundlePath": "data/projects/flow-m14-next-community-dashboard-001/figma/current.json",
+        "uiSpecPath": "data/projects/flow-m14-next-community-dashboard-001/specs/current.json",
+        "flowPlanPath": "data/projects/flow-m14-next-community-dashboard-001/flow/current.json"
+      }
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "category": "ecommerce",
+      "expectedViewport": "mobile",
+      "accessStatus": "readable",
+      "interactionSource": "absent",
+      "counts": {
+        "prototypeInteractionCount": 0,
+        "flowPlanInteractionCount": 0,
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 2
+      },
+      "classifications": [
+        {
+          "classification": "missing_evidence",
+          "evidence": "样本可读，但没有 FlowPlan interaction。"
+        },
+        {
+          "classification": "missing_evidence",
+          "evidence": "DesignBundle 中没有 prototypeInteractions。"
+        }
+      ],
+      "blockedReasons": [],
+      "artifactRefs": {
+        "designBundlePath": "data/projects/flow-m14-next-community-ecommerce-001/figma/current.json",
+        "uiSpecPath": "data/projects/flow-m14-next-community-ecommerce-001/specs/current.json",
+        "flowPlanPath": "data/projects/flow-m14-next-community-ecommerce-001/flow/current.json"
+      }
+    },
+    {
+      "sampleId": "community-landing-001",
+      "category": "landing-page",
+      "expectedViewport": "desktop",
+      "accessStatus": "readable",
+      "interactionSource": "absent",
+      "counts": {
+        "prototypeInteractionCount": 0,
+        "flowPlanInteractionCount": 1,
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 1,
+        "unsupported": 0,
+        "missingEvidence": 1
+      },
+      "classifications": [
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-home-10-918-control",
+          "intent": "unknown",
+          "sourceNodeName": "Register",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "missing_evidence",
+          "evidence": "DesignBundle 中没有 prototypeInteractions。"
+        }
+      ],
+      "blockedReasons": [
+        "interaction_target_missing"
+      ],
+      "artifactRefs": {
+        "designBundlePath": "data/projects/flow-m14-next-community-landing-001/figma/current.json",
+        "uiSpecPath": "data/projects/flow-m14-next-community-landing-001/specs/current.json",
+        "flowPlanPath": "data/projects/flow-m14-next-community-landing-001/flow/current.json"
+      }
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "expectedViewport": "desktop",
+      "accessStatus": "readable",
+      "interactionSource": "present",
+      "counts": {
+        "prototypeInteractionCount": 1,
+        "flowPlanInteractionCount": 6,
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 5,
+        "unsupported": 0,
+        "missingEvidence": 1
+      },
+      "classifications": [
+        {
+          "classification": "missing_evidence",
+          "interactionId": "figma-1d53c3e85af5c459",
+          "intent": "unknown",
+          "sourceNodeId": "21:2370",
+          "sourceNodeName": "btns-set",
+          "blockedReason": "prototype_target_missing",
+          "evidence": "interaction 存在但缺少可验证目标或目标页面映射。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-in-modals-14-4758-control",
+          "intent": "unknown",
+          "sourceNodeName": "btns-set",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-in-modals-14-4782-control",
+          "intent": "unknown",
+          "sourceNodeName": "btns-set",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-in-modals-14-4776-control",
+          "intent": "unknown",
+          "sourceNodeName": "btns-set",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-in-modals-14-4822-control",
+          "intent": "unknown",
+          "sourceNodeName": "Cancel",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        },
+        {
+          "classification": "needs_confirmation.submit_like",
+          "interactionId": "missing-ui-in-modals-14-4815-control",
+          "intent": "unknown",
+          "sourceNodeName": "Invite",
+          "blockedReason": "interaction_target_missing",
+          "evidence": "样本文案或类别暗示提交类行为，但缺少可验证 postcondition。"
+        }
+      ],
+      "blockedReasons": [
+        "prototype_target_missing",
+        "interaction_target_missing"
+      ],
+      "artifactRefs": {
+        "designBundlePath": "data/projects/flow-m14-next-community-design-system-001/figma/current.json",
+        "uiSpecPath": "data/projects/flow-m14-next-community-design-system-001/specs/current.json",
+        "flowPlanPath": "data/projects/flow-m14-next-community-design-system-001/flow/current.json"
+      }
+    }
+  ],
+  "aggregate": {
+    "totalSamples": 6,
+    "readableSamples": 6,
+    "trustedNavigate": 0,
+    "trustedStateChange": 12,
+    "submitLikeNeedsConfirmation": 9,
+    "unsupported": 0,
+    "missingEvidence": 7,
+    "notAccessible": 0
+  },
+  "reasons": [],
+  "residualRisks": [
+    "Flow-M9 只证明 interaction 抽取与分类；submit-like 业务语义仍需 Flow-M10 用户确认。",
+    "restricted-live 样本权限和 Community 文件结构可能随时间变化。"
+  ]
+}

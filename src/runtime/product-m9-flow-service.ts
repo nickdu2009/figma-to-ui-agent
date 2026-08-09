@@ -22,6 +22,12 @@ import {
   loadFlowM11Artifact,
   type FlowM11ArtifactLoadResult,
 } from "../flow-plan/m11-artifact-loader.ts";
+import {
+  applyFlowM10Confirmations,
+} from "../flow-plan/m10-apply-confirmations.ts";
+import {
+  generateFlowM10ConfirmationQuestions,
+} from "../flow-plan/m10-confirmation-questions.ts";
 import { planFlowM11BehaviorFixtures } from "../flow-plan/m11-fixture-planner.ts";
 import {
   buildFlowM11ExecutionReport,
@@ -99,6 +105,7 @@ interface FlowArtifactInput {
   readonly flowPlanPath: string;
   readonly uiSpecPath: string;
   readonly designBundlePath?: string;
+  readonly confirmedFlowPlanPath?: string;
 }
 
 function createRunId(): string {
@@ -197,6 +204,24 @@ function parseFlowPlan(raw: unknown): FlowPlan | FlowPlanDraft {
   return flowPlanDraftSchema.parse(raw);
 }
 
+function flowPlanDraftFrom(
+  flowPlan: FlowPlan | FlowPlanDraft,
+): FlowPlanDraft {
+  if ("revision" in flowPlan) {
+    const { revision: _revision, ...draft } = flowPlan;
+    return flowPlanDraftSchema.parse(draft);
+  }
+  return flowPlanDraftSchema.parse(flowPlan);
+}
+
+function uiSpecDraftFrom(uiSpec: UISpec | UISpecDraft): UISpecDraft {
+  if ("revision" in uiSpec) {
+    const { revision: _revision, ...draft } = uiSpec;
+    return uiSpecDraftSchema.parse(draft);
+  }
+  return uiSpecDraftSchema.parse(uiSpec);
+}
+
 function relativeRef(cwd: string, path: string): string {
   const ref = relative(cwd, resolve(cwd, path));
   if (ref.startsWith("..")) {
@@ -287,6 +312,66 @@ async function saveFlowPlan(input: {
     baseRevision,
     draft: input.flowPlan,
   });
+}
+
+async function applyConfirmationAnswers(input: {
+  readonly cwd: string;
+  readonly request: ProductM9RunRequest;
+  readonly runId: string;
+  readonly rawReportRoot: string;
+  readonly artifacts: FlowArtifactInput;
+}): Promise<{
+  readonly artifacts: FlowArtifactInput;
+  readonly stage?: ProductM9StageResult;
+}> {
+  if (!input.request.answersPath) {
+    return { artifacts: input.artifacts };
+  }
+  relativeRef(input.cwd, input.request.answersPath);
+  const answers = await readJson(resolve(input.cwd, input.request.answersPath));
+  const flowPlan = flowPlanDraftFrom(input.artifacts.flowPlan);
+  const uiSpec = uiSpecDraftFrom(input.artifacts.uiSpec);
+  const applyResult = applyFlowM10Confirmations({
+    flowPlan,
+    questions: generateFlowM10ConfirmationQuestions({ flowPlan }),
+    rawAnswers: answers,
+    uiSpec,
+  });
+  const confirmedPath = resolve(
+    input.cwd,
+    input.rawReportRoot,
+    input.runId,
+    "confirmed-flow-plan.json",
+  );
+  await mkdir(dirname(confirmedPath), { recursive: true });
+  await writeFile(
+    confirmedPath,
+    `${JSON.stringify(applyResult.flowPlan, null, 2)}\n`,
+  );
+  const confirmedFlowPlanPath = relative(input.cwd, confirmedPath);
+  const applied = applyResult.results.filter(
+    (result) => result.result === "applied",
+  ).length;
+  const rejected = applyResult.results.length - applied;
+  const status: ProductM9StageResult["status"] =
+    applied > 0 && rejected === 0
+      ? "passed"
+      : applied > 0
+        ? "partial"
+        : "partial";
+  return {
+    artifacts: {
+      ...input.artifacts,
+      flowPlan: applyResult.flowPlan,
+      flowPlanPath: confirmedFlowPlanPath,
+      confirmedFlowPlanPath,
+    },
+    stage: stage(
+      status,
+      `Flow-M10 confirmation answers applied=${applied} rejected=${rejected}`,
+      { artifactRef: confirmedFlowPlanPath },
+    ),
+  };
 }
 
 async function loadRestrictedLiveArtifacts(input: {
@@ -634,26 +719,37 @@ async function runProductM9FlowInternal(
             signal,
           })
         : await loadLocalArtifacts({ cwd, request });
+    const confirmed = await applyConfirmationAnswers({
+      cwd,
+      request,
+      runId,
+      rawReportRoot,
+      artifacts,
+    });
+    if (confirmed.stage) {
+      stages.confirmation = confirmed.stage;
+    }
+    const effectiveArtifacts = confirmed.artifacts;
     stages.staticGeneration = stage(
       "passed",
       request.mode === "restricted-live"
         ? "UISpec generated from restricted-live DesignBundle"
         : "Local UISpec artifact loaded",
-      { artifactRef: artifacts.uiSpecPath },
+      { artifactRef: effectiveArtifacts.uiSpecPath },
     );
     stages.flowPlanExtraction = stage(
       "passed",
       request.mode === "restricted-live"
         ? "FlowPlan generated and saved from Figma evidence"
         : "Local FlowPlan artifact loaded",
-      { artifactRef: artifacts.flowPlanPath },
+      { artifactRef: effectiveArtifacts.flowPlanPath },
     );
 
     const flowOutput = await runFlowArtifacts({
       cwd,
       request,
       runId,
-      artifacts,
+      artifacts: effectiveArtifacts,
       options,
     });
     stages.execution = stage(
@@ -664,7 +760,7 @@ async function runProductM9FlowInternal(
         reasonCode: flowOutput.executionReport.reasons[0],
       },
     );
-    const metrics = metricsFor(artifacts.flowPlan, {
+    const metrics = metricsFor(effectiveArtifacts.flowPlan, {
       artifact: flowOutput.artifact,
       validation: flowOutput.validation,
     });
@@ -684,10 +780,12 @@ async function runProductM9FlowInternal(
       stages,
       artifactRefs: {
         ...baseArtifactRefs,
-        designBundlePath: artifacts.designBundlePath,
-        uiSpecPath: artifacts.uiSpecPath,
-        flowPlanPath: artifacts.flowPlanPath,
-        confirmedFlowPlanPath: request.confirmedFlowPlanPath,
+        designBundlePath: effectiveArtifacts.designBundlePath,
+        uiSpecPath: effectiveArtifacts.uiSpecPath,
+        flowPlanPath: effectiveArtifacts.flowPlanPath,
+        confirmedFlowPlanPath:
+          effectiveArtifacts.confirmedFlowPlanPath ??
+          request.confirmedFlowPlanPath,
         validationPath: `${rawReportRoot}/${runId}/flow-m11-summary.json`,
       },
       metrics,

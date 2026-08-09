@@ -216,6 +216,65 @@ describe("Flow-M11 artifact loader", () => {
     });
   });
 
+  it("允许用户确认 submit 的 set_state effect 交给 UISpec hydration 创建", async () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const flowPlan = flowPlanDraftSchema.parse({
+      schemaVersion: "1",
+      projectId: "demo-project",
+      sourceDesignBundleRevision: 1,
+      sourceUISpecRevision: 1,
+      figmaInteractionSource: "present",
+      pages: [
+        {
+          id: "home",
+          sourcePageId: "page-home",
+          name: "首页",
+          role: "entry",
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      interactions: [
+        {
+          id: "confirmed-submit-with-state",
+          source: "user_confirmed",
+          uiNodeId: "continue",
+          trigger: "submit",
+          intent: "submit",
+          fromPageId: "home",
+          stateKey: "submitted-state",
+          value: true,
+          postconditions: [{ kind: "expect_visible", nodeId: "quote-title" }],
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture user-confirmed submit",
+        },
+      ],
+      confirmationQuestions: [],
+      confirmations: [],
+      stateMachines: [],
+      report: {
+        unsupportedCount: 0,
+        unresolvedInteractionCount: 0,
+        convertedActionCount: 0,
+        behaviorFixtureCount: 0,
+        confirmationCount: 0,
+      },
+    });
+
+    const result = await loadFlowM11Artifact({
+      artifactRef: "submit-hydratable.json",
+      rawFlowPlan: flowPlan,
+      uiSpec,
+    });
+
+    expect(result).toMatchObject({
+      status: "loaded",
+      reasonCodes: [],
+      rejections: [],
+    });
+  });
+
   it("对混合可信和不可信 interaction 返回 partial 并保留可信 artifact", async () => {
     const { flowPlan, uiSpec } = await trustedSubmitFlowPlan();
     const mixed = flowPlanDraftSchema.parse({

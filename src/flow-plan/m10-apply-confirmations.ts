@@ -66,6 +66,22 @@ function m8EffectFields(
   return {};
 }
 
+function inferredStateInitialValue(
+  fields: Pick<FlowPlanInteraction, "stateKey" | "value">,
+  interaction: FlowPlanInteraction,
+): string | number | boolean | undefined {
+  if (
+    "stateInitialValue" in interaction &&
+    typeof interaction.stateInitialValue === typeof fields.value
+  ) {
+    return interaction.stateInitialValue;
+  }
+  if (fields.stateKey && typeof fields.value === "boolean") {
+    return !fields.value;
+  }
+  return undefined;
+}
+
 function postconditionsFor(
   answer: FlowM10ConfirmationAnswer,
 ): FlowPostcondition[] | undefined {
@@ -287,8 +303,10 @@ export function applyFlowM10Confirmations(input: {
 
     const next = outputById.get(interaction.id)!;
     const intent = answer.answerKind === "submit" ? "submit" : answer.answerKind;
+    const stateInitialValue = inferredStateInitialValue(fields, interaction);
     Object.assign(next, {
       ...fields,
+      ...(stateInitialValue !== undefined ? { stateInitialValue } : {}),
       source: "user_confirmed",
       confirmed: true,
       trigger: intent === "submit" ? "submit" : "click",

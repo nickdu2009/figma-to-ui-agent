@@ -141,12 +141,35 @@ function postconditionReferenceIssues(
 function isHydratableTrustedSetState(
   interaction: FlowPlanInteraction,
 ): boolean {
-  return (
-    (interaction.source === "figma" ||
-      interaction.source === "user_confirmed") &&
-    interaction.confirmed &&
-    interaction.intent === "set_state" &&
-    interaction.value !== undefined
+  if (
+    interaction.source !== "figma" &&
+    interaction.source !== "user_confirmed"
+  ) {
+    return false;
+  }
+  if (!interaction.confirmed || interaction.value === undefined) {
+    return false;
+  }
+  return interaction.intent === "set_state" || interaction.intent === "submit";
+}
+
+function hasVerifiablePostconditions(
+  interaction: FlowPlanInteraction,
+  pageIds: ReadonlySet<string>,
+  nodeIds: ReadonlySet<string> | undefined,
+): boolean {
+  const postconditions = interaction.postconditions ?? [];
+  if (postconditions.length === 0) {
+    return false;
+  }
+  return postconditions.every(
+    (postcondition) =>
+      postconditionReferenceIssues(
+        postcondition,
+        pageIds,
+        nodeIds,
+        `interaction ${interaction.id}`,
+      ).length === 0,
   );
 }
 
@@ -188,7 +211,11 @@ function validateRuntimeReferences(
     if (
       interaction.stateKey &&
       !stateKeyExists(interaction.stateKey, stateKeys) &&
-      !isHydratableTrustedSetState(interaction)
+      !(
+        isHydratableTrustedSetState(interaction) &&
+        (interaction.intent !== "submit" ||
+          hasVerifiablePostconditions(interaction, pageIds, nodeIds))
+      )
     ) {
       issues.push({
         reasonCode: "flow_plan_reference_dangling",

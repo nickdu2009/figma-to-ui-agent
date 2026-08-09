@@ -147,6 +147,73 @@ describe("Product-M9 flow service", () => {
     expect(result.error?.retryPolicy).toBe("manual_review");
   });
 
+  it("applies Flow-M10 answers before Product-M9 execution", async () => {
+    const root = "data/test-product-m9-service-confirmed-answers";
+    roots.push(root);
+    const answersPath = join(root, "answers.json");
+    await mkdir(root, { recursive: true });
+    await writeFile(
+      answersPath,
+      `${JSON.stringify(
+        [
+          {
+            id: "answer-inferred-submit",
+            questionId: "m10-inferred-submit",
+            answerKind: "submit",
+            effect: {
+              kind: "set_state",
+              stateKey: "form-status",
+              value: "review",
+            },
+            postconditions: [
+              {
+                kind: "expect_visible",
+                nodeId: "review-text",
+              },
+            ],
+            reason: "fixture confirms review text after submit",
+          },
+        ],
+        null,
+        2,
+      )}\n`,
+    );
+
+    const result = await runProductM9Flow({
+      projectId: "demo-project",
+      mode: "local",
+      runId: "product-m9-service-confirmed-answers",
+      flowPlanPath: `${BASE}/flow-plan.json`,
+      uiSpecPath: `${BASE}/ui-spec.json`,
+      answersPath: relative(answersPath),
+      reportRoot: `${root}/reports`,
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.status).toBe("passed");
+    expect(result.stages.confirmation).toMatchObject({
+      status: "passed",
+      artifactRef: `${root}/reports/product-m9-service-confirmed-answers/confirmed-flow-plan.json`,
+    });
+    expect(result.artifactRefs.confirmedFlowPlanPath).toBe(
+      `${root}/reports/product-m9-service-confirmed-answers/confirmed-flow-plan.json`,
+    );
+    const confirmed = JSON.parse(
+      await readFile(
+        `${root}/reports/product-m9-service-confirmed-answers/confirmed-flow-plan.json`,
+        "utf8",
+      ),
+    ) as { interactions: Array<{ id: string; source: string; intent: string }> };
+    expect(
+      confirmed.interactions.find(
+        (interaction) => interaction.id === "inferred-submit",
+      ),
+    ).toMatchObject({
+      source: "user_confirmed",
+      intent: "submit",
+    });
+  });
+
   it("returns partial_evidence when trusted FlowPlan has no executable fixtures", async () => {
     const root = "data/test-product-m9-service-no-executable";
     roots.push(root);
