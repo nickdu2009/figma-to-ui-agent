@@ -27,6 +27,7 @@ function parseArgs(argv) {
   const parsed = {
     ...defaultInputs,
     uiControlSmoke: [],
+    stateMachineSmoke: [],
     reportRoot: "reports/project-completion",
     runId: "current-corpus-closure-v4-20260810t0035",
     json: false,
@@ -52,6 +53,11 @@ function parseArgs(argv) {
       case "--uiControlSmoke":
       case "--ui-control-smoke":
         parsed.uiControlSmoke.push(readValue(argv, index, flag));
+        index += 1;
+        break;
+      case "--stateMachineSmoke":
+      case "--state-machine-smoke":
+        parsed.stateMachineSmoke.push(readValue(argv, index, flag));
         index += 1;
         break;
       case "--reportRoot":
@@ -89,6 +95,7 @@ current corpus closure 报告。本命令不调用 Figma 或 OpenAI。
   --flow-m12 <path>             Flow-M12 corpus summary 路径
   --flow-m14 <path>             Flow-M14 extraction summary 路径
   --ui-control-smoke <path>     UI control smoke summary 路径，可重复
+  --state-machine-smoke <path>  StateMachine smoke summary 路径，可重复
   --run-id <id>                 输出 run id
   --report-root <path>          输出报告根目录
   --json                        输出报告 JSON
@@ -141,23 +148,46 @@ function passedUiControlSmoke(uiControlSmokes) {
   );
 }
 
-function buildReport({ runId, inputs, productM9, flowM12, flowM14, uiControlSmokes }) {
+function passedStateMachineSmoke(stateMachineSmokes) {
+  return stateMachineSmokes.filter(
+    (report) =>
+      report.status === "passed" &&
+      report.counts?.stateMachineTransitionCount >= 2 &&
+      report.sourceSummary?.mode === "restricted-live" &&
+      report.networkBoundary?.mode === "local-validation-of-restricted-live-artifact",
+  );
+}
+
+function buildReport({
+  runId,
+  inputs,
+  productM9,
+  flowM12,
+  flowM14,
+  uiControlSmokes,
+  stateMachineSmokes,
+}) {
   const productTotals = productM9.totals;
   const flowM12Coverage = flowM12.coverage;
   const flowM14StateChangeSamples = flowM14.samples.filter(
     (sample) => (sample.counts?.trustedStateChange ?? 0) > 0,
   ).length;
   const passedControlSmokes = passedUiControlSmoke(uiControlSmokes);
+  const passedMachineSmokes = passedStateMachineSmoke(stateMachineSmokes);
   const controlSmokeEvidenceRef =
     inputs.uiControlSmoke.find((_, index) =>
       passedControlSmokes.includes(uiControlSmokes[index]),
+    ) ?? inputs.flowM12;
+  const machineSmokeEvidenceRef =
+    inputs.stateMachineSmoke.find((_, index) =>
+      passedMachineSmokes.includes(stateMachineSmokes[index]),
     ) ?? inputs.flowM12;
   const restrictedLive = {
     navigate: productM9.samples.some((sample) => (sample.metrics.trustedNavigate ?? 0) > 0),
     setState:
       productTotals.changeToVariantPositive > 0 || flowM14StateChangeSamples > 0,
     submit: productTotals.confirmedSubmitPositive > 0,
-    stateMachine: false,
+    stateMachine: passedMachineSmokes.length > 0,
     selectRadioCheckbox: passedControlSmokes.length > 0,
   };
   const localOrControlled = {
@@ -203,11 +233,15 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14, uiControlSmok
       label: "stateMachine transition",
       restrictedLive: restrictedLive.stateMachine,
       localOrControlled: localOrControlled.stateMachine,
-      evidenceRef: inputs.flowM12,
+      evidenceRef: machineSmokeEvidenceRef,
       evidence:
-        "Flow-M12 corpus r3 通过 local/controlled corpus 报告 stateMachine coverage=true。",
+        restrictedLive.stateMachine
+          ? "StateMachine smoke 从 restricted-live Figma prototype navigation graph 派生临时 stateMachine，并通过 Preview/Playwright 验证了两个 transition fixture。"
+          : "Flow-M12 corpus r3 通过 local/controlled corpus 报告 stateMachine coverage=true。",
       residualRisk:
-        "尚未由当前 Product-M9 evidence set 中的 restricted-live 真实 Figma 样本证明。",
+        restrictedLive.stateMachine
+          ? "该证据证明 Figma prototype 图可执行为有限状态迁移，不表示真实后端业务状态已持久化。"
+          : "尚未由当前 Product-M9 evidence set 中的 restricted-live 真实 Figma 样本证明。",
     }),
     capability({
       id: "select_radio_checkbox",
@@ -252,6 +286,8 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14, uiControlSmok
       flowM14StateChangePositiveSamples: flowM14StateChangeSamples,
       uiControlSmokeCount: uiControlSmokes.length,
       passedUiControlSmokeCount: passedControlSmokes.length,
+      stateMachineSmokeCount: stateMachineSmokes.length,
+      passedStateMachineSmokeCount: passedMachineSmokes.length,
       productM9PositiveSampleCount:
         countPositiveProductSamples(productM9, "positive.change_to_variant") +
         countPositiveProductSamples(productM9, "positive.confirmed_submit"),
@@ -267,9 +303,11 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14, uiControlSmok
       status === "passed"
         ? ["将此 closure 作为最终项目目标完成审计的输入。"]
         : [
-            restrictedLive.selectRadioCheckbox
-              ? "补 restricted-live 真实 Figma 样本证明 stateMachine，或明确将 stateMachine 限定为当前交付的 local/controlled coverage。"
-              : "补 restricted-live 真实 Figma 样本证明 stateMachine 与 select/radio/checkbox，或明确将它们限定为当前交付的 local/controlled coverage。",
+            restrictedLive.stateMachine && !restrictedLive.selectRadioCheckbox
+              ? "补 restricted-live 真实 Figma 样本证明 select/radio/checkbox，或明确将其限定为当前交付的 local/controlled coverage。"
+              : restrictedLive.selectRadioCheckbox && !restrictedLive.stateMachine
+                ? "补 restricted-live 真实 Figma 样本证明 stateMachine，或明确将 stateMachine 限定为当前交付的 local/controlled coverage。"
+                : "补 restricted-live 真实 Figma 样本证明 stateMachine 与 select/radio/checkbox，或明确将它们限定为当前交付的 local/controlled coverage。",
             "完成该裁定后，对完整目标运行最终项目目标完成审计。",
           ],
   };
@@ -296,6 +334,7 @@ function markdownFor(report) {
     `- Flow-M12 restrictedLiveSummary：${report.evidenceSummary.flowM12RestrictedLiveSummary}`,
     `- Flow-M14 status：${report.evidenceSummary.flowM14Status}`,
     `- UI control smoke passed/total：${report.evidenceSummary.passedUiControlSmokeCount}/${report.evidenceSummary.uiControlSmokeCount}`,
+    `- StateMachine smoke passed/total：${report.evidenceSummary.passedStateMachineSmokeCount}/${report.evidenceSummary.stateMachineSmokeCount}`,
     "",
     "## 能力矩阵",
     "",
@@ -344,6 +383,7 @@ async function main() {
     flowM12: relativeArtifact(args.flowM12),
     flowM14: relativeArtifact(args.flowM14),
     uiControlSmoke: args.uiControlSmoke.map((path) => relativeArtifact(path)),
+    stateMachineSmoke: args.stateMachineSmoke.map((path) => relativeArtifact(path)),
   };
   const report = buildReport({
     runId: args.runId,
@@ -353,6 +393,9 @@ async function main() {
     flowM14: await readJson(args.flowM14),
     uiControlSmokes: await Promise.all(
       args.uiControlSmoke.map((path) => readJson(path)),
+    ),
+    stateMachineSmokes: await Promise.all(
+      args.stateMachineSmoke.map((path) => readJson(path)),
     ),
   });
   redactionCheck(report);

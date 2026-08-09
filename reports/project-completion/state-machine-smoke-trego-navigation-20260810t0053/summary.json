@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "1",
+  "scope": "state_machine_smoke",
+  "runId": "state-machine-smoke-trego-navigation-20260810t0053",
+  "status": "passed",
+  "sourceRef": "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/summary.json",
+  "sourceSummary": {
+    "status": "passed",
+    "mode": "restricted-live",
+    "projectId": "product-m9-trego-prototype-gap-declined-001",
+    "ok": true
+  },
+  "projectId": "product-m9-trego-prototype-gap-declined-001",
+  "networkBoundary": {
+    "figmaRestCalled": false,
+    "openaiCalled": false,
+    "mode": "local-validation-of-restricted-live-artifact"
+  },
+  "derivation": {
+    "source": "figma_prototype_navigation_graph",
+    "stateMachineId": "smoke-figma-prototype-navigation",
+    "flowPlanRevision": 2,
+    "uiSpecRevision": 2
+  },
+  "counts": {
+    "transitionCount": 2,
+    "stateMachineTransitionCount": 2,
+    "successfulFixtureCount": 2,
+    "failedFixtureCount": 0,
+    "failedCheckCount": 0
+  },
+  "transitions": [
+    {
+      "interactionId": "figma-d5e7fe5be3195937",
+      "transitionId": "transition-figma-d5e7fe5be3195937",
+      "fixtureId": "flow-figma-d5e7fe5be3195937-fixture",
+      "fromPageId": "login",
+      "targetPageId": "home-screen",
+      "postconditions": [
+        {
+          "kind": "expect_page",
+          "pageId": "home-screen"
+        }
+      ],
+      "fixtureStatus": "passed"
+    },
+    {
+      "interactionId": "figma-79f7f3f27a0bff85",
+      "transitionId": "transition-figma-79f7f3f27a0bff85",
+      "fixtureId": "flow-figma-79f7f3f27a0bff85-fixture",
+      "fromPageId": "login",
+      "targetPageId": "forgot-password",
+      "postconditions": [
+        {
+          "kind": "expect_page",
+          "pageId": "forgot-password"
+        }
+      ],
+      "fixtureStatus": "passed"
+    }
+  ],
+  "artifactRefs": {
+    "generatedFlowPlanPath": "data/state-machine-smoke/state-machine-smoke-trego-navigation-20260810t0053/projects/product-m9-trego-prototype-gap-declined-001/flow/current.json",
+    "generatedUISpecPath": "data/state-machine-smoke/state-machine-smoke-trego-navigation-20260810t0053/projects/product-m9-trego-prototype-gap-declined-001/specs/current.json",
+    "summaryJson": "reports/project-completion/state-machine-smoke-trego-navigation-20260810t0053/summary.json",
+    "summaryMarkdown": "reports/project-completion/state-machine-smoke-trego-navigation-20260810t0053/summary.md"
+  },
+  "m8Report": {
+    "schemaVersion": "1",
+    "milestone": "Flow-M8",
+    "scope": "form_submit_state_machine",
+    "status": "passed",
+    "input": {
+      "projectId": "product-m9-trego-prototype-gap-declined-001",
+      "runId": "state-machine-smoke-trego-navigation-20260810t0053",
+      "flowPlanPath": "state-machine-smoke-derived-flow-plan",
+      "uiSpecRevision": 2,
+      "flowPlanRevision": 2,
+      "savedUISpecRevision": 2,
+      "figmaInteractionSource": "present"
+    },
+    "actions": {
+      "converted": [
+        {
+          "interactionId": "figma-d5e7fe5be3195937",
+          "actionId": "flow-figma-d5e7fe5be3195937",
+          "intent": "navigate",
+          "trusted": true,
+          "source": "figma"
+        },
+        {
+          "interactionId": "figma-79f7f3f27a0bff85",
+          "actionId": "flow-figma-79f7f3f27a0bff85",
+          "intent": "navigate",
+          "trusted": true,
+          "source": "figma"
+        }
+      ],
+      "rejected": []
+    },
+    "behaviors": {
+      "fixtures": [
+        {
+          "fixtureId": "flow-figma-d5e7fe5be3195937-fixture",
+          "source": "flow_plan",
+          "intent": "navigate",
+          "submit": false,
+          "stateMachineTransition": true,
+          "selectRadioAssertionCount": 0
+        },
+        {
+          "fixtureId": "flow-figma-79f7f3f27a0bff85-fixture",
+          "source": "flow_plan",
+          "intent": "navigate",
+          "submit": false,
+          "stateMachineTransition": true,
+          "selectRadioAssertionCount": 0
+        }
+      ]
+    },
+    "counts": {
+      "trustedSubmitConverted": 0,
+      "userConfirmedConverted": 0,
+      "stateMachineTransitions": 2,
+      "selectRadioAssertions": 0,
+      "scenarioOnlyFixtures": 0,
+      "unresolved": 0
+    },
+    "validation": {
+      "schemaVersion": "1",
+      "runId": "state-machine-smoke-trego-navigation-20260810t0053",
+      "previewUrl": "http://127.0.0.1:5173/?projectId=product-m9-trego-prototype-gap-declined-001&pageId=login&viewportId=desktop&specRevision=2&designRevision=1&runId=state-machine-smoke-trego-navigation-20260810t0053-f0",
+      "passed": true,
+      "resultCount": 2,
+      "failedCheckCount": 0,
+      "successfulFixtureIds": [
+        "flow-figma-d5e7fe5be3195937-fixture",
+        "flow-figma-79f7f3f27a0bff85-fixture"
+      ],
+      "failedFixtureIds": []
+    },
+    "reasons": [],
+    "residualRisks": [
+      "stateMachine smoke 证明 Figma prototype navigation graph 可作为有限状态迁移执行，不表示真实后端业务状态已持久化。"
+    ]
+  },
+  "decision": "真实 restricted-live Figma prototype navigation graph 已派生为临时 stateMachine，并通过 Preview/Playwright transition fixture 验证。"
+}
