@@ -15,60 +15,92 @@
 
 ## 结论
 
-Flow-M14 第一段目标已完成：真实 Figma `CHANGE_TO` / variant state-change 不再因为缺少预先存在的 UISpec state key 被 Flow-M11 artifact loader 判定为 `flow_plan_reference_dangling`。
+Flow-M14 v2 已把 Product-M9 AC10 Fitness community 样本中的真实 Figma `CHANGE_TO` / component variant state change 全部转成可执行行为 fixture。
 
-修复后，同一个 Product-M9 AC10 restricted-live Community mobile 样本从 artifact-level rejected 前进到 artifact loaded，并生成真实 `set_state` behavior fixtures。
+本轮修复前，Product-M9 AC10 restricted-live 在 artifact 层已经可以加载，但 12 个可信 `set_state` 中只有 5 个生成 fixture，剩余 7 个 page-root component variant interaction 卡在 `state_action_not_verifiable`。
 
-## 修复范围
+本轮修复后，`applyFlowPlanToUISpec` 对跨页面 component variant 的 source 如果是 page root，会创建受控 wrapper 作为新的 page root，并把 source variant 与 cloned target variant 放在同一局部容器下，通过同一 `stateKey` / `visibleWhen` 切换。这保持真实 DOM action 与行为 fixture，不退回截图 fallback，也不降低引用校验。
 
-- `src/flow-plan/m11-artifact-loader.ts`
-  - 保持 uiNode、dialog、postcondition、page 引用 fail-closed。
-  - 对可信且 confirmed 的 `set_state` interaction，允许缺失 stateKey 交给 `applyFlowPlanToUISpec` hydration 创建。
-  - 只在 interaction 带有可用 `value` 时放行，避免无值状态动作被伪装为可执行。
-- `tests/unit/flow-plan/m11-artifact-loader.test.ts`
-  - 增加可信 `set_state` missing stateKey 的 loader 回归。
-  - 原有 submit/postcondition/state dangling 负例仍保持拒绝。
+## 验证证据
 
-## 验证命令
+### 本地 artifact replay
 
-- `npm exec -- vitest run tests/unit/flow-plan/m11-artifact-loader.test.ts tests/unit/flow-plan/m11-fixture-planner.test.ts tests/unit/flow-plan/m11-report.test.ts tests/unit/runtime/product-m9-flow-contracts.test.ts tests/unit/runtime/product-m9-flow-service.test.ts tests/integration/runtime/product-m9-flow-cli.test.ts`
-- `npm run typecheck`
-- `git diff --check`
-- Local AC10 artifact replay: `node scripts/run-product-m9-flow.mjs --project-id product-m9-ac10-community-mobile-001 --mode local --flow-plan data/projects/product-m9-ac10-community-mobile-001/flow/current.json --ui-spec data/projects/product-m9-ac10-community-mobile-001/specs/current.json --reportRoot data/tmp/product-m9-flow-m14 --runId flow-m14-local-ac10-artifacts --json`
-- Restricted-live AC10 rerun: `PRODUCT_M9_FIGMA_AUTHORIZED=1 node scripts/run-product-m9-flow.mjs --project-id product-m9-ac10-community-mobile-001 --mode restricted-live --file-key <redacted> --node-id <redacted> --allow-figma-network --reportRoot reports/product-m9 --runId product-m9-ac10-community-mobile-001-flow-m14-20260809t2017 --json`
+命令：
 
-## 验证结果
+```bash
+node scripts/run-product-m9-flow.mjs \
+  --project-id product-m9-ac10-community-mobile-001 \
+  --mode local \
+  --flow-plan data/projects/product-m9-ac10-community-mobile-001/flow/current.json \
+  --ui-spec data/projects/product-m9-ac10-community-mobile-001/specs/current.json \
+  --reportRoot data/tmp/product-m9-flow-m14-v2 \
+  --runId flow-m14-v2-local-ac10-artifacts \
+  --json
+```
 
-- targeted tests: passed, 6 files / 29 tests
-- typecheck: passed
-- diff check: passed
-- local AC10 artifact replay:
-  - Product-M9 status: `partial`
-  - error category: `partial_evidence`
-  - successfulFixtureIds: 5
-  - failedFixtureIds: 0
-- restricted-live AC10 rerun:
-  - Product-M9 status: `partial`
-  - error category: `partial_evidence`
-  - trustedStateChange: 12
-  - successfulFixtureIds: 5
-  - failedFixtureIds: 0
-  - `input.networkBoundary.figmaRestCalled=true`
-  - `input.networkBoundary.openaiCalled=false`
-  - Flow-M11 artifact status: `loaded`
-  - `referenceDanglingRejectionCount=0`
-  - `summaryOnlyRejectionCount=0`
-  - `scenarioOnlyRejectionCount=0`
-  - `untrustedSourceRejectionCount=0`
+结果：
 
-## 产物
+- status: `partial`
+- trustedStateChange: 12
+- successfulFixtureIds: 12
+- failedFixtureIds: 0
+- partial reason: 当前样本没有 trusted submit / multistep submit / select-radio-toggle 证据。
 
-- Product-M9 Flow-M14 summary JSON: `reports/product-m9/product-m9-ac10-community-mobile-001-flow-m14-20260809t2017/summary.json`
-- Product-M9 Flow-M14 summary Markdown: `reports/product-m9/product-m9-ac10-community-mobile-001-flow-m14-20260809t2017/summary.md`
-- Flow-M11 Flow-M14 summary: `reports/product-m9/product-m9-ac10-community-mobile-001-flow-m14-20260809t2017/flow-m11-summary.json`
+### Product-M9 AC10 restricted-live
 
-## 残余风险
+命令：
 
-- 当前样本仍是 `partial_evidence`，因为 Flow-M11 多步骤 submit/select/radio 覆盖条件未满足：`flow_m11_trusted_submit_fixture_missing`、`flow_m11_multistep_submit_fixture_missing`、`flow_m11_select_radio_toggle_missing`。
-- 12 个 trusted `set_state` 中有 5 个生成可执行 fixture；其余 7 个 detached component variant 仍被 `state_action_not_verifiable` 拒绝。下一阶段应做 detached component variant 全量可执行化，而不是放宽 artifact loader。
-- 本结果证明 CHANGE_TO / variant target 的 artifact-level dangling 已消除，并证明至少一组真实 variant state-change 可执行；不证明表单提交业务流已完成。
+```bash
+PRODUCT_M9_FIGMA_AUTHORIZED=1 node scripts/run-product-m9-flow.mjs \
+  --project-id product-m9-ac10-community-mobile-001 \
+  --mode restricted-live \
+  --file-key <redacted> \
+  --node-id 3186:4543 \
+  --allow-figma-network \
+  --reportRoot reports/product-m9 \
+  --runId product-m9-ac10-community-mobile-001-flow-m14-v2-20260809t2025 \
+  --json
+```
+
+报告：`reports/product-m9/product-m9-ac10-community-mobile-001-flow-m14-v2-20260809t2025/flow-m11-summary.json`
+
+关键结果：
+
+- networkBoundary.figmaRestCalled: true
+- networkBoundary.openaiCalled: false
+- artifact.status: `loaded`
+- artifact.reasonCodes: []
+- artifact.rejectionCount: 0
+- fixtureCount: 12
+- successfulFixtureCount: 12
+- failedFixtureCount: 0
+- referenceDanglingRejectionCount: 0
+- summaryOnlyRejectionCount: 0
+- scenarioOnlyRejectionCount: 0
+- untrustedSourceRejectionCount: 0
+
+### 代码门禁
+
+已通过：
+
+```bash
+npm run typecheck
+npm exec -- vitest run \
+  tests/unit/flow-plan/to-ui-spec.test.ts \
+  tests/unit/flow-plan/m11-fixture-planner.test.ts \
+  tests/unit/runtime/product-m9-flow-service.test.ts
+```
+
+结果：3 个测试文件通过，23 个测试通过。
+
+## 当前边界
+
+本轮只证明真实 Figma `CHANGE_TO` / component variant state change 可以进入可执行 FlowPlan / UISpec / fixture 闭环。
+
+Product-M9 AC10 状态仍为 `partial`，不是因为 variant state change 失败，而是 Fitness 样本没有覆盖：
+
+- trusted submit fixture
+- multistep submit fixture
+- select / radio / toggle fixture
+
+这些需要后续用真实表单、checkout、settings 类 community 样本继续补证。

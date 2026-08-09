@@ -297,12 +297,12 @@ function cloneVariantTargetIntoSourcePage(input: {
       ? input.actionNodeId
       : parentByChild.get(input.actionNodeId) ?? input.actionNodeId;
   const sourceVariantRoot = input.nodeById.get(sourceVariantRootId);
-  const sourceParentId = parentByChild.get(sourceVariantRootId);
-  const sourceParent = sourceParentId
+  let sourceParentId = parentByChild.get(sourceVariantRootId);
+  let sourceParent = sourceParentId
     ? input.nodeById.get(sourceParentId)
     : undefined;
   const targetRoot = input.nodeById.get(input.targetNodeId);
-  if (!sourceVariantRoot || !sourceParent || !targetRoot) {
+  if (!sourceVariantRoot || !targetRoot) {
     return undefined;
   }
 
@@ -325,6 +325,51 @@ function cloneVariantTargetIntoSourcePage(input: {
     }
     throw new Error("variant_clone_id_exhausted");
   };
+
+  if (!sourceParent) {
+    const sourcePage = input.next.pages.find(
+      (page) => page.rootNodeId === sourceVariantRootId,
+    );
+    if (sourcePage) {
+      sourceParentId = cloneIdFor(`${sourceVariantRootId}-container`);
+      sourceParent = {
+        id: sourceParentId,
+        kind: "stack",
+        direction: "vertical",
+        childIds: [sourceVariantRootId],
+        style: {
+          ...(sourceVariantRoot.style?.width !== undefined
+            ? { width: sourceVariantRoot.style.width }
+            : {}),
+          ...(sourceVariantRoot.style?.height !== undefined
+            ? { height: sourceVariantRoot.style.height }
+            : {}),
+          ...(sourceVariantRoot.style?.minWidth !== undefined
+            ? { minWidth: sourceVariantRoot.style.minWidth }
+            : {}),
+          ...(sourceVariantRoot.style?.minHeight !== undefined
+            ? { minHeight: sourceVariantRoot.style.minHeight }
+            : {}),
+          ...(sourceVariantRoot.style?.maxWidth !== undefined
+            ? { maxWidth: sourceVariantRoot.style.maxWidth }
+            : {}),
+          ...(sourceVariantRoot.style?.maxHeight !== undefined
+            ? { maxHeight: sourceVariantRoot.style.maxHeight }
+            : {}),
+          position: sourceVariantRoot.style?.position ?? "relative",
+        },
+        designValueRefs: [],
+      };
+      input.next.nodes.push(sourceParent);
+      input.nodeById.set(sourceParentId, sourceParent);
+      sourcePage.rootNodeId = sourceParentId;
+    }
+  }
+
+  if (!sourceParent) {
+    return undefined;
+  }
+
   const cloneIdByOriginalId = new Map<string, string>();
   const targetSubtreeIds: string[] = [];
   const collect = (nodeId: string): void => {

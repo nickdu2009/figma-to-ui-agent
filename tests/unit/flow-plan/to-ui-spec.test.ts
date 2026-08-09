@@ -594,6 +594,136 @@ describe("applyFlowPlanToUISpec", () => {
     });
   });
 
+  it("page root component variant 源节点可包装为容器后切换", () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    uiSpec.pages.push(
+      {
+        id: "variant-on",
+        sourcePageId: "page-variant-on",
+        path: "/variant-on",
+        title: "Variant On",
+        rootNodeId: "variant-on-root",
+      },
+      {
+        id: "variant-off",
+        sourcePageId: "page-variant-off",
+        path: "/variant-off",
+        title: "Variant Off",
+        rootNodeId: "variant-off-root",
+      },
+    );
+    uiSpec.nodes.push(
+      {
+        id: "variant-on-root",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["variant-on-label"],
+        style: { width: 110, height: 36, position: "relative" },
+        designValueRefs: [],
+      },
+      {
+        id: "variant-on-label",
+        kind: "text",
+        text: "On",
+        variant: "body",
+        designValueRefs: [],
+      },
+      {
+        id: "variant-off-root",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["variant-off-label"],
+        style: { width: 110, height: 36, position: "relative" },
+        designValueRefs: [],
+      },
+      {
+        id: "variant-off-label",
+        kind: "text",
+        text: "Off",
+        variant: "body",
+        designValueRefs: [],
+      },
+    );
+
+    const result = applyFlowPlanToUISpec(uiSpec, {
+      schemaVersion: "m4-spike",
+      projectId: "demo-project",
+      sourceDesignBundleRevision: 1,
+      sourceUISpecRevision: 1,
+      pages: [
+        {
+          id: "variant-on",
+          sourcePageId: "page-variant-on",
+          name: "Variant On",
+          role: "component",
+          confidence: "medium",
+          reason: "fixture",
+        },
+        {
+          id: "variant-off",
+          sourcePageId: "page-variant-off",
+          name: "Variant Off",
+          role: "component",
+          confidence: "medium",
+          reason: "fixture",
+        },
+      ],
+      interactions: [
+        {
+          id: "figma-root-change-to-off",
+          source: "figma",
+          uiNodeId: "variant-on-root",
+          trigger: "click",
+          intent: "set_state",
+          fromPageId: "variant-on",
+          stateKey: "variant-root-state",
+          value: "Off",
+          stateInitialValue: "On",
+          targetNodeId: "variant-off-root",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      confirmationQuestions: [],
+      report: {
+        unsupportedCount: 0,
+        unresolvedInteractionCount: 0,
+        convertedActionCount: 0,
+        behaviorFixtureCount: 0,
+      },
+    });
+
+    const containerId =
+      "variant-figma-root-change-to-off-variant-on-root-container";
+    const clonedRootId = "variant-figma-root-change-to-off-variant-off-root";
+    expect(result.unresolvedInteractions).toEqual([]);
+    expect(result.uiSpec.pages.find((page) => page.id === "variant-on")).toMatchObject({
+      rootNodeId: containerId,
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === containerId)).toMatchObject({
+      kind: "stack",
+      childIds: ["variant-on-root", clonedRootId],
+      style: { width: 110, height: 36, position: "relative" },
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === "variant-on-root")).toMatchObject({
+      visibleWhen: {
+        stateKey: "variant-root-state",
+        equals: "On",
+      },
+    });
+    expect(result.uiSpec.nodes.find((node) => node.id === clonedRootId)).toMatchObject({
+      visibleWhen: {
+        stateKey: "variant-root-state",
+        equals: "Off",
+      },
+    });
+    expect(result.uiSpec.behaviorFixtures[0]!.steps).toEqual([
+      { kind: "click", nodeId: "variant-on-root" },
+      { kind: "expect_visible", nodeId: clonedRootId },
+    ]);
+  });
+
   it("正式 FlowPlan 写入 sourceFlowPlanRevision 且只转换已确认 interaction", () => {
     const uiSpec = createStoredMultipageFlowUISpec();
     const draft = generateFormalFlowConfirmationQuestions(
