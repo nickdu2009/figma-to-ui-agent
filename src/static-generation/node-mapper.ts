@@ -429,6 +429,7 @@ export function mapPageNodes(
       .filter((layer) => layer.reason === "background_composite")
       .map((layer) => layer.sourceNodeId),
   );
+  const rootSourceNodeId = page.rootNodeIds[0];
 
   for (const node of pageNodes) {
     parentById.set(node.id, node.parentId);
@@ -748,7 +749,10 @@ export function mapPageNodes(
   function hasBackgroundCompositeAncestor(sourceNodeId: string): boolean {
     let currentId = parentById.get(sourceNodeId);
     while (currentId) {
-      if (backgroundCompositeSourceIds.has(currentId)) {
+      if (
+        currentId !== rootSourceNodeId &&
+        backgroundCompositeSourceIds.has(currentId)
+      ) {
         return true;
       }
       currentId = parentById.get(currentId);
@@ -1020,7 +1024,10 @@ export function mapPageNodes(
     sourceNode: NormalizedNode,
     parentNode?: NormalizedNode,
   ): UINode | undefined {
-    if (backgroundCompositeSourceIds.has(sourceNode.id)) {
+    if (
+      sourceNode.id !== rootSourceNodeId &&
+      backgroundCompositeSourceIds.has(sourceNode.id)
+    ) {
       sourceToUiNodeId.delete(sourceNode.id);
       return undefined;
     }

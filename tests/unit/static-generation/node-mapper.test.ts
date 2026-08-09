@@ -137,6 +137,59 @@ function createVisualLayerFixture(): {
 }
 
 describe("mapPageNodes", () => {
+  it("maps a page root that is also planned as a background composite layer", () => {
+    const { bundle, layers } = createVisualLayerFixture();
+    const rootBackgroundLayer: VisualLayerPlan = {
+      sourceNodeId: "root",
+      sourcePageId: "page-checkout",
+      reason: "background_composite",
+      layerRole: "decorative_background",
+      zOrder: 0,
+      bounds: { x: 0, y: 0, width: 1440, height: 900 },
+      pageRelativeBounds: { x: 0, y: 0, width: 1440, height: 900 },
+      assetRef: "figma/screenshots/root.png",
+      uiNodeId: "vl-checkout-root",
+      uiNode: {
+        id: "vl-checkout-root",
+        kind: "pixel_overlay",
+        assetRef: "figma/screenshots/root.png",
+        alt: "Checkout",
+        width: 1440,
+        height: 900,
+        designValueRefs: [],
+        style: {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: 1440,
+          height: 900,
+          zIndex: 0,
+          pointerEvents: "none",
+        },
+        childIds: [],
+      },
+      rendered: true,
+    };
+
+    const result = mapPageNodes({
+      bundle,
+      pagePlanId: "checkout",
+      sourcePageId: "page-checkout",
+      pagePath: "/checkout",
+      visualLayers: [rootBackgroundLayer, ...layers],
+    });
+
+    const root = result.nodes.find((node) => node.id === result.rootNodeId);
+    expect(root?.kind).toBe("stack");
+    expect(result.rootNodeId).toBe("ui-checkout-root");
+    expect(result.nodes.some((node) => node.id === "vl-checkout-root")).toBe(
+      true,
+    );
+    expect(
+      result.nodes.some((node) => node.id === "vl-checkout-vector-bg"),
+    ).toBe(true);
+  });
+
   it("maps login form with inputs, buttons and social icons", () => {
     const bundle = createM5StaticDesignBundle();
     const result = mapPageNodes({

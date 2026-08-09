@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "failed",
+  "mode": "restricted-live",
+  "projectId": "product-m9-nexkart-ecommerce-001",
+  "runId": "product-m9-nexkart-ecommerce-001-20260809t2052",
+  "stages": {
+    "inspect": {
+      "status": "passed",
+      "message": "Product-M9 input validated"
+    },
+    "report": {
+      "status": "passed",
+      "message": "Product-M9 failure summary written"
+    }
+  },
+  "artifactRefs": {
+    "summaryJson": "reports/product-m9/product-m9-nexkart-ecommerce-001-20260809t2052/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-nexkart-ecommerce-001-20260809t2052/summary.md"
+  },
+  "metrics": {},
+  "error": {
+    "category": "internal_error",
+    "message": "Could not map root node for page 0:1387",
+    "recoverable": false,
+    "nextAction": "上报实现缺陷，修复代码后再运行。",
+    "retryPolicy": "do_not_retry",
+    "details": {
+      "name": "Error"
+    }
+  },
+  "nextAction": "上报实现缺陷，修复代码后再运行。"
+}
