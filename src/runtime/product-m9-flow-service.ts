@@ -53,9 +53,7 @@ import {
 } from "../flow-plan/schema.ts";
 import { ProjectStore, ProjectStoreError } from "../project-store/store.ts";
 import { SCHEMA_VERSION } from "../project-store/schemas.ts";
-import {
-  buildStaticUISpecFromDesignBundle,
-} from "../static-generation/service.ts";
+import { loadCurrentStaticUISpec } from "../static-generation/ui-spec-loader.ts";
 import {
   type UISpec,
   type UISpecDraft,
@@ -283,25 +281,17 @@ async function loadOrGenerateUISpec(input: {
   readonly projectId: string;
   readonly bundleRevision: number;
 }): Promise<UISpec> {
-  try {
-    return await input.store.loadUISpec(input.projectId);
-  } catch (error) {
-    if (!(error instanceof ProjectStoreError) || error.code !== "not_found") {
-      throw error;
-    }
-  }
   const bundle = await input.store.loadDesignBundle(
     input.projectId,
     input.bundleRevision,
   );
-  const { uiSpecDraft } = buildStaticUISpecFromDesignBundle(bundle, {
-    m4ValidationStatus: "not_required",
-  });
-  return await input.store.saveUISpec({
+  const { uiSpec } = await loadCurrentStaticUISpec({
+    store: input.store,
     projectId: input.projectId,
-    baseRevision: 0,
-    draft: uiSpecDraft,
+    bundle,
+    options: { m4ValidationStatus: "not_required" },
   });
+  return uiSpec;
 }
 
 async function saveFlowPlan(input: {

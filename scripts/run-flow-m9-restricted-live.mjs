@@ -31,9 +31,7 @@ import {
   ProjectStore,
   ProjectStoreError,
 } from "../src/project-store/store.ts";
-import {
-  buildStaticUISpecFromDesignBundle,
-} from "../src/static-generation/service.ts";
+import { loadCurrentStaticUISpec } from "../src/static-generation/ui-spec-loader.ts";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -117,21 +115,15 @@ function sanitizeDiagnostic(value) {
 }
 
 async function loadOrGenerateUISpec(store, projectId, bundle) {
-  try {
-    return await store.loadUISpec(projectId);
-  } catch (error) {
-    if (!(error instanceof ProjectStoreError) || error.code !== "not_found") {
-      throw error;
-    }
-  }
-  const { uiSpecDraft } = buildStaticUISpecFromDesignBundle(bundle, {
-    m4ValidationStatus: "not_required",
-  });
-  return await store.saveUISpec({
+  const { uiSpec } = await loadCurrentStaticUISpec({
+    store,
     projectId,
-    baseRevision: 0,
-    draft: uiSpecDraft,
+    bundle,
+    options: {
+      m4ValidationStatus: "not_required",
+    },
   });
+  return uiSpec;
 }
 
 async function loadLocalSample(input) {
