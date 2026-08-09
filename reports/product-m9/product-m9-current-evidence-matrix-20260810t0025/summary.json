@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1",
+  "scope": "product_m9_current_evidence_matrix",
+  "runId": "product-m9-current-evidence-matrix-20260810t0025",
+  "status": "passed",
+  "sourceRefs": [
+    "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/summary.json",
+    "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.json"
+  ],
+  "samples": [
+    {
+      "sampleId": "trego-confirmed-submit-001",
+      "category": "restricted-live.confirmed-submit-navigation",
+      "status": "passed",
+      "ok": true,
+      "errorCategory": null,
+      "nextAction": "保留为 Product-M9 confirmed submit / dialog 正向 restricted-live 回归样本。",
+      "metrics": {
+        "trustedNavigate": 48,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 1,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "failedFixtureIds": []
+      },
+      "validation": {
+        "status": "partial",
+        "reasons": [
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "successfulFixtureCount": 49,
+        "failedFixtureCount": 0
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/summary.md",
+        "flowPlanPath": "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/confirmed-flow-plan.json",
+        "validationPath": "reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/flow-m11-summary.json"
+      }
+    },
+    {
+      "sampleId": "community-mobile-change-to-001",
+      "category": "restricted-live.change-to-variant",
+      "status": "passed",
+      "ok": true,
+      "errorCategory": null,
+      "nextAction": "保留为 Flow-M14 CHANGE_TO / variant state-change 正向 restricted-live 回归样本。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 12,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "failedFixtureIds": []
+      },
+      "validation": {
+        "status": "partial",
+        "reasons": [
+          "flow_m11_trusted_submit_fixture_missing",
+          "flow_m11_multistep_submit_fixture_missing",
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "successfulFixtureCount": 12,
+        "failedFixtureCount": 0
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.md",
+        "flowPlanPath": "data/projects/product-m9-rl-community-mobile-001/flow/current.json",
+        "validationPath": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/flow-m11-summary.json"
+      }
+    }
+  ],
+  "decision": "当前 Product-M9 最小项目级证据集同时包含 confirmed submit 正向样本和 CHANGE_TO / variant state-change 正向样本；两个样本均无 failed fixture、unsupported 或 missing evidence。",
+  "nextActions": [
+    "用分类器生成 Product-M9 current evidence classification 报告。",
+    "将该报告作为下一轮项目级完成度审计输入。",
+    "后续若扩展样本矩阵，应保持这两个样本作为回归基线。"
+  ]
+}
