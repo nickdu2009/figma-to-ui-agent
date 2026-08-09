@@ -1,0 +1,640 @@
+{
+  "schemaVersion": "1",
+  "scope": "product_m9_candidate_screening",
+  "runId": "product-m9-candidate-screening-20260809t2229",
+  "status": "change_to_only",
+  "sourceRef": "tests/fixtures/figma/community-sample-manifest.json",
+  "networkBoundary": {
+    "figmaRestCalled": true,
+    "openaiCalled": false,
+    "rawResponsesPersisted": false
+  },
+  "aggregate": {
+    "sampleCount": 6,
+    "submitDialogCandidates": 0,
+    "changeToOnly": 1,
+    "noSubmitDialogCandidate": 4,
+    "notScreenable": 1
+  },
+  "samples": [
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "title": "20 Screen Login & Register Mobile App",
+      "status": "not_screenable",
+      "selectedNodeId": "3:5123",
+      "attempts": [
+        {
+          "depth": 1,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 2,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 3,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 4,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 5,
+          "error": "Figma REST 响应超过大小上限"
+        }
+      ],
+      "submitDialogCandidates": [],
+      "changeToCandidates": []
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "title": "Fitness App UI Kit for Gym Workout App",
+      "status": "change_to_only",
+      "selectedNodeId": "3186:4543",
+      "attempts": [
+        {
+          "depth": 1,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 2,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 3,
+          "interactionNodes": 581,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 20
+        },
+        {
+          "depth": 4,
+          "interactionNodes": 899,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 20
+        },
+        {
+          "depth": 5,
+          "interactionNodes": 983,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 20
+        },
+        {
+          "depth": 6,
+          "interactionNodes": 984,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 20
+        },
+        {
+          "depth": 7,
+          "interactionNodes": 984,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 20
+        },
+        {
+          "depth": 8,
+          "interactionNodes": 984,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 20
+        }
+      ],
+      "submitDialogCandidates": [],
+      "changeToCandidates": [
+        {
+          "nodeId": "I3201:8409;3189:4744",
+          "nodeName": "Stars",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.2 - A- Online support > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8409;3096:2596",
+          "nodeName": "Home Switch",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.2 - A- Online support > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8409;3096:2594;3071:2439",
+          "nodeName": "Vector",
+          "nodeType": "VECTOR",
+          "parentTrail": "FitBody App > 11.4.2 - A- Online support > Navigation Bar > Resources Switch",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8409;3096:2590",
+          "nodeName": "Support & Help Switch",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.2 - A- Online support > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8268;3189:4744",
+          "nodeName": "Stars",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 - C - Customer Service > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8268;3096:2596",
+          "nodeName": "Home Switch",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 - C - Customer Service > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8268;3096:2594;3071:2439",
+          "nodeName": "Vector",
+          "nodeType": "VECTOR",
+          "parentTrail": "FitBody App > 11.4.1 - C - Customer Service > Navigation Bar > Resources Switch",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8268;3096:2590",
+          "nodeName": "Support & Help Switch",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 - C - Customer Service > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8917;3189:4744",
+          "nodeName": "Stars",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 - B - Help & FAQs > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8917;3096:2596",
+          "nodeName": "Home Switch",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 - B - Help & FAQs > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8917;3096:2594;3071:2439",
+          "nodeName": "Vector",
+          "nodeType": "VECTOR",
+          "parentTrail": "FitBody App > 11.4.1 - B - Help & FAQs > Navigation Bar > Resources Switch",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8917;3096:2590",
+          "nodeName": "Support & Help Switch",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 - B - Help & FAQs > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "3201:8920",
+          "nodeName": "Filter",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 - B - Help & FAQs",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "3201:8921",
+          "nodeName": "Filter",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 - B - Help & FAQs",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8200;3189:4744",
+          "nodeName": "Stars",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 -A- Help Center > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8200;3096:2596",
+          "nodeName": "Home Switch",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 -A- Help Center > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8200;3096:2594;3071:2439",
+          "nodeName": "Vector",
+          "nodeType": "VECTOR",
+          "parentTrail": "FitBody App > 11.4.1 -A- Help Center > Navigation Bar > Resources Switch",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "I3201:8200;3096:2590",
+          "nodeName": "Support & Help Switch",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 -A- Help Center > Navigation Bar",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "3201:8203",
+          "nodeName": "Filter",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 -A- Help Center",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        },
+        {
+          "nodeId": "3201:8204",
+          "nodeName": "Filter",
+          "nodeType": "INSTANCE",
+          "parentTrail": "Document > FitBody App > 11.4.1 -A- Help Center",
+          "actionSummary": [
+            {
+              "trigger": "ON_CLICK",
+              "type": "NODE",
+              "navigation": "CHANGE_TO",
+              "hasDestination": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "category": "dashboard",
+      "title": "Web Dashboard & Statistics UI Kit App Template",
+      "status": "no_submit_dialog_candidate",
+      "selectedNodeId": "0:2",
+      "attempts": [
+        {
+          "depth": 1,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 2,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 3,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 4,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 5,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 6,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 7,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 8,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        }
+      ],
+      "submitDialogCandidates": [],
+      "changeToCandidates": []
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "category": "ecommerce",
+      "title": "Mobile Credit Card Check Out",
+      "status": "no_submit_dialog_candidate",
+      "selectedNodeId": "0:303",
+      "attempts": [
+        {
+          "depth": 1,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 2,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 3,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 4,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 5,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 6,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 7,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 8,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        }
+      ],
+      "submitDialogCandidates": [],
+      "changeToCandidates": []
+    },
+    {
+      "sampleId": "community-landing-001",
+      "category": "landing-page",
+      "title": "Minimal Landing Page Design Website Home Page Design",
+      "status": "no_submit_dialog_candidate",
+      "selectedNodeId": "10:948",
+      "attempts": [
+        {
+          "depth": 1,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 2,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 3,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 4,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 5,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 6,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 7,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 8,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        }
+      ],
+      "submitDialogCandidates": [],
+      "changeToCandidates": []
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "title": "Dynamic components & Variants in design systems",
+      "status": "no_submit_dialog_candidate",
+      "selectedNodeId": "5:37426",
+      "attempts": [
+        {
+          "depth": 1,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 2,
+          "interactionNodes": 0,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 3,
+          "interactionNodes": 1,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 4,
+          "interactionNodes": 3,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 5,
+          "interactionNodes": 10,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 6,
+          "interactionNodes": 23,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 7,
+          "interactionNodes": 23,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        },
+        {
+          "depth": 8,
+          "interactionNodes": 26,
+          "submitDialogCandidateCount": 0,
+          "changeToCandidateCount": 0
+        }
+      ],
+      "submitDialogCandidates": [],
+      "changeToCandidates": []
+    }
+  ],
+  "nextActions": [
+    "不要把本批样本当作 confirmed submit/dialog 正向证据。",
+    "继续新增 checkout/payment/booking/contact/form Community 样本后重跑 screening。"
+  ]
+}
