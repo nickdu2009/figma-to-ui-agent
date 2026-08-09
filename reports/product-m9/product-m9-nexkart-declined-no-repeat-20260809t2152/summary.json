@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "partial",
+  "mode": "local",
+  "projectId": "product-m9-nexkart-ecommerce-001",
+  "runId": "product-m9-nexkart-declined-no-repeat-20260809t2152",
+  "stages": {
+    "inspect": {
+      "status": "passed",
+      "message": "Product-M9 input validated"
+    },
+    "staticGeneration": {
+      "status": "passed",
+      "message": "Local UISpec artifact loaded",
+      "artifactRef": "data/projects/product-m9-nexkart-ecommerce-001/specs/current.json"
+    },
+    "flowPlanExtraction": {
+      "status": "passed",
+      "message": "Local FlowPlan artifact loaded",
+      "artifactRef": "reports/product-m9/product-m9-nexkart-ecommerce-001-decline-template-apply-local-20260809t2115/confirmed-flow-plan.json"
+    },
+    "execution": {
+      "status": "failed",
+      "message": "Flow-M11 execution failed",
+      "artifactRef": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/flow-m11-summary.json",
+      "reasonCode": "flow_m11_trusted_submit_fixture_missing"
+    },
+    "report": {
+      "status": "passed",
+      "message": "Product-M9 summary written"
+    }
+  },
+  "artifactRefs": {
+    "uiSpecPath": "data/projects/product-m9-nexkart-ecommerce-001/specs/current.json",
+    "flowPlanPath": "reports/product-m9/product-m9-nexkart-ecommerce-001-decline-template-apply-local-20260809t2115/confirmed-flow-plan.json",
+    "validationPath": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/flow-m11-summary.json",
+    "summaryJson": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/summary.md"
+  },
+  "metrics": {
+    "trustedNavigate": 0,
+    "trustedStateChange": 0,
+    "submitLikeNeedsConfirmation": 0,
+    "unsupported": 0,
+    "missingEvidence": 0,
+    "successfulFixtureIds": [],
+    "failedFixtureIds": []
+  },
+  "error": {
+    "category": "partial_evidence",
+    "message": "FlowPlan evidence is not executable",
+    "recoverable": true,
+    "nextAction": "查看 partial reasons，补样本、补确认或人工复核。",
+    "retryPolicy": "manual_review"
+  },
+  "nextAction": "查看 partial reasons，补样本、补确认或人工复核。"
+}

@@ -405,6 +405,22 @@ function buildConfirmationAnswerTemplate(
   );
 }
 
+function unresolvedConfirmationQuestions(
+  flowPlan: FlowPlanDraft,
+): FlowM10ConfirmationQuestion[] {
+  const interactionById = new Map(
+    flowPlan.interactions.map((interaction) => [interaction.id, interaction]),
+  );
+  return generateFlowM10ConfirmationQuestions({ flowPlan }).filter((question) => {
+    const interaction = interactionById.get(question.interactionId);
+    return (
+      !interaction ||
+      (interaction.source !== "user_confirmed" &&
+        interaction.blockedReason !== "user_declined_interaction")
+    );
+  });
+}
+
 async function writeConfirmationQuestionsArtifact(input: {
   readonly cwd: string;
   readonly request: ProductM9RunRequest;
@@ -416,7 +432,7 @@ async function writeConfirmationQuestionsArtifact(input: {
     return undefined;
   }
   const flowPlan = flowPlanDraftFrom(input.artifacts.flowPlan);
-  const questions = generateFlowM10ConfirmationQuestions({ flowPlan });
+  const questions = unresolvedConfirmationQuestions(flowPlan);
   if (questions.length === 0) {
     return undefined;
   }

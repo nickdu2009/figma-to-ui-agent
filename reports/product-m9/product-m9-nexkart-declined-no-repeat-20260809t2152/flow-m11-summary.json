@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M11",
+  "scope": "multistep_execution",
+  "status": "failed",
+  "input": {
+    "runId": "product-m9-nexkart-declined-no-repeat-20260809t2152",
+    "mode": "local",
+    "flowPlanRef": "reports/product-m9/product-m9-nexkart-ecommerce-001-decline-template-apply-local-20260809t2115/confirmed-flow-plan.json",
+    "uiSpecRef": "data/projects/product-m9-nexkart-ecommerce-001/specs/current.json",
+    "reportRef": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/flow-m11-summary.json",
+    "networkBoundary": {
+      "figmaRestCalled": false,
+      "openaiCalled": false,
+      "mode": "local"
+    }
+  },
+  "artifact": {
+    "status": "loaded",
+    "reasonCodes": [],
+    "rejectionCount": 0
+  },
+  "counts": {
+    "fixtureCount": 0,
+    "successfulFixtureCount": 0,
+    "failedFixtureCount": 0,
+    "stepCount": 0,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "summaryOnlyRejectionCount": 0,
+    "scenarioOnlyRejectionCount": 0,
+    "untrustedSourceRejectionCount": 0,
+    "referenceDanglingRejectionCount": 0
+  },
+  "fixtures": [],
+  "successfulFixtureIds": [],
+  "failedFixtureIds": [],
+  "reasons": [
+    "flow_m11_trusted_submit_fixture_missing",
+    "flow_m11_multistep_submit_fixture_missing",
+    "flow_m11_select_radio_toggle_missing"
+  ],
+  "residualRisks": [
+    "本地 fixture 证明多步骤行为执行链路，不代表真实 Figma 样本覆盖已完成。"
+  ]
+}

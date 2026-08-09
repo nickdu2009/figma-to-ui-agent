@@ -76,6 +76,26 @@ async function createNavigationOnlyFlowPlan(root: string): Promise<string> {
   return path;
 }
 
+async function createAlreadyDeclinedFlowPlan(root: string): Promise<string> {
+  const dir = join(root, "fixtures");
+  await mkdir(dir, { recursive: true });
+  const raw = JSON.parse(await readFile(`${BASE}/flow-plan.json`, "utf8"));
+  raw.interactions = raw.interactions
+    .filter((interaction: { id: string }) => interaction.id === "inferred-submit")
+    .map((interaction: Record<string, unknown>) => ({
+      ...interaction,
+      confirmed: false,
+      blockedReason: "user_declined_interaction",
+      reason: "user already declined this confirmation question",
+    }));
+  raw.report.unsupportedCount = 0;
+  raw.report.unresolvedInteractionCount = 0;
+  raw.stateMachines = [];
+  const path = join(dir, "flow-plan-already-declined.json");
+  await writeFile(path, `${JSON.stringify(raw, null, 2)}\n`);
+  return path;
+}
+
 async function createNeedsConfirmationAndUnsupportedFlowPlan(
   root: string,
 ): Promise<string> {
@@ -198,6 +218,28 @@ describe("Product-M9 flow service", () => {
     );
     expect(result.metrics.successfulFixtureIds?.length).toBeGreaterThan(0);
     expect(result.metrics.failedFixtureIds).toEqual([]);
+  });
+
+  it("does not write confirmation questions for already declined interactions", async () => {
+    const root = "data/test-product-m9-service-already-declined";
+    roots.push(root);
+    const flowPlanPath = await createAlreadyDeclinedFlowPlan(root);
+
+    const result = await runProductM9Flow({
+      projectId: "demo-project",
+      mode: "local",
+      runId: "product-m9-service-already-declined",
+      flowPlanPath: relative(flowPlanPath),
+      uiSpecPath: `${BASE}/ui-spec.json`,
+      reportRoot: `${root}/reports`,
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.status).toBe("partial");
+    expect(result.error?.category).toBe("partial_evidence");
+    expect(result.metrics.submitLikeNeedsConfirmation).toBe(0);
+    expect(result.artifactRefs.confirmationQuestionsPath).toBeUndefined();
+    expect(result.artifactRefs.confirmationAnswerTemplatePath).toBeUndefined();
   });
 
   it("returns needs_confirmation for untrusted FlowPlan evidence", async () => {
