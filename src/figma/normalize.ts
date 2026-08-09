@@ -1080,6 +1080,60 @@ function isAncestor(
   return false;
 }
 
+function rawChildIds(node: RawNode): string[] {
+  return (node.children ?? []).map((child) => parseRawNode(child).id);
+}
+
+function collectPrototypeTargetIdsFromSubtree(
+  nodeId: string,
+  index: Map<string, IndexedNode>,
+  output: Set<string>,
+): void {
+  const entry = index.get(nodeId);
+  if (!entry) {
+    return;
+  }
+  for (const interaction of normalizedPrototypeInteractions(entry.node) ?? []) {
+    const targetId = interaction.transitionNodeId ?? interaction.destinationId;
+    if (targetId && index.has(targetId)) {
+      output.add(targetId);
+    }
+  }
+  for (const childId of rawChildIds(entry.node)) {
+    collectPrototypeTargetIdsFromSubtree(childId, index, output);
+  }
+}
+
+function candidateCoversTarget(
+  candidateIds: readonly string[],
+  targetId: string,
+  index: Map<string, IndexedNode>,
+): boolean {
+  return candidateIds.some(
+    (candidateId) =>
+      candidateId === targetId ||
+      isAncestor(candidateId, targetId, index) ||
+      isAncestor(targetId, candidateId, index),
+  );
+}
+
+function prototypeTargetPageCandidateIds(
+  candidateIds: readonly string[],
+  index: Map<string, IndexedNode>,
+): string[] {
+  const targetIds = new Set<string>();
+  for (const candidateId of candidateIds) {
+    collectPrototypeTargetIdsFromSubtree(candidateId, index, targetIds);
+  }
+  return [...targetIds]
+    .filter((targetId) => !candidateCoversTarget(candidateIds, targetId, index))
+    .sort(
+      (left, right) =>
+        (index.get(left)?.order ?? 0) - (index.get(right)?.order ?? 0),
+    )
+    .slice(0, 100);
+}
+
 export function normalizeFigmaDocument(
   rawInput: unknown,
   options: NormalizeFigmaOptions = {},
@@ -1193,7 +1247,7 @@ export function normalizeFigmaDocument(
   const canvasNodes = [...index.values()]
     .filter((entry) => entry.node.type === "CANVAS")
     .sort((left, right) => left.order - right.order);
-  const candidateIds =
+  const baseCandidateIds =
     targetIds.length > 0
       ? targetIds.flatMap((targetId) => {
           const target = index.get(targetId)?.node;
@@ -1216,6 +1270,22 @@ export function normalizeFigmaDocument(
           const childIds = visibleCanvasChildIds(canvas.node);
           return childIds.length > 0 ? childIds : [canvas.node.id];
         });
+  const prototypeTargetCandidateIds = prototypeTargetPageCandidateIds(
+    baseCandidateIds,
+    index,
+  );
+  const candidateIds = [
+    ...baseCandidateIds,
+    ...prototypeTargetCandidateIds,
+  ];
+  for (const targetId of prototypeTargetCandidateIds) {
+    warnings.push({
+      code: "prototype_target_page_included",
+      entityId: targetId,
+      detail:
+        "Prototype target 不属于已选页面子树，但存在于 Figma 文件中，已作为额外页面候选纳入以保留可执行导航证据",
+    });
+  }
 
   const components = buildComponentCatalog(file, warnings);
   const styles = new Map<string, NormalizedStyle>();

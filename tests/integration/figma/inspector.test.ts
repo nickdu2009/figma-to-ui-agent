@@ -789,6 +789,151 @@ describe("FigmaInspector mock REST 纵向切片", () => {
     );
   });
 
+  it("全文件模式会把已知 prototype target 追加为页面候选", async () => {
+    const root = await mkdtemp(join(tmpdir(), "figma-inspector-"));
+    temporaryRoots.push(root);
+    const store = new ProjectStore(root);
+    const fetchImpl = vi.fn<FigmaFetch>(async (input) => {
+      const url = new URL(String(input));
+      if (url.hostname === "api.figma.com") {
+        if (url.pathname === `/v1/files/${FILE_KEY}`) {
+          const fixture = createFigmaFileResponseFixture();
+          const document = fixture.document as {
+            children: Array<{
+              children: Array<Record<string, unknown>>;
+            }>;
+          };
+          const productCanvas = document.children[0]!;
+          const home = productCanvas.children[0]!;
+          const target = {
+            id: "4:1",
+            name: "Find Driver",
+            type: "FRAME",
+            visible: true,
+            absoluteBoundingBox: {
+              x: 3200,
+              y: 0,
+              width: 402,
+              height: 870,
+            },
+            children: [],
+          };
+          productCanvas.children.push({
+            id: "4:0",
+            name: "Prototype Targets",
+            type: "FRAME",
+            visible: false,
+            absoluteBoundingBox: {
+              x: 3200,
+              y: 0,
+              width: 402,
+              height: 870,
+            },
+            children: [target],
+          });
+          home.interactions = [
+            {
+              trigger: { type: "ON_CLICK" },
+              actions: [
+                {
+                  type: "NODE",
+                  navigation: "NAVIGATE",
+                  destinationId: "4:1",
+                },
+              ],
+            },
+          ];
+          return jsonResponse(fixture);
+        }
+        if (url.pathname === `/v1/files/${FILE_KEY}/images`) {
+          return jsonResponse({
+            meta: {
+              images: {
+                "image-source-1":
+                  "https://s3-alpha.figma.com/assets/hero.png?signature=private",
+              },
+            },
+          });
+        }
+        if (url.pathname === `/v1/images/${FILE_KEY}`) {
+          const ids = url.searchParams.get("ids")?.split(",") ?? [];
+          return jsonResponse({
+            images: Object.fromEntries(
+              ids.map((id) => [
+                id,
+                `https://s3-alpha.figma.com/screenshots/${id.replaceAll(
+                  ":",
+                  "-",
+                )}.png?signature=private`,
+              ]),
+            ),
+          });
+        }
+        if (
+          url.pathname ===
+          `/v1/files/${FILE_KEY}/variables/local`
+        ) {
+          return new Response("scope details must stay private", {
+            status: 403,
+          });
+        }
+      }
+      if (url.pathname === "/assets/hero.png") {
+        return imageResponse(createPngBytes(640, 480));
+      }
+      if (url.pathname.startsWith("/screenshots/")) {
+        return imageResponse(createPngBytes(144, 144));
+      }
+      return new Response("unexpected", { status: 404 });
+    });
+    const inspector = new FigmaInspector({
+      restClient: new FigmaRestClient({
+        token: "private-token",
+        fetchImpl,
+        maxRetries: 0,
+      }),
+      imageDownloader: new FigmaImageDownloader({
+        projectStore: store,
+        fetchImpl,
+      }),
+      projectStore: store,
+      now: () => new Date("2026-08-09T23:40:00.000Z"),
+    });
+
+    await inspector.inspect(
+      {
+        schemaVersion: "1",
+        projectId: "full-file-prototype-target-project",
+        figmaUrl: `https://www.figma.com/design/${FILE_KEY}/Fixture`,
+      },
+      undefined,
+      { variablesMode: "disabled_restricted_live" },
+    );
+
+    const saved = await store.loadDesignBundle(
+      "full-file-prototype-target-project",
+    );
+    expect(saved.pages.map((page) => page.id)).toEqual(
+      expect.arrayContaining(["1:1", "2:1", "4:1"]),
+    );
+    expect(saved.warnings).toContainEqual(
+      expect.objectContaining({
+        code: "prototype_target_page_included",
+        entityId: "4:1",
+      }),
+    );
+    expect(
+      saved.pages
+        .flatMap((page) => page.nodes)
+        .find((node) => node.id === "1:1")?.prototypeInteractions,
+    ).toContainEqual(
+      expect.objectContaining({
+        navigation: "NAVIGATE",
+        destinationId: "4:1",
+      }),
+    );
+  });
+
   it("显式目标节点为 CANVAS 时不会与内部包装节点冲突", async () => {
     const root = await mkdtemp(join(tmpdir(), "figma-inspector-"));
     temporaryRoots.push(root);

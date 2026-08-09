@@ -60,7 +60,7 @@ const imageFillResponseSchema = z
 const TARGETED_NODES_CANVAS_ID =
   "__figma_to_ui_agent_targeted_nodes_canvas__";
 const MAX_VISUAL_LAYER_RENDERS = 160;
-const MAX_PROTOTYPE_TARGET_EXPANSION_ROUNDS = 4;
+const MAX_PROTOTYPE_TARGET_EXPANSION_ROUNDS = 8;
 const MAX_PROTOTYPE_TARGET_NODE_IDS = 160;
 
 export type FigmaInspectionErrorCode =

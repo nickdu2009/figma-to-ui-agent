@@ -365,7 +365,7 @@ export class FigmaImageDownloader {
             output.set(request.sourceRef, localRef);
           }
         } catch (error) {
-          firstError = error;
+          firstError ??= error;
           internalAbort.abort();
         }
       }

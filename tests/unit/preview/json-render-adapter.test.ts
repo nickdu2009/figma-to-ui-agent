@@ -217,6 +217,72 @@ describe("toPreviewJsonSpec", () => {
     });
   });
 
+  it("只把单一 actionable 子节点的 Stack 标记为 action wrapper", () => {
+    const draft = createUISpecDraft();
+    draft.actions.push({
+      id: "open-chat",
+      kind: "navigate",
+      pageId: "home",
+    });
+    draft.nodes.push(
+      {
+        id: "wrapper",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["wrapper-button"],
+        designValueRefs: [],
+      },
+      {
+        id: "wrapper-button",
+        kind: "button",
+        label: "Call",
+        variant: "ghost",
+        actionId: "open-chat",
+        designValueRefs: [],
+      },
+      {
+        id: "panel",
+        kind: "stack",
+        direction: "vertical",
+        childIds: ["panel-button", "panel-label"],
+        designValueRefs: [],
+      },
+      {
+        id: "panel-button",
+        kind: "button",
+        label: "Close",
+        variant: "ghost",
+        actionId: "open-chat",
+        designValueRefs: [],
+      },
+      {
+        id: "panel-label",
+        kind: "text",
+        text: "Menu",
+        variant: "body",
+        designValueRefs: [],
+      },
+    );
+    const root = draft.nodes.find((node) => node.id === "root");
+    if (root?.kind === "stack") {
+      root.childIds.push("wrapper", "panel");
+    }
+    const uiSpec = uiSpecSchema.parse({ ...draft, revision: 1 });
+
+    const preview = toPreviewJsonSpec(uiSpec, "home", {
+      imageUrl: (path) => `/project-image/${path}`,
+    });
+
+    expect(preview.elements.wrapper).toMatchObject({
+      type: "Stack",
+      props: { actionWrapper: true },
+    });
+    expect(preview.elements.panel).toMatchObject({
+      type: "Stack",
+      props: { actionWrapper: false },
+    });
+  });
+
   it("把 visibleWhen 节点包成 Conditional 并重写父子引用", () => {
     const draft = createUISpecDraft();
     draft.state.push({

@@ -77,6 +77,9 @@ import {
   writeProductM9Report,
 } from "./product-m9-flow-report.ts";
 
+const PRODUCT_M9_FIGMA_IMAGE_TIMEOUT_MS = 120_000;
+const PRODUCT_M9_FIGMA_REST_TIMEOUT_MS = 120_000;
+
 export interface RunProductM9FlowOptions {
   readonly cwd?: string;
   readonly env?: NodeJS.ProcessEnv;
@@ -517,7 +520,10 @@ async function loadRestrictedLiveArtifacts(input: {
   }
 
   const store = new ProjectStore(input.dataRoot);
-  const restClientOptions: FigmaRestClientOptions = { token };
+  const restClientOptions: FigmaRestClientOptions = {
+    token,
+    timeoutMs: PRODUCT_M9_FIGMA_REST_TIMEOUT_MS,
+  };
   if (input.options.rateLimitLogger) {
     restClientOptions.rateLimitLogger = input.options.rateLimitLogger;
   }
@@ -535,6 +541,7 @@ async function loadRestrictedLiveArtifacts(input: {
     imageDownloader: new FigmaImageDownloader({
       projectStore: store,
       fetchImpl: input.options.figmaFetchImpl,
+      timeoutMs: PRODUCT_M9_FIGMA_IMAGE_TIMEOUT_MS,
     }),
     projectStore: store,
   });

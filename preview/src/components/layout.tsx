@@ -38,7 +38,7 @@ export const Stack: ComponentFn<
     <div
       className={`ui-stack${props.actionable ? " is-actionable" : ""}${
         pointerTransparent ? " is-pointer-transparent" : ""
-      }`}
+      }${props.actionWrapper ? " is-action-wrapper" : ""}`}
       data-ui-node-id={props.nodeId}
       data-ui-actionable={props.actionable ? "true" : undefined}
       role={props.actionable ? "button" : undefined}

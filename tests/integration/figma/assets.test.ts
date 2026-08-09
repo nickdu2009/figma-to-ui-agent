@@ -285,6 +285,47 @@ describe("FigmaImageDownloader", () => {
     await expect(request).rejects.toEqual(expectAssetCode("aborted"));
   });
 
+  it("并发下载失败时保留首个真实错误而不是内部取消", async () => {
+    const { store } = await createStore();
+    let releaseSlowFetch: (() => void) | undefined;
+    const fetchImpl: FigmaFetch = async (input, init) => {
+      const url = String(input);
+      if (url.includes("/slow")) {
+        await new Promise<void>((resolve, reject) => {
+          releaseSlowFetch = resolve;
+          init?.signal?.addEventListener(
+            "abort",
+            () => reject(new DOMException("aborted", "AbortError")),
+            { once: true },
+          );
+        });
+        return imageResponse(createPngBytes());
+      }
+      releaseSlowFetch?.();
+      return imageResponse(createPngBytes(), "text/plain");
+    };
+    const downloader = new FigmaImageDownloader({
+      projectStore: store,
+      fetchImpl,
+      maxConcurrency: 2,
+    });
+
+    await expect(
+      downloader.downloadAll("demo-project", [
+        {
+          sourceRef: "slow",
+          url: "https://s3-alpha.figma.com/img/slow",
+          kind: "assets",
+        },
+        {
+          sourceRef: "bad",
+          url: "https://s3-alpha.figma.com/img/bad",
+          kind: "assets",
+        },
+      ]),
+    ).rejects.toEqual(expectAssetCode("invalid_content_type"));
+  });
+
   it("ProjectStore 检测已存在内容寻址文件损坏且不留临时文件", async () => {
     const { root, store } = await createStore();
     const bytes = createPngBytes();

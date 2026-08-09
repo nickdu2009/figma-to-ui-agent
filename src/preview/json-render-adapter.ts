@@ -58,6 +58,10 @@ function actionBinding(
   };
 }
 
+function isActionableNode(node: UINode | undefined): boolean {
+  return Boolean(node && "actionId" in node && node.actionId);
+}
+
 function tabPanelId(tabsId: string, value: string): string {
   return `__tabpanel__${tabsId}__${value}`;
 }
@@ -74,6 +78,7 @@ interface ToElementResult {
 function toElement(
   node: UINode,
   options: PreviewAdapterOptions,
+  nodeById: ReadonlyMap<string, UINode>,
 ): ToElementResult {
   const style =
     node.kind === "text"
@@ -88,6 +93,8 @@ function toElement(
     ...(style && Object.keys(style).length > 0 ? { style } : {}),
   };
   if (node.kind === "stack") {
+    const childNode =
+      node.childIds.length === 1 ? nodeById.get(node.childIds[0]!) : undefined;
     return {
       element: {
         type: "Stack",
@@ -95,6 +102,7 @@ function toElement(
           ...common,
           direction: node.direction,
           actionable: Boolean(node.actionId),
+          actionWrapper: !node.actionId && isActionableNode(childNode),
           gap: node.gap ?? null,
           padding: node.padding ?? null,
           align: node.align ?? null,
@@ -522,7 +530,11 @@ export function toPreviewJsonSpec(
     conditionalByNodeId.get(nodeId) ?? nodeId;
 
   for (const nodeId of reachableIds) {
-    const { element, extra } = toElement(nodeById.get(nodeId)!, options);
+    const { element, extra } = toElement(
+      nodeById.get(nodeId)!,
+      options,
+      nodeById,
+    );
     elements[nodeId] = {
       ...element,
       children: element.children ?? [],

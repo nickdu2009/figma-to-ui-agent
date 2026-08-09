@@ -342,6 +342,10 @@ input:focus-visible,
   pointer-events: none;
 }
 
+.ui-stack.is-action-wrapper {
+  pointer-events: auto;
+}
+
 .ui-grid {
   display: grid;
   width: 100%;

@@ -1,0 +1,4453 @@
+{
+  "schemaVersion": "1",
+  "projectId": "product-m9-trego-target-backfill-008",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "present",
+  "pages": [
+    {
+      "id": "login",
+      "sourcePageId": "2:8939",
+      "name": "Login",
+      "role": "entry",
+      "confidence": "medium",
+      "reason": "DesignBundle 中的首个页面作为入口候选。"
+    },
+    {
+      "id": "home-screen",
+      "sourcePageId": "2:7558",
+      "name": "Home Screen",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "forgot-password",
+      "sourcePageId": "2:9001",
+      "name": "Forgot Password?",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "login-signup",
+      "sourcePageId": "2:7712",
+      "name": "Login/SignUp",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "menu",
+      "sourcePageId": "2:7804",
+      "name": "Menu",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "ride-book",
+      "sourcePageId": "2:7729",
+      "name": "Ride Book",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "rewards-screen",
+      "sourcePageId": "2:9523",
+      "name": "Rewards Screen",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "otp-verification",
+      "sourcePageId": "2:9073",
+      "name": "OTP Verification",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "register",
+      "sourcePageId": "2:9116",
+      "name": "Register",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "profile",
+      "sourcePageId": "2:8118",
+      "name": "Profile",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "choose-ride",
+      "sourcePageId": "2:7913",
+      "name": "Choose Ride",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "create-new-password",
+      "sourcePageId": "2:9036",
+      "name": "Create new password",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "payment-method",
+      "sourcePageId": "2:8036",
+      "name": "Payment Method",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "password-changed",
+      "sourcePageId": "2:9180",
+      "name": "Password Changed!",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "find-driver",
+      "sourcePageId": "2:8668",
+      "name": "Find-Driver",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "booking-detail",
+      "sourcePageId": "2:8411",
+      "name": "Booking Detail",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "cancel-confirmation",
+      "sourcePageId": "2:8488",
+      "name": "Cancel Confirmation",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "chat",
+      "sourcePageId": "2:8865",
+      "name": "Chat",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    },
+    {
+      "id": "cancelled",
+      "sourcePageId": "2:8578",
+      "name": "Cancelled",
+      "role": "screen",
+      "confidence": "medium",
+      "reason": "页面尺寸和结构符合独立 screen 候选。"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "figma-d5e7fe5be3195937",
+      "source": "figma",
+      "sourceNodeId": "2:8962",
+      "uiNodeId": "ui-login-2-8962",
+      "sourceNodeName": "Login (Button)",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "login",
+      "targetNodeId": "2:7558",
+      "targetPageId": "home-screen",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-79f7f3f27a0bff85",
+      "source": "figma",
+      "sourceNodeId": "2:8965",
+      "uiNodeId": "ui-login-2-8965",
+      "sourceNodeName": "Forgot Password Link",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "login",
+      "targetNodeId": "2:9001",
+      "targetPageId": "forgot-password",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-16c95e11156fa57d",
+      "source": "figma",
+      "sourceNodeId": "2:8977",
+      "uiNodeId": "ui-login-2-8977",
+      "sourceNodeName": "back",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "login",
+      "targetNodeId": "2:7712",
+      "targetPageId": "login-signup",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-c349c922178502e4",
+      "source": "figma",
+      "sourceNodeId": "2:7562",
+      "uiNodeId": "ui-home-screen-2-7562",
+      "sourceNodeName": "pfp",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "home-screen",
+      "targetNodeId": "2:7804",
+      "targetPageId": "menu",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-339fce85cd937c6d",
+      "source": "figma",
+      "sourceNodeId": "2:7592",
+      "uiNodeId": "ui-home-screen-2-7592",
+      "sourceNodeName": "Car",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "home-screen",
+      "targetNodeId": "2:7729",
+      "targetPageId": "ride-book",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-46e6e2317bd140dd",
+      "source": "figma",
+      "sourceNodeId": "2:7690",
+      "uiNodeId": "ui-home-screen-2-7690",
+      "sourceNodeName": "Rides Tab",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "home-screen",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-546a0bc35a561de9",
+      "source": "figma",
+      "sourceNodeId": "2:7703",
+      "uiNodeId": "ui-home-screen-2-7703",
+      "sourceNodeName": "Account Tab",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "home-screen",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-9695d177b8a1b88b",
+      "source": "figma",
+      "sourceNodeId": "2:7711",
+      "uiNodeId": "ui-home-screen-2-7711",
+      "sourceNodeName": "primoo_rewaresystem icon_upscayl_10x_digital-art-4x 1",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "home-screen",
+      "targetNodeId": "2:9523",
+      "targetPageId": "rewards-screen",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-7e4d71cf477d292a",
+      "source": "figma",
+      "sourceNodeId": "2:9003",
+      "uiNodeId": "ui-forgot-password-2-9003",
+      "sourceNodeName": "Send Code (Button)",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "forgot-password",
+      "targetNodeId": "2:9073",
+      "targetPageId": "otp-verification",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-39400948316dd3a7",
+      "source": "figma",
+      "sourceNodeId": "2:9012",
+      "uiNodeId": "ui-forgot-password-2-9012",
+      "sourceNodeName": "back",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "forgot-password",
+      "targetNodeId": "2:8939",
+      "targetPageId": "login",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-db27a49e201b1341",
+      "source": "figma",
+      "sourceNodeId": "2:7714",
+      "uiNodeId": "ui-login-signup-2-7714",
+      "sourceNodeName": "Login Button Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "login-signup",
+      "targetNodeId": "2:8939",
+      "targetPageId": "login",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-c14386712c752856",
+      "source": "figma",
+      "sourceNodeId": "2:7718",
+      "uiNodeId": "ui-login-signup-2-7718",
+      "sourceNodeName": "Create Account Text",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "login-signup",
+      "targetNodeId": "2:9116",
+      "targetPageId": "register",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-fb0e68d02befa7ad",
+      "source": "figma",
+      "sourceNodeId": "2:7820",
+      "uiNodeId": "ui-menu-2-7820",
+      "sourceNodeName": "pfp",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "menu",
+      "targetNodeId": "2:8118",
+      "targetPageId": "profile",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-bcf1e514e2490200",
+      "source": "figma",
+      "sourceNodeId": "2:7871",
+      "uiNodeId": "ui-menu-2-7871",
+      "sourceNodeName": "Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "menu",
+      "targetNodeId": "2:7913",
+      "targetPageId": "choose-ride",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-6623e1adbd2e6835",
+      "source": "figma",
+      "sourceNodeId": "2:7880",
+      "uiNodeId": "ui-menu-2-7880",
+      "sourceNodeName": "Menu",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "menu",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "figma-4526dee46b1c64b7",
+      "source": "figma",
+      "sourceNodeId": "2:7882",
+      "uiNodeId": "ui-menu-2-7882",
+      "sourceNodeName": "pfp",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "menu",
+      "targetNodeId": "2:8118",
+      "targetPageId": "profile",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-b9c21f1e86732f92",
+      "source": "figma",
+      "sourceNodeId": "2:7889",
+      "uiNodeId": "ui-menu-2-7889",
+      "sourceNodeName": "Menu Item Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "menu",
+      "targetNodeId": "2:7558",
+      "targetPageId": "home-screen",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-0d13910960409b7e",
+      "source": "figma",
+      "sourceNodeId": "2:7893",
+      "uiNodeId": "ui-menu-2-7893",
+      "sourceNodeName": "Menu Item Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "menu",
+      "targetNodeId": "2:8118",
+      "targetPageId": "profile",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-36e2c456cec86cca",
+      "source": "figma",
+      "sourceNodeId": "2:7909",
+      "uiNodeId": "ui-menu-2-7909",
+      "sourceNodeName": "Layer 2",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "menu",
+      "targetNodeId": "2:7729",
+      "targetPageId": "ride-book",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-9baa464d4cc24403",
+      "source": "figma",
+      "sourceNodeId": "2:7745",
+      "uiNodeId": "ui-ride-book-2-7745",
+      "sourceNodeName": "pfp",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "ride-book",
+      "targetNodeId": "2:8118",
+      "targetPageId": "profile",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-3aa90cddacb27279",
+      "source": "figma",
+      "sourceNodeId": "2:7747",
+      "uiNodeId": "ui-ride-book-2-7747",
+      "sourceNodeName": "Burger Menu",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "ride-book",
+      "targetNodeId": "2:7804",
+      "targetPageId": "menu",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-426ed96ae279460a",
+      "source": "figma",
+      "sourceNodeId": "2:7796",
+      "uiNodeId": "ui-ride-book-2-7796",
+      "sourceNodeName": "Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "ride-book",
+      "targetNodeId": "2:7913",
+      "targetPageId": "choose-ride",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-4e2a538a6ff27d0a",
+      "source": "figma",
+      "sourceNodeId": "2:9529",
+      "uiNodeId": "ui-rewards-screen-2-9529",
+      "sourceNodeName": "Close",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "rewards-screen",
+      "targetNodeId": "2:7558",
+      "targetPageId": "home-screen",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-7e3b12694b30e4fe",
+      "source": "figma",
+      "sourceNodeId": "2:9075",
+      "uiNodeId": "ui-otp-verification-2-9075",
+      "sourceNodeName": "Verify (Button)",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "otp-verification",
+      "targetNodeId": "2:9036",
+      "targetPageId": "create-new-password",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-cd187e5fc2314ce9",
+      "source": "figma",
+      "sourceNodeId": "2:9092",
+      "uiNodeId": "ui-otp-verification-2-9092",
+      "sourceNodeName": "back",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "otp-verification",
+      "targetNodeId": "2:9001",
+      "targetPageId": "forgot-password",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-dd087e83d31b91c2",
+      "source": "figma",
+      "sourceNodeId": "2:9156",
+      "uiNodeId": "ui-register-2-9156",
+      "sourceNodeName": "back",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "register",
+      "targetNodeId": "2:7712",
+      "targetPageId": "login-signup",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-5b397c5bd1ebf642",
+      "source": "figma",
+      "sourceNodeId": "2:8124",
+      "uiNodeId": "ui-profile-2-8124",
+      "sourceNodeName": "Close",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "profile",
+      "targetNodeId": "2:7558",
+      "targetPageId": "home-screen",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-d4949995b2a5e18b",
+      "source": "figma",
+      "sourceNodeId": "2:7922",
+      "uiNodeId": "ui-choose-ride-2-7922",
+      "sourceNodeName": "Back",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "choose-ride",
+      "targetNodeId": "2:7729",
+      "targetPageId": "ride-book",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-ed825e5d9278fb31",
+      "source": "figma",
+      "sourceNodeId": "2:7957",
+      "uiNodeId": "ui-choose-ride-2-7957",
+      "sourceNodeName": "pfp",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "choose-ride",
+      "targetNodeId": "2:8118",
+      "targetPageId": "profile",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-66f1ebc087e1d53f",
+      "source": "figma",
+      "sourceNodeId": "2:7959",
+      "uiNodeId": "ui-choose-ride-2-7959",
+      "sourceNodeName": "Burger Menu",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "choose-ride",
+      "targetNodeId": "2:7804",
+      "targetPageId": "menu",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-cd2af240e808cd87",
+      "source": "figma",
+      "sourceNodeId": "2:8018",
+      "uiNodeId": "ui-choose-ride-2-8018",
+      "sourceNodeName": "Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "choose-ride",
+      "targetNodeId": "2:8036",
+      "targetPageId": "payment-method",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-9f60ad22ec21d0cc",
+      "source": "figma",
+      "sourceNodeId": "2:9037",
+      "uiNodeId": "ui-create-new-password-2-9037",
+      "sourceNodeName": "Reset Password (Button)",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "create-new-password",
+      "targetNodeId": "2:9180",
+      "targetPageId": "password-changed",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-b1b218c48ebb641b",
+      "source": "figma",
+      "sourceNodeId": "2:9049",
+      "uiNodeId": "ui-create-new-password-2-9049",
+      "sourceNodeName": "back",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "create-new-password",
+      "targetNodeId": "2:9073",
+      "targetPageId": "otp-verification",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-286aceec41e782dc",
+      "source": "figma",
+      "sourceNodeId": "2:8076",
+      "uiNodeId": "ui-payment-method-2-8076",
+      "sourceNodeName": "Ellipse 11",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "payment-method",
+      "targetNodeId": "2:8668",
+      "targetPageId": "find-driver",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-a753de0a98f1c602",
+      "source": "figma",
+      "sourceNodeId": "2:8112",
+      "uiNodeId": "ui-payment-method-2-8112",
+      "sourceNodeName": "Close",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "payment-method",
+      "targetNodeId": "2:7913",
+      "targetPageId": "choose-ride",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-703bb7e4891275ae",
+      "source": "figma",
+      "sourceNodeId": "2:9181",
+      "uiNodeId": "ui-password-changed-2-9181",
+      "sourceNodeName": "Back to Login (Button)",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "password-changed",
+      "targetNodeId": "2:8939",
+      "targetPageId": "login",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-2a3d0d6dea04a1d5",
+      "source": "figma",
+      "sourceNodeId": "2:8683",
+      "uiNodeId": "ui-find-driver-2-8683",
+      "sourceNodeName": "Map Container",
+      "trigger": "timeout",
+      "intent": "navigate",
+      "fromPageId": "find-driver",
+      "targetNodeId": "2:8411",
+      "targetPageId": "booking-detail",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-0f793a786b222f1f",
+      "source": "figma",
+      "sourceNodeId": "2:8735",
+      "uiNodeId": "ui-find-driver-2-8735",
+      "sourceNodeName": "Button Text",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "find-driver",
+      "targetNodeId": "2:8488",
+      "targetPageId": "cancel-confirmation",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-4c0b961e96ea1898",
+      "source": "figma",
+      "sourceNodeId": "2:8744",
+      "uiNodeId": "ui-find-driver-2-8744",
+      "sourceNodeName": "pfp",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "find-driver",
+      "targetNodeId": "2:8118",
+      "targetPageId": "profile",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-70b05e34836bd364",
+      "source": "figma",
+      "sourceNodeId": "2:8746",
+      "uiNodeId": "ui-find-driver-2-8746",
+      "sourceNodeName": "Burger Menu",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "find-driver",
+      "targetNodeId": "2:7804",
+      "targetPageId": "menu",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-e42f41f7ad03bc7b",
+      "source": "figma",
+      "sourceNodeId": "2:8427",
+      "uiNodeId": "ui-booking-detail-2-8427",
+      "sourceNodeName": "pfp",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "booking-detail",
+      "targetNodeId": "2:8118",
+      "targetPageId": "profile",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-954c8be37cc49243",
+      "source": "figma",
+      "sourceNodeId": "2:8429",
+      "uiNodeId": "ui-booking-detail-2-8429",
+      "sourceNodeName": "Burger Menu",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "booking-detail",
+      "targetNodeId": "2:7804",
+      "targetPageId": "menu",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-ad1a8f640332d8bb",
+      "source": "figma",
+      "sourceNodeId": "2:8436",
+      "uiNodeId": "ui-booking-detail-2-8436",
+      "sourceNodeName": "Cancel Ride Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "booking-detail",
+      "targetNodeId": "2:8488",
+      "targetPageId": "cancel-confirmation",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-f6aa06a8e7dc35f4",
+      "source": "figma",
+      "sourceNodeId": "2:8453",
+      "uiNodeId": "ui-booking-detail-2-8453-control",
+      "sourceNodeName": "Call Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "booking-detail",
+      "targetNodeId": "2:8865",
+      "targetPageId": "chat",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-1839393ff6ffee66",
+      "source": "figma",
+      "sourceNodeId": "2:8464",
+      "uiNodeId": "ui-booking-detail-2-8464",
+      "sourceNodeName": "Payment Method Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "booking-detail",
+      "targetNodeId": "2:8036",
+      "targetPageId": "payment-method",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-ef88eb7922190fcd",
+      "source": "figma",
+      "sourceNodeId": "2:8504",
+      "uiNodeId": "ui-cancel-confirmation-2-8504",
+      "sourceNodeName": "pfp",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancel-confirmation",
+      "targetNodeId": "2:8118",
+      "targetPageId": "profile",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-a363fee7d422987d",
+      "source": "figma",
+      "sourceNodeId": "2:8571",
+      "uiNodeId": "ui-cancel-confirmation-2-8571",
+      "sourceNodeName": "Button Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancel-confirmation",
+      "targetNodeId": "2:8578",
+      "targetPageId": "cancelled",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-0ebb868c4814414f",
+      "source": "figma",
+      "sourceNodeId": "2:8574",
+      "uiNodeId": "ui-cancel-confirmation-2-8574",
+      "sourceNodeName": "Button Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancel-confirmation",
+      "targetNodeId": "2:8411",
+      "targetPageId": "booking-detail",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-100c7bc4be309e87",
+      "source": "figma",
+      "sourceNodeId": "2:8920",
+      "uiNodeId": "ui-chat-2-8865",
+      "sourceNodeName": "Path 28417",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "chat",
+      "targetNodeId": "2:8411",
+      "targetPageId": "booking-detail",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-bdf358f030ee23ff",
+      "source": "figma",
+      "sourceNodeId": "2:8661",
+      "uiNodeId": "ui-cancelled-2-8661",
+      "sourceNodeName": "Button Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancelled",
+      "targetNodeId": "2:7729",
+      "targetPageId": "ride-book",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "figma-e140bf39d8ee0b94",
+      "source": "figma",
+      "sourceNodeId": "2:8664",
+      "uiNodeId": "ui-cancelled-2-8664",
+      "sourceNodeName": "Button Container",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancelled",
+      "targetNodeId": "2:7558",
+      "targetPageId": "home-screen",
+      "confirmed": true,
+      "confidence": "high",
+      "reason": "来自 Figma REST prototype interaction 的受控转换。"
+    },
+    {
+      "id": "missing-ui-login-2-8943",
+      "source": "missing",
+      "uiNodeId": "ui-login-2-8943",
+      "sourceNodeName": "Google Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "login",
+      "confirmationQuestionId": "confirm-missing-ui-login-2-8943",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-login-2-8951",
+      "source": "missing",
+      "uiNodeId": "ui-login-2-8951",
+      "sourceNodeName": "Facebook Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "login",
+      "confirmationQuestionId": "confirm-missing-ui-login-2-8951",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-login-2-8955",
+      "source": "missing",
+      "uiNodeId": "ui-login-2-8955",
+      "sourceNodeName": "Apple Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "login",
+      "confirmationQuestionId": "confirm-missing-ui-login-2-8955",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-login-2-8963",
+      "source": "inferred",
+      "uiNodeId": "ui-login-2-8963",
+      "sourceNodeName": "Login Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "login",
+      "targetPageId": "home-screen",
+      "confirmationQuestionId": "confirm-inferred-ui-login-2-8963",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-login-2-8978",
+      "source": "missing",
+      "uiNodeId": "ui-login-2-8978",
+      "sourceNodeName": "Back Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "login",
+      "confirmationQuestionId": "confirm-missing-ui-login-2-8978",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-home-screen-2-7577",
+      "source": "missing",
+      "uiNodeId": "ui-home-screen-2-7577",
+      "sourceNodeName": "Promo Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-home-screen-2-7577",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-home-screen-2-7616",
+      "source": "missing",
+      "uiNodeId": "ui-home-screen-2-7616",
+      "sourceNodeName": "Grocery Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-home-screen-2-7616",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-home-screen-2-7622",
+      "source": "missing",
+      "uiNodeId": "ui-home-screen-2-7622",
+      "sourceNodeName": "Grocery Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "home-screen",
+      "confirmationQuestionId": "confirm-missing-ui-home-screen-2-7622",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-forgot-password-2-9004",
+      "source": "inferred",
+      "uiNodeId": "ui-forgot-password-2-9004",
+      "sourceNodeName": "Button Background",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "forgot-password",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-forgot-password-2-9004",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-forgot-password-2-9013",
+      "source": "inferred",
+      "uiNodeId": "ui-forgot-password-2-9013",
+      "sourceNodeName": "Back Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "forgot-password",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-forgot-password-2-9013",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-login-signup-2-7715",
+      "source": "inferred",
+      "uiNodeId": "ui-login-signup-2-7715",
+      "sourceNodeName": "Login Button Background",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "login-signup",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-login-signup-2-7715",
+      "confirmed": false,
+      "confidence": "medium",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-menu-2-7906-control",
+      "source": "missing",
+      "uiNodeId": "ui-menu-2-7906-control",
+      "sourceNodeName": "Close Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "menu",
+      "confirmationQuestionId": "confirm-missing-ui-menu-2-7906-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-otp-verification-2-9076",
+      "source": "inferred",
+      "uiNodeId": "ui-otp-verification-2-9076",
+      "sourceNodeName": "Verify button background",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "otp-verification",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-otp-verification-2-9076",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-otp-verification-2-9093",
+      "source": "inferred",
+      "uiNodeId": "ui-otp-verification-2-9093",
+      "sourceNodeName": "Back Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "otp-verification",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-otp-verification-2-9093",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-register-2-9120",
+      "source": "missing",
+      "uiNodeId": "ui-register-2-9120",
+      "sourceNodeName": "Google button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "register",
+      "confirmationQuestionId": "confirm-missing-ui-register-2-9120",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-register-2-9128",
+      "source": "missing",
+      "uiNodeId": "ui-register-2-9128",
+      "sourceNodeName": "Facebook button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "register",
+      "confirmationQuestionId": "confirm-missing-ui-register-2-9128",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-register-2-9132",
+      "source": "missing",
+      "uiNodeId": "ui-register-2-9132",
+      "sourceNodeName": "Apple button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "register",
+      "confirmationQuestionId": "confirm-missing-ui-register-2-9132",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-register-2-9140",
+      "source": "missing",
+      "uiNodeId": "ui-register-2-9140",
+      "sourceNodeName": "Register button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "register",
+      "confirmationQuestionId": "confirm-missing-ui-register-2-9140",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-register-2-9157",
+      "source": "inferred",
+      "uiNodeId": "ui-register-2-9157",
+      "sourceNodeName": "Back Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "register",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-register-2-9157",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-profile-2-8184-control",
+      "source": "missing",
+      "uiNodeId": "ui-profile-2-8184-control",
+      "sourceNodeName": "Update Profile",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "profile",
+      "confirmationQuestionId": "confirm-missing-ui-profile-2-8184-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-choose-ride-2-8021-control",
+      "source": "missing",
+      "uiNodeId": "ui-choose-ride-2-8021-control",
+      "sourceNodeName": "Button icon container",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "choose-ride",
+      "confirmationQuestionId": "confirm-missing-ui-choose-ride-2-8021-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-create-new-password-2-9038",
+      "source": "user_confirmed",
+      "uiNodeId": "ui-create-new-password-2-9038",
+      "sourceNodeName": "Reset Password button",
+      "trigger": "submit",
+      "intent": "submit",
+      "fromPageId": "create-new-password",
+      "targetPageId": "password-changed",
+      "postconditions": [
+        {
+          "kind": "expect_page",
+          "pageId": "password-changed"
+        }
+      ],
+      "confirmationQuestionId": "confirm-missing-ui-create-new-password-2-9038",
+      "confirmed": true,
+      "confidence": "low",
+      "reason": "Restricted-live validation confirms Reset Password submit navigates to the local Password Changed page."
+    },
+    {
+      "id": "inferred-ui-create-new-password-2-9050",
+      "source": "inferred",
+      "uiNodeId": "ui-create-new-password-2-9050",
+      "sourceNodeName": "Back Button",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "create-new-password",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-create-new-password-2-9050",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-password-changed-2-9182",
+      "source": "inferred",
+      "uiNodeId": "ui-password-changed-2-9182",
+      "sourceNodeName": "Button background",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "password-changed",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-password-changed-2-9182",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-booking-detail-2-8449-control",
+      "source": "missing",
+      "uiNodeId": "ui-booking-detail-2-8449-control",
+      "sourceNodeName": "Message Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "booking-detail",
+      "confirmationQuestionId": "confirm-missing-ui-booking-detail-2-8449-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-cancel-confirmation-2-8526-control",
+      "source": "missing",
+      "uiNodeId": "ui-cancel-confirmation-2-8526-control",
+      "sourceNodeName": "Message Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "cancel-confirmation",
+      "confirmationQuestionId": "confirm-missing-ui-cancel-confirmation-2-8526-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-cancel-confirmation-2-8530-control",
+      "source": "missing",
+      "uiNodeId": "ui-cancel-confirmation-2-8530-control",
+      "sourceNodeName": "Call Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "cancel-confirmation",
+      "confirmationQuestionId": "confirm-missing-ui-cancel-confirmation-2-8530-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-cancel-confirmation-2-8572",
+      "source": "inferred",
+      "uiNodeId": "ui-cancel-confirmation-2-8572",
+      "sourceNodeName": "Button Background",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancel-confirmation",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-cancel-confirmation-2-8572",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-cancel-confirmation-2-8575",
+      "source": "inferred",
+      "uiNodeId": "ui-cancel-confirmation-2-8575",
+      "sourceNodeName": "Button Background",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancel-confirmation",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-cancel-confirmation-2-8575",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-cancelled-2-8616-control",
+      "source": "missing",
+      "uiNodeId": "ui-cancelled-2-8616-control",
+      "sourceNodeName": "Message Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "cancelled",
+      "confirmationQuestionId": "confirm-missing-ui-cancelled-2-8616-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "missing-ui-cancelled-2-8620-control",
+      "source": "missing",
+      "uiNodeId": "ui-cancelled-2-8620-control",
+      "sourceNodeName": "Call Button",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "cancelled",
+      "confirmationQuestionId": "confirm-missing-ui-cancelled-2-8620-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-cancelled-2-8662",
+      "source": "inferred",
+      "uiNodeId": "ui-cancelled-2-8662",
+      "sourceNodeName": "Button Background",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancelled",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-cancelled-2-8662",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    },
+    {
+      "id": "inferred-ui-cancelled-2-8665",
+      "source": "inferred",
+      "uiNodeId": "ui-cancelled-2-8665",
+      "sourceNodeName": "Button Background",
+      "trigger": "click",
+      "intent": "navigate",
+      "fromPageId": "cancelled",
+      "targetPageId": "login",
+      "confirmationQuestionId": "confirm-inferred-ui-cancelled-2-8665",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "No safe observable local postcondition is authorized for this control in the restricted-live validation.",
+      "blockedReason": "user_declined_interaction"
+    }
+  ],
+  "confirmationQuestions": [
+    {
+      "id": "confirm-missing-ui-login-2-8943",
+      "interactionId": "missing-ui-login-2-8943",
+      "question": "页面「Login」中的控件「Google Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-login-2-8951",
+      "interactionId": "missing-ui-login-2-8951",
+      "question": "页面「Login」中的控件「Facebook Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-login-2-8955",
+      "interactionId": "missing-ui-login-2-8955",
+      "question": "页面「Login」中的控件「Apple Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-login-2-8963",
+      "interactionId": "inferred-ui-login-2-8963",
+      "question": "页面「Login」中的控件「Login Button」是否应该跳转到「Home Screen」？原因：按钮文案暗示继续流程，推断目标为下一个页面 Home Screen。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-login-2-8978",
+      "interactionId": "missing-ui-login-2-8978",
+      "question": "页面「Login」中的控件「Back Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-home-screen-2-7577",
+      "interactionId": "missing-ui-home-screen-2-7577",
+      "question": "页面「Home Screen」中的控件「Promo Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-home-screen-2-7616",
+      "interactionId": "missing-ui-home-screen-2-7616",
+      "question": "页面「Home Screen」中的控件「Grocery Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-home-screen-2-7622",
+      "interactionId": "missing-ui-home-screen-2-7622",
+      "question": "页面「Home Screen」中的控件「Grocery Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-forgot-password-2-9004",
+      "interactionId": "inferred-ui-forgot-password-2-9004",
+      "question": "页面「Forgot Password?」中的控件「Button Background」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-forgot-password-2-9013",
+      "interactionId": "inferred-ui-forgot-password-2-9013",
+      "question": "页面「Forgot Password?」中的控件「Back Button」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-login-signup-2-7715",
+      "interactionId": "inferred-ui-login-signup-2-7715",
+      "question": "页面「Login/SignUp」中的控件「Login Button Background」是否应该跳转到「Login」？原因：按钮文案与页面 Login 匹配，仍需用户确认。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-menu-2-7906-control",
+      "interactionId": "missing-ui-menu-2-7906-control",
+      "question": "页面「Menu」中的控件「Close Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-otp-verification-2-9076",
+      "interactionId": "inferred-ui-otp-verification-2-9076",
+      "question": "页面「OTP Verification」中的控件「Verify button background」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-otp-verification-2-9093",
+      "interactionId": "inferred-ui-otp-verification-2-9093",
+      "question": "页面「OTP Verification」中的控件「Back Button」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-register-2-9120",
+      "interactionId": "missing-ui-register-2-9120",
+      "question": "页面「Register」中的控件「Google button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-register-2-9128",
+      "interactionId": "missing-ui-register-2-9128",
+      "question": "页面「Register」中的控件「Facebook button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-register-2-9132",
+      "interactionId": "missing-ui-register-2-9132",
+      "question": "页面「Register」中的控件「Apple button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-register-2-9140",
+      "interactionId": "missing-ui-register-2-9140",
+      "question": "页面「Register」中的控件「Register button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-register-2-9157",
+      "interactionId": "inferred-ui-register-2-9157",
+      "question": "页面「Register」中的控件「Back Button」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-profile-2-8184-control",
+      "interactionId": "missing-ui-profile-2-8184-control",
+      "question": "页面「Profile」中的控件「Update Profile」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-choose-ride-2-8021-control",
+      "interactionId": "missing-ui-choose-ride-2-8021-control",
+      "question": "页面「Choose Ride」中的控件「Button icon container」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-create-new-password-2-9038",
+      "interactionId": "missing-ui-create-new-password-2-9038",
+      "question": "页面「Create new password」中的控件「Reset Password button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-create-new-password-2-9050",
+      "interactionId": "inferred-ui-create-new-password-2-9050",
+      "question": "页面「Create new password」中的控件「Back Button」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-password-changed-2-9182",
+      "interactionId": "inferred-ui-password-changed-2-9182",
+      "question": "页面「Password Changed!」中的控件「Button background」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-booking-detail-2-8449-control",
+      "interactionId": "missing-ui-booking-detail-2-8449-control",
+      "question": "页面「Booking Detail」中的控件「Message Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-cancel-confirmation-2-8526-control",
+      "interactionId": "missing-ui-cancel-confirmation-2-8526-control",
+      "question": "页面「Cancel Confirmation」中的控件「Message Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-cancel-confirmation-2-8530-control",
+      "interactionId": "missing-ui-cancel-confirmation-2-8530-control",
+      "question": "页面「Cancel Confirmation」中的控件「Call Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-cancel-confirmation-2-8572",
+      "interactionId": "inferred-ui-cancel-confirmation-2-8572",
+      "question": "页面「Cancel Confirmation」中的控件「Button Background」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-cancel-confirmation-2-8575",
+      "interactionId": "inferred-ui-cancel-confirmation-2-8575",
+      "question": "页面「Cancel Confirmation」中的控件「Button Background」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-cancelled-2-8616-control",
+      "interactionId": "missing-ui-cancelled-2-8616-control",
+      "question": "页面「Cancelled」中的控件「Message Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-cancelled-2-8620-control",
+      "interactionId": "missing-ui-cancelled-2-8620-control",
+      "question": "页面「Cancelled」中的控件「Call Button」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-cancelled-2-8662",
+      "interactionId": "inferred-ui-cancelled-2-8662",
+      "question": "页面「Cancelled」中的控件「Button Background」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-inferred-ui-cancelled-2-8665",
+      "interactionId": "inferred-ui-cancelled-2-8665",
+      "question": "页面「Cancelled」中的控件「Button Background」是否应该跳转到「Login」？原因：按钮文案暗示返回入口，推断目标为 Login。",
+      "options": [
+        {
+          "label": "跳转到：Login",
+          "value": "target:login"
+        },
+        {
+          "label": "跳转到：Home Screen",
+          "value": "target:home-screen"
+        },
+        {
+          "label": "跳转到：Forgot Password?",
+          "value": "target:forgot-password"
+        },
+        {
+          "label": "跳转到：Login/SignUp",
+          "value": "target:login-signup"
+        },
+        {
+          "label": "跳转到：Menu",
+          "value": "target:menu"
+        },
+        {
+          "label": "跳转到：Ride Book",
+          "value": "target:ride-book"
+        },
+        {
+          "label": "跳转到：Rewards Screen",
+          "value": "target:rewards-screen"
+        },
+        {
+          "label": "跳转到：OTP Verification",
+          "value": "target:otp-verification"
+        },
+        {
+          "label": "跳转到：Register",
+          "value": "target:register"
+        },
+        {
+          "label": "跳转到：Profile",
+          "value": "target:profile"
+        },
+        {
+          "label": "跳转到：Choose Ride",
+          "value": "target:choose-ride"
+        },
+        {
+          "label": "跳转到：Create new password",
+          "value": "target:create-new-password"
+        },
+        {
+          "label": "跳转到：Payment Method",
+          "value": "target:payment-method"
+        },
+        {
+          "label": "跳转到：Password Changed!",
+          "value": "target:password-changed"
+        },
+        {
+          "label": "跳转到：Find-Driver",
+          "value": "target:find-driver"
+        },
+        {
+          "label": "跳转到：Booking Detail",
+          "value": "target:booking-detail"
+        },
+        {
+          "label": "跳转到：Cancel Confirmation",
+          "value": "target:cancel-confirmation"
+        },
+        {
+          "label": "跳转到：Chat",
+          "value": "target:chat"
+        },
+        {
+          "label": "跳转到：Cancelled",
+          "value": "target:cancelled"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    }
+  ],
+  "confirmations": [],
+  "stateMachines": [],
+  "report": {
+    "unsupportedCount": 22,
+    "unresolvedInteractionCount": 35,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}
