@@ -46,6 +46,19 @@ const flowPlan = flowPlanDraftSchema.parse({
       confidence: "high",
       reason: "trusted",
     },
+    {
+      id: "figma-change-to-missing-target",
+      source: "figma",
+      uiNodeId: "tab-account",
+      sourceNodeName: "Account Tab",
+      trigger: "click",
+      intent: "unknown",
+      fromPageId: "home",
+      confirmed: false,
+      confidence: "low",
+      reason: "Figma prototype target is missing",
+      blockedReason: "prototype_target_missing",
+    },
   ],
   confirmationQuestions: [],
   confirmations: [],
@@ -184,6 +197,7 @@ describe("Flow-M10 question generator", () => {
 
     expect(questions.map((question) => question.id)).toEqual([
       "m10-missing-login-submit",
+      "m10-figma-change-to-missing-target",
       "m10-community-login-001-missing-real-submit",
     ]);
     expect(questions[0]).toMatchObject({
@@ -192,6 +206,13 @@ describe("Flow-M10 question generator", () => {
       allowedAnswerKinds: expect.arrayContaining(["submit", "decline"]),
     });
     expect(questions[1]).toMatchObject({
+      source: "figma",
+      classification: "missing_evidence",
+      questionKind: "set_state",
+      applyCarrier: "flow_plan",
+      allowedAnswerKinds: ["set_state", "decline"],
+    });
+    expect(questions[2]).toMatchObject({
       sampleId: "community-login-001",
       applyCarrier: "summary_only",
     });

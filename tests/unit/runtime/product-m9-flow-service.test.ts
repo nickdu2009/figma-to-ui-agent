@@ -364,6 +364,56 @@ describe("Product-M9 flow service", () => {
     expect(result.error?.category).toBe("partial_evidence");
   });
 
+  it("resolves prototype target gaps when the user declines the confirmation", async () => {
+    const root = "data/test-product-m9-service-declined-prototype-gap";
+    roots.push(root);
+    const flowPlanPath = await createMissingEvidenceFlowPlan(root);
+    const answersPath = join(root, "prototype-gap-answers.json");
+    await mkdir(root, { recursive: true });
+    await writeFile(
+      answersPath,
+      `${JSON.stringify(
+        [
+          {
+            id: "answer-decline-figma-missing-target",
+            questionId: "m10-figma-missing-target",
+            answerKind: "decline",
+            reason: "user confirmed this Figma prototype gap should not run",
+          },
+        ],
+        null,
+        2,
+      )}\n`,
+    );
+
+    const result = await runProductM9Flow({
+      projectId: "demo-project",
+      mode: "local",
+      runId: "product-m9-service-declined-prototype-gap",
+      flowPlanPath: relative(flowPlanPath),
+      uiSpecPath: `${BASE}/ui-spec.json`,
+      answersPath: relative(answersPath),
+      reportRoot: `${root}/reports`,
+    });
+
+    expect(result.metrics.missingEvidence).toBe(0);
+    expect(result.metrics.submitLikeNeedsConfirmation).toBe(0);
+    expect(result.stages.confirmation?.message).toContain("declined=1");
+    const confirmed = JSON.parse(
+      await readFile(
+        `${root}/reports/product-m9-service-declined-prototype-gap/confirmed-flow-plan.json`,
+        "utf8",
+      ),
+    ) as { interactions: Array<{ id: string; blockedReason?: string }> };
+    expect(
+      confirmed.interactions.find(
+        (interaction) => interaction.id === "figma-missing-target",
+      ),
+    ).toMatchObject({
+      blockedReason: "user_declined_interaction",
+    });
+  });
+
   it("applies Flow-M10 answers before Product-M9 execution", async () => {
     const root = "data/test-product-m9-service-confirmed-answers";
     roots.push(root);

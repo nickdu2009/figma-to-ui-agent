@@ -26,9 +26,25 @@ function isSubmitLike(interaction: FlowPlanInteraction): boolean {
   );
 }
 
+function isConfirmableFigmaTargetGap(
+  interaction: FlowPlanInteraction,
+): boolean {
+  return (
+    interaction.source === "figma" &&
+    (interaction.blockedReason === "prototype_target_missing" ||
+      interaction.blockedReason === "prototype_target_page_missing")
+  );
+}
+
 function questionKindFor(
   interaction: FlowPlanInteraction,
 ): FlowM10ConfirmationQuestion["questionKind"] {
+  if (interaction.blockedReason === "prototype_target_missing") {
+    return "set_state";
+  }
+  if (interaction.blockedReason === "prototype_target_page_missing") {
+    return "navigate";
+  }
   if (isSubmitLike(interaction)) {
     return "submit_like";
   }
@@ -69,7 +85,8 @@ export function generateFlowM10ConfirmationQuestions(input: {
   for (const interaction of input.flowPlan?.interactions ?? []) {
     if (
       interaction.source !== "inferred" &&
-      interaction.source !== "missing"
+      interaction.source !== "missing" &&
+      !isConfirmableFigmaTargetGap(interaction)
     ) {
       continue;
     }

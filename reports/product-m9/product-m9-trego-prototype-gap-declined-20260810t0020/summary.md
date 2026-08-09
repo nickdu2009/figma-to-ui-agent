@@ -1,0 +1,40 @@
+# Product-M9 Real FlowPlan Agent Entry 报告
+
+- runId: product-m9-trego-prototype-gap-declined-20260810t0020
+- status: passed
+- ok: true
+- mode: restricted-live
+- projectId: product-m9-trego-prototype-gap-declined-001
+- designBundlePath: data/projects/product-m9-trego-prototype-gap-declined-001/figma/current.json
+- uiSpecPath: data/projects/product-m9-trego-prototype-gap-declined-001/specs/current.json
+- flowPlanPath: reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/confirmed-flow-plan.json
+- confirmedFlowPlanPath: reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/confirmed-flow-plan.json
+- validationPath: reports/product-m9/product-m9-trego-prototype-gap-declined-20260810t0020/flow-m11-summary.json
+
+## Metrics
+
+- trustedNavigate: 48
+- trustedStateChange: 0
+- confirmedSubmit: 1
+- submitLikeNeedsConfirmation: 0
+- unsupported: 0
+- missingEvidence: 0
+- successfulFixtureIds: flow-figma-d5e7fe5be3195937-fixture, flow-figma-79f7f3f27a0bff85-fixture, flow-figma-16c95e11156fa57d-fixture, flow-figma-c349c922178502e4-fixture, flow-figma-339fce85cd937c6d-fixture, flow-figma-9695d177b8a1b88b-fixture, flow-figma-7e4d71cf477d292a-fixture, flow-figma-39400948316dd3a7-fixture, flow-figma-db27a49e201b1341-fixture, flow-figma-c14386712c752856-fixture, flow-figma-fb0e68d02befa7ad-fixture, flow-figma-bcf1e514e2490200-fixture, flow-figma-4526dee46b1c64b7-fixture, flow-figma-b9c21f1e86732f92-fixture, flow-figma-0d13910960409b7e-fixture, flow-figma-36e2c456cec86cca-fixture, flow-figma-9baa464d4cc24403-fixture, flow-figma-3aa90cddacb27279-fixture, flow-figma-426ed96ae279460a-fixture, flow-figma-4e2a538a6ff27d0a-fixture, flow-figma-7e3b12694b30e4fe-fixture, flow-figma-cd187e5fc2314ce9-fixture, flow-figma-dd087e83d31b91c2-fixture, flow-figma-5b397c5bd1ebf642-fixture, flow-figma-d4949995b2a5e18b-fixture, flow-figma-ed825e5d9278fb31-fixture, flow-figma-66f1ebc087e1d53f-fixture, flow-figma-cd2af240e808cd87-fixture, flow-figma-9f60ad22ec21d0cc-fixture, flow-figma-b1b218c48ebb641b-fixture, flow-figma-286aceec41e782dc-fixture, flow-figma-a753de0a98f1c602-fixture, flow-figma-703bb7e4891275ae-fixture, flow-figma-2a3d0d6dea04a1d5-fixture, flow-figma-0f793a786b222f1f-fixture, flow-figma-4c0b961e96ea1898-fixture, flow-figma-70b05e34836bd364-fixture, flow-figma-e42f41f7ad03bc7b-fixture, flow-figma-954c8be37cc49243-fixture, flow-figma-ad1a8f640332d8bb-fixture, flow-figma-f6aa06a8e7dc35f4-fixture, flow-figma-1839393ff6ffee66-fixture, flow-figma-ef88eb7922190fcd-fixture, flow-figma-a363fee7d422987d-fixture, flow-figma-0ebb868c4814414f-fixture, flow-figma-100c7bc4be309e87-fixture, flow-figma-bdf358f030ee23ff-fixture, flow-figma-e140bf39d8ee0b94-fixture, flow-missing-ui-create-new-password-2-9038-fixture
+- failedFixtureIds: none
+
+## Stages
+
+- inspect: passed - Product-M9 input validated
+- staticGeneration: passed - UISpec generated from restricted-live DesignBundle
+- flowPlanExtraction: passed - FlowPlan generated and saved from Figma evidence
+- confirmation: passed - Flow-M10 confirmation answers applied=1 declined=35 rejected=0
+- execution: partial - Flow-M11 execution partial
+- report: passed - Product-M9 summary written
+
+## Error
+
+- None
+
+## Next Action
+
+- Product-M9 non-submit FlowPlan validation passed; multistep submit coverage was not required for this artifact.
