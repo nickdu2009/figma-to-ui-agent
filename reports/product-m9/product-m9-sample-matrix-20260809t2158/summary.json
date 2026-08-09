@@ -1,0 +1,376 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-08-09T21:58:00+08:00",
+  "gitHead": "997d342",
+  "objective": "Product-M9 real FlowPlan sample matrix closure toward unknown real Figma -> UI/Flow validation loop",
+  "overallStatus": "partial",
+  "decision": "Product-M9 has proven trusted navigate and CHANGE_TO/variant state-change execution, but the full project goal is not complete because submit-like confirmation and missing-target sample gaps remain.",
+  "totals": {
+    "sampleCount": 5,
+    "passed": 2,
+    "partial": 3,
+    "trustedNavigate": 66,
+    "trustedStateChange": 23,
+    "submitLikeNeedsConfirmation": 4,
+    "unsupported": 0,
+    "missingEvidence": 7,
+    "failedFixtures": 0,
+    "successfulFixtures": 90
+  },
+  "samples": [
+    {
+      "id": "cake-navigation",
+      "label": "Cake navigation-only",
+      "category": "trusted navigate",
+      "reportPath": "reports/product-m9/cake-navigation-only-passed-20260809t2146/summary.json",
+      "evidence": "page-level NAVIGATE/SWAP -> trusted navigate execution",
+      "conclusion": "passed; navigation-only non-submit evidence is sufficient for this artifact",
+      "limitation": "does not cover submit-like flows",
+      "status": "passed",
+      "ok": true,
+      "errorCategory": null,
+      "nextAction": "Product-M9 non-submit FlowPlan validation passed; multistep submit coverage was not required for this artifact.",
+      "metrics": {
+        "trustedNavigate": 66,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [
+          "flow-figma-dde2b50f99cc4409-fixture",
+          "flow-figma-0265f6f5146a1968-fixture",
+          "flow-figma-9a7b54a6e9c5b502-fixture",
+          "flow-figma-6c22f020608f4671-fixture",
+          "flow-figma-00202911a8dbe704-fixture",
+          "flow-figma-1014036f4e8a1321-fixture",
+          "flow-figma-8cf64f5a3128ce17-fixture",
+          "flow-figma-cceb6c4cc5c460d4-fixture",
+          "flow-figma-e841d2739adebf23-fixture",
+          "flow-figma-e92837c78195ee94-fixture",
+          "flow-figma-e023814939bce7b5-fixture",
+          "flow-figma-75028b6f2de3f32c-fixture",
+          "flow-figma-e0023c09d5e99c40-fixture",
+          "flow-figma-4fa3851c0b933828-fixture",
+          "flow-figma-50b3da03d74ed92a-fixture",
+          "flow-figma-86e65d8c146d833a-fixture",
+          "flow-figma-cc4add100f34c525-fixture",
+          "flow-figma-efcec32388ce2b22-fixture",
+          "flow-figma-819032b6f0aa81d5-fixture",
+          "flow-figma-0523a57d251d9959-fixture",
+          "flow-figma-3ab84fe059408b53-fixture",
+          "flow-figma-9c71aff43301182e-fixture",
+          "flow-figma-162d19af07d5c4e6-fixture",
+          "flow-figma-c7ebf7d85ee5da0a-fixture",
+          "flow-figma-89e183669d6d8910-fixture",
+          "flow-figma-17fa3fff81f76a8f-fixture",
+          "flow-figma-832bfa08f8b8ae36-fixture",
+          "flow-figma-e40ea6bd9aa73b56-fixture",
+          "flow-figma-828983aaae7d3c35-fixture",
+          "flow-figma-0baf685d4258e33a-fixture",
+          "flow-figma-03006dad0758a756-fixture",
+          "flow-figma-4424094ceea2b3f3-fixture",
+          "flow-figma-2d8a8f6150d7c6bd-fixture",
+          "flow-figma-852f993bcbebbe4d-fixture",
+          "flow-figma-137dc5b22d3502bc-fixture",
+          "flow-figma-33193cc9e3602ab1-fixture",
+          "flow-figma-1eeee8a44f52da1b-fixture",
+          "flow-figma-a24550879e7273a0-fixture",
+          "flow-figma-fb599b9b44fc80c2-fixture",
+          "flow-figma-a07c92a63dfedb1f-fixture",
+          "flow-figma-c955533ff9dc5c1c-fixture",
+          "flow-figma-b2c6df8015c97c43-fixture",
+          "flow-figma-704a781bba306e2e-fixture",
+          "flow-figma-53850000408581e9-fixture",
+          "flow-figma-8caeab542144536f-fixture",
+          "flow-figma-d9c69e103aa71095-fixture",
+          "flow-figma-55ef662f4e6b6fd1-fixture",
+          "flow-figma-0b8fa00d6ba0fc70-fixture",
+          "flow-figma-7e1ca50399711d78-fixture",
+          "flow-figma-22d5b80fa7820dd2-fixture",
+          "flow-figma-84d0607172834f77-fixture",
+          "flow-figma-2d98cc31a4409ff5-fixture",
+          "flow-figma-77c08d73d785412f-fixture",
+          "flow-figma-5df78ec759d80688-fixture",
+          "flow-figma-b264538a05c445e9-fixture",
+          "flow-figma-9bd368656a1f860b-fixture",
+          "flow-figma-23e0b87e8551be7a-fixture",
+          "flow-figma-dd9bdf620bacdd2d-fixture",
+          "flow-figma-f5ea4d04e2d066eb-fixture",
+          "flow-figma-ade060751f614e03-fixture",
+          "flow-figma-be726540425c1af7-fixture",
+          "flow-figma-3fb093a555c423f4-fixture",
+          "flow-figma-2b809d60aac1b73c-fixture",
+          "flow-figma-ddc6016282683733-fixture",
+          "flow-figma-a4a8496fb40b8a96-fixture",
+          "flow-figma-c0a3920089790013-fixture"
+        ],
+        "failedFixtureIds": []
+      },
+      "validation": {
+        "status": "partial",
+        "reasons": [
+          "flow_m11_trusted_submit_fixture_missing",
+          "flow_m11_multistep_submit_fixture_missing",
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "counts": {
+          "fixtureCount": 66,
+          "successfulFixtureCount": 66,
+          "failedFixtureCount": 0,
+          "stepCount": 132,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 0,
+          "referenceDanglingRejectionCount": 0
+        },
+        "failedFixtureIds": [],
+        "successfulFixtureCount": 66
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/cake-navigation-only-passed-20260809t2146/summary.json",
+        "summaryMarkdown": "reports/product-m9/cake-navigation-only-passed-20260809t2146/summary.md",
+        "validationPath": "reports/product-m9/cake-navigation-only-passed-20260809t2146/flow-m11-summary.json",
+        "confirmationQuestionsPath": null,
+        "confirmationAnswerTemplatePath": null
+      }
+    },
+    {
+      "id": "community-mobile-change-to",
+      "label": "Community mobile Flow-M14",
+      "category": "CHANGE_TO variant / set_state",
+      "reportPath": "reports/product-m9/product-m9-community-mobile-flow-m14-passed-local-20260809t2148/summary.json",
+      "evidence": "CHANGE_TO/variant target -> trusted state change execution",
+      "conclusion": "passed; Flow-M14 CHANGE_TO executable path is proven on this artifact",
+      "limitation": "does not cover submit-like flows",
+      "status": "passed",
+      "ok": true,
+      "errorCategory": null,
+      "nextAction": "Product-M9 non-submit FlowPlan validation passed; multistep submit coverage was not required for this artifact.",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 12,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [
+          "flow-figma-f1e69831804cba1c-fixture",
+          "flow-figma-076a56448bf7956b-fixture",
+          "flow-figma-aad70f0e58a4873e-fixture",
+          "flow-figma-046f548ad78b98e0-fixture",
+          "flow-figma-064cffbb9f8efd85-fixture",
+          "flow-figma-fa1c270553de5d33-fixture",
+          "flow-figma-49d68f4313157af5-fixture",
+          "flow-figma-484398ff868da059-fixture",
+          "flow-figma-3093cd194c7d71a5-fixture",
+          "flow-figma-77ddf8af1b68916e-fixture",
+          "flow-figma-aa9f07674b99bb04-fixture",
+          "flow-figma-77e94cf4e20e4887-fixture"
+        ],
+        "failedFixtureIds": []
+      },
+      "validation": {
+        "status": "partial",
+        "reasons": [
+          "flow_m11_trusted_submit_fixture_missing",
+          "flow_m11_multistep_submit_fixture_missing",
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "counts": {
+          "fixtureCount": 12,
+          "successfulFixtureCount": 12,
+          "failedFixtureCount": 0,
+          "stepCount": 24,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 0,
+          "referenceDanglingRejectionCount": 0
+        },
+        "failedFixtureIds": [],
+        "successfulFixtureCount": 12
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-community-mobile-flow-m14-passed-local-20260809t2148/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-community-mobile-flow-m14-passed-local-20260809t2148/summary.md",
+        "validationPath": "reports/product-m9/product-m9-community-mobile-flow-m14-passed-local-20260809t2148/flow-m11-summary.json",
+        "confirmationQuestionsPath": null,
+        "confirmationAnswerTemplatePath": null
+      }
+    },
+    {
+      "id": "nexkart-declined",
+      "label": "Nexkart ecommerce",
+      "category": "declined ambiguous interactions",
+      "reportPath": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/summary.json",
+      "evidence": "previously declined interactions are not re-prompted",
+      "conclusion": "partial; no repeated confirmation prompt, but no positive executable flow evidence remains",
+      "limitation": "sample is not useful as Product-M9 positive acceptance evidence after decline-only confirmation",
+      "status": "partial",
+      "ok": false,
+      "errorCategory": "partial_evidence",
+      "nextAction": "查看 partial reasons，补样本、补确认或人工复核。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "validation": {
+        "status": "failed",
+        "reasons": [
+          "flow_m11_trusted_submit_fixture_missing",
+          "flow_m11_multistep_submit_fixture_missing",
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "counts": {
+          "fixtureCount": 0,
+          "successfulFixtureCount": 0,
+          "failedFixtureCount": 0,
+          "stepCount": 0,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 0,
+          "referenceDanglingRejectionCount": 0
+        },
+        "failedFixtureIds": [],
+        "successfulFixtureCount": 0
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/summary.md",
+        "validationPath": "reports/product-m9/product-m9-nexkart-declined-no-repeat-20260809t2152/flow-m11-summary.json",
+        "confirmationQuestionsPath": null,
+        "confirmationAnswerTemplatePath": null
+      }
+    },
+    {
+      "id": "booking-target-missing",
+      "label": "Booking reaction-first",
+      "category": "mixed state-change plus missing target",
+      "reportPath": "reports/product-m9/product-m9-booking-target-missing-classified-20260809t2154/summary.json",
+      "evidence": "trusted state changes execute; missing Figma targets are classified as missing evidence",
+      "conclusion": "partial; executable state-change evidence exists, but six interactions lack target identifiers",
+      "limitation": "unrecoverable from current FlowPlan evidence unless a better sample or external supplement supplies targets",
+      "status": "partial",
+      "ok": false,
+      "errorCategory": "partial_evidence",
+      "nextAction": "查看 partial reasons，补样本、补确认或人工复核。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 11,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 6,
+        "successfulFixtureIds": [
+          "flow-figma-02d0d9f901e987ae-fixture",
+          "flow-figma-f5faec37a5db849c-fixture",
+          "flow-figma-0ec1b5b1bb362b56-fixture",
+          "flow-figma-161878381df77c4a-fixture",
+          "flow-figma-73c539f332dce8d0-fixture",
+          "flow-figma-715e3964be5df74c-fixture",
+          "flow-figma-d81358602d6e0a23-fixture",
+          "flow-figma-0c844eb80beab5da-fixture",
+          "flow-figma-439a34bb2755161a-fixture",
+          "flow-figma-134b1fac692a2fee-fixture",
+          "flow-figma-12d1c2467aceebaa-fixture"
+        ],
+        "failedFixtureIds": []
+      },
+      "validation": {
+        "status": "partial",
+        "reasons": [
+          "flow_plan_untrusted_source",
+          "flow_m11_trusted_submit_fixture_missing",
+          "flow_m11_multistep_submit_fixture_missing",
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "counts": {
+          "fixtureCount": 11,
+          "successfulFixtureCount": 11,
+          "failedFixtureCount": 0,
+          "stepCount": 22,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 6,
+          "referenceDanglingRejectionCount": 0
+        },
+        "failedFixtureIds": [],
+        "successfulFixtureCount": 11
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-booking-target-missing-classified-20260809t2154/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-booking-target-missing-classified-20260809t2154/summary.md",
+        "validationPath": "reports/product-m9/product-m9-booking-target-missing-classified-20260809t2154/flow-m11-summary.json",
+        "confirmationQuestionsPath": null,
+        "confirmationAnswerTemplatePath": null
+      }
+    },
+    {
+      "id": "design-system-submit-like",
+      "label": "Design System submit-like",
+      "category": "submit-like needs confirmation",
+      "reportPath": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/summary.json",
+      "evidence": "local re-run after target-gap classification changes",
+      "conclusion": "partial; execution has one successful fixture and zero failed fixtures, but four controls still require user confirmation",
+      "limitation": "semantic intent cannot be inferred safely from Figma/label evidence alone",
+      "status": "partial",
+      "ok": false,
+      "errorCategory": "needs_confirmation",
+      "nextAction": "向用户展示 confirmation questions，等待结构化答案后重跑。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "submitLikeNeedsConfirmation": 4,
+        "unsupported": 0,
+        "missingEvidence": 1,
+        "successfulFixtureIds": [
+          "flow-missing-ui-in-modals-14-4815-control-1-fixture"
+        ],
+        "failedFixtureIds": []
+      },
+      "validation": {
+        "status": "passed",
+        "reasons": [
+          "flow_plan_untrusted_source"
+        ],
+        "counts": {
+          "fixtureCount": 1,
+          "successfulFixtureCount": 1,
+          "failedFixtureCount": 0,
+          "stepCount": 20,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 5,
+          "referenceDanglingRejectionCount": 0
+        },
+        "failedFixtureIds": [],
+        "successfulFixtureCount": 1
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/summary.md",
+        "validationPath": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/flow-m11-summary.json",
+        "confirmationQuestionsPath": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/confirmation-questions.json",
+        "confirmationAnswerTemplatePath": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/confirmation-answer-template.json"
+      }
+    }
+  ],
+  "nextActions": [
+    "Resolve Design System submit-like questions through structured confirmation or a separately authorized semantic supplement, then rerun Product-M9.",
+    "Replace or supplement target-missing samples where Figma REST evidence lacks destination/transition target identifiers.",
+    "Keep Cake and Community mobile as positive regression baselines for navigate and CHANGE_TO/state-change paths.",
+    "Add at least one positive real submit/dialog sample before claiming Product-M9 completion for broader unknown-file acceptance."
+  ]
+}

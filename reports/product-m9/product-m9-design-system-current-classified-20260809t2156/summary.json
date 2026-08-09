@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "partial",
+  "mode": "local",
+  "projectId": "product-m9-ac10-design-system-submit-compare-001",
+  "runId": "product-m9-design-system-current-classified-20260809t2156",
+  "stages": {
+    "inspect": {
+      "status": "passed",
+      "message": "Product-M9 input validated"
+    },
+    "staticGeneration": {
+      "status": "passed",
+      "message": "Local UISpec artifact loaded",
+      "artifactRef": "data/projects/product-m9-ac10-design-system-submit-compare-001/specs/current.json"
+    },
+    "flowPlanExtraction": {
+      "status": "passed",
+      "message": "Local FlowPlan artifact loaded",
+      "artifactRef": "reports/product-m9/product-m9-ac10-design-system-submit-compare-001-20260809t2046/confirmed-flow-plan.json"
+    },
+    "confirmation": {
+      "status": "partial",
+      "message": "Flow-M10 confirmation questions written=4",
+      "artifactRef": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/confirmation-questions.json"
+    },
+    "execution": {
+      "status": "passed",
+      "message": "Flow-M11 execution passed",
+      "artifactRef": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/flow-m11-summary.json",
+      "reasonCode": "flow_plan_untrusted_source"
+    },
+    "report": {
+      "status": "passed",
+      "message": "Product-M9 summary written"
+    }
+  },
+  "artifactRefs": {
+    "uiSpecPath": "data/projects/product-m9-ac10-design-system-submit-compare-001/specs/current.json",
+    "flowPlanPath": "reports/product-m9/product-m9-ac10-design-system-submit-compare-001-20260809t2046/confirmed-flow-plan.json",
+    "confirmationQuestionsPath": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/confirmation-questions.json",
+    "confirmationAnswerTemplatePath": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/confirmation-answer-template.json",
+    "validationPath": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/flow-m11-summary.json",
+    "summaryJson": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/summary.md"
+  },
+  "metrics": {
+    "trustedNavigate": 0,
+    "trustedStateChange": 0,
+    "submitLikeNeedsConfirmation": 4,
+    "unsupported": 0,
+    "missingEvidence": 1,
+    "successfulFixtureIds": [
+      "flow-missing-ui-in-modals-14-4815-control-1-fixture"
+    ],
+    "failedFixtureIds": []
+  },
+  "error": {
+    "category": "needs_confirmation",
+    "message": "FlowPlan contains interactions that require user confirmation",
+    "recoverable": true,
+    "nextAction": "向用户展示 confirmation questions，等待结构化答案后重跑。",
+    "retryPolicy": "manual_review"
+  },
+  "nextAction": "向用户展示 confirmation questions，等待结构化答案后重跑。"
+}

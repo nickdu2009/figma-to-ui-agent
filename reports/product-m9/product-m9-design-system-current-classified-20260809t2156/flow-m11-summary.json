@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M11",
+  "scope": "multistep_execution",
+  "status": "passed",
+  "input": {
+    "runId": "product-m9-design-system-current-classified-20260809t2156",
+    "mode": "local",
+    "flowPlanRef": "reports/product-m9/product-m9-ac10-design-system-submit-compare-001-20260809t2046/confirmed-flow-plan.json",
+    "uiSpecRef": "data/projects/product-m9-ac10-design-system-submit-compare-001/specs/current.json",
+    "reportRef": "reports/product-m9/product-m9-design-system-current-classified-20260809t2156/flow-m11-summary.json",
+    "networkBoundary": {
+      "figmaRestCalled": false,
+      "openaiCalled": false,
+      "mode": "local"
+    }
+  },
+  "artifact": {
+    "status": "partial",
+    "reasonCodes": [
+      "flow_plan_untrusted_source"
+    ],
+    "rejectionCount": 5
+  },
+  "counts": {
+    "fixtureCount": 1,
+    "successfulFixtureCount": 1,
+    "failedFixtureCount": 0,
+    "stepCount": 20,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "summaryOnlyRejectionCount": 0,
+    "scenarioOnlyRejectionCount": 0,
+    "untrustedSourceRejectionCount": 5,
+    "referenceDanglingRejectionCount": 0
+  },
+  "fixtures": [
+    {
+      "fixtureId": "flow-missing-ui-in-modals-14-4815-control-1-fixture",
+      "interactionId": "missing-ui-in-modals-14-4815-control",
+      "intent": "submit",
+      "source": "user_confirmed",
+      "submit": true,
+      "inputStepCount": 3,
+      "selectRadioToggleStepCount": 6,
+      "postconditionStepCount": 10
+    }
+  ],
+  "successfulFixtureIds": [
+    "flow-missing-ui-in-modals-14-4815-control-1-fixture"
+  ],
+  "failedFixtureIds": [],
+  "reasons": [
+    "flow_plan_untrusted_source"
+  ],
+  "residualRisks": [
+    "本地 fixture 证明多步骤行为执行链路，不代表真实 Figma 样本覆盖已完成。"
+  ]
+}
