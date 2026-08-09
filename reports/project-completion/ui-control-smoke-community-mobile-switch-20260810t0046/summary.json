@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1",
+  "scope": "ui_control_smoke",
+  "runId": "ui-control-smoke-community-mobile-switch-20260810t0046",
+  "status": "passed",
+  "sourceRef": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.json",
+  "sourceSummary": {
+    "status": "passed",
+    "mode": "restricted-live",
+    "projectId": "product-m9-rl-community-mobile-001",
+    "ok": true
+  },
+  "uiSpecRef": "data/projects/product-m9-rl-community-mobile-001/specs/current.json",
+  "networkBoundary": {
+    "figmaRestCalled": false,
+    "openaiCalled": false,
+    "mode": "local-validation-of-restricted-live-artifact"
+  },
+  "counts": {
+    "fixtureCount": 3,
+    "successfulFixtureCount": 3,
+    "failedFixtureCount": 0,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "byNodeKind": {
+      "switch": 3
+    }
+  },
+  "coverage": {
+    "fill": false,
+    "select": false,
+    "radio": false,
+    "checkbox": false,
+    "switch": true,
+    "selectRadioCheckbox": true
+  },
+  "fixtures": [
+    {
+      "fixtureId": "ui-control-switch-ui-6-11---a---profile-i3186-4557-3096-2596-control-fixture",
+      "nodeId": "ui-6-11---a---profile-I3186-4557-3096-2596-control",
+      "nodeKind": "switch",
+      "capability": "switch",
+      "status": "passed"
+    },
+    {
+      "fixtureId": "ui-control-switch-ui-6-11---a---profile-i3186-4557-3096-2594-control-fixture",
+      "nodeId": "ui-6-11---a---profile-I3186-4557-3096-2594-control",
+      "nodeKind": "switch",
+      "capability": "switch",
+      "status": "passed"
+    },
+    {
+      "fixtureId": "ui-control-switch-ui-6-11---a---profile-i3186-4557-3096-2590-control-fixture",
+      "nodeId": "ui-6-11---a---profile-I3186-4557-3096-2590-control",
+      "nodeKind": "switch",
+      "capability": "switch",
+      "status": "passed"
+    }
+  ],
+  "artifactRefs": {
+    "generatedUISpecPath": "data/ui-control-smoke/ui-control-smoke-community-mobile-switch-20260810t0046/projects/product-m9-rl-community-mobile-001/specs/current.json",
+    "summaryJson": "reports/project-completion/ui-control-smoke-community-mobile-switch-20260810t0046/summary.json",
+    "summaryMarkdown": "reports/project-completion/ui-control-smoke-community-mobile-switch-20260810t0046/summary.md"
+  },
+  "decision": "真实 UISpec artifact 中的控件语义已通过 Preview/Playwright smoke 验证，可作为 select/radio/checkbox 类 UI 控件行为证据。"
+}

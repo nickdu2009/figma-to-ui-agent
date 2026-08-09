@@ -514,6 +514,7 @@ input:focus-visible,
   gap: 6px;
   color: #343a42;
   font-size: 14px;
+  pointer-events: auto;
 }
 
 .ui-field.is-disabled,
@@ -542,6 +543,7 @@ input:focus-visible,
   letter-spacing: inherit;
   line-height: inherit;
   white-space: nowrap;
+  pointer-events: auto;
 }
 
 .ui-input-direct::placeholder,
@@ -564,6 +566,7 @@ input:focus-visible,
   display: grid;
   grid-template-rows: 30px 1fr;
   gap: 0;
+  pointer-events: auto;
 }
 
 .ui-field-framed > span {
@@ -629,6 +632,7 @@ input:focus-visible,
   gap: 8px;
   color: #343a42;
   font-size: 14px;
+  pointer-events: auto;
 }
 
 .ui-radio input,
@@ -644,6 +648,7 @@ input:focus-visible,
   border: 0;
   color: transparent;
   background: transparent;
+  pointer-events: auto;
 }
 
 .ui-control-overlay input {
@@ -654,6 +659,7 @@ input:focus-visible,
   margin: 0;
   opacity: 0;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .ui-control-overlay input:disabled {
@@ -672,6 +678,7 @@ input:focus-visible,
   border: 1px solid #99a4b0;
   border-radius: 4px;
   background: #ffffff;
+  pointer-events: auto;
 }
 
 .ui-textarea textarea {

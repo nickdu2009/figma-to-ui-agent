@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "scope": "ui_control_smoke",
+  "runId": "ui-control-smoke-design-system-select-20260810t0047",
+  "status": "passed",
+  "sourceRef": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/summary.json",
+  "sourceSummary": {
+    "status": "partial",
+    "mode": "restricted-live",
+    "projectId": "product-m9-rl-community-design-system-001",
+    "ok": false
+  },
+  "uiSpecRef": "data/projects/product-m9-rl-community-design-system-001/specs/current.json",
+  "networkBoundary": {
+    "figmaRestCalled": false,
+    "openaiCalled": false,
+    "mode": "local-validation-of-restricted-live-artifact"
+  },
+  "counts": {
+    "fixtureCount": 6,
+    "successfulFixtureCount": 6,
+    "failedFixtureCount": 0,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "byNodeKind": {
+      "input": 3,
+      "select": 3
+    }
+  },
+  "coverage": {
+    "fill": true,
+    "select": true,
+    "radio": false,
+    "checkbox": false,
+    "switch": false,
+    "selectRadioCheckbox": true
+  },
+  "fixtures": [
+    {
+      "fixtureId": "ui-control-input-ui-in-modals-14-4219-control-fixture",
+      "nodeId": "ui-in-modals-14-4219-control",
+      "nodeKind": "input",
+      "capability": "fill",
+      "status": "passed"
+    },
+    {
+      "fixtureId": "ui-control-select-ui-in-modals-14-4292-control-fixture",
+      "nodeId": "ui-in-modals-14-4292-control",
+      "nodeKind": "select",
+      "capability": "select",
+      "status": "passed"
+    },
+    {
+      "fixtureId": "ui-control-select-ui-in-modals-14-4264-control-fixture",
+      "nodeId": "ui-in-modals-14-4264-control",
+      "nodeKind": "select",
+      "capability": "select",
+      "status": "passed"
+    },
+    {
+      "fixtureId": "ui-control-input-ui-in-modals-14-4334-control-fixture",
+      "nodeId": "ui-in-modals-14-4334-control",
+      "nodeKind": "input",
+      "capability": "fill",
+      "status": "passed"
+    },
+    {
+      "fixtureId": "ui-control-select-ui-in-modals-14-4393-control-fixture",
+      "nodeId": "ui-in-modals-14-4393-control",
+      "nodeKind": "select",
+      "capability": "select",
+      "status": "passed"
+    },
+    {
+      "fixtureId": "ui-control-input-ui-in-modals-14-4421-control-fixture",
+      "nodeId": "ui-in-modals-14-4421-control",
+      "nodeKind": "input",
+      "capability": "fill",
+      "status": "passed"
+    }
+  ],
+  "artifactRefs": {
+    "generatedUISpecPath": "data/ui-control-smoke/ui-control-smoke-design-system-select-20260810t0047/projects/product-m9-rl-community-design-system-001/specs/current.json",
+    "summaryJson": "reports/project-completion/ui-control-smoke-design-system-select-20260810t0047/summary.json",
+    "summaryMarkdown": "reports/project-completion/ui-control-smoke-design-system-select-20260810t0047/summary.md"
+  },
+  "decision": "真实 UISpec artifact 中的控件语义已通过 Preview/Playwright smoke 验证，可作为 select/radio/checkbox 类 UI 控件行为证据。"
+}

@@ -825,7 +825,7 @@ async function executeBehaviorFixture(
           throw new Error("fill 缺少后置断言");
         }
       } else if (step.kind === "toggle") {
-        await checkedTargetForStep(page, step.nodeId).click();
+        await targetForStep(page, step.nodeId).click();
         if (!hasPostcondition(fixture.steps, stepIndex)) {
           throw new Error("toggle 缺少后置断言");
         }

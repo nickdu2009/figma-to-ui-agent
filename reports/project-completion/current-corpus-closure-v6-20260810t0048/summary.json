@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1",
+  "scope": "figma_to_ui_agent_current_corpus_closure",
+  "runId": "current-corpus-closure-v6-20260810t0048",
+  "status": "partial",
+  "sourceRefs": {
+    "productM9Evidence": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+    "flowM12": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/summary.json",
+    "flowM14": "reports/flow-m14-next/flow-m14-next-six-sample-extraction-20260809t2030/summary.json",
+    "uiControlSmoke": [
+      "reports/project-completion/ui-control-smoke-community-mobile-switch-20260810t0046/summary.json",
+      "reports/project-completion/ui-control-smoke-design-system-select-20260810t0047/summary.json"
+    ]
+  },
+  "evidenceSummary": {
+    "productM9EvidenceStatus": "passed",
+    "productM9PositiveChangeToVariant": 1,
+    "productM9PositiveConfirmedSubmit": 1,
+    "productM9MissingEvidence": 0,
+    "productM9Unsupported": 0,
+    "productM9FailedFixture": 0,
+    "flowM12Status": "partial",
+    "flowM12RestrictedLiveSummary": false,
+    "flowM14Status": "passed",
+    "flowM14StateChangePositiveSamples": 1,
+    "uiControlSmokeCount": 2,
+    "passedUiControlSmokeCount": 2,
+    "productM9PositiveSampleCount": 2
+  },
+  "capabilities": [
+    {
+      "id": "navigate",
+      "label": "navigate route execution",
+      "restrictedLive": true,
+      "localOrControlled": true,
+      "status": "restricted_live_proven",
+      "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+      "evidence": "Product-M9 current evidence 包含 Trego trustedNavigate=48，且有成功 fixture。",
+      "residualRisk": null
+    },
+    {
+      "id": "set_state",
+      "label": "CHANGE_TO / variant set_state",
+      "restrictedLive": true,
+      "localOrControlled": true,
+      "status": "restricted_live_proven",
+      "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+      "evidence": "Product-M9 current evidence 包含 community-mobile positive.change_to_variant；Flow-M14 six-sample extraction status=passed。",
+      "residualRisk": null
+    },
+    {
+      "id": "submit",
+      "label": "confirmed submit / dialog",
+      "restrictedLive": true,
+      "localOrControlled": true,
+      "status": "restricted_live_proven",
+      "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+      "evidence": "Product-M9 current evidence 包含 Trego positive.confirmed_submit，confirmedSubmit=1 且有成功 fixture。",
+      "residualRisk": null
+    },
+    {
+      "id": "state_machine",
+      "label": "stateMachine transition",
+      "restrictedLive": false,
+      "localOrControlled": true,
+      "status": "local_only",
+      "evidenceRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/summary.json",
+      "evidence": "Flow-M12 corpus r3 通过 local/controlled corpus 报告 stateMachine coverage=true。",
+      "residualRisk": "尚未由当前 Product-M9 evidence set 中的 restricted-live 真实 Figma 样本证明。"
+    },
+    {
+      "id": "select_radio_checkbox",
+      "label": "select/radio/checkbox behavior",
+      "restrictedLive": true,
+      "localOrControlled": true,
+      "status": "restricted_live_proven",
+      "evidenceRef": "reports/project-completion/ui-control-smoke-community-mobile-switch-20260810t0046/summary.json",
+      "evidence": "UI control smoke 在 restricted-live UISpec artifact 上通过 Preview/Playwright 验证了 select/radio/checkbox/switch 类控件行为。",
+      "residualRisk": "该证据证明真实 UISpec artifact 的 DOM 控件行为，不等同于完整业务 stateMachine 语义。"
+    }
+  ],
+  "decision": "Current corpus closure 已用 restricted-live evidence 证明 navigate、CHANGE_TO/set_state、confirmed submit 和 select/radio/checkbox 控件行为；stateMachine 仍只是 local/controlled coverage。",
+  "nextActions": [
+    "补 restricted-live 真实 Figma 样本证明 stateMachine，或明确将 stateMachine 限定为当前交付的 local/controlled coverage。",
+    "完成该裁定后，对完整目标运行最终项目目标完成审计。"
+  ]
+}
