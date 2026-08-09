@@ -29,7 +29,7 @@
       "localOrControlled": true,
       "status": "restricted_live_proven",
       "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
-      "evidence": "Product-M9 current evidence includes Trego trustedNavigate=48 with successful fixtures.",
+      "evidence": "Product-M9 current evidence 包含 Trego trustedNavigate=48，且有成功 fixture。",
       "residualRisk": null
     },
     {
@@ -39,7 +39,7 @@
       "localOrControlled": true,
       "status": "restricted_live_proven",
       "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
-      "evidence": "Product-M9 current evidence includes community-mobile positive.change_to_variant; Flow-M14 six-sample extraction status=passed.",
+      "evidence": "Product-M9 current evidence 包含 community-mobile positive.change_to_variant；Flow-M14 six-sample extraction status=passed。",
       "residualRisk": null
     },
     {
@@ -49,7 +49,7 @@
       "localOrControlled": true,
       "status": "restricted_live_proven",
       "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
-      "evidence": "Product-M9 current evidence includes Trego positive.confirmed_submit with confirmedSubmit=1 and successful fixtures.",
+      "evidence": "Product-M9 current evidence 包含 Trego positive.confirmed_submit，confirmedSubmit=1 且有成功 fixture。",
       "residualRisk": null
     },
     {
@@ -59,8 +59,8 @@
       "localOrControlled": true,
       "status": "local_only",
       "evidenceRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/summary.json",
-      "evidence": "Flow-M12 corpus r3 reports stateMachine coverage=true through local/controlled corpus.",
-      "residualRisk": "Not yet proven by a current restricted-live real Figma sample in the Product-M9 evidence set."
+      "evidence": "Flow-M12 corpus r3 通过 local/controlled corpus 报告 stateMachine coverage=true。",
+      "residualRisk": "尚未由当前 Product-M9 evidence set 中的 restricted-live 真实 Figma 样本证明。"
     },
     {
       "id": "select_radio_checkbox",
@@ -69,13 +69,13 @@
       "localOrControlled": true,
       "status": "local_only",
       "evidenceRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/summary.json",
-      "evidence": "Flow-M12 corpus r3 reports selectRadioCheckbox coverage=true through local/controlled corpus.",
-      "residualRisk": "Not yet proven by a current restricted-live real Figma sample in the Product-M9 evidence set."
+      "evidence": "Flow-M12 corpus r3 通过 local/controlled corpus 报告 selectRadioCheckbox coverage=true。",
+      "residualRisk": "尚未由当前 Product-M9 evidence set 中的 restricted-live 真实 Figma 样本证明。"
     }
   ],
-  "decision": "Current corpus closure proves navigate, CHANGE_TO/set_state, and confirmed submit with restricted-live evidence, but stateMachine and select/radio/checkbox remain local/controlled coverage only.",
+  "decision": "Current corpus closure 已用 restricted-live evidence 证明 navigate、CHANGE_TO/set_state 和 confirmed submit，但 stateMachine 与 select/radio/checkbox 仍只是 local/controlled coverage。",
   "nextActions": [
-    "Either add restricted-live real Figma samples for stateMachine and select/radio/checkbox, or explicitly scope them as local/controlled coverage for the current deliverable.",
-    "After that decision, run the final project goal completion audit against the full objective."
+    "补 restricted-live 真实 Figma 样本证明 stateMachine 与 select/radio/checkbox，或明确将它们限定为当前交付的 local/controlled coverage。",
+    "完成该裁定后，对完整目标运行最终项目目标完成审计。"
   ]
 }

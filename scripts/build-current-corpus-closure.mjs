@@ -75,18 +75,17 @@ function parseArgs(argv) {
 function printHelp() {
   console.log(`Usage: node scripts/build-current-corpus-closure.mjs [options]
 
-Build a redacted project-level current corpus closure report from existing local
-Flow-M12, Flow-M14, and Product-M9 evidence summaries. This command does not
-call Figma or OpenAI.
+从现有本地 Flow-M12、Flow-M14 和 Product-M9 evidence summary 生成脱敏的项目级
+current corpus closure 报告。本命令不调用 Figma 或 OpenAI。
 
-Options:
-  --product-m9-evidence <path>  Product-M9 evidence classification summary
-  --flow-m12 <path>             Flow-M12 corpus summary
-  --flow-m14 <path>             Flow-M14 extraction summary
-  --run-id <id>                 Output run id
-  --report-root <path>          Output report root
-  --json                        Print report JSON
-  --help                        Show help
+选项:
+  --product-m9-evidence <path>  Product-M9 evidence classification summary 路径
+  --flow-m12 <path>             Flow-M12 corpus summary 路径
+  --flow-m14 <path>             Flow-M14 extraction summary 路径
+  --run-id <id>                 输出 run id
+  --report-root <path>          输出报告根目录
+  --json                        输出报告 JSON
+  --help                        显示帮助
 `);
 }
 
@@ -154,7 +153,7 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14 }) {
       localOrControlled: localOrControlled.navigate,
       evidenceRef: inputs.productM9Evidence,
       evidence:
-        "Product-M9 current evidence includes Trego trustedNavigate=48 with successful fixtures.",
+        "Product-M9 current evidence 包含 Trego trustedNavigate=48，且有成功 fixture。",
       residualRisk: null,
     }),
     capability({
@@ -164,7 +163,7 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14 }) {
       localOrControlled: localOrControlled.setState,
       evidenceRef: inputs.productM9Evidence,
       evidence:
-        "Product-M9 current evidence includes community-mobile positive.change_to_variant; Flow-M14 six-sample extraction status=passed.",
+        "Product-M9 current evidence 包含 community-mobile positive.change_to_variant；Flow-M14 six-sample extraction status=passed。",
       residualRisk: null,
     }),
     capability({
@@ -174,7 +173,7 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14 }) {
       localOrControlled: localOrControlled.submit,
       evidenceRef: inputs.productM9Evidence,
       evidence:
-        "Product-M9 current evidence includes Trego positive.confirmed_submit with confirmedSubmit=1 and successful fixtures.",
+        "Product-M9 current evidence 包含 Trego positive.confirmed_submit，confirmedSubmit=1 且有成功 fixture。",
       residualRisk: null,
     }),
     capability({
@@ -184,9 +183,9 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14 }) {
       localOrControlled: localOrControlled.stateMachine,
       evidenceRef: inputs.flowM12,
       evidence:
-        "Flow-M12 corpus r3 reports stateMachine coverage=true through local/controlled corpus.",
+        "Flow-M12 corpus r3 通过 local/controlled corpus 报告 stateMachine coverage=true。",
       residualRisk:
-        "Not yet proven by a current restricted-live real Figma sample in the Product-M9 evidence set.",
+        "尚未由当前 Product-M9 evidence set 中的 restricted-live 真实 Figma 样本证明。",
     }),
     capability({
       id: "select_radio_checkbox",
@@ -195,9 +194,9 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14 }) {
       localOrControlled: localOrControlled.selectRadioCheckbox,
       evidenceRef: inputs.flowM12,
       evidence:
-        "Flow-M12 corpus r3 reports selectRadioCheckbox coverage=true through local/controlled corpus.",
+        "Flow-M12 corpus r3 通过 local/controlled corpus 报告 selectRadioCheckbox coverage=true。",
       residualRisk:
-        "Not yet proven by a current restricted-live real Figma sample in the Product-M9 evidence set.",
+        "尚未由当前 Product-M9 evidence set 中的 restricted-live 真实 Figma 样本证明。",
     }),
   ];
   const missingLocal = capabilities.filter((item) => !item.localOrControlled);
@@ -232,21 +231,21 @@ function buildReport({ runId, inputs, productM9, flowM12, flowM14 }) {
     capabilities,
     decision:
       status === "passed"
-        ? "Current corpus closure fully proves the required capabilities with restricted-live evidence."
-        : "Current corpus closure proves navigate, CHANGE_TO/set_state, and confirmed submit with restricted-live evidence, but stateMachine and select/radio/checkbox remain local/controlled coverage only.",
+        ? "Current corpus closure 已用 restricted-live evidence 完整证明所需能力。"
+        : "Current corpus closure 已用 restricted-live evidence 证明 navigate、CHANGE_TO/set_state 和 confirmed submit，但 stateMachine 与 select/radio/checkbox 仍只是 local/controlled coverage。",
     nextActions:
       status === "passed"
-        ? ["Use this closure as input to the final project goal completion audit."]
+        ? ["将此 closure 作为最终项目目标完成审计的输入。"]
         : [
-            "Either add restricted-live real Figma samples for stateMachine and select/radio/checkbox, or explicitly scope them as local/controlled coverage for the current deliverable.",
-            "After that decision, run the final project goal completion audit against the full objective.",
+            "补 restricted-live 真实 Figma 样本证明 stateMachine 与 select/radio/checkbox，或明确将它们限定为当前交付的 local/controlled coverage。",
+            "完成该裁定后，对完整目标运行最终项目目标完成审计。",
           ],
   };
 }
 
 function markdownFor(report) {
   return [
-    "# Current corpus closure v4",
+    "# Current corpus closure v4 当前总账",
     "",
     `- runId: ${report.runId}`,
     `- status: ${report.status}`,
@@ -255,17 +254,17 @@ function markdownFor(report) {
     "",
     report.decision,
     "",
-    "## Evidence summary",
+    "## 证据汇总",
     "",
-    `- Product-M9 evidence status: ${report.evidenceSummary.productM9EvidenceStatus}`,
-    `- Product-M9 positive CHANGE_TO/variant: ${report.evidenceSummary.productM9PositiveChangeToVariant}`,
-    `- Product-M9 positive confirmed submit: ${report.evidenceSummary.productM9PositiveConfirmedSubmit}`,
-    `- Product-M9 missing/unsupported/failed: ${report.evidenceSummary.productM9MissingEvidence}/${report.evidenceSummary.productM9Unsupported}/${report.evidenceSummary.productM9FailedFixture}`,
-    `- Flow-M12 status: ${report.evidenceSummary.flowM12Status}`,
-    `- Flow-M12 restrictedLiveSummary: ${report.evidenceSummary.flowM12RestrictedLiveSummary}`,
-    `- Flow-M14 status: ${report.evidenceSummary.flowM14Status}`,
+    `- Product-M9 evidence status：${report.evidenceSummary.productM9EvidenceStatus}`,
+    `- Product-M9 positive CHANGE_TO/variant：${report.evidenceSummary.productM9PositiveChangeToVariant}`,
+    `- Product-M9 positive confirmed submit：${report.evidenceSummary.productM9PositiveConfirmedSubmit}`,
+    `- Product-M9 missing/unsupported/failed：${report.evidenceSummary.productM9MissingEvidence}/${report.evidenceSummary.productM9Unsupported}/${report.evidenceSummary.productM9FailedFixture}`,
+    `- Flow-M12 status：${report.evidenceSummary.flowM12Status}`,
+    `- Flow-M12 restrictedLiveSummary：${report.evidenceSummary.flowM12RestrictedLiveSummary}`,
+    `- Flow-M14 status：${report.evidenceSummary.flowM14Status}`,
     "",
-    "## Capability matrix",
+    "## 能力矩阵",
     "",
     "| capability | status | restrictedLive | localOrControlled | evidence | residualRisk |",
     "| --- | --- | --- | --- | --- | --- |",
