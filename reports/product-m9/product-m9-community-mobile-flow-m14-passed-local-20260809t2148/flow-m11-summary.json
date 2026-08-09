@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M11",
+  "scope": "multistep_execution",
+  "status": "partial",
+  "input": {
+    "runId": "product-m9-community-mobile-flow-m14-passed-local-20260809t2148",
+    "mode": "local",
+    "flowPlanRef": "data/projects/product-m9-ac10-community-mobile-001/flow/current.json",
+    "uiSpecRef": "data/projects/product-m9-ac10-community-mobile-001/specs/current.json",
+    "reportRef": "reports/product-m9/product-m9-community-mobile-flow-m14-passed-local-20260809t2148/flow-m11-summary.json",
+    "networkBoundary": {
+      "figmaRestCalled": false,
+      "openaiCalled": false,
+      "mode": "local"
+    }
+  },
+  "artifact": {
+    "status": "loaded",
+    "reasonCodes": [],
+    "rejectionCount": 0
+  },
+  "counts": {
+    "fixtureCount": 12,
+    "successfulFixtureCount": 12,
+    "failedFixtureCount": 0,
+    "stepCount": 24,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "summaryOnlyRejectionCount": 0,
+    "scenarioOnlyRejectionCount": 0,
+    "untrustedSourceRejectionCount": 0,
+    "referenceDanglingRejectionCount": 0
+  },
+  "fixtures": [
+    {
+      "fixtureId": "flow-figma-f1e69831804cba1c-fixture",
+      "interactionId": "figma-f1e69831804cba1c",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-076a56448bf7956b-fixture",
+      "interactionId": "figma-076a56448bf7956b",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-aad70f0e58a4873e-fixture",
+      "interactionId": "figma-aad70f0e58a4873e",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-046f548ad78b98e0-fixture",
+      "interactionId": "figma-046f548ad78b98e0",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-064cffbb9f8efd85-fixture",
+      "interactionId": "figma-064cffbb9f8efd85",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-fa1c270553de5d33-fixture",
+      "interactionId": "figma-fa1c270553de5d33",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-49d68f4313157af5-fixture",
+      "interactionId": "figma-49d68f4313157af5",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-484398ff868da059-fixture",
+      "interactionId": "figma-484398ff868da059",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-3093cd194c7d71a5-fixture",
+      "interactionId": "figma-3093cd194c7d71a5",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-77ddf8af1b68916e-fixture",
+      "interactionId": "figma-77ddf8af1b68916e",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-aa9f07674b99bb04-fixture",
+      "interactionId": "figma-aa9f07674b99bb04",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    },
+    {
+      "fixtureId": "flow-figma-77e94cf4e20e4887-fixture",
+      "interactionId": "figma-77e94cf4e20e4887",
+      "intent": "set_state",
+      "source": "figma",
+      "submit": false,
+      "inputStepCount": 0,
+      "selectRadioToggleStepCount": 0,
+      "postconditionStepCount": 1
+    }
+  ],
+  "successfulFixtureIds": [
+    "flow-figma-f1e69831804cba1c-fixture",
+    "flow-figma-076a56448bf7956b-fixture",
+    "flow-figma-aad70f0e58a4873e-fixture",
+    "flow-figma-046f548ad78b98e0-fixture",
+    "flow-figma-064cffbb9f8efd85-fixture",
+    "flow-figma-fa1c270553de5d33-fixture",
+    "flow-figma-49d68f4313157af5-fixture",
+    "flow-figma-484398ff868da059-fixture",
+    "flow-figma-3093cd194c7d71a5-fixture",
+    "flow-figma-77ddf8af1b68916e-fixture",
+    "flow-figma-aa9f07674b99bb04-fixture",
+    "flow-figma-77e94cf4e20e4887-fixture"
+  ],
+  "failedFixtureIds": [],
+  "reasons": [
+    "flow_m11_trusted_submit_fixture_missing",
+    "flow_m11_multistep_submit_fixture_missing",
+    "flow_m11_select_radio_toggle_missing"
+  ],
+  "residualRisks": [
+    "本地 fixture 证明多步骤行为执行链路，不代表真实 Figma 样本覆盖已完成。"
+  ]
+}

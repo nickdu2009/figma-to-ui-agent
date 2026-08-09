@@ -614,13 +614,13 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
   };
 }
 
-const NAVIGATION_ONLY_ACCEPTED_PARTIAL_REASONS = new Set([
+const NON_SUBMIT_ACCEPTED_PARTIAL_REASONS = new Set([
   "flow_m11_trusted_submit_fixture_missing",
   "flow_m11_multistep_submit_fixture_missing",
   "flow_m11_select_radio_toggle_missing",
 ]);
 
-function isNavigationOnlyPassed(input: {
+function isNonSubmitExecutablePassed(input: {
   readonly artifact: FlowM11ArtifactLoadResult;
   readonly executionReport: FlowM11ExecutionReport;
   readonly metrics: ProductM9RunResult["metrics"];
@@ -637,7 +637,7 @@ function isNavigationOnlyPassed(input: {
     return false;
   }
   return input.executionReport.reasons.every((reason) =>
-    NAVIGATION_ONLY_ACCEPTED_PARTIAL_REASONS.has(reason),
+    NON_SUBMIT_ACCEPTED_PARTIAL_REASONS.has(reason),
   );
 }
 
@@ -655,12 +655,12 @@ function statusAndErrorFor(input: {
         "Product-M9 FlowPlan validation passed; inspect summary and artifact refs before delivery.",
     };
   }
-  if (isNavigationOnlyPassed(input)) {
+  if (isNonSubmitExecutablePassed(input)) {
     return {
       ok: true,
       status: "passed",
       nextAction:
-        "Product-M9 navigation-only FlowPlan validation passed; multistep submit coverage was not required for this artifact.",
+        "Product-M9 non-submit FlowPlan validation passed; multistep submit coverage was not required for this artifact.",
     };
   }
   if (

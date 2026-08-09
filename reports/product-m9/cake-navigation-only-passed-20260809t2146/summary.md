@@ -35,4 +35,4 @@
 
 ## Next Action
 
-- Product-M9 navigation-only FlowPlan validation passed; multistep submit coverage was not required for this artifact.
+- Product-M9 non-submit FlowPlan validation passed; multistep submit coverage was not required for this artifact.
