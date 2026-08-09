@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1",
+  "projectId": "product-m9-rl-community-design-system-001",
+  "runId": "product-m9-rl-community-design-system-001-20260809t2208",
+  "questionCount": 5,
+  "questions": [
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-in-modals-14-4758-control",
+      "interactionId": "missing-ui-in-modals-14-4758-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「btns-set」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-in-modals-14-4758-control",
+      "fromPageId": "in-modals",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "in-modals"
+        ],
+        "nodeIds": [
+          "ui-in-modals-14-4758-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-in-modals-14-4782-control",
+      "interactionId": "missing-ui-in-modals-14-4782-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「btns-set」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-in-modals-14-4782-control",
+      "fromPageId": "in-modals",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "in-modals"
+        ],
+        "nodeIds": [
+          "ui-in-modals-14-4782-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-in-modals-14-4776-control",
+      "interactionId": "missing-ui-in-modals-14-4776-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「btns-set」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-in-modals-14-4776-control",
+      "fromPageId": "in-modals",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "in-modals"
+        ],
+        "nodeIds": [
+          "ui-in-modals-14-4776-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-in-modals-14-4822-control",
+      "interactionId": "missing-ui-in-modals-14-4822-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Cancel」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-in-modals-14-4822-control",
+      "fromPageId": "in-modals",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "in-modals"
+        ],
+        "nodeIds": [
+          "ui-in-modals-14-4822-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-in-modals-14-4815-control",
+      "interactionId": "missing-ui-in-modals-14-4815-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Invite」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-in-modals-14-4815-control",
+      "fromPageId": "in-modals",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "in-modals"
+        ],
+        "nodeIds": [
+          "ui-in-modals-14-4815-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    }
+  ]
+}

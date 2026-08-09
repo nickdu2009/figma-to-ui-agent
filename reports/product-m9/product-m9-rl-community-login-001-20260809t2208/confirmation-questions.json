@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1",
+  "projectId": "product-m9-rl-community-login-001",
+  "runId": "product-m9-rl-community-login-001-20260809t2208",
+  "questionCount": 3,
+  "questions": [
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-login-version-1-3-5137-control",
+      "interactionId": "missing-ui-login-version-1-3-5137-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Log In」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-login-version-1-3-5137-control",
+      "fromPageId": "login-version-1",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "login-version-1"
+        ],
+        "nodeIds": [
+          "ui-login-version-1-3-5137-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-login-version-1-28-4028-control",
+      "interactionId": "missing-ui-login-version-1-28-4028-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Continue with Google」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-login-version-1-28-4028-control",
+      "fromPageId": "login-version-1",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "login-version-1"
+        ],
+        "nodeIds": [
+          "ui-login-version-1-28-4028-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-login-version-1-28-4029-control",
+      "interactionId": "missing-ui-login-version-1-28-4029-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Continue with Facebook」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-login-version-1-28-4029-control",
+      "fromPageId": "login-version-1",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "login-version-1"
+        ],
+        "nodeIds": [
+          "ui-login-version-1-28-4029-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    }
+  ]
+}

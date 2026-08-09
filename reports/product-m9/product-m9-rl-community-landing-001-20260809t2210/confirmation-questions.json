@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1",
+  "projectId": "product-m9-rl-community-landing-001",
+  "runId": "product-m9-rl-community-landing-001-20260809t2210",
+  "questionCount": 1,
+  "questions": [
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-home-10-918-control",
+      "interactionId": "missing-ui-home-10-918-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Register」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-home-10-918-control",
+      "fromPageId": "home",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "home"
+        ],
+        "nodeIds": [
+          "ui-home-10-918-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    }
+  ]
+}

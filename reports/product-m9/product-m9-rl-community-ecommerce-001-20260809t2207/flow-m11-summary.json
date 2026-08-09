@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1",
+  "milestone": "Flow-M11",
+  "scope": "multistep_execution",
+  "status": "failed",
+  "input": {
+    "runId": "product-m9-rl-community-ecommerce-001-20260809t2207",
+    "mode": "restricted-live",
+    "flowPlanRef": "data/projects/product-m9-rl-community-ecommerce-001/flow/current.json",
+    "uiSpecRef": "data/projects/product-m9-rl-community-ecommerce-001/specs/current.json",
+    "reportRef": "reports/product-m9/product-m9-rl-community-ecommerce-001-20260809t2207/flow-m11-summary.json",
+    "networkBoundary": {
+      "figmaRestCalled": true,
+      "openaiCalled": false,
+      "mode": "restricted-live"
+    }
+  },
+  "artifact": {
+    "status": "loaded",
+    "reasonCodes": [],
+    "rejectionCount": 0
+  },
+  "counts": {
+    "fixtureCount": 0,
+    "successfulFixtureCount": 0,
+    "failedFixtureCount": 0,
+    "stepCount": 0,
+    "failedCheckCount": 0,
+    "preSatisfiedExpectationCount": 0,
+    "summaryOnlyRejectionCount": 0,
+    "scenarioOnlyRejectionCount": 0,
+    "untrustedSourceRejectionCount": 0,
+    "referenceDanglingRejectionCount": 0
+  },
+  "fixtures": [],
+  "successfulFixtureIds": [],
+  "failedFixtureIds": [],
+  "reasons": [
+    "flow_m11_trusted_submit_fixture_missing",
+    "flow_m11_multistep_submit_fixture_missing",
+    "flow_m11_select_radio_toggle_missing"
+  ],
+  "residualRisks": [
+    "restricted-live 只证明真实样本 FlowPlan artifact 可执行，不代表真实后端业务提交成功。"
+  ]
+}

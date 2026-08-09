@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "partial",
+  "mode": "restricted-live",
+  "projectId": "product-m9-rl-community-dashboard-001",
+  "runId": "product-m9-rl-community-dashboard-001-20260809t2210",
+  "stages": {
+    "inspect": {
+      "status": "passed",
+      "message": "Product-M9 input validated"
+    },
+    "staticGeneration": {
+      "status": "passed",
+      "message": "UISpec generated from restricted-live DesignBundle",
+      "artifactRef": "data/projects/product-m9-rl-community-dashboard-001/specs/current.json"
+    },
+    "flowPlanExtraction": {
+      "status": "passed",
+      "message": "FlowPlan generated and saved from Figma evidence",
+      "artifactRef": "data/projects/product-m9-rl-community-dashboard-001/flow/current.json"
+    },
+    "execution": {
+      "status": "failed",
+      "message": "Flow-M11 execution failed",
+      "artifactRef": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/flow-m11-summary.json",
+      "reasonCode": "flow_m11_trusted_submit_fixture_missing"
+    },
+    "report": {
+      "status": "passed",
+      "message": "Product-M9 summary written"
+    }
+  },
+  "artifactRefs": {
+    "designBundlePath": "data/projects/product-m9-rl-community-dashboard-001/figma/current.json",
+    "uiSpecPath": "data/projects/product-m9-rl-community-dashboard-001/specs/current.json",
+    "flowPlanPath": "data/projects/product-m9-rl-community-dashboard-001/flow/current.json",
+    "validationPath": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/flow-m11-summary.json",
+    "summaryJson": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/summary.md"
+  },
+  "metrics": {
+    "trustedNavigate": 0,
+    "trustedStateChange": 0,
+    "confirmedSubmit": 0,
+    "submitLikeNeedsConfirmation": 0,
+    "unsupported": 0,
+    "missingEvidence": 0,
+    "successfulFixtureIds": [],
+    "failedFixtureIds": []
+  },
+  "error": {
+    "category": "partial_evidence",
+    "message": "FlowPlan evidence is not executable",
+    "recoverable": true,
+    "nextAction": "查看 partial reasons，补样本、补确认或人工复核。",
+    "retryPolicy": "manual_review"
+  },
+  "nextAction": "查看 partial reasons，补样本、补确认或人工复核。"
+}

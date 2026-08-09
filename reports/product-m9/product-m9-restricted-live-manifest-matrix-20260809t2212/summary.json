@@ -1,0 +1,493 @@
+{
+  "schemaVersion": "1",
+  "generatedAt": "2026-08-09T22:12:00+08:00",
+  "gitHead": "9d7bc02",
+  "mode": "restricted-live",
+  "source": "tests/fixtures/figma/community-sample-manifest.json rest_readable_node_selected samples",
+  "overallStatus": "partial",
+  "decision": "Six manifest samples prove restricted-live Figma REST -> local UISpec/FlowPlan/report generation works without OpenAI. Only community-mobile-001 provides positive executable CHANGE_TO/state-change evidence; the seed corpus still lacks a clean positive submit/dialog restricted-live sample.",
+  "totals": {
+    "sampleCount": 6,
+    "passed": 1,
+    "partial": 5,
+    "trustedNavigate": 0,
+    "trustedStateChange": 12,
+    "confirmedSubmit": 0,
+    "submitLikeNeedsConfirmation": 9,
+    "unsupported": 0,
+    "missingEvidence": 1,
+    "successfulFixtures": 12,
+    "failedFixtures": 0
+  },
+  "samples": [
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "note": "login sample: submit-like confirmation only",
+      "status": "partial",
+      "ok": false,
+      "errorCategory": "needs_confirmation",
+      "nextAction": "向用户展示 confirmation questions，等待结构化答案后重跑。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 3,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "stages": {
+        "inspect": {
+          "status": "passed",
+          "message": "Product-M9 input validated"
+        },
+        "staticGeneration": {
+          "status": "passed",
+          "message": "UISpec generated from restricted-live DesignBundle",
+          "artifactRef": "data/projects/product-m9-rl-community-login-001/specs/current.json"
+        },
+        "flowPlanExtraction": {
+          "status": "passed",
+          "message": "FlowPlan generated and saved from Figma evidence",
+          "artifactRef": "data/projects/product-m9-rl-community-login-001/flow/current.json"
+        },
+        "confirmation": {
+          "status": "partial",
+          "message": "Flow-M10 confirmation questions written=3",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/confirmation-questions.json"
+        },
+        "execution": {
+          "status": "failed",
+          "message": "Flow-M11 execution failed",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/flow-m11-summary.json",
+          "reasonCode": "flow_m11_artifact_rejected"
+        },
+        "report": {
+          "status": "passed",
+          "message": "Product-M9 summary written"
+        }
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/flow-m11-summary.json",
+        "confirmationQuestionsPath": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/confirmation-questions.json",
+        "confirmationAnswerTemplatePath": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/confirmation-answer-template.json"
+      },
+      "validation": {
+        "status": "failed",
+        "reasons": [
+          "flow_m11_artifact_rejected",
+          "flow_plan_untrusted_source"
+        ],
+        "counts": {
+          "fixtureCount": 0,
+          "successfulFixtureCount": 0,
+          "failedFixtureCount": 0,
+          "stepCount": 0,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 3,
+          "referenceDanglingRejectionCount": 0
+        },
+        "successfulFixtureCount": 0,
+        "failedFixtureCount": 0
+      }
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "note": "mobile sample: CHANGE_TO/state-change positive evidence",
+      "status": "passed",
+      "ok": true,
+      "errorCategory": null,
+      "nextAction": "Product-M9 non-submit FlowPlan validation passed; multistep submit coverage was not required for this artifact.",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 12,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [
+          "flow-figma-f1e69831804cba1c-fixture",
+          "flow-figma-076a56448bf7956b-fixture",
+          "flow-figma-aad70f0e58a4873e-fixture",
+          "flow-figma-046f548ad78b98e0-fixture",
+          "flow-figma-064cffbb9f8efd85-fixture",
+          "flow-figma-fa1c270553de5d33-fixture",
+          "flow-figma-49d68f4313157af5-fixture",
+          "flow-figma-484398ff868da059-fixture",
+          "flow-figma-3093cd194c7d71a5-fixture",
+          "flow-figma-77ddf8af1b68916e-fixture",
+          "flow-figma-aa9f07674b99bb04-fixture",
+          "flow-figma-77e94cf4e20e4887-fixture"
+        ],
+        "failedFixtureIds": []
+      },
+      "stages": {
+        "inspect": {
+          "status": "passed",
+          "message": "Product-M9 input validated"
+        },
+        "staticGeneration": {
+          "status": "passed",
+          "message": "UISpec generated from restricted-live DesignBundle",
+          "artifactRef": "data/projects/product-m9-rl-community-mobile-001/specs/current.json"
+        },
+        "flowPlanExtraction": {
+          "status": "passed",
+          "message": "FlowPlan generated and saved from Figma evidence",
+          "artifactRef": "data/projects/product-m9-rl-community-mobile-001/flow/current.json"
+        },
+        "execution": {
+          "status": "partial",
+          "message": "Flow-M11 execution partial",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/flow-m11-summary.json",
+          "reasonCode": "flow_m11_trusted_submit_fixture_missing"
+        },
+        "report": {
+          "status": "passed",
+          "message": "Product-M9 summary written"
+        }
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/flow-m11-summary.json"
+      },
+      "validation": {
+        "status": "partial",
+        "reasons": [
+          "flow_m11_trusted_submit_fixture_missing",
+          "flow_m11_multistep_submit_fixture_missing",
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "counts": {
+          "fixtureCount": 12,
+          "successfulFixtureCount": 12,
+          "failedFixtureCount": 0,
+          "stepCount": 24,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 0,
+          "referenceDanglingRejectionCount": 0
+        },
+        "successfulFixtureCount": 12,
+        "failedFixtureCount": 0
+      }
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "category": "dashboard",
+      "note": "dashboard sample: no executable flow evidence",
+      "status": "partial",
+      "ok": false,
+      "errorCategory": "partial_evidence",
+      "nextAction": "查看 partial reasons，补样本、补确认或人工复核。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "stages": {
+        "inspect": {
+          "status": "passed",
+          "message": "Product-M9 input validated"
+        },
+        "staticGeneration": {
+          "status": "passed",
+          "message": "UISpec generated from restricted-live DesignBundle",
+          "artifactRef": "data/projects/product-m9-rl-community-dashboard-001/specs/current.json"
+        },
+        "flowPlanExtraction": {
+          "status": "passed",
+          "message": "FlowPlan generated and saved from Figma evidence",
+          "artifactRef": "data/projects/product-m9-rl-community-dashboard-001/flow/current.json"
+        },
+        "execution": {
+          "status": "failed",
+          "message": "Flow-M11 execution failed",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/flow-m11-summary.json",
+          "reasonCode": "flow_m11_trusted_submit_fixture_missing"
+        },
+        "report": {
+          "status": "passed",
+          "message": "Product-M9 summary written"
+        }
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/flow-m11-summary.json"
+      },
+      "validation": {
+        "status": "failed",
+        "reasons": [
+          "flow_m11_trusted_submit_fixture_missing",
+          "flow_m11_multistep_submit_fixture_missing",
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "counts": {
+          "fixtureCount": 0,
+          "successfulFixtureCount": 0,
+          "failedFixtureCount": 0,
+          "stepCount": 0,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 0,
+          "referenceDanglingRejectionCount": 0
+        },
+        "successfulFixtureCount": 0,
+        "failedFixtureCount": 0
+      }
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "category": "ecommerce",
+      "note": "checkout sample: no executable flow evidence",
+      "status": "partial",
+      "ok": false,
+      "errorCategory": "partial_evidence",
+      "nextAction": "查看 partial reasons，补样本、补确认或人工复核。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "stages": {
+        "inspect": {
+          "status": "passed",
+          "message": "Product-M9 input validated"
+        },
+        "staticGeneration": {
+          "status": "passed",
+          "message": "UISpec generated from restricted-live DesignBundle",
+          "artifactRef": "data/projects/product-m9-rl-community-ecommerce-001/specs/current.json"
+        },
+        "flowPlanExtraction": {
+          "status": "passed",
+          "message": "FlowPlan generated and saved from Figma evidence",
+          "artifactRef": "data/projects/product-m9-rl-community-ecommerce-001/flow/current.json"
+        },
+        "execution": {
+          "status": "failed",
+          "message": "Flow-M11 execution failed",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-ecommerce-001-20260809t2207/flow-m11-summary.json",
+          "reasonCode": "flow_m11_trusted_submit_fixture_missing"
+        },
+        "report": {
+          "status": "passed",
+          "message": "Product-M9 summary written"
+        }
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-ecommerce-001-20260809t2207/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-ecommerce-001-20260809t2207/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-ecommerce-001-20260809t2207/flow-m11-summary.json"
+      },
+      "validation": {
+        "status": "failed",
+        "reasons": [
+          "flow_m11_trusted_submit_fixture_missing",
+          "flow_m11_multistep_submit_fixture_missing",
+          "flow_m11_select_radio_toggle_missing"
+        ],
+        "counts": {
+          "fixtureCount": 0,
+          "successfulFixtureCount": 0,
+          "failedFixtureCount": 0,
+          "stepCount": 0,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 0,
+          "referenceDanglingRejectionCount": 0
+        },
+        "successfulFixtureCount": 0,
+        "failedFixtureCount": 0
+      }
+    },
+    {
+      "sampleId": "community-landing-001",
+      "category": "landing-page",
+      "note": "landing sample: one submit-like confirmation",
+      "status": "partial",
+      "ok": false,
+      "errorCategory": "needs_confirmation",
+      "nextAction": "向用户展示 confirmation questions，等待结构化答案后重跑。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 1,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "stages": {
+        "inspect": {
+          "status": "passed",
+          "message": "Product-M9 input validated"
+        },
+        "staticGeneration": {
+          "status": "passed",
+          "message": "UISpec generated from restricted-live DesignBundle",
+          "artifactRef": "data/projects/product-m9-rl-community-landing-001/specs/current.json"
+        },
+        "flowPlanExtraction": {
+          "status": "passed",
+          "message": "FlowPlan generated and saved from Figma evidence",
+          "artifactRef": "data/projects/product-m9-rl-community-landing-001/flow/current.json"
+        },
+        "confirmation": {
+          "status": "partial",
+          "message": "Flow-M10 confirmation questions written=1",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/confirmation-questions.json"
+        },
+        "execution": {
+          "status": "failed",
+          "message": "Flow-M11 execution failed",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/flow-m11-summary.json",
+          "reasonCode": "flow_m11_artifact_rejected"
+        },
+        "report": {
+          "status": "passed",
+          "message": "Product-M9 summary written"
+        }
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/flow-m11-summary.json",
+        "confirmationQuestionsPath": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/confirmation-questions.json",
+        "confirmationAnswerTemplatePath": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/confirmation-answer-template.json"
+      },
+      "validation": {
+        "status": "failed",
+        "reasons": [
+          "flow_m11_artifact_rejected",
+          "flow_plan_untrusted_source"
+        ],
+        "counts": {
+          "fixtureCount": 0,
+          "successfulFixtureCount": 0,
+          "failedFixtureCount": 0,
+          "stepCount": 0,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 1,
+          "referenceDanglingRejectionCount": 0
+        },
+        "successfulFixtureCount": 0,
+        "failedFixtureCount": 0
+      }
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "note": "design-system sample: submit-like confirmation only",
+      "status": "partial",
+      "ok": false,
+      "errorCategory": "needs_confirmation",
+      "nextAction": "向用户展示 confirmation questions，等待结构化答案后重跑。",
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 5,
+        "unsupported": 0,
+        "missingEvidence": 1,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "stages": {
+        "inspect": {
+          "status": "passed",
+          "message": "Product-M9 input validated"
+        },
+        "staticGeneration": {
+          "status": "passed",
+          "message": "UISpec generated from restricted-live DesignBundle",
+          "artifactRef": "data/projects/product-m9-rl-community-design-system-001/specs/current.json"
+        },
+        "flowPlanExtraction": {
+          "status": "passed",
+          "message": "FlowPlan generated and saved from Figma evidence",
+          "artifactRef": "data/projects/product-m9-rl-community-design-system-001/flow/current.json"
+        },
+        "confirmation": {
+          "status": "partial",
+          "message": "Flow-M10 confirmation questions written=5",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/confirmation-questions.json"
+        },
+        "execution": {
+          "status": "failed",
+          "message": "Flow-M11 execution failed",
+          "artifactRef": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/flow-m11-summary.json",
+          "reasonCode": "flow_m11_artifact_rejected"
+        },
+        "report": {
+          "status": "passed",
+          "message": "Product-M9 summary written"
+        }
+      },
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/flow-m11-summary.json",
+        "confirmationQuestionsPath": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/confirmation-questions.json",
+        "confirmationAnswerTemplatePath": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/confirmation-answer-template.json"
+      },
+      "validation": {
+        "status": "failed",
+        "reasons": [
+          "flow_m11_artifact_rejected",
+          "flow_plan_untrusted_source"
+        ],
+        "counts": {
+          "fixtureCount": 0,
+          "successfulFixtureCount": 0,
+          "failedFixtureCount": 0,
+          "stepCount": 0,
+          "failedCheckCount": 0,
+          "preSatisfiedExpectationCount": 0,
+          "summaryOnlyRejectionCount": 0,
+          "scenarioOnlyRejectionCount": 0,
+          "untrustedSourceRejectionCount": 6,
+          "referenceDanglingRejectionCount": 0
+        },
+        "successfulFixtureCount": 0,
+        "failedFixtureCount": 0
+      }
+    }
+  ],
+  "nextActions": [
+    "Keep community-mobile-001 as the restricted-live Flow-M14 CHANGE_TO regression sample.",
+    "Do not use community-ecommerce-001/dashboard as submit evidence because they contain no executable FlowPlan evidence.",
+    "Use login/landing/design-system only as needs-confirmation samples unless structured confirmation answers are supplied.",
+    "Find or add a new Community sample with native prototype target evidence for submit/dialog, then rerun Product-M9 restricted-live."
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "answer-1-m10-missing-ui-in-modals-14-4758-control",
+    "questionId": "m10-missing-ui-in-modals-14-4758-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-2-m10-missing-ui-in-modals-14-4782-control",
+    "questionId": "m10-missing-ui-in-modals-14-4782-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-3-m10-missing-ui-in-modals-14-4776-control",
+    "questionId": "m10-missing-ui-in-modals-14-4776-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-4-m10-missing-ui-in-modals-14-4822-control",
+    "questionId": "m10-missing-ui-in-modals-14-4822-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-5-m10-missing-ui-in-modals-14-4815-control",
+    "questionId": "m10-missing-ui-in-modals-14-4815-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  }
+]
