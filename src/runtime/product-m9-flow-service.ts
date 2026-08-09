@@ -614,6 +614,12 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
     trustedStateChange: interactions.filter(
       (interaction) => isTrusted(interaction) && interaction.intent === "set_state",
     ).length,
+    confirmedSubmit: interactions.filter(
+      (interaction) =>
+        isTrusted(interaction) &&
+        interaction.intent === "submit" &&
+        Boolean(interaction.postconditions?.length),
+    ).length,
     submitLikeNeedsConfirmation:
       unresolvedConfirmationQuestionCount > 0
         ? unresolvedConfirmationQuestionCount

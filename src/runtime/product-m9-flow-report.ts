@@ -46,6 +46,7 @@ export function productM9ReportMarkdown(result: ProductM9RunResult): string {
     "",
     `- trustedNavigate: ${result.metrics.trustedNavigate ?? 0}`,
     `- trustedStateChange: ${result.metrics.trustedStateChange ?? 0}`,
+    `- confirmedSubmit: ${result.metrics.confirmedSubmit ?? 0}`,
     `- submitLikeNeedsConfirmation: ${result.metrics.submitLikeNeedsConfirmation ?? 0}`,
     `- unsupported: ${result.metrics.unsupported ?? 0}`,
     `- missingEvidence: ${result.metrics.missingEvidence ?? 0}`,

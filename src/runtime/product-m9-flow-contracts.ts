@@ -129,6 +129,7 @@ export const productM9MetricsSchema = z
   .object({
     trustedNavigate: z.number().int().nonnegative().optional(),
     trustedStateChange: z.number().int().nonnegative().optional(),
+    confirmedSubmit: z.number().int().nonnegative().optional(),
     submitLikeNeedsConfirmation: z.number().int().nonnegative().optional(),
     unsupported: z.number().int().nonnegative().optional(),
     missingEvidence: z.number().int().nonnegative().optional(),

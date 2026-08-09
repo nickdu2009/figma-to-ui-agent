@@ -284,6 +284,7 @@ describe("Product-M9 flow service", () => {
     expect(result.ok).toBe(false);
     expect(result.status).toBe("partial");
     expect(result.error?.category).toBe("needs_confirmation");
+    expect(result.metrics.confirmedSubmit).toBe(2);
     expect(result.metrics.unsupported).toBe(0);
     expect(result.error?.retryPolicy).toBe("manual_review");
     expect(result.stages.confirmation).toMatchObject({
@@ -407,6 +408,7 @@ describe("Product-M9 flow service", () => {
 
     expect(result.ok).toBe(true);
     expect(result.status).toBe("passed");
+    expect(result.metrics.confirmedSubmit).toBe(3);
     expect(result.stages.confirmation).toMatchObject({
       status: "passed",
       artifactRef: `${root}/reports/product-m9-service-confirmed-answers/confirmed-flow-plan.json`,
