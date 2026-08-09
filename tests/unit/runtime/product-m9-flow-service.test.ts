@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { runProductM9Flow } from "../../../src/runtime/product-m9-flow-service.ts";
+import { flowM10ConfirmationAnswersSchema } from "../../../src/flow-plan/m10-schema.ts";
 import { createFigmaFileResponseFixture } from "../../fixtures/figma/file-response.ts";
 import { createPngBytes } from "../../fixtures/images.ts";
 
@@ -176,6 +177,9 @@ describe("Product-M9 flow service", () => {
     expect(result.artifactRefs.confirmationQuestionsPath).toBe(
       `${root}/reports/product-m9-service-confirmation/confirmation-questions.json`,
     );
+    expect(result.artifactRefs.confirmationAnswerTemplatePath).toBe(
+      `${root}/reports/product-m9-service-confirmation/confirmation-answer-template.json`,
+    );
     const questions = JSON.parse(
       await readFile(
         `${root}/reports/product-m9-service-confirmation/confirmation-questions.json`,
@@ -183,6 +187,16 @@ describe("Product-M9 flow service", () => {
       ),
     );
     expect(questions.questionCount).toBeGreaterThan(0);
+    const answers = flowM10ConfirmationAnswersSchema.parse(
+      JSON.parse(
+        await readFile(
+          `${root}/reports/product-m9-service-confirmation/confirmation-answer-template.json`,
+          "utf8",
+        ),
+      ),
+    );
+    expect(answers).toHaveLength(questions.questionCount);
+    expect(answers[0]?.answerKind).toBe("decline");
   });
 
   it("prioritizes confirmation when untrusted submit-like evidence coexists with unsupported actions", async () => {
@@ -206,6 +220,9 @@ describe("Product-M9 flow service", () => {
     expect(result.error?.category).toBe("needs_confirmation");
     expect(result.artifactRefs.confirmationQuestionsPath).toBe(
       `${root}/reports/product-m9-service-confirmation-with-unsupported/confirmation-questions.json`,
+    );
+    expect(result.artifactRefs.confirmationAnswerTemplatePath).toBe(
+      `${root}/reports/product-m9-service-confirmation-with-unsupported/confirmation-answer-template.json`,
     );
   });
 
@@ -261,6 +278,7 @@ describe("Product-M9 flow service", () => {
       `${root}/reports/product-m9-service-confirmed-answers/confirmed-flow-plan.json`,
     );
     expect(result.artifactRefs.confirmationQuestionsPath).toBeUndefined();
+    expect(result.artifactRefs.confirmationAnswerTemplatePath).toBeUndefined();
     const confirmed = JSON.parse(
       await readFile(
         `${root}/reports/product-m9-service-confirmed-answers/confirmed-flow-plan.json`,
@@ -275,6 +293,44 @@ describe("Product-M9 flow service", () => {
       source: "user_confirmed",
       intent: "submit",
     });
+  });
+
+  it("does not ask for confirmation again after a user declines a question", async () => {
+    const root = "data/test-product-m9-service-declined-answer";
+    roots.push(root);
+    const answersPath = join(root, "decline-answers.json");
+    await mkdir(root, { recursive: true });
+    await writeFile(
+      answersPath,
+      `${JSON.stringify(
+        [
+          {
+            id: "answer-decline-inferred-submit",
+            questionId: "m10-inferred-submit",
+            answerKind: "decline",
+            reason: "user confirmed this inferred submit should not run",
+          },
+        ],
+        null,
+        2,
+      )}\n`,
+    );
+
+    const result = await runProductM9Flow({
+      projectId: "demo-project",
+      mode: "local",
+      runId: "product-m9-service-declined-answer",
+      flowPlanPath: `${BASE}/flow-plan.json`,
+      uiSpecPath: `${BASE}/ui-spec.json`,
+      answersPath: relative(answersPath),
+      reportRoot: `${root}/reports`,
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.status).toBe("partial");
+    expect(result.metrics.submitLikeNeedsConfirmation).toBe(0);
+    expect(result.error?.category).toBe("partial_evidence");
+    expect(result.stages.confirmation?.message).toContain("declined=1");
   });
 
   it("returns partial_evidence when trusted FlowPlan has no executable fixtures", async () => {

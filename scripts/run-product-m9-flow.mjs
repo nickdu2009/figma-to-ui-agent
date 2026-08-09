@@ -27,7 +27,7 @@ Options:
   --node-id <id>                 Figma node id for restricted-live
   --flow-plan <path>             Local FlowPlan artifact path
   --ui-spec <path>               Local UISpec artifact path
-  --answers <path>               Flow-M10 confirmed-answer path
+  --answers <path>               Flow-M10 confirmed-answer path, often edited from confirmation-answer-template.json
   --confirmed-flow-plan <path>   User-confirmed FlowPlan artifact path
   --run-compare                  Run generated fixtures through Playwright compare
   --browser-executable-path <p>  Chromium executable for --run-compare

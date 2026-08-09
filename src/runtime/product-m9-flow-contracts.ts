@@ -117,6 +117,7 @@ export const productM9ArtifactRefsSchema = z
     uiSpecPath: pathRefSchema.optional(),
     flowPlanPath: pathRefSchema.optional(),
     confirmationQuestionsPath: pathRefSchema.optional(),
+    confirmationAnswerTemplatePath: pathRefSchema.optional(),
     confirmedFlowPlanPath: pathRefSchema.optional(),
     validationPath: pathRefSchema.optional(),
     summaryJson: pathRefSchema,

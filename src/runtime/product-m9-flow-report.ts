@@ -32,6 +32,9 @@ export function productM9ReportMarkdown(result: ProductM9RunResult): string {
     result.artifactRefs.confirmationQuestionsPath
       ? `- confirmationQuestionsPath: ${result.artifactRefs.confirmationQuestionsPath}`
       : undefined,
+    result.artifactRefs.confirmationAnswerTemplatePath
+      ? `- confirmationAnswerTemplatePath: ${result.artifactRefs.confirmationAnswerTemplatePath}`
+      : undefined,
     result.artifactRefs.confirmedFlowPlanPath
       ? `- confirmedFlowPlanPath: ${result.artifactRefs.confirmedFlowPlanPath}`
       : undefined,

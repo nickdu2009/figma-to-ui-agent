@@ -88,6 +88,7 @@ jq '{ok, status, mode, artifactRefs, metrics, error, nextAction}' \
 
 - `artifactRefs.summaryJson` 和 `artifactRefs.summaryMarkdown` 是相对路径。
 - 若 `error.category=needs_confirmation`，`artifactRefs.confirmationQuestionsPath` 应指向可读取的 `confirmation-questions.json`。
+- 若 `error.category=needs_confirmation`，`artifactRefs.confirmationAnswerTemplatePath` 应指向可读取的 `confirmation-answer-template.json`；该模板默认全部 `decline`，必须经确认后再改成业务答案。
 - 报告不包含 token、真实 Figma URL、file key、raw REST payload 或本机绝对路径。
 - `nextAction` 能指导下一步：修输入、补授权、等待限流、请求确认、人工复核或停止。
 

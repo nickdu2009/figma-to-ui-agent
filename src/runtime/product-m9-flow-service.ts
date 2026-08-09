@@ -28,6 +28,10 @@ import {
 import {
   generateFlowM10ConfirmationQuestions,
 } from "../flow-plan/m10-confirmation-questions.ts";
+import {
+  flowM10ConfirmationAnswersSchema,
+  type FlowM10ConfirmationQuestion,
+} from "../flow-plan/m10-schema.ts";
 import { planFlowM11BehaviorFixtures } from "../flow-plan/m11-fixture-planner.ts";
 import {
   buildFlowM11ExecutionReport,
@@ -110,6 +114,7 @@ interface FlowArtifactInput {
 
 interface ConfirmationQuestionsArtifact {
   readonly path: string;
+  readonly answerTemplatePath: string;
   readonly stage: ProductM9StageResult;
 }
 
@@ -357,7 +362,15 @@ async function applyConfirmationAnswers(input: {
   const applied = applyResult.results.filter(
     (result) => result.result === "applied",
   ).length;
-  const rejected = applyResult.results.length - applied;
+  const declined = applyResult.results.filter(
+    (result) => result.result === "declined",
+  ).length;
+  const rejected = applyResult.results.filter(
+    (result) =>
+      result.result === "rejected" ||
+      result.result === "invalid" ||
+      result.result === "unmatched",
+  ).length;
   const status: ProductM9StageResult["status"] =
     applied > 0 && rejected === 0
       ? "passed"
@@ -373,10 +386,33 @@ async function applyConfirmationAnswers(input: {
     },
     stage: stage(
       status,
-      `Flow-M10 confirmation answers applied=${applied} rejected=${rejected}`,
+      `Flow-M10 confirmation answers applied=${applied} declined=${declined} rejected=${rejected}`,
       { artifactRef: confirmedFlowPlanPath },
     ),
   };
+}
+
+function confirmationAnswerId(
+  question: FlowM10ConfirmationQuestion,
+  index: number,
+): string {
+  return `answer-${index + 1}-${question.id}`
+    .replace(/[^A-Za-z0-9_-]/g, "-")
+    .slice(0, 256);
+}
+
+function buildConfirmationAnswerTemplate(
+  questions: readonly FlowM10ConfirmationQuestion[],
+): unknown {
+  return flowM10ConfirmationAnswersSchema.parse(
+    questions.map((question, index) => ({
+      id: confirmationAnswerId(question, index),
+      questionId: question.id,
+      answerKind: "decline",
+      reason:
+        "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。",
+    })),
+  );
 }
 
 async function writeConfirmationQuestionsArtifact(input: {
@@ -400,6 +436,13 @@ async function writeConfirmationQuestionsArtifact(input: {
     input.runId,
     "confirmation-questions.json",
   );
+  const answerTemplatePath = resolve(
+    input.cwd,
+    input.rawReportRoot,
+    input.runId,
+    "confirmation-answer-template.json",
+  );
+  const answerTemplate = buildConfirmationAnswerTemplate(questions);
   await mkdir(dirname(questionsPath), { recursive: true });
   await writeFile(
     questionsPath,
@@ -415,9 +458,15 @@ async function writeConfirmationQuestionsArtifact(input: {
       2,
     )}\n`,
   );
+  await writeFile(
+    answerTemplatePath,
+    `${JSON.stringify(answerTemplate, null, 2)}\n`,
+  );
   const artifactRef = relativeRef(input.cwd, questionsPath);
+  const answerTemplateRef = relativeRef(input.cwd, answerTemplatePath);
   return {
     path: artifactRef,
+    answerTemplatePath: answerTemplateRef,
     stage: stage(
       "partial",
       `Flow-M10 confirmation questions written=${questions.length}`,
@@ -524,7 +573,18 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
     (interaction.source === "figma" ||
       interaction.source === "user_confirmed") &&
     interaction.confirmed;
-  const confirmationQuestionCount = flowPlan?.confirmationQuestions.length ?? 0;
+  const interactionById = new Map(
+    interactions.map((interaction) => [interaction.id, interaction]),
+  );
+  const unresolvedConfirmationQuestionCount =
+    flowPlan?.confirmationQuestions.filter((question) => {
+      const interaction = interactionById.get(question.interactionId);
+      return (
+        !interaction ||
+        (interaction.source !== "user_confirmed" &&
+          interaction.blockedReason !== "user_declined_interaction")
+      );
+    }).length ?? 0;
   return {
     trustedNavigate: interactions.filter(
       (interaction) => isTrusted(interaction) && interaction.intent === "navigate",
@@ -533,11 +593,12 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
       (interaction) => isTrusted(interaction) && interaction.intent === "set_state",
     ).length,
     submitLikeNeedsConfirmation:
-      confirmationQuestionCount > 0
-        ? confirmationQuestionCount
+      unresolvedConfirmationQuestionCount > 0
+        ? unresolvedConfirmationQuestionCount
         : interactions.filter(
             (interaction) =>
               interaction.intent === "submit" &&
+              interaction.blockedReason !== "user_declined_interaction" &&
               (!isTrusted(interaction) || !interaction.postconditions?.length),
           ).length,
     unsupported: interactions.filter(
@@ -566,7 +627,10 @@ function statusAndErrorFor(input: {
         "Product-M9 FlowPlan validation passed; inspect summary and artifact refs before delivery.",
     };
   }
-  if (reasonCodes.includes("flow_plan_untrusted_source")) {
+  if (
+    reasonCodes.includes("flow_plan_untrusted_source") &&
+    (input.metrics.submitLikeNeedsConfirmation ?? 0) > 0
+  ) {
     const error = productM9Error(
       "needs_confirmation",
       "FlowPlan contains interactions that require user confirmation",
@@ -848,6 +912,8 @@ async function runProductM9FlowInternal(
         uiSpecPath: effectiveArtifacts.uiSpecPath,
         flowPlanPath: effectiveArtifacts.flowPlanPath,
         confirmationQuestionsPath: confirmationQuestions?.path,
+        confirmationAnswerTemplatePath:
+          confirmationQuestions?.answerTemplatePath,
         confirmedFlowPlanPath:
           effectiveArtifacts.confirmedFlowPlanPath ??
           request.confirmedFlowPlanPath,

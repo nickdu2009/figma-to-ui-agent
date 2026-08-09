@@ -1,0 +1,272 @@
+[
+  {
+    "id": "answer-1-m10-inferred-ui-48-help-0-172-control",
+    "questionId": "m10-inferred-ui-48-help-0-172-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-2-m10-inferred-ui-44-cart-empty-0-377-control",
+    "questionId": "m10-inferred-ui-44-cart-empty-0-377-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-3-m10-missing-ui-43-wishlist-0-413-control",
+    "questionId": "m10-missing-ui-43-wishlist-0-413-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-4-m10-missing-ui-42-account-profile-0-497-control",
+    "questionId": "m10-missing-ui-42-account-profile-0-497-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-5-m10-missing-ui-41-activity-0-548-control",
+    "questionId": "m10-missing-ui-41-activity-0-548-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-6-m10-missing-ui-40-orders-returned-0-583-control",
+    "questionId": "m10-missing-ui-40-orders-returned-0-583-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-7-m10-missing-ui-40-orders-returned-0-586-control",
+    "questionId": "m10-missing-ui-40-orders-returned-0-586-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-8-m10-missing-ui-39-refund-reasons-0-604-control",
+    "questionId": "m10-missing-ui-39-refund-reasons-0-604-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-9-m10-inferred-ui-39-refund-reasons-0-622-control",
+    "questionId": "m10-inferred-ui-39-refund-reasons-0-622-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-10-m10-missing-ui-38-orders-delivered-summary-0-665-control",
+    "questionId": "m10-missing-ui-38-orders-delivered-summary-0-665-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-11-m10-missing-ui-38-orders-delivered-summary-0-689-control",
+    "questionId": "m10-missing-ui-38-orders-delivered-summary-0-689-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-12-m10-missing-ui-38-orders-delivered-summary-0-690-control",
+    "questionId": "m10-missing-ui-38-orders-delivered-summary-0-690-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-13-m10-missing-ui-37-orders-delivered-0-695-control",
+    "questionId": "m10-missing-ui-37-orders-delivered-0-695-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-14-m10-missing-ui-37-orders-delivered-0-696-control",
+    "questionId": "m10-missing-ui-37-orders-delivered-0-696-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-15-m10-missing-ui-36-track-package-0-809-control",
+    "questionId": "m10-missing-ui-36-track-package-0-809-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-16-m10-missing-ui-34-orders-shipped-summary-0-842-control",
+    "questionId": "m10-missing-ui-34-orders-shipped-summary-0-842-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-17-m10-missing-ui-34-orders-shipped-summary-0-844-control",
+    "questionId": "m10-missing-ui-34-orders-shipped-summary-0-844-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-18-m10-missing-ui-34-orders-shipped-summary-0-863-control",
+    "questionId": "m10-missing-ui-34-orders-shipped-summary-0-863-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-19-m10-missing-ui-34-orders-shipped-summary-0-864-control",
+    "questionId": "m10-missing-ui-34-orders-shipped-summary-0-864-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-20-m10-missing-ui-35-cancel-order-0-868-control",
+    "questionId": "m10-missing-ui-35-cancel-order-0-868-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-21-m10-inferred-ui-35-cancel-order-0-893-control",
+    "questionId": "m10-inferred-ui-35-cancel-order-0-893-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-22-m10-missing-ui-33-orders-shipped-0-896-control",
+    "questionId": "m10-missing-ui-33-orders-shipped-0-896-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-23-m10-missing-ui-33-orders-shipped-0-927-control",
+    "questionId": "m10-missing-ui-33-orders-shipped-0-927-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-24-m10-missing-ui-33-orders-shipped-0-928-control",
+    "questionId": "m10-missing-ui-33-orders-shipped-0-928-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-25-m10-missing-ui-33-orders-shipped-0-929-control",
+    "questionId": "m10-missing-ui-33-orders-shipped-0-929-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-26-m10-missing-ui-32-item-detail-0-958-control",
+    "questionId": "m10-missing-ui-32-item-detail-0-958-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-27-m10-missing-ui-32-item-detail-0-976-control",
+    "questionId": "m10-missing-ui-32-item-detail-0-976-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-28-m10-missing-ui-32-item-detail-0-977-control",
+    "questionId": "m10-missing-ui-32-item-detail-0-977-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-29-m10-missing-ui-29-orders-paid-0-1065-control",
+    "questionId": "m10-missing-ui-29-orders-paid-0-1065-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-30-m10-missing-ui-29-orders-paid-0-1066-control",
+    "questionId": "m10-missing-ui-29-orders-paid-0-1066-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-31-m10-missing-ui-27-store-profile-0-1228-control",
+    "questionId": "m10-missing-ui-27-store-profile-0-1228-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-32-m10-missing-ui-27-store-profile-0-1229-control",
+    "questionId": "m10-missing-ui-27-store-profile-0-1229-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-33-m10-missing-ui-20-cart-0-1498-control",
+    "questionId": "m10-missing-ui-20-cart-0-1498-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-34-m10-missing-ui-16-product-detail-0-1679-control",
+    "questionId": "m10-missing-ui-16-product-detail-0-1679-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-35-m10-missing-ui-16-product-detail-0-1682-control",
+    "questionId": "m10-missing-ui-16-product-detail-0-1682-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-36-m10-inferred-ui-10-mobile-0-2047-control",
+    "questionId": "m10-inferred-ui-10-mobile-0-2047-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-37-m10-missing-ui-9-otp-0-2056-control",
+    "questionId": "m10-missing-ui-9-otp-0-2056-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-38-m10-missing-ui-8-otp-0-2070-control",
+    "questionId": "m10-missing-ui-8-otp-0-2070-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-39-m10-missing-ui-7-terms-of-use-0-2085-control",
+    "questionId": "m10-missing-ui-7-terms-of-use-0-2085-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-40-m10-inferred-ui-6-sign-up-0-2100-control",
+    "questionId": "m10-inferred-ui-6-sign-up-0-2100-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-41-m10-inferred-ui-5-sign-up-0-2120-control",
+    "questionId": "m10-inferred-ui-5-sign-up-0-2120-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-42-m10-inferred-ui-4-login-0-2139-control",
+    "questionId": "m10-inferred-ui-4-login-0-2139-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-43-m10-inferred-ui-4-login-0-2142-control",
+    "questionId": "m10-inferred-ui-4-login-0-2142-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-44-m10-inferred-ui-3-onboarding-0-2157-control",
+    "questionId": "m10-inferred-ui-3-onboarding-0-2157-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  },
+  {
+    "id": "answer-45-m10-inferred-ui-2-onboarding-0-2165-control",
+    "questionId": "m10-inferred-ui-2-onboarding-0-2165-control",
+    "answerKind": "decline",
+    "reason": "待用户确认：请将本项改为 submit/navigate/set_state/open_dialog 并补齐可观察后置条件，或保留 decline。"
+  }
+]
