@@ -1,0 +1,243 @@
+{
+  "schemaVersion": "1",
+  "scope": "product_m9_evidence_classification",
+  "status": "partial",
+  "runId": "product-m9-evidence-classification-20260809t2217",
+  "sourceRef": "reports/product-m9/product-m9-restricted-live-manifest-matrix-20260809t2212/summary.json",
+  "totals": {
+    "sampleCount": 6,
+    "changeToVariantPositive": 1,
+    "confirmedSubmitPositive": 0,
+    "submitLikeNeedsConfirmation": 3,
+    "noExecutableEvidence": 2,
+    "missingEvidence": 1,
+    "unsupported": 0,
+    "failedFixture": 0
+  },
+  "samples": [
+    {
+      "sampleId": "community-login-001",
+      "category": "login-register",
+      "status": "partial",
+      "ok": false,
+      "classifications": [
+        {
+          "classification": "pending.submit_like_confirmation",
+          "evidence": "样本包含 submit-like interaction，但缺少已确认 postcondition，需要结构化 confirmation answer 后才能当正向 submit 证据。"
+        }
+      ],
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 3,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "validationReasons": [
+        "flow_m11_artifact_rejected",
+        "flow_plan_untrusted_source"
+      ],
+      "recommendedUse": "保留为 submit-like confirmation 样本；补结构化确认后再重跑。",
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/flow-m11-summary.json",
+        "confirmationQuestionsPath": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/confirmation-questions.json",
+        "confirmationAnswerTemplatePath": "reports/product-m9/product-m9-rl-community-login-001-20260809t2208/confirmation-answer-template.json"
+      }
+    },
+    {
+      "sampleId": "community-mobile-001",
+      "category": "mobile-app",
+      "status": "passed",
+      "ok": true,
+      "classifications": [
+        {
+          "classification": "positive.change_to_variant",
+          "evidence": "trustedStateChange > 0 且至少一个行为 fixture 成功，可作为 CHANGE_TO / variant state-change restricted-live 回归样本。"
+        }
+      ],
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 12,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [
+          "flow-figma-f1e69831804cba1c-fixture",
+          "flow-figma-076a56448bf7956b-fixture",
+          "flow-figma-aad70f0e58a4873e-fixture",
+          "flow-figma-046f548ad78b98e0-fixture",
+          "flow-figma-064cffbb9f8efd85-fixture",
+          "flow-figma-fa1c270553de5d33-fixture",
+          "flow-figma-49d68f4313157af5-fixture",
+          "flow-figma-484398ff868da059-fixture",
+          "flow-figma-3093cd194c7d71a5-fixture",
+          "flow-figma-77ddf8af1b68916e-fixture",
+          "flow-figma-aa9f07674b99bb04-fixture",
+          "flow-figma-77e94cf4e20e4887-fixture"
+        ],
+        "failedFixtureIds": []
+      },
+      "validationReasons": [
+        "flow_m11_trusted_submit_fixture_missing",
+        "flow_m11_multistep_submit_fixture_missing",
+        "flow_m11_select_radio_toggle_missing"
+      ],
+      "recommendedUse": "用作 Flow-M14 CHANGE_TO / variant state-change restricted-live 回归样本。",
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-mobile-001-20260809t2210/flow-m11-summary.json"
+      }
+    },
+    {
+      "sampleId": "community-dashboard-001",
+      "category": "dashboard",
+      "status": "partial",
+      "ok": false,
+      "classifications": [
+        {
+          "classification": "gap.no_executable_evidence",
+          "evidence": "样本没有成功 fixture、confirmed submit、trusted state change 或待确认 submit-like 证据。"
+        }
+      ],
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "validationReasons": [
+        "flow_m11_trusted_submit_fixture_missing",
+        "flow_m11_multistep_submit_fixture_missing",
+        "flow_m11_select_radio_toggle_missing"
+      ],
+      "recommendedUse": "不用于当前交付正向证据；换样本或选择包含 prototype interaction 的节点。",
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-dashboard-001-20260809t2210/flow-m11-summary.json"
+      }
+    },
+    {
+      "sampleId": "community-ecommerce-001",
+      "category": "ecommerce",
+      "status": "partial",
+      "ok": false,
+      "classifications": [
+        {
+          "classification": "gap.no_executable_evidence",
+          "evidence": "样本没有成功 fixture、confirmed submit、trusted state change 或待确认 submit-like 证据。"
+        }
+      ],
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 0,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "validationReasons": [
+        "flow_m11_trusted_submit_fixture_missing",
+        "flow_m11_multistep_submit_fixture_missing",
+        "flow_m11_select_radio_toggle_missing"
+      ],
+      "recommendedUse": "不用于当前交付正向证据；换样本或选择包含 prototype interaction 的节点。",
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-ecommerce-001-20260809t2207/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-ecommerce-001-20260809t2207/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-ecommerce-001-20260809t2207/flow-m11-summary.json"
+      }
+    },
+    {
+      "sampleId": "community-landing-001",
+      "category": "landing-page",
+      "status": "partial",
+      "ok": false,
+      "classifications": [
+        {
+          "classification": "pending.submit_like_confirmation",
+          "evidence": "样本包含 submit-like interaction，但缺少已确认 postcondition，需要结构化 confirmation answer 后才能当正向 submit 证据。"
+        }
+      ],
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 1,
+        "unsupported": 0,
+        "missingEvidence": 0,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "validationReasons": [
+        "flow_m11_artifact_rejected",
+        "flow_plan_untrusted_source"
+      ],
+      "recommendedUse": "保留为 submit-like confirmation 样本；补结构化确认后再重跑。",
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/flow-m11-summary.json",
+        "confirmationQuestionsPath": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/confirmation-questions.json",
+        "confirmationAnswerTemplatePath": "reports/product-m9/product-m9-rl-community-landing-001-20260809t2210/confirmation-answer-template.json"
+      }
+    },
+    {
+      "sampleId": "community-design-system-001",
+      "category": "design-system",
+      "status": "partial",
+      "ok": false,
+      "classifications": [
+        {
+          "classification": "pending.submit_like_confirmation",
+          "evidence": "样本包含 submit-like interaction，但缺少已确认 postcondition，需要结构化 confirmation answer 后才能当正向 submit 证据。"
+        },
+        {
+          "classification": "gap.missing_evidence",
+          "evidence": "样本仍存在 target、页面映射或 interaction evidence 缺口。"
+        }
+      ],
+      "metrics": {
+        "trustedNavigate": 0,
+        "trustedStateChange": 0,
+        "confirmedSubmit": 0,
+        "submitLikeNeedsConfirmation": 5,
+        "unsupported": 0,
+        "missingEvidence": 1,
+        "successfulFixtureIds": [],
+        "failedFixtureIds": []
+      },
+      "validationReasons": [
+        "flow_m11_artifact_rejected",
+        "flow_plan_untrusted_source"
+      ],
+      "recommendedUse": "保留为 submit-like confirmation 样本；补结构化确认后再重跑。",
+      "artifactRefs": {
+        "summaryJson": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/summary.json",
+        "summaryMarkdown": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/summary.md",
+        "validationPath": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/flow-m11-summary.json",
+        "confirmationQuestionsPath": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/confirmation-questions.json",
+        "confirmationAnswerTemplatePath": "reports/product-m9/product-m9-rl-community-design-system-001-20260809t2208/confirmation-answer-template.json"
+      }
+    }
+  ],
+  "decision": "Product-M9 evidence 尚未同时覆盖 CHANGE_TO / variant 和 confirmed submit 正向样本；当前仍需补 submit/dialog 正向证据。",
+  "nextActions": [
+    "保留已有 CHANGE_TO / variant state-change 正向样本作为 Flow-M14 回归。",
+    "继续寻找或确认一个 confirmedSubmit > 0 且 fixture 成功的 submit/dialog 样本。",
+    "对 submit-like confirmation 样本补结构化 confirmation answer；没有确认前不要当作正向 submit 证据。"
+  ]
+}
