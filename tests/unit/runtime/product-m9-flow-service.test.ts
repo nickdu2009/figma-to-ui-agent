@@ -120,6 +120,32 @@ async function createNeedsConfirmationAndUnsupportedFlowPlan(
   return path;
 }
 
+async function createMissingEvidenceFlowPlan(root: string): Promise<string> {
+  const dir = join(root, "fixtures");
+  await mkdir(dir, { recursive: true });
+  const raw = JSON.parse(await readFile(`${BASE}/flow-plan.json`, "utf8"));
+  raw.interactions = raw.interactions.filter(
+    (interaction: { id: string }) => interaction.id !== "inferred-submit",
+  );
+  raw.interactions.push({
+    id: "figma-missing-target",
+    source: "figma",
+    uiNodeId: "submit-review",
+    trigger: "click",
+    intent: "unknown",
+    fromPageId: "home",
+    confirmed: false,
+    confidence: "low",
+    reason: "Figma prototype target is missing",
+    blockedReason: "prototype_target_missing",
+  });
+  raw.report.unsupportedCount = 0;
+  raw.report.unresolvedInteractionCount = 1;
+  const path = join(dir, "flow-plan-missing-evidence.json");
+  await writeFile(path, `${JSON.stringify(raw, null, 2)}\n`);
+  return path;
+}
+
 function relative(path: string): string {
   return path.replace(`${process.cwd()}/`, "");
 }
@@ -314,6 +340,27 @@ describe("Product-M9 flow service", () => {
     expect(result.artifactRefs.confirmationAnswerTemplatePath).toBe(
       `${root}/reports/product-m9-service-confirmation-with-unsupported/confirmation-answer-template.json`,
     );
+  });
+
+  it("classifies prototype target gaps as partial evidence rather than unsupported", async () => {
+    const root = "data/test-product-m9-service-missing-evidence";
+    roots.push(root);
+    const flowPlanPath = await createMissingEvidenceFlowPlan(root);
+
+    const result = await runProductM9Flow({
+      projectId: "demo-project",
+      mode: "local",
+      runId: "product-m9-service-missing-evidence",
+      flowPlanPath: relative(flowPlanPath),
+      uiSpecPath: `${BASE}/ui-spec.json`,
+      reportRoot: `${root}/reports`,
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.status).toBe("partial");
+    expect(result.metrics.unsupported).toBe(0);
+    expect(result.metrics.missingEvidence).toBe(1);
+    expect(result.error?.category).toBe("partial_evidence");
   });
 
   it("applies Flow-M10 answers before Product-M9 execution", async () => {

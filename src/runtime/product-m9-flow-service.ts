@@ -600,6 +600,13 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
   ): boolean =>
     interaction.blockedReason === "user_declined_interaction" ||
     unresolvedConfirmationInteractionIds.has(interaction.id);
+  const isMissingEvidence = (
+    interaction: (typeof interactions)[number],
+  ): boolean =>
+    interaction.source === "missing" ||
+    interaction.blockedReason === "prototype_target_missing" ||
+    interaction.blockedReason === "prototype_target_page_missing" ||
+    interaction.blockedReason === "interaction_target_missing";
   return {
     trustedNavigate: interactions.filter(
       (interaction) => isTrusted(interaction) && interaction.intent === "navigate",
@@ -618,12 +625,14 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
           ).length,
     unsupported: interactions.filter(
       (interaction) =>
-        interaction.intent === "unknown" && !isResolvedAway(interaction),
+        interaction.intent === "unknown" &&
+        !isResolvedAway(interaction) &&
+        !isMissingEvidence(interaction),
     ).length,
     missingEvidence: interactions.filter(
       (interaction) =>
         !isResolvedAway(interaction) &&
-        (interaction.source === "missing" || Boolean(interaction.blockedReason)),
+        (isMissingEvidence(interaction) || Boolean(interaction.blockedReason)),
     ).length,
     successfulFixtureIds: input.validation?.successfulFixtureIds ?? [],
     failedFixtureIds: input.validation?.failedFixtureIds ?? [],
