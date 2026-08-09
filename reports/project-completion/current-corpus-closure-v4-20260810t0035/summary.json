@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1",
+  "scope": "figma_to_ui_agent_current_corpus_closure",
+  "runId": "current-corpus-closure-v4-20260810t0035",
+  "status": "partial",
+  "sourceRefs": {
+    "productM9Evidence": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+    "flowM12": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/summary.json",
+    "flowM14": "reports/flow-m14-next/flow-m14-next-six-sample-extraction-20260809t2030/summary.json"
+  },
+  "evidenceSummary": {
+    "productM9EvidenceStatus": "passed",
+    "productM9PositiveChangeToVariant": 1,
+    "productM9PositiveConfirmedSubmit": 1,
+    "productM9MissingEvidence": 0,
+    "productM9Unsupported": 0,
+    "productM9FailedFixture": 0,
+    "flowM12Status": "partial",
+    "flowM12RestrictedLiveSummary": false,
+    "flowM14Status": "passed",
+    "flowM14StateChangePositiveSamples": 1,
+    "productM9PositiveSampleCount": 2
+  },
+  "capabilities": [
+    {
+      "id": "navigate",
+      "label": "navigate route execution",
+      "restrictedLive": true,
+      "localOrControlled": true,
+      "status": "restricted_live_proven",
+      "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+      "evidence": "Product-M9 current evidence includes Trego trustedNavigate=48 with successful fixtures.",
+      "residualRisk": null
+    },
+    {
+      "id": "set_state",
+      "label": "CHANGE_TO / variant set_state",
+      "restrictedLive": true,
+      "localOrControlled": true,
+      "status": "restricted_live_proven",
+      "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+      "evidence": "Product-M9 current evidence includes community-mobile positive.change_to_variant; Flow-M14 six-sample extraction status=passed.",
+      "residualRisk": null
+    },
+    {
+      "id": "submit",
+      "label": "confirmed submit / dialog",
+      "restrictedLive": true,
+      "localOrControlled": true,
+      "status": "restricted_live_proven",
+      "evidenceRef": "reports/product-m9/product-m9-current-evidence-classification-20260810t0025/summary.json",
+      "evidence": "Product-M9 current evidence includes Trego positive.confirmed_submit with confirmedSubmit=1 and successful fixtures.",
+      "residualRisk": null
+    },
+    {
+      "id": "state_machine",
+      "label": "stateMachine transition",
+      "restrictedLive": false,
+      "localOrControlled": true,
+      "status": "local_only",
+      "evidenceRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/summary.json",
+      "evidence": "Flow-M12 corpus r3 reports stateMachine coverage=true through local/controlled corpus.",
+      "residualRisk": "Not yet proven by a current restricted-live real Figma sample in the Product-M9 evidence set."
+    },
+    {
+      "id": "select_radio_checkbox",
+      "label": "select/radio/checkbox behavior",
+      "restrictedLive": false,
+      "localOrControlled": true,
+      "status": "local_only",
+      "evidenceRef": "reports/flow-m12-corpus/flow-m12-corpus-artifact-closure-20260809-r3/summary.json",
+      "evidence": "Flow-M12 corpus r3 reports selectRadioCheckbox coverage=true through local/controlled corpus.",
+      "residualRisk": "Not yet proven by a current restricted-live real Figma sample in the Product-M9 evidence set."
+    }
+  ],
+  "decision": "Current corpus closure proves navigate, CHANGE_TO/set_state, and confirmed submit with restricted-live evidence, but stateMachine and select/radio/checkbox remain local/controlled coverage only.",
+  "nextActions": [
+    "Either add restricted-live real Figma samples for stateMachine and select/radio/checkbox, or explicitly scope them as local/controlled coverage for the current deliverable.",
+    "After that decision, run the final project goal completion audit against the full objective."
+  ]
+}
