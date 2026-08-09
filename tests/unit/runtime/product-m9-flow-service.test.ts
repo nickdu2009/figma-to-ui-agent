@@ -32,6 +32,27 @@ async function createCleanFlowPlan(root: string): Promise<string> {
   return path;
 }
 
+async function createNoExecutableFlowPlan(root: string): Promise<string> {
+  const dir = join(root, "fixtures");
+  await mkdir(dir, { recursive: true });
+  const raw = JSON.parse(await readFile(`${BASE}/flow-plan.json`, "utf8"));
+  raw.interactions = raw.interactions
+    .filter((interaction: { id: string }) => interaction.id !== "inferred-submit")
+    .map((interaction: Record<string, unknown>) => ({
+      ...interaction,
+      trigger: "click",
+      intent: "set_state",
+      value: "selected",
+      stateMachineTransitionId: undefined,
+      postconditions: [],
+    }));
+  raw.report.unresolvedInteractionCount = 0;
+  raw.stateMachines = [];
+  const path = join(dir, "flow-plan-no-executable.json");
+  await writeFile(path, `${JSON.stringify(raw, null, 2)}\n`);
+  return path;
+}
+
 function relative(path: string): string {
   return path.replace(`${process.cwd()}/`, "");
 }
@@ -124,6 +145,27 @@ describe("Product-M9 flow service", () => {
     expect(result.status).toBe("partial");
     expect(result.error?.category).toBe("needs_confirmation");
     expect(result.error?.retryPolicy).toBe("manual_review");
+  });
+
+  it("returns partial_evidence when trusted FlowPlan has no executable fixtures", async () => {
+    const root = "data/test-product-m9-service-no-executable";
+    roots.push(root);
+    const flowPlanPath = await createNoExecutableFlowPlan(root);
+
+    const result = await runProductM9Flow({
+      projectId: "demo-project",
+      mode: "local",
+      runId: "product-m9-service-no-executable",
+      flowPlanPath: relative(flowPlanPath),
+      uiSpecPath: `${BASE}/ui-spec.json`,
+      reportRoot: `${root}/reports`,
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.status).toBe("partial");
+    expect(result.error?.category).toBe("partial_evidence");
+    expect(result.metrics.successfulFixtureIds).toEqual([]);
+    expect(result.metrics.failedFixtureIds).toEqual([]);
   });
 
   it("maps failed behavior validation to flow_execution_failed", async () => {

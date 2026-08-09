@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1",
+  "ok": false,
+  "status": "failed",
+  "mode": "restricted-live",
+  "projectId": "product-m9-ac10-community-mobile-001",
+  "runId": "product-m9-ac10-community-mobile-001-20260809t2000",
+  "stages": {
+    "inspect": {
+      "status": "passed",
+      "message": "Product-M9 input validated"
+    },
+    "staticGeneration": {
+      "status": "passed",
+      "message": "UISpec generated from restricted-live DesignBundle",
+      "artifactRef": "data/projects/product-m9-ac10-community-mobile-001/specs/current.json"
+    },
+    "flowPlanExtraction": {
+      "status": "passed",
+      "message": "FlowPlan generated and saved from Figma evidence",
+      "artifactRef": "data/projects/product-m9-ac10-community-mobile-001/flow/current.json"
+    },
+    "report": {
+      "status": "passed",
+      "message": "Product-M9 failure summary written"
+    }
+  },
+  "artifactRefs": {
+    "summaryJson": "reports/product-m9/product-m9-ac10-community-mobile-001-20260809t2000/summary.json",
+    "summaryMarkdown": "reports/product-m9/product-m9-ac10-community-mobile-001-20260809t2000/summary.md"
+  },
+  "metrics": {},
+  "error": {
+    "category": "input_invalid",
+    "message": "Product-M9 input is invalid",
+    "recoverable": true,
+    "nextAction": "修正参数、URL、projectId 或 artifact ref 后重试。",
+    "retryPolicy": "retry_after_fix",
+    "details": {
+      "issues": [
+        {
+          "code": "custom",
+          "path": [
+            "passed"
+          ],
+          "message": "summary passed 必须与 failedFixtureIds 保持一致"
+        }
+      ]
+    }
+  },
+  "nextAction": "修正参数、URL、projectId 或 artifact ref 后重试。"
+}
