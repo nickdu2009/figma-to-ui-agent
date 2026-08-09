@@ -138,6 +138,18 @@ function postconditionReferenceIssues(
   return [];
 }
 
+function isHydratableTrustedSetState(
+  interaction: FlowPlanInteraction,
+): boolean {
+  return (
+    (interaction.source === "figma" ||
+      interaction.source === "user_confirmed") &&
+    interaction.confirmed &&
+    interaction.intent === "set_state" &&
+    interaction.value !== undefined
+  );
+}
+
 function validateRuntimeReferences(
   flowPlan: FlowPlan | FlowPlanDraft,
   uiSpec: UISpec | UISpecDraft | undefined,
@@ -175,7 +187,8 @@ function validateRuntimeReferences(
     }
     if (
       interaction.stateKey &&
-      !stateKeyExists(interaction.stateKey, stateKeys)
+      !stateKeyExists(interaction.stateKey, stateKeys) &&
+      !isHydratableTrustedSetState(interaction)
     ) {
       issues.push({
         reasonCode: "flow_plan_reference_dangling",

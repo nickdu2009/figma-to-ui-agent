@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 import { loadFlowM11Artifact } from "../../../src/flow-plan/m11-artifact-loader.ts";
 import { flowPlanDraftSchema } from "../../../src/flow-plan/schema.ts";
 import { uiSpecDraftSchema } from "../../../src/ui-spec/schema.ts";
+import { createStoredMultipageFlowUISpec } from "../../fixtures/flow-plan/multipage-flow.ts";
 
 async function loadJson(path: string): Promise<unknown> {
   return JSON.parse(await readFile(resolve(path), "utf8"));
@@ -154,6 +155,65 @@ describe("Flow-M11 artifact loader", () => {
     expect(result.rejections.map((item) => item.field)).toEqual(
       expect.arrayContaining(["stateKey", "postconditions.nodeId"]),
     );
+  });
+
+  it("允许可信 set_state 的 stateKey 交给 UISpec hydration 创建", async () => {
+    const uiSpec = createStoredMultipageFlowUISpec();
+    const flowPlan = flowPlanDraftSchema.parse({
+      schemaVersion: "1",
+      projectId: "demo-project",
+      sourceDesignBundleRevision: 1,
+      sourceUISpecRevision: 1,
+      figmaInteractionSource: "present",
+      pages: [
+        {
+          id: "home",
+          sourcePageId: "page-home",
+          name: "首页",
+          role: "entry",
+          confidence: "high",
+          reason: "fixture",
+        },
+      ],
+      interactions: [
+        {
+          id: "figma-change-to-variant",
+          source: "figma",
+          uiNodeId: "continue",
+          trigger: "click",
+          intent: "set_state",
+          fromPageId: "home",
+          stateKey: "variant-continue-state",
+          value: "selected",
+          targetNodeId: "quote-title",
+          confirmed: true,
+          confidence: "high",
+          reason: "fixture trusted CHANGE_TO",
+        },
+      ],
+      confirmationQuestions: [],
+      confirmations: [],
+      stateMachines: [],
+      report: {
+        unsupportedCount: 0,
+        unresolvedInteractionCount: 0,
+        convertedActionCount: 0,
+        behaviorFixtureCount: 0,
+        confirmationCount: 0,
+      },
+    });
+
+    const result = await loadFlowM11Artifact({
+      artifactRef: "set-state-hydratable.json",
+      rawFlowPlan: flowPlan,
+      uiSpec,
+    });
+
+    expect(result).toMatchObject({
+      status: "loaded",
+      reasonCodes: [],
+      rejections: [],
+    });
   });
 
   it("对混合可信和不可信 interaction 返回 partial 并保留可信 artifact", async () => {
