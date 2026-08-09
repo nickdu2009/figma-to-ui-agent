@@ -265,11 +265,21 @@ function isTrustedExecutableInteraction(
   );
 }
 
+function isResolvedNonExecutableInteraction(
+  interaction: FlowPlanInteraction,
+): boolean {
+  return interaction.blockedReason === "user_declined_interaction";
+}
+
 function untrustedSourceRejections(
   flowPlan: FlowPlan | FlowPlanDraft,
 ): FlowM11ArtifactRejection[] {
   return flowPlan.interactions
-    .filter((interaction) => !isTrustedExecutableInteraction(interaction))
+    .filter(
+      (interaction) =>
+        !isTrustedExecutableInteraction(interaction) &&
+        !isResolvedNonExecutableInteraction(interaction),
+    )
     .map((interaction) => ({
       reasonCode: "flow_plan_untrusted_source" as const,
       message: `interaction ${interaction.id} is not trusted executable flow evidence`,

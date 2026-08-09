@@ -74,6 +74,40 @@ describe("Flow-M11 artifact loader", () => {
     });
   });
 
+  it("不把用户已拒绝的非执行 interaction 计为不可信 source", async () => {
+    const { flowPlan, uiSpec } = await trustedSubmitFlowPlan();
+    const withDeclined = flowPlanDraftSchema.parse({
+      ...flowPlan,
+      interactions: [
+        ...flowPlan.interactions,
+        {
+          id: "declined-submit-like",
+          source: "missing",
+          uiNodeId: "finish-submit",
+          trigger: "submit",
+          intent: "unknown",
+          fromPageId: "home",
+          confirmed: false,
+          confidence: "low",
+          reason: "user declined submit-like confirmation",
+          blockedReason: "user_declined_interaction",
+        },
+      ],
+    });
+
+    const result = await loadFlowM11Artifact({
+      artifactRef: "declined-flow-plan.json",
+      rawFlowPlan: withDeclined,
+      uiSpec,
+    });
+
+    expect(result).toMatchObject({
+      status: "loaded",
+      reasonCodes: [],
+      rejections: [],
+    });
+  });
+
   it("拒绝缺失文件和 schema invalid artifact", async () => {
     await expect(
       loadFlowM11Artifact({

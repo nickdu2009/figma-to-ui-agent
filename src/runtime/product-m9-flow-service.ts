@@ -614,6 +614,33 @@ function metricsFor(flowPlan: FlowPlan | FlowPlanDraft | undefined, input: {
   };
 }
 
+const NAVIGATION_ONLY_ACCEPTED_PARTIAL_REASONS = new Set([
+  "flow_m11_trusted_submit_fixture_missing",
+  "flow_m11_multistep_submit_fixture_missing",
+  "flow_m11_select_radio_toggle_missing",
+]);
+
+function isNavigationOnlyPassed(input: {
+  readonly artifact: FlowM11ArtifactLoadResult;
+  readonly executionReport: FlowM11ExecutionReport;
+  readonly metrics: ProductM9RunResult["metrics"];
+}): boolean {
+  if (
+    input.artifact.status !== "loaded" ||
+    input.executionReport.status !== "partial" ||
+    input.executionReport.failedFixtureIds.length > 0 ||
+    input.executionReport.successfulFixtureIds.length < 1 ||
+    (input.metrics.submitLikeNeedsConfirmation ?? 0) > 0 ||
+    (input.metrics.unsupported ?? 0) > 0 ||
+    (input.metrics.missingEvidence ?? 0) > 0
+  ) {
+    return false;
+  }
+  return input.executionReport.reasons.every((reason) =>
+    NAVIGATION_ONLY_ACCEPTED_PARTIAL_REASONS.has(reason),
+  );
+}
+
 function statusAndErrorFor(input: {
   readonly artifact: FlowM11ArtifactLoadResult;
   readonly executionReport: FlowM11ExecutionReport;
@@ -626,6 +653,14 @@ function statusAndErrorFor(input: {
       status: "passed",
       nextAction:
         "Product-M9 FlowPlan validation passed; inspect summary and artifact refs before delivery.",
+    };
+  }
+  if (isNavigationOnlyPassed(input)) {
+    return {
+      ok: true,
+      status: "passed",
+      nextAction:
+        "Product-M9 navigation-only FlowPlan validation passed; multistep submit coverage was not required for this artifact.",
     };
   }
   if (

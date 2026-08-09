@@ -54,6 +54,28 @@ async function createNoExecutableFlowPlan(root: string): Promise<string> {
   return path;
 }
 
+async function createNavigationOnlyFlowPlan(root: string): Promise<string> {
+  const dir = join(root, "fixtures");
+  await mkdir(dir, { recursive: true });
+  const raw = JSON.parse(await readFile(`${BASE}/flow-plan.json`, "utf8"));
+  raw.interactions = [
+    {
+      ...raw.interactions[0],
+      id: "figma-route-success",
+      trigger: "click",
+      intent: "navigate",
+      targetPageId: "success",
+      postconditions: [{ kind: "expect_page", pageId: "success" }],
+    },
+  ];
+  raw.report.unsupportedCount = 0;
+  raw.report.unresolvedInteractionCount = 0;
+  raw.stateMachines = [];
+  const path = join(dir, "flow-plan-navigation-only.json");
+  await writeFile(path, `${JSON.stringify(raw, null, 2)}\n`);
+  return path;
+}
+
 async function createNeedsConfirmationAndUnsupportedFlowPlan(
   root: string,
 ): Promise<string> {
@@ -151,6 +173,31 @@ describe("Product-M9 flow service", () => {
         ),
       ).status,
     ).toBe("passed");
+  });
+
+  it("passes navigation-only FlowPlan when all route fixtures succeed", async () => {
+    const root = "data/test-product-m9-service-navigation-only";
+    roots.push(root);
+    const flowPlanPath = await createNavigationOnlyFlowPlan(root);
+
+    const result = await runProductM9Flow({
+      projectId: "demo-project",
+      mode: "local",
+      runId: "product-m9-service-navigation-only",
+      flowPlanPath: relative(flowPlanPath),
+      uiSpecPath: `${BASE}/ui-spec.json`,
+      reportRoot: `${root}/reports`,
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.status).toBe("passed");
+    expect(result.error).toBeUndefined();
+    expect(result.stages.execution?.status).toBe("partial");
+    expect(result.stages.execution?.reasonCode).toBe(
+      "flow_m11_trusted_submit_fixture_missing",
+    );
+    expect(result.metrics.successfulFixtureIds?.length).toBeGreaterThan(0);
+    expect(result.metrics.failedFixtureIds).toEqual([]);
   });
 
   it("returns needs_confirmation for untrusted FlowPlan evidence", async () => {
@@ -327,12 +374,12 @@ describe("Product-M9 flow service", () => {
       reportRoot: `${root}/reports`,
     });
 
-    expect(result.ok).toBe(false);
-    expect(result.status).toBe("partial");
+    expect(result.ok).toBe(true);
+    expect(result.status).toBe("passed");
     expect(result.metrics.submitLikeNeedsConfirmation).toBe(0);
     expect(result.metrics.unsupported).toBe(0);
     expect(result.metrics.missingEvidence).toBe(0);
-    expect(result.error?.category).toBe("partial_evidence");
+    expect(result.error).toBeUndefined();
     expect(result.stages.confirmation?.message).toContain("declined=1");
   });
 
@@ -488,8 +535,8 @@ describe("Product-M9 flow service", () => {
     );
 
     expect(result.mode).toBe("restricted-live");
-    expect(result.status).toBe("partial");
-    expect(result.error?.category).toBe("partial_evidence");
+    expect(result.status).toBe("passed");
+    expect(result.error).toBeUndefined();
     expect(result.metrics.successfulFixtureIds?.length).toBeGreaterThan(0);
     expect(result.artifactRefs.designBundlePath).toBe(
       "data/projects/demo-project/figma/current.json",

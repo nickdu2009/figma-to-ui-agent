@@ -1,0 +1,38 @@
+# Product-M9 Real FlowPlan Agent Entry 报告
+
+- runId: cake-navigation-only-passed-20260809t2146
+- status: passed
+- ok: true
+- mode: local
+- projectId: flow-m13-closure-v2-reaction-cake-ordering-home-navigate-001
+- uiSpecPath: data/projects/flow-m13-closure-v2-reaction-cake-ordering-home-navigate-001/specs/current.json
+- flowPlanPath: reports/product-m9/cake-navigation-only-passed-20260809t2146/confirmed-flow-plan.json
+- confirmedFlowPlanPath: reports/product-m9/cake-navigation-only-passed-20260809t2146/confirmed-flow-plan.json
+- validationPath: reports/product-m9/cake-navigation-only-passed-20260809t2146/flow-m11-summary.json
+
+## Metrics
+
+- trustedNavigate: 66
+- trustedStateChange: 0
+- submitLikeNeedsConfirmation: 0
+- unsupported: 0
+- missingEvidence: 0
+- successfulFixtureIds: flow-figma-dde2b50f99cc4409-fixture, flow-figma-0265f6f5146a1968-fixture, flow-figma-9a7b54a6e9c5b502-fixture, flow-figma-6c22f020608f4671-fixture, flow-figma-00202911a8dbe704-fixture, flow-figma-1014036f4e8a1321-fixture, flow-figma-8cf64f5a3128ce17-fixture, flow-figma-cceb6c4cc5c460d4-fixture, flow-figma-e841d2739adebf23-fixture, flow-figma-e92837c78195ee94-fixture, flow-figma-e023814939bce7b5-fixture, flow-figma-75028b6f2de3f32c-fixture, flow-figma-e0023c09d5e99c40-fixture, flow-figma-4fa3851c0b933828-fixture, flow-figma-50b3da03d74ed92a-fixture, flow-figma-86e65d8c146d833a-fixture, flow-figma-cc4add100f34c525-fixture, flow-figma-efcec32388ce2b22-fixture, flow-figma-819032b6f0aa81d5-fixture, flow-figma-0523a57d251d9959-fixture, flow-figma-3ab84fe059408b53-fixture, flow-figma-9c71aff43301182e-fixture, flow-figma-162d19af07d5c4e6-fixture, flow-figma-c7ebf7d85ee5da0a-fixture, flow-figma-89e183669d6d8910-fixture, flow-figma-17fa3fff81f76a8f-fixture, flow-figma-832bfa08f8b8ae36-fixture, flow-figma-e40ea6bd9aa73b56-fixture, flow-figma-828983aaae7d3c35-fixture, flow-figma-0baf685d4258e33a-fixture, flow-figma-03006dad0758a756-fixture, flow-figma-4424094ceea2b3f3-fixture, flow-figma-2d8a8f6150d7c6bd-fixture, flow-figma-852f993bcbebbe4d-fixture, flow-figma-137dc5b22d3502bc-fixture, flow-figma-33193cc9e3602ab1-fixture, flow-figma-1eeee8a44f52da1b-fixture, flow-figma-a24550879e7273a0-fixture, flow-figma-fb599b9b44fc80c2-fixture, flow-figma-a07c92a63dfedb1f-fixture, flow-figma-c955533ff9dc5c1c-fixture, flow-figma-b2c6df8015c97c43-fixture, flow-figma-704a781bba306e2e-fixture, flow-figma-53850000408581e9-fixture, flow-figma-8caeab542144536f-fixture, flow-figma-d9c69e103aa71095-fixture, flow-figma-55ef662f4e6b6fd1-fixture, flow-figma-0b8fa00d6ba0fc70-fixture, flow-figma-7e1ca50399711d78-fixture, flow-figma-22d5b80fa7820dd2-fixture, flow-figma-84d0607172834f77-fixture, flow-figma-2d98cc31a4409ff5-fixture, flow-figma-77c08d73d785412f-fixture, flow-figma-5df78ec759d80688-fixture, flow-figma-b264538a05c445e9-fixture, flow-figma-9bd368656a1f860b-fixture, flow-figma-23e0b87e8551be7a-fixture, flow-figma-dd9bdf620bacdd2d-fixture, flow-figma-f5ea4d04e2d066eb-fixture, flow-figma-ade060751f614e03-fixture, flow-figma-be726540425c1af7-fixture, flow-figma-3fb093a555c423f4-fixture, flow-figma-2b809d60aac1b73c-fixture, flow-figma-ddc6016282683733-fixture, flow-figma-a4a8496fb40b8a96-fixture, flow-figma-c0a3920089790013-fixture
+- failedFixtureIds: none
+
+## Stages
+
+- inspect: passed - Product-M9 input validated
+- staticGeneration: passed - Local UISpec artifact loaded
+- flowPlanExtraction: passed - Local FlowPlan artifact loaded
+- confirmation: partial - Flow-M10 confirmation answers applied=0 declined=101 rejected=0
+- execution: partial - Flow-M11 execution partial
+- report: passed - Product-M9 summary written
+
+## Error
+
+- None
+
+## Next Action
+
+- Product-M9 navigation-only FlowPlan validation passed; multistep submit coverage was not required for this artifact.
