@@ -169,6 +169,20 @@ describe("Product-M9 flow service", () => {
     expect(result.status).toBe("partial");
     expect(result.error?.category).toBe("needs_confirmation");
     expect(result.error?.retryPolicy).toBe("manual_review");
+    expect(result.stages.confirmation).toMatchObject({
+      status: "partial",
+      artifactRef: `${root}/reports/product-m9-service-confirmation/confirmation-questions.json`,
+    });
+    expect(result.artifactRefs.confirmationQuestionsPath).toBe(
+      `${root}/reports/product-m9-service-confirmation/confirmation-questions.json`,
+    );
+    const questions = JSON.parse(
+      await readFile(
+        `${root}/reports/product-m9-service-confirmation/confirmation-questions.json`,
+        "utf8",
+      ),
+    );
+    expect(questions.questionCount).toBeGreaterThan(0);
   });
 
   it("prioritizes confirmation when untrusted submit-like evidence coexists with unsupported actions", async () => {
@@ -190,6 +204,9 @@ describe("Product-M9 flow service", () => {
     expect(result.metrics.submitLikeNeedsConfirmation).toBeGreaterThan(0);
     expect(result.metrics.unsupported).toBeGreaterThan(0);
     expect(result.error?.category).toBe("needs_confirmation");
+    expect(result.artifactRefs.confirmationQuestionsPath).toBe(
+      `${root}/reports/product-m9-service-confirmation-with-unsupported/confirmation-questions.json`,
+    );
   });
 
   it("applies Flow-M10 answers before Product-M9 execution", async () => {
@@ -243,6 +260,7 @@ describe("Product-M9 flow service", () => {
     expect(result.artifactRefs.confirmedFlowPlanPath).toBe(
       `${root}/reports/product-m9-service-confirmed-answers/confirmed-flow-plan.json`,
     );
+    expect(result.artifactRefs.confirmationQuestionsPath).toBeUndefined();
     const confirmed = JSON.parse(
       await readFile(
         `${root}/reports/product-m9-service-confirmed-answers/confirmed-flow-plan.json`,

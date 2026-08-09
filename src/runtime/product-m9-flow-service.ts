@@ -108,6 +108,11 @@ interface FlowArtifactInput {
   readonly confirmedFlowPlanPath?: string;
 }
 
+interface ConfirmationQuestionsArtifact {
+  readonly path: string;
+  readonly stage: ProductM9StageResult;
+}
+
 function createRunId(): string {
   return `product-m9-${Date.now().toString(36)}-${randomUUID()
     .replaceAll("-", "")
@@ -370,6 +375,53 @@ async function applyConfirmationAnswers(input: {
       status,
       `Flow-M10 confirmation answers applied=${applied} rejected=${rejected}`,
       { artifactRef: confirmedFlowPlanPath },
+    ),
+  };
+}
+
+async function writeConfirmationQuestionsArtifact(input: {
+  readonly cwd: string;
+  readonly request: ProductM9RunRequest;
+  readonly runId: string;
+  readonly rawReportRoot: string;
+  readonly artifacts: FlowArtifactInput;
+}): Promise<ConfirmationQuestionsArtifact | undefined> {
+  if (input.request.answersPath) {
+    return undefined;
+  }
+  const flowPlan = flowPlanDraftFrom(input.artifacts.flowPlan);
+  const questions = generateFlowM10ConfirmationQuestions({ flowPlan });
+  if (questions.length === 0) {
+    return undefined;
+  }
+  const questionsPath = resolve(
+    input.cwd,
+    input.rawReportRoot,
+    input.runId,
+    "confirmation-questions.json",
+  );
+  await mkdir(dirname(questionsPath), { recursive: true });
+  await writeFile(
+    questionsPath,
+    `${JSON.stringify(
+      {
+        schemaVersion: SCHEMA_VERSION,
+        projectId: input.request.projectId,
+        runId: input.runId,
+        questionCount: questions.length,
+        questions,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  const artifactRef = relativeRef(input.cwd, questionsPath);
+  return {
+    path: artifactRef,
+    stage: stage(
+      "partial",
+      `Flow-M10 confirmation questions written=${questions.length}`,
+      { artifactRef },
     ),
   };
 }
@@ -721,6 +773,16 @@ async function runProductM9FlowInternal(
             signal,
           })
         : await loadLocalArtifacts({ cwd, request });
+    const confirmationQuestions = await writeConfirmationQuestionsArtifact({
+      cwd,
+      request,
+      runId,
+      rawReportRoot,
+      artifacts,
+    });
+    if (confirmationQuestions) {
+      stages.confirmation = confirmationQuestions.stage;
+    }
     const confirmed = await applyConfirmationAnswers({
       cwd,
       request,
@@ -785,6 +847,7 @@ async function runProductM9FlowInternal(
         designBundlePath: effectiveArtifacts.designBundlePath,
         uiSpecPath: effectiveArtifacts.uiSpecPath,
         flowPlanPath: effectiveArtifacts.flowPlanPath,
+        confirmationQuestionsPath: confirmationQuestions?.path,
         confirmedFlowPlanPath:
           effectiveArtifacts.confirmedFlowPlanPath ??
           request.confirmedFlowPlanPath,

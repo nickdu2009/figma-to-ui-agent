@@ -46,7 +46,7 @@ coding agent 应读取这些字段：
 - `status`：`passed`、`partial` 或 `failed`。
 - `mode`：`local` 或 `restricted-live`。
 - `stages`：inspect、staticGeneration、flowPlanExtraction、confirmation、execution、report 的阶段状态。
-- `artifactRefs`：DesignBundle、UISpec、FlowPlan、validation 和 summary 路径。
+- `artifactRefs`：DesignBundle、UISpec、FlowPlan、confirmation questions、confirmed FlowPlan、validation 和 summary 路径。
 - `metrics`：trusted navigate/state-change、needs confirmation、unsupported、missing evidence、fixture ids。
 - `error.category`：失败或 partial 的稳定分类。
 - `nextAction`：agent 下一步动作。
@@ -72,6 +72,8 @@ coding agent 应读取这些字段：
 `passed` 表示有可信 `figma` 或 `user_confirmed` FlowPlan 行为进入执行摘要，且没有阻断性 partial evidence。
 
 `partial` 不是系统崩溃。它通常表示真实设计证据不足、需要用户确认、存在 unsupported Figma action，或只有部分 FlowPlan 可以安全执行。agent 不应把 partial 当成功交付，也不应自动编造业务逻辑。
+
+当 `error.category=needs_confirmation` 时，优先读取 `artifactRefs.confirmationQuestionsPath`。该文件包含 `questionCount` 和 `questions[]`，agent 应把问题展示给用户或使用已授权的结构化答案文件重跑 `--answers <path>`；不要从按钮文案自行生成业务后置条件。
 
 ## Reports
 

@@ -1,0 +1,1426 @@
+{
+  "schemaVersion": "1",
+  "projectId": "product-m9-nexkart-ecommerce-001",
+  "runId": "product-m9-nexkart-ecommerce-001-questions-local-20260809t2109",
+  "questionCount": 45,
+  "questions": [
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-48-help-0-172-control",
+      "interactionId": "inferred-ui-48-help-0-172-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Start a conversation」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 47 Message。",
+      "uiNodeId": "ui-48-help-0-172-control",
+      "fromPageId": "48-help",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "48-help",
+          "47-message"
+        ],
+        "nodeIds": [
+          "ui-48-help-0-172-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-44-cart-empty-0-377-control",
+      "interactionId": "inferred-ui-44-cart-empty-0-377-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Discover more products」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案与页面 Cover 匹配，仍需用户确认。",
+      "uiNodeId": "ui-44-cart-empty-0-377-control",
+      "fromPageId": "44-cart-empty",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "44-cart-empty",
+          "cover"
+        ],
+        "nodeIds": [
+          "ui-44-cart-empty-0-377-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-43-wishlist-0-413-control",
+      "interactionId": "missing-ui-43-wishlist-0-413-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Add all to Cart」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-43-wishlist-0-413-control",
+      "fromPageId": "43-wishlist",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "43-wishlist"
+        ],
+        "nodeIds": [
+          "ui-43-wishlist-0-413-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-42-account-profile-0-497-control",
+      "interactionId": "missing-ui-42-account-profile-0-497-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「View All」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-42-account-profile-0-497-control",
+      "fromPageId": "42-account-profile",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "42-account-profile"
+        ],
+        "nodeIds": [
+          "ui-42-account-profile-0-497-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-41-activity-0-548-control",
+      "interactionId": "missing-ui-41-activity-0-548-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「View My Orders」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-41-activity-0-548-control",
+      "fromPageId": "41-activity",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "41-activity"
+        ],
+        "nodeIds": [
+          "ui-41-activity-0-548-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-40-orders-returned-0-583-control",
+      "interactionId": "missing-ui-40-orders-returned-0-583-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Order Details」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-40-orders-returned-0-583-control",
+      "fromPageId": "40-orders-returned",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "40-orders-returned"
+        ],
+        "nodeIds": [
+          "ui-40-orders-returned-0-583-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-40-orders-returned-0-586-control",
+      "interactionId": "missing-ui-40-orders-returned-0-586-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Contact Support」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-40-orders-returned-0-586-control",
+      "fromPageId": "40-orders-returned",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "40-orders-returned"
+        ],
+        "nodeIds": [
+          "ui-40-orders-returned-0-586-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-39-refund-reasons-0-604-control",
+      "interactionId": "missing-ui-39-refund-reasons-0-604-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「View Product」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-39-refund-reasons-0-604-control",
+      "fromPageId": "39-refund-reasons",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "39-refund-reasons"
+        ],
+        "nodeIds": [
+          "ui-39-refund-reasons-0-604-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-39-refund-reasons-0-622-control",
+      "interactionId": "inferred-ui-39-refund-reasons-0-622-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Back」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 50 Side Menu。",
+      "uiNodeId": "ui-39-refund-reasons-0-622-control",
+      "fromPageId": "39-refund-reasons",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "39-refund-reasons",
+          "50-side-menu"
+        ],
+        "nodeIds": [
+          "ui-39-refund-reasons-0-622-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-38-orders-delivered-summary-0-665-control",
+      "interactionId": "missing-ui-38-orders-delivered-summary-0-665-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「View Product」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-38-orders-delivered-summary-0-665-control",
+      "fromPageId": "38-orders-delivered-summary",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "38-orders-delivered-summary"
+        ],
+        "nodeIds": [
+          "ui-38-orders-delivered-summary-0-665-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-38-orders-delivered-summary-0-689-control",
+      "interactionId": "missing-ui-38-orders-delivered-summary-0-689-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Message」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-38-orders-delivered-summary-0-689-control",
+      "fromPageId": "38-orders-delivered-summary",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "38-orders-delivered-summary"
+        ],
+        "nodeIds": [
+          "ui-38-orders-delivered-summary-0-689-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-38-orders-delivered-summary-0-690-control",
+      "interactionId": "missing-ui-38-orders-delivered-summary-0-690-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Refund」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-38-orders-delivered-summary-0-690-control",
+      "fromPageId": "38-orders-delivered-summary",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "38-orders-delivered-summary"
+        ],
+        "nodeIds": [
+          "ui-38-orders-delivered-summary-0-690-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-37-orders-delivered-0-695-control",
+      "interactionId": "missing-ui-37-orders-delivered-0-695-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Leave Review」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-37-orders-delivered-0-695-control",
+      "fromPageId": "37-orders-delivered",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "37-orders-delivered"
+        ],
+        "nodeIds": [
+          "ui-37-orders-delivered-0-695-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-37-orders-delivered-0-696-control",
+      "interactionId": "missing-ui-37-orders-delivered-0-696-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Order Details」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-37-orders-delivered-0-696-control",
+      "fromPageId": "37-orders-delivered",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "37-orders-delivered"
+        ],
+        "nodeIds": [
+          "ui-37-orders-delivered-0-696-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-36-track-package-0-809-control",
+      "interactionId": "missing-ui-36-track-package-0-809-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Contact Support」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-36-track-package-0-809-control",
+      "fromPageId": "36-track-package",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "36-track-package"
+        ],
+        "nodeIds": [
+          "ui-36-track-package-0-809-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-34-orders-shipped-summary-0-842-control",
+      "interactionId": "missing-ui-34-orders-shipped-summary-0-842-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Track Package」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-34-orders-shipped-summary-0-842-control",
+      "fromPageId": "34-orders-shipped-summary",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "34-orders-shipped-summary"
+        ],
+        "nodeIds": [
+          "ui-34-orders-shipped-summary-0-842-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-34-orders-shipped-summary-0-844-control",
+      "interactionId": "missing-ui-34-orders-shipped-summary-0-844-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「View Product」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-34-orders-shipped-summary-0-844-control",
+      "fromPageId": "34-orders-shipped-summary",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "34-orders-shipped-summary"
+        ],
+        "nodeIds": [
+          "ui-34-orders-shipped-summary-0-844-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-34-orders-shipped-summary-0-863-control",
+      "interactionId": "missing-ui-34-orders-shipped-summary-0-863-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Message」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-34-orders-shipped-summary-0-863-control",
+      "fromPageId": "34-orders-shipped-summary",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "34-orders-shipped-summary"
+        ],
+        "nodeIds": [
+          "ui-34-orders-shipped-summary-0-863-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-34-orders-shipped-summary-0-864-control",
+      "interactionId": "missing-ui-34-orders-shipped-summary-0-864-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Cancel Order」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-34-orders-shipped-summary-0-864-control",
+      "fromPageId": "34-orders-shipped-summary",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "34-orders-shipped-summary"
+        ],
+        "nodeIds": [
+          "ui-34-orders-shipped-summary-0-864-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-35-cancel-order-0-868-control",
+      "interactionId": "missing-ui-35-cancel-order-0-868-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「View Product」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-35-cancel-order-0-868-control",
+      "fromPageId": "35-cancel-order",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "35-cancel-order"
+        ],
+        "nodeIds": [
+          "ui-35-cancel-order-0-868-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-35-cancel-order-0-893-control",
+      "interactionId": "inferred-ui-35-cancel-order-0-893-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Back」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示返回入口，推断目标为 50 Side Menu。",
+      "uiNodeId": "ui-35-cancel-order-0-893-control",
+      "fromPageId": "35-cancel-order",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "35-cancel-order",
+          "50-side-menu"
+        ],
+        "nodeIds": [
+          "ui-35-cancel-order-0-893-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-33-orders-shipped-0-896-control",
+      "interactionId": "missing-ui-33-orders-shipped-0-896-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Track Package」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-33-orders-shipped-0-896-control",
+      "fromPageId": "33-orders-shipped",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "33-orders-shipped"
+        ],
+        "nodeIds": [
+          "ui-33-orders-shipped-0-896-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-33-orders-shipped-0-927-control",
+      "interactionId": "missing-ui-33-orders-shipped-0-927-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Order Details」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-33-orders-shipped-0-927-control",
+      "fromPageId": "33-orders-shipped",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "33-orders-shipped"
+        ],
+        "nodeIds": [
+          "ui-33-orders-shipped-0-927-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-33-orders-shipped-0-928-control",
+      "interactionId": "missing-ui-33-orders-shipped-0-928-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Track Package」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-33-orders-shipped-0-928-control",
+      "fromPageId": "33-orders-shipped",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "33-orders-shipped"
+        ],
+        "nodeIds": [
+          "ui-33-orders-shipped-0-928-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-33-orders-shipped-0-929-control",
+      "interactionId": "missing-ui-33-orders-shipped-0-929-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Order Details」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-33-orders-shipped-0-929-control",
+      "fromPageId": "33-orders-shipped",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "33-orders-shipped"
+        ],
+        "nodeIds": [
+          "ui-33-orders-shipped-0-929-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-32-item-detail-0-958-control",
+      "interactionId": "missing-ui-32-item-detail-0-958-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「View Product」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-32-item-detail-0-958-control",
+      "fromPageId": "32-item-detail",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "32-item-detail"
+        ],
+        "nodeIds": [
+          "ui-32-item-detail-0-958-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-32-item-detail-0-976-control",
+      "interactionId": "missing-ui-32-item-detail-0-976-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Messages (2)」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-32-item-detail-0-976-control",
+      "fromPageId": "32-item-detail",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "32-item-detail"
+        ],
+        "nodeIds": [
+          "ui-32-item-detail-0-976-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-32-item-detail-0-977-control",
+      "interactionId": "missing-ui-32-item-detail-0-977-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Cancel Item」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-32-item-detail-0-977-control",
+      "fromPageId": "32-item-detail",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "32-item-detail"
+        ],
+        "nodeIds": [
+          "ui-32-item-detail-0-977-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-29-orders-paid-0-1065-control",
+      "interactionId": "missing-ui-29-orders-paid-0-1065-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Order Details」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-29-orders-paid-0-1065-control",
+      "fromPageId": "29-orders-paid",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "29-orders-paid"
+        ],
+        "nodeIds": [
+          "ui-29-orders-paid-0-1065-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-29-orders-paid-0-1066-control",
+      "interactionId": "missing-ui-29-orders-paid-0-1066-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Messages (2)」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-29-orders-paid-0-1066-control",
+      "fromPageId": "29-orders-paid",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "29-orders-paid"
+        ],
+        "nodeIds": [
+          "ui-29-orders-paid-0-1066-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-27-store-profile-0-1228-control",
+      "interactionId": "missing-ui-27-store-profile-0-1228-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Messages (2)」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-27-store-profile-0-1228-control",
+      "fromPageId": "27-store-profile",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "27-store-profile"
+        ],
+        "nodeIds": [
+          "ui-27-store-profile-0-1228-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-27-store-profile-0-1229-control",
+      "interactionId": "missing-ui-27-store-profile-0-1229-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「More」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-27-store-profile-0-1229-control",
+      "fromPageId": "27-store-profile",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "27-store-profile"
+        ],
+        "nodeIds": [
+          "ui-27-store-profile-0-1229-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-20-cart-0-1498-control",
+      "interactionId": "missing-ui-20-cart-0-1498-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「button/primary」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-20-cart-0-1498-control",
+      "fromPageId": "20-cart",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "20-cart"
+        ],
+        "nodeIds": [
+          "ui-20-cart-0-1498-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-16-product-detail-0-1679-control",
+      "interactionId": "missing-ui-16-product-detail-0-1679-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「button/primary 1」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-16-product-detail-0-1679-control",
+      "fromPageId": "16-product-detail",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "16-product-detail"
+        ],
+        "nodeIds": [
+          "ui-16-product-detail-0-1679-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-16-product-detail-0-1682-control",
+      "interactionId": "missing-ui-16-product-detail-0-1682-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「button/secondary」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-16-product-detail-0-1682-control",
+      "fromPageId": "16-product-detail",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "16-product-detail"
+        ],
+        "nodeIds": [
+          "ui-16-product-detail-0-1682-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-10-mobile-0-2047-control",
+      "interactionId": "inferred-ui-10-mobile-0-2047-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Next」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 9 OTP。",
+      "uiNodeId": "ui-10-mobile-0-2047-control",
+      "fromPageId": "10-mobile",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "10-mobile",
+          "9-otp"
+        ],
+        "nodeIds": [
+          "ui-10-mobile-0-2047-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-9-otp-0-2056-control",
+      "interactionId": "missing-ui-9-otp-0-2056-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Verify」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-9-otp-0-2056-control",
+      "fromPageId": "9-otp",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "9-otp"
+        ],
+        "nodeIds": [
+          "ui-9-otp-0-2056-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-8-otp-0-2070-control",
+      "interactionId": "missing-ui-8-otp-0-2070-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「Verify」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-8-otp-0-2070-control",
+      "fromPageId": "8-otp",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "8-otp"
+        ],
+        "nodeIds": [
+          "ui-8-otp-0-2070-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-missing-ui-7-terms-of-use-0-2085-control",
+      "interactionId": "missing-ui-7-terms-of-use-0-2085-control",
+      "source": "missing",
+      "classification": "needs_confirmation.submit_like",
+      "questionKind": "submit_like",
+      "prompt": "请确认控件「I Agree」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "uiNodeId": "ui-7-terms-of-use-0-2085-control",
+      "fromPageId": "7-terms-of-use",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "submit",
+        "navigate",
+        "set_state",
+        "open_dialog",
+        "decline"
+      ],
+      "requiredPostconditions": "at_least_one_observable",
+      "candidateRefs": {
+        "pageIds": [
+          "7-terms-of-use"
+        ],
+        "nodeIds": [
+          "ui-7-terms-of-use-0-2085-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-6-sign-up-0-2100-control",
+      "interactionId": "inferred-ui-6-sign-up-0-2100-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Sign Up」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 5 Sign Up。",
+      "uiNodeId": "ui-6-sign-up-0-2100-control",
+      "fromPageId": "6-sign-up",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "6-sign-up",
+          "5-sign-up"
+        ],
+        "nodeIds": [
+          "ui-6-sign-up-0-2100-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-5-sign-up-0-2120-control",
+      "interactionId": "inferred-ui-5-sign-up-0-2120-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Sign Up」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 4 Login。",
+      "uiNodeId": "ui-5-sign-up-0-2120-control",
+      "fromPageId": "5-sign-up",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "5-sign-up",
+          "4-login"
+        ],
+        "nodeIds": [
+          "ui-5-sign-up-0-2120-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-4-login-0-2139-control",
+      "interactionId": "inferred-ui-4-login-0-2139-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Login with Face ID」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 3 Onboarding。",
+      "uiNodeId": "ui-4-login-0-2139-control",
+      "fromPageId": "4-login",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "4-login",
+          "3-onboarding"
+        ],
+        "nodeIds": [
+          "ui-4-login-0-2139-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-4-login-0-2142-control",
+      "interactionId": "inferred-ui-4-login-0-2142-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Login」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 3 Onboarding。",
+      "uiNodeId": "ui-4-login-0-2142-control",
+      "fromPageId": "4-login",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "4-login",
+          "3-onboarding"
+        ],
+        "nodeIds": [
+          "ui-4-login-0-2142-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-3-onboarding-0-2157-control",
+      "interactionId": "inferred-ui-3-onboarding-0-2157-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Get Started」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 2 Onboarding。",
+      "uiNodeId": "ui-3-onboarding-0-2157-control",
+      "fromPageId": "3-onboarding",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "3-onboarding",
+          "2-onboarding"
+        ],
+        "nodeIds": [
+          "ui-3-onboarding-0-2157-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    },
+    {
+      "schemaVersion": "1",
+      "id": "m10-inferred-ui-2-onboarding-0-2165-control",
+      "interactionId": "inferred-ui-2-onboarding-0-2165-control",
+      "source": "inferred",
+      "classification": "missing_evidence",
+      "questionKind": "navigate",
+      "prompt": "请确认控件「Next」触发后应产生什么本地可观察结果。",
+      "evidenceSummary": "按钮文案暗示继续流程，推断目标为下一个页面 1 Splash。",
+      "uiNodeId": "ui-2-onboarding-0-2165-control",
+      "fromPageId": "2-onboarding",
+      "applyCarrier": "flow_plan",
+      "allowedAnswerKinds": [
+        "navigate",
+        "decline"
+      ],
+      "requiredPostconditions": "none_allowed_for_decline_only",
+      "candidateRefs": {
+        "pageIds": [
+          "2-onboarding",
+          "1-splash"
+        ],
+        "nodeIds": [
+          "ui-2-onboarding-0-2165-control"
+        ],
+        "stateKeys": [],
+        "transitionIds": []
+      },
+      "required": true
+    }
+  ]
+}
