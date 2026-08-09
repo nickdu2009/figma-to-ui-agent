@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "1",
+  "projectId": "product-m9-ac10-design-system-submit-compare-001",
+  "sourceDesignBundleRevision": 1,
+  "sourceUISpecRevision": 1,
+  "figmaInteractionSource": "present",
+  "pages": [
+    {
+      "id": "in-modals",
+      "sourcePageId": "5:37426",
+      "name": "In modals",
+      "role": "state",
+      "confidence": "medium",
+      "reason": "页面名包含状态或弹层语义，仅作为候选状态页。"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "figma-1d53c3e85af5c459",
+      "source": "figma",
+      "sourceNodeId": "21:2370",
+      "uiNodeId": "ui-in-modals-5-37426",
+      "sourceNodeName": "btns-set",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "in-modals",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "Figma prototype interaction 存在，但无法安全转换为 UISpec action。",
+      "blockedReason": "prototype_target_missing"
+    },
+    {
+      "id": "missing-ui-in-modals-14-4758-control",
+      "source": "missing",
+      "uiNodeId": "ui-in-modals-14-4758-control",
+      "sourceNodeName": "btns-set",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "in-modals",
+      "confirmationQuestionId": "confirm-missing-ui-in-modals-14-4758-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "blockedReason": "interaction_target_missing"
+    },
+    {
+      "id": "missing-ui-in-modals-14-4782-control",
+      "source": "missing",
+      "uiNodeId": "ui-in-modals-14-4782-control",
+      "sourceNodeName": "btns-set",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "in-modals",
+      "confirmationQuestionId": "confirm-missing-ui-in-modals-14-4782-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "blockedReason": "interaction_target_missing"
+    },
+    {
+      "id": "missing-ui-in-modals-14-4776-control",
+      "source": "missing",
+      "uiNodeId": "ui-in-modals-14-4776-control",
+      "sourceNodeName": "btns-set",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "in-modals",
+      "confirmationQuestionId": "confirm-missing-ui-in-modals-14-4776-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "blockedReason": "interaction_target_missing"
+    },
+    {
+      "id": "missing-ui-in-modals-14-4822-control",
+      "source": "missing",
+      "uiNodeId": "ui-in-modals-14-4822-control",
+      "sourceNodeName": "Cancel",
+      "trigger": "click",
+      "intent": "unknown",
+      "fromPageId": "in-modals",
+      "confirmationQuestionId": "confirm-missing-ui-in-modals-14-4822-control",
+      "confirmed": false,
+      "confidence": "low",
+      "reason": "无法从 Figma interaction 或控件文案确认目标页面。",
+      "blockedReason": "interaction_target_missing"
+    },
+    {
+      "id": "missing-ui-in-modals-14-4815-control",
+      "source": "user_confirmed",
+      "uiNodeId": "ui-in-modals-14-4815-control",
+      "sourceNodeName": "Invite",
+      "trigger": "submit",
+      "intent": "submit",
+      "fromPageId": "in-modals",
+      "stateKey": "product-m9-invite-submit-confirmed",
+      "value": true,
+      "stateInitialValue": false,
+      "postconditions": [
+        {
+          "kind": "expect_visible",
+          "nodeId": "ui-in-modals-14-4815-control"
+        }
+      ],
+      "confirmationQuestionId": "confirm-missing-ui-in-modals-14-4815-control",
+      "confirmed": true,
+      "confidence": "low",
+      "reason": "受控验证：用户确认 Invite 为 submit-like 操作；当前 Figma 样本无真实后置页面，使用本地可观察按钮节点作为 postcondition carrier。"
+    }
+  ],
+  "confirmationQuestions": [
+    {
+      "id": "confirm-missing-ui-in-modals-14-4758-control",
+      "interactionId": "missing-ui-in-modals-14-4758-control",
+      "question": "页面「In modals」中的控件「btns-set」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：In modals",
+          "value": "target:in-modals"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-in-modals-14-4782-control",
+      "interactionId": "missing-ui-in-modals-14-4782-control",
+      "question": "页面「In modals」中的控件「btns-set」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：In modals",
+          "value": "target:in-modals"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-in-modals-14-4776-control",
+      "interactionId": "missing-ui-in-modals-14-4776-control",
+      "question": "页面「In modals」中的控件「btns-set」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：In modals",
+          "value": "target:in-modals"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-in-modals-14-4822-control",
+      "interactionId": "missing-ui-in-modals-14-4822-control",
+      "question": "页面「In modals」中的控件「Cancel」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：In modals",
+          "value": "target:in-modals"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "confirm-missing-ui-in-modals-14-4815-control",
+      "interactionId": "missing-ui-in-modals-14-4815-control",
+      "question": "页面「In modals」中的控件「Invite」触发后应该发生什么？原因：无法从 Figma interaction 或控件文案确认目标页面。",
+      "options": [
+        {
+          "label": "跳转到：In modals",
+          "value": "target:in-modals"
+        },
+        {
+          "label": "提交表单并验证本地可观察结果",
+          "value": "submit:set_state:<stateKey>:true:expect_visible:<nodeId>"
+        },
+        {
+          "label": "保持静态，不生成交互",
+          "value": "static"
+        }
+      ],
+      "required": true
+    }
+  ],
+  "confirmations": [],
+  "stateMachines": [],
+  "report": {
+    "unsupportedCount": 5,
+    "unresolvedInteractionCount": 5,
+    "convertedActionCount": 0,
+    "behaviorFixtureCount": 0,
+    "confirmationCount": 0
+  }
+}

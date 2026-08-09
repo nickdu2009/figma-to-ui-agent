@@ -45,6 +45,7 @@ describe("run-product-m9-flow CLI", () => {
     expect(stdout).toContain("Product-M9 agent-facing usage");
     expect(stdout).toContain("--flow-plan");
     expect(stdout).toContain("--ui-spec");
+    expect(stdout).toContain("--run-compare");
     expect(stdout).toContain("restricted-live: Figma REST only, no OpenAI");
     expect(stdout).toContain("PRODUCT_M9_FIGMA_AUTHORIZED=1");
     expect(stdout).toContain("reports/product-m9");
