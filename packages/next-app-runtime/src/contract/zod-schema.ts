@@ -258,7 +258,7 @@ function withStaticDeferredChecks(
         if (
           error === deferredExpressionAccess ||
           access.deferred ||
-          hasDynamicExpression
+          (isProxyIncompatibleError(error) && hasDynamicExpression)
         ) {
           // A host refinement may catch the sentinel itself; the access flag
           // still keeps its unresolved result from becoming a literal verdict.
@@ -271,6 +271,96 @@ function withStaticDeferredChecks(
       }
     }
   });
+}
+
+function withOwnProtoRecordValidation(
+  keySchema: ZodType,
+  valueSchema: ZodType,
+  candidate: ZodType,
+): ZodType {
+  return z
+    .any()
+    .superRefine((value, context) => {
+      if (
+        value === null ||
+        typeof value !== "object" ||
+        Array.isArray(value) ||
+        !Object.hasOwn(value, "__proto__")
+      ) {
+        return;
+      }
+      const reservedValue = Object.getOwnPropertyDescriptor(value, "__proto__")?.value;
+      for (const result of [
+        keySchema.safeParse("__proto__"),
+        valueSchema.safeParse(reservedValue),
+      ]) {
+        if (result.success) continue;
+        for (const issue of result.error.issues) {
+          context.addIssue({
+            ...issue,
+            path: ["__proto__", ...issue.path],
+          } as core.$ZodSuperRefineIssue);
+        }
+      }
+    })
+    .pipe(candidate);
+}
+
+function ownRecordSchema(keySchema: z.ZodString, valueSchema: ZodType): ZodType {
+  return withOwnProtoRecordValidation(
+    cloneZod(keySchema, zodInternals(keySchema)),
+    valueSchema,
+    z.record(keySchema, valueSchema),
+  );
+}
+
+function containsOwnRecordKeyCandidate(
+  schema: ZodType,
+  seen = new Set<ZodType>(),
+): boolean {
+  if (seen.has(schema)) return false;
+  seen.add(schema);
+  const definition = zodInternals(schema);
+  switch (definition.type) {
+    case "record":
+      return true;
+    case "object":
+      return Object.values(definition.shape ?? {}).some((child) =>
+        containsOwnRecordKeyCandidate(child, seen)
+      ) || Boolean(
+        definition.catchall && containsOwnRecordKeyCandidate(definition.catchall, seen),
+      );
+    case "array":
+      return Boolean(
+        definition.element && containsOwnRecordKeyCandidate(definition.element, seen),
+      );
+    case "tuple":
+      return (definition.items ?? []).some((child) =>
+        containsOwnRecordKeyCandidate(child, seen)
+      ) || Boolean(definition.rest && containsOwnRecordKeyCandidate(definition.rest, seen));
+    case "union":
+      return (definition.options ?? []).some((child) =>
+        containsOwnRecordKeyCandidate(child, seen)
+      );
+    case "intersection":
+      return containsOwnRecordKeyCandidate(definition.left!, seen) ||
+        containsOwnRecordKeyCandidate(definition.right!, seen);
+    case "optional":
+    case "nullable":
+    case "default":
+    case "prefault":
+    case "catch":
+    case "readonly":
+    case "nonoptional":
+      return containsOwnRecordKeyCandidate(definition.innerType!, seen);
+    case "lazy":
+      return containsOwnRecordKeyCandidate(definition.getter!(), seen);
+    case "pipe":
+      return containsOwnRecordKeyCandidate(definition.in!, seen) ||
+        containsOwnRecordKeyCandidate(definition.out!, seen);
+    default:
+      return false;
+  }
 }
 
 /**
@@ -290,12 +380,21 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
 
     const definition = zodInternals(current);
     const wrapDirect = (candidate: ZodType): ZodType => {
-      const deferredCandidate = candidate.refine(containsDynamicExpression, {
-        message: "Catalog expression validation requires a dynamic expression",
-      });
+      const deferredCandidate = z
+        .any()
+        .refine(containsDynamicExpression, {
+          message: "Catalog expression validation requires a dynamic expression",
+        })
+        .pipe(candidate);
       return allowDirectExpression && definition.type !== "never"
         ? z.union([dynamicExpressionSchema, deferredCandidate, current])
         : z.union([deferredCandidate, current]);
+    };
+    const wrapCandidate = (candidate: ZodType): ZodType => {
+      if (!containsOwnRecordKeyCandidate(current)) return wrapDirect(candidate);
+      return allowDirectExpression
+        ? z.union([dynamicExpressionSchema, candidate])
+        : candidate;
     };
     let result: ZodType;
 
@@ -305,7 +404,7 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
         const relaxedShape = Object.fromEntries(
           Object.entries(shape).map(([name, value]) => [name, visit(value, true)]),
         );
-        result = wrapDirect(withStaticDeferredChecks(
+        result = wrapCandidate(withStaticDeferredChecks(
           cloneZod(current, {
             ...withoutDeferredChecks(definition),
             shape: relaxedShape,
@@ -318,7 +417,7 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
         break;
       }
       case "array":
-        result = wrapDirect(withStaticDeferredChecks(
+        result = wrapCandidate(withStaticDeferredChecks(
           cloneZod(current, {
             ...withoutDeferredChecks(definition),
             element: visit(definition.element!, true),
@@ -327,16 +426,24 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
         ));
         break;
       case "record":
-        result = wrapDirect(withStaticDeferredChecks(
-          cloneZod(current, {
+        {
+          const keyType = cloneZod(definition.keyType!, zodInternals(definition.keyType!));
+          const valueType = visit(definition.valueType!, true);
+          const candidate = withStaticDeferredChecks(cloneZod(current, {
             ...withoutDeferredChecks(definition),
-            valueType: visit(definition.valueType!, true),
-          }),
-          definition,
-        ));
+            valueType,
+          }), definition);
+          result = withOwnProtoRecordValidation(
+            keyType,
+            valueType,
+            allowDirectExpression
+              ? z.union([dynamicExpressionSchema, candidate])
+              : candidate,
+          );
+        }
         break;
       case "tuple":
-        result = wrapDirect(withStaticDeferredChecks(
+        result = wrapCandidate(withStaticDeferredChecks(
           cloneZod(current, {
             ...withoutDeferredChecks(definition),
             items: (definition.items ?? []).map((item) => visit(item, true)),
@@ -346,7 +453,7 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
         ));
         break;
       case "union":
-        result = wrapDirect(withStaticDeferredChecks(
+        result = wrapCandidate(withStaticDeferredChecks(
           definition.inclusive === false && definition.discriminator === undefined
             ? cloneZod(current, {
                 ...withoutDeferredChecks(definition),
@@ -363,7 +470,7 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
         ));
         break;
       case "intersection":
-        result = wrapDirect(withStaticDeferredChecks(
+        result = wrapCandidate(withStaticDeferredChecks(
           cloneZod(current, {
             ...withoutDeferredChecks(definition),
             left: visit(definition.left!, true),
@@ -385,7 +492,7 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
         });
         break;
       case "lazy":
-        result = wrapDirect(z.lazy(() => visit(definition.getter!(), true)));
+        result = wrapCandidate(z.lazy(() => visit(definition.getter!(), true)));
         break;
       case "pipe": {
         type PipelineEvaluation =
@@ -462,7 +569,7 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
             context.addIssue(issue as core.$ZodSuperRefineIssue);
           }
         });
-        result = wrapDirect(candidate);
+        result = wrapCandidate(candidate);
         break;
       }
       case "any":
@@ -571,19 +678,27 @@ function catalogActionBindingSchema(
   const params = paramsSchema
     ? expressionAwareCatalogSchema(paramsSchema)
     : dynamicParamsSchema;
-  const paramsField = paramsSchema && !paramsSchema.safeParse({}).success
-    ? params
-    : params.optional();
   return z
     .object({
       action: z.literal(name),
-      params: paramsField,
+      params: params.optional(),
       preventDefault: z.boolean().optional(),
       confirm: actionConfirmSchema.optional(),
       onSuccess: catalogActionOnSuccessSchema(chainedActionName).optional(),
       onError: catalogActionOnErrorSchema(chainedActionName).optional(),
     })
-    .strict();
+    .strict()
+    .superRefine((binding, context) => {
+      if (Object.hasOwn(binding, "params")) return;
+      const result = params.safeParse({});
+      if (result.success) return;
+      for (const issue of result.error.issues) {
+        context.addIssue({
+          ...issue,
+          path: ["params", ...issue.path],
+        } as core.$ZodSuperRefineIssue);
+      }
+    });
 }
 
 function createCatalogElementTreeSchema(
@@ -614,7 +729,10 @@ function createCatalogElementTreeSchema(
       )),
   ] as [ZodType, ZodType, ...ZodType[]];
   const binding = z.union(actionVariants);
-  const bindings = z.record(z.string(), z.union([binding, z.array(binding)]));
+  const bindings = ownRecordSchema(
+    z.string(),
+    z.union([binding, z.array(binding)]),
+  );
   const commonShape = {
     children: z.array(z.string()).optional(),
     visible: visibilityConditionSchema.optional(),
@@ -651,7 +769,7 @@ function createCatalogElementTreeSchema(
   const element = z.union(componentVariants);
   return z.object({
     root: z.string(),
-    elements: z.record(z.string(), element),
+    elements: ownRecordSchema(z.string(), element),
     state: z.record(z.string(), jsonValueSchema).optional(),
   }).strict();
 }
@@ -673,8 +791,8 @@ export function createCatalogAwareNextAppSpecSchema(
   }).strict();
   return z.object({
     metadata: nextMetadataSchema.optional(),
-    routes: z.record(z.string(), route),
-    layouts: z.record(z.string(), tree).optional(),
+    routes: ownRecordSchema(z.string(), route),
+    layouts: ownRecordSchema(z.string(), tree).optional(),
     state: z.record(z.string(), jsonValueSchema).optional(),
   }).strict() as z.ZodType<NextAppSpec>;
 }
@@ -763,7 +881,71 @@ export const nextRouteSpecSchema: z.ZodType<NextRouteSpec> = z
   })
   .strict();
 
-export const nextAppSpecSchema: z.ZodType<NextAppSpec> = z
+const RECORD_KEY_ESCAPE = "\u0000next-app-runtime-record-key:";
+
+function encodeRecordKey(key: string): string {
+  if (key === "__proto__") return `${RECORD_KEY_ESCAPE}proto`;
+  return key.startsWith(RECORD_KEY_ESCAPE)
+    ? `${RECORD_KEY_ESCAPE}literal:${key}`
+    : key;
+}
+
+function decodeRecordKey(key: string): string {
+  if (key === `${RECORD_KEY_ESCAPE}proto`) return "__proto__";
+  const literalPrefix = `${RECORD_KEY_ESCAPE}literal:`;
+  return key.startsWith(literalPrefix) ? key.slice(literalPrefix.length) : key;
+}
+
+function mapRecordKeys(value: unknown, mapKey: (key: string) => string): unknown {
+  if (Array.isArray(value)) {
+    const mapped = new Array<unknown>(value.length);
+    for (const key of Object.keys(value)) {
+      const descriptor = Object.getOwnPropertyDescriptor(value, key);
+      if (!descriptor) continue;
+      Object.defineProperty(mapped, mapKey(key), "value" in descriptor
+        ? { ...descriptor, value: mapRecordKeys(descriptor.value, mapKey) }
+        : descriptor);
+    }
+    return mapped;
+  }
+  if (value === null || typeof value !== "object") return value;
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== Object.prototype && prototype !== null) return value;
+
+  const mapped: Record<string, unknown> = {};
+  for (const key of Object.keys(value)) {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    if (!descriptor) continue;
+    Object.defineProperty(mapped, mapKey(key), "value" in descriptor
+      ? { ...descriptor, value: mapRecordKeys(descriptor.value, mapKey) }
+      : descriptor);
+  }
+  return mapped;
+}
+
+function containsEscapedRecordKey(
+  value: unknown,
+  seen = new Set<object>(),
+): boolean {
+  if (value === null || typeof value !== "object" || seen.has(value)) return false;
+  const prototype = Object.getPrototypeOf(value);
+  if (!Array.isArray(value) && prototype !== Object.prototype && prototype !== null) {
+    return false;
+  }
+  seen.add(value);
+  for (const key of Object.keys(value)) {
+    if (key === "__proto__" || key.startsWith(RECORD_KEY_ESCAPE)) return true;
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    if (
+      descriptor &&
+      "value" in descriptor &&
+      containsEscapedRecordKey(descriptor.value, seen)
+    ) return true;
+  }
+  return false;
+}
+
+const nextAppSpecStructureSchema: z.ZodType<NextAppSpec> = z
   .object({
     metadata: nextMetadataSchema.optional(),
     routes: z.record(z.string(), nextRouteSpecSchema),
@@ -771,6 +953,28 @@ export const nextAppSpecSchema: z.ZodType<NextAppSpec> = z
     state: z.record(z.string(), jsonValueSchema).optional(),
   })
   .strict();
+
+export const nextAppSpecSchema: z.ZodType<NextAppSpec> = z
+  .any()
+  .superRefine((input, context) => {
+    if (!containsEscapedRecordKey(input)) return;
+    const result = nextAppSpecStructureSchema.safeParse(
+      mapRecordKeys(input, encodeRecordKey),
+    );
+    if (result.success) return;
+    for (const issue of result.error.issues) {
+      context.addIssue({
+        ...issue,
+        continue: false,
+        path: issue.path.map((segment) =>
+          typeof segment === "string" ? decodeRecordKey(segment) : segment
+        ),
+      } as core.$ZodSuperRefineIssue);
+    }
+  })
+  .overwrite((input) => mapRecordKeys(input, encodeRecordKey))
+  .pipe(nextAppSpecStructureSchema)
+  .overwrite((parsed) => mapRecordKeys(parsed, decodeRecordKey) as NextAppSpec);
 
 export function parseNextAppSpec(input: unknown): NextAppSpec {
   return nextAppSpecSchema.parse(input);

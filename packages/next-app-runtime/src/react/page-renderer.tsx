@@ -1,4 +1,4 @@
-import React, { useMemo, type ReactNode } from "react";
+import React, { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Spec } from "@json-render/core";
 import {
   ActionProvider,
@@ -14,6 +14,10 @@ import { useNextApp } from "./provider.js";
 import { Link } from "./link.js";
 import { runWithRuntimeActionObserverScope } from "./action-observer-manager.js";
 import { useRuntimeActionObserverScope } from "./action-observer-scope.js";
+import {
+  createPrototypeSafeStateStore,
+  reconcileInitialState,
+} from "./prototype-safe-state-store.js";
 
 export interface PageRendererProps {
   spec: Spec;
@@ -47,6 +51,17 @@ function LayoutWithSlot({
 export function PageRenderer({ spec, initialState, layoutSpec, loading }: PageRendererProps) {
   const { registry, handlers, navigate } = useNextApp();
   const actionObserverScope = useRuntimeActionObserverScope();
+  const [stateStore] = useState(() => createPrototypeSafeStateStore(initialState));
+  const previousInitialState = useRef(initialState);
+  useEffect(() => {
+    if (initialState === previousInitialState.current) return;
+    reconcileInitialState(
+      stateStore,
+      previousInitialState.current ?? {},
+      initialState ?? {},
+    );
+    previousInitialState.current = initialState;
+  }, [initialState, stateStore]);
   const scopedRegistry = useMemo<ComponentRegistry>(() => Object.fromEntries(
     Object.entries(registry).map(([name, Component]) => {
       const ScopedComponent = (props: ComponentRenderProps) => {
@@ -80,7 +95,7 @@ export function PageRenderer({ spec, initialState, layoutSpec, loading }: PageRe
   }, [handlers, navigate]);
   const content = <Renderer spec={spec} registry={augmentedRegistry} loading={loading} />;
   return (
-    <StateProvider initialState={initialState}>
+    <StateProvider store={stateStore}>
       <VisibilityProvider>
         <ValidationProvider>
           <ActionProvider handlers={actionHandlers} navigate={navigate}>

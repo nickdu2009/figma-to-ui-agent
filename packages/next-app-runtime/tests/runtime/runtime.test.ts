@@ -51,6 +51,165 @@ function withLoader(name: string, text = "Home"): NextAppSpec {
 }
 
 describe("route runtime", () => {
+  it("does not expose host catalog or registry identifiers in mismatch errors", () => {
+    const declared = "https://catalog-user:catalog-password@private.example/?token=catalog-secret";
+    const implemented = "https://registry-user:registry-password@private.example/?token=registry-secret";
+    const catalog = schema.createCatalog({
+      components: {
+        [declared]: { props: z.object({}).strict() },
+      },
+      actions: {},
+    });
+
+    let thrown: unknown;
+    try {
+      createRuntimeWithNavigation(
+        runtimeOptions({
+          catalog,
+          registry: { [implemented]: () => null },
+        }),
+        createMemoryNavigation(),
+      );
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toMatchObject({
+      code: "catalog_registry_mismatch",
+      message: "Catalog components and registry implementations do not match",
+    });
+    const serialized = JSON.stringify(thrown);
+    expect(serialized).not.toContain(declared);
+    expect(serialized).not.toContain(implemented);
+  });
+
+  it("does not expose host action or handler identifiers in mismatch errors", () => {
+    const declared = "https://action-user:action-password@private.example/?token=action-secret";
+    const implemented = "https://handler-user:handler-password@private.example/?token=handler-secret";
+    const catalog = schema.createCatalog({
+      components: {},
+      actions: {
+        [declared]: { params: z.object({}).strict() },
+      },
+    });
+
+    let thrown: unknown;
+    try {
+      createRuntimeWithNavigation(
+        runtimeOptions({
+          catalog,
+          registry: {},
+          handlers: { [implemented]: () => undefined },
+        }),
+        createMemoryNavigation(),
+      );
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toMatchObject({
+      code: "catalog_registry_mismatch",
+      message: "Catalog actions and handler implementations do not match",
+    });
+    const serialized = JSON.stringify(thrown);
+    expect(serialized).not.toContain(declared);
+    expect(serialized).not.toContain(implemented);
+  });
+
+  it.each(["missing", "failed"] as const)(
+    "uses opaque observer and error identifiers for a %s sensitive loader",
+    async (outcome) => {
+      const pattern = "/route-user:route-password@private.example/route-secret";
+      const loaderName = "https://loader-user:loader-password@private.example/?token=loader-secret";
+      const events: RuntimeEvent[] = [];
+      const runtime = createRuntimeWithNavigation(
+        runtimeOptions({
+          loaders: outcome === "failed"
+            ? { [loaderName]: () => { throw new Error("failed"); } }
+            : undefined,
+          observer: (event: RuntimeEvent) => events.push(event),
+        }),
+        createMemoryNavigation(pattern),
+      );
+      const spec = createTestSpec({
+        routes: {
+          [pattern]: {
+            loader: loaderName,
+            page: {
+              root: "root",
+              elements: { root: { type: "Text", props: { text: "Sensitive" } } },
+            },
+          },
+        },
+      });
+
+      await runtime.applySource({ kind: "object", value: spec });
+      await tick();
+
+      const serialized = JSON.stringify({
+        error: runtime.getSnapshot().error,
+        events,
+      });
+      expect(serialized).not.toContain(pattern);
+      expect(serialized).not.toContain(loaderName);
+      for (const event of events) {
+        if (event.pattern !== undefined) expect(event.pattern).toMatch(/^route-\d+$/u);
+        if (event.loader !== undefined) expect(event.loader).toMatch(/^loader-\d+$/u);
+      }
+      expect(runtime.getSnapshot().error?.details?.loader).toMatch(/^loader-\d+$/u);
+      runtime.dispose();
+    },
+  );
+
+  it("scopes opaque route and loader identifiers to one loader run", async () => {
+    const events: RuntimeEvent[] = [];
+    const loader = vi.fn().mockRejectedValue(new Error("failed"));
+    const runtime = createRuntimeWithNavigation(
+      runtimeOptions({
+        loaders: { sensitive: loader },
+        observer: (event: RuntimeEvent) => events.push(event),
+      }),
+      createMemoryNavigation(),
+    );
+    const spec = createTestSpec({
+      routes: {
+        "/": {
+          loader: "sensitive",
+          page: {
+            root: "root",
+            elements: { root: { type: "Text", props: { text: "Sensitive" } } },
+          },
+        },
+      },
+    });
+
+    await runtime.applySource({ kind: "object", value: spec });
+    await tick();
+    const firstMatched = events.find((event) => event.name === "route_matched");
+    const firstStarted = events.find((event) => event.name === "loader_started");
+    const firstFailed = events.find((event) => event.name === "loader_failed");
+    expect(firstMatched?.pattern).toBe(firstStarted?.pattern);
+    expect(firstFailed).toMatchObject({
+      loader: firstStarted?.loader,
+      pattern: firstStarted?.pattern,
+    });
+
+    events.length = 0;
+    runtime.retryLoader();
+    await tick();
+    const secondMatched = events.find((event) => event.name === "route_matched");
+    const secondStarted = events.find((event) => event.name === "loader_started");
+    const secondFailed = events.find((event) => event.name === "loader_failed");
+    expect(secondMatched?.pattern).toBe(secondStarted?.pattern);
+    expect(secondFailed).toMatchObject({
+      loader: secondStarted?.loader,
+      pattern: secondStarted?.pattern,
+    });
+    expect(secondStarted?.loader).not.toBe(firstStarted?.loader);
+    expect(secondStarted?.pattern).not.toBe(firstStarted?.pattern);
+    runtime.dispose();
+  });
+
   it("matches decoded browser pathnames without changing the public location", async () => {
     const userLoader = vi.fn((params: Record<string, string | string[]>) => ({ params }));
     const navigation = createMemoryNavigation("/caf%C3%A9");
@@ -153,6 +312,68 @@ describe("route runtime", () => {
     await tick();
     expect(loader).toHaveBeenCalledTimes(1);
     expect(runtime.getSnapshot().pageData?.spec.elements.root?.props).toEqual({ text: "Updated" });
+    expect(runtime.getSnapshot().pageData?.initialState).toBe(stableState);
+    runtime.dispose();
+  });
+
+  it("merges own __proto__ state as data without changing the merged prototype", async () => {
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), createMemoryNavigation());
+    const spec = JSON.parse(`{
+      "routes": {
+        "/": {
+          "page": {
+            "root": "root",
+            "elements": {
+              "root": { "type": "Text", "props": { "text": "Home" } }
+            }
+          }
+        }
+      },
+      "state": {
+        "__proto__": { "role": "literal" },
+        "regular": true
+      }
+    }`) as NextAppSpec;
+
+    const result = await runtime.applySource({ kind: "object", value: spec });
+
+    expect(result.status).toBe("committed");
+    const initialState = runtime.getSnapshot().pageData?.initialState;
+    expect(initialState?.regular).toBe(true);
+    expect(Object.hasOwn(initialState ?? {}, "__proto__")).toBe(true);
+    expect(initialState?.["__proto__"]).toEqual({ role: "literal" });
+    expect(Object.getPrototypeOf(initialState)).toBe(Object.prototype);
+
+    const updatedSpec = JSON.parse(JSON.stringify(spec)) as NextAppSpec;
+    updatedSpec.routes["/"]!.page.elements.root!.props.text = "Updated";
+    await runtime.applySource({ kind: "object", value: updatedSpec });
+    expect(runtime.getSnapshot().pageData?.initialState).toBe(initialState);
+    expect(Object.hasOwn(runtime.getSnapshot().pageData?.initialState ?? {}, "__proto__"))
+      .toBe(true);
+    runtime.dispose();
+  });
+
+  it("reuses initialState when changed sources still produce the same merged state", async () => {
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), createMemoryNavigation());
+    const makeSpec = (shadowed: string, text: string) => createTestSpec({
+      state: { shadowed },
+      routes: {
+        "/": {
+          page: {
+            root: "root",
+            state: { shadowed: "page" },
+            elements: { root: { type: "Text", props: { text } } },
+          },
+        },
+      },
+    });
+    await runtime.applySource({ kind: "object", value: makeSpec("app-a", "A") });
+    const stableState = runtime.getSnapshot().pageData?.initialState;
+
+    await runtime.applySource({ kind: "object", value: makeSpec("app-b", "B") });
+
+    expect(runtime.getSnapshot().pageData?.initialState).toBe(stableState);
+    expect(runtime.getSnapshot().pageData?.initialState?.shadowed).toBe("page");
     runtime.dispose();
   });
 
@@ -225,7 +446,7 @@ describe("route runtime", () => {
     resolveSlow({ route: "a" });
     await tick();
     expect(runtime.getSnapshot().pageData?.initialState?.route).toBe("b");
-    expect(events.some((event) => event.name === "loader_stale" && event.loader === "slow")).toBe(true);
+    expect(events.some((event) => event.name === "loader_stale")).toBe(true);
     runtime.dispose();
   });
 
@@ -839,12 +1060,8 @@ describe("route runtime", () => {
 
     rejectLoader(new Error("late failure"));
     await tick();
-    expect(events.some((event) =>
-      event.name === "loader_stale" && event.loader === "slow"
-    )).toBe(true);
-    expect(events.some((event) =>
-      event.name === "loader_failed" && event.loader === "slow"
-    )).toBe(false);
+    expect(events.some((event) => event.name === "loader_stale")).toBe(true);
+    expect(events.some((event) => event.name === "loader_failed")).toBe(false);
     expect(runtime.getSnapshot()).toMatchObject({
       location: { pathname: "/b" },
       routeSource: "candidate",
@@ -903,12 +1120,8 @@ describe("route runtime", () => {
       routeStatus: "ready",
       pageData: { spec: { elements: { root: { props: { text: "B" } } } } },
     });
-    expect(events.some((event) =>
-      event.name === "loader_stale" && event.loader === "reentrant"
-    )).toBe(true);
-    expect(events.some((event) =>
-      event.name === "loader_succeeded" && event.loader === "reentrant"
-    )).toBe(false);
+    expect(events.some((event) => event.name === "loader_stale")).toBe(true);
+    expect(events.some((event) => event.name === "loader_succeeded")).toBe(false);
     runtime.dispose();
   });
 
@@ -997,9 +1210,7 @@ describe("route runtime", () => {
       error: { code: "loader_failed" },
       pageData: { spec: { elements: { root: { props: { text: "A" } } } } },
     });
-    expect(events.some((event) =>
-      event.name === "loader_failed" && event.loader === "reentrant"
-    )).toBe(true);
+    expect(events.some((event) => event.name === "loader_failed")).toBe(true);
     runtime.dispose();
   });
 
@@ -1338,6 +1549,36 @@ describe("transaction gates", () => {
       .resolves.toMatchObject({ status: "committed" });
     expect(observer).toHaveBeenCalled();
     runtime.dispose();
+  });
+
+  it("handles async observer and subscriber rejection without altering transactions", async () => {
+    const observerFailure = new Error("async observer failure");
+    const subscriberFailure = new Error("async subscriber failure");
+    const unhandled: unknown[] = [];
+    const onUnhandled = (reason: unknown) => {
+      if (reason === observerFailure || reason === subscriberFailure) unhandled.push(reason);
+    };
+    process.on("unhandledRejection", onUnhandled);
+    const runtime = createRuntimeWithNavigation(
+      runtimeOptions({
+        observer: async () => {
+          throw observerFailure;
+        },
+      }),
+      createMemoryNavigation(),
+    );
+    runtime.subscribe(async () => {
+      throw subscriberFailure;
+    });
+    try {
+      await expect(runtime.applySource({ kind: "object", value: createTestSpec() }))
+        .resolves.toMatchObject({ status: "committed" });
+      await tick();
+      expect(unhandled).toEqual([]);
+    } finally {
+      runtime.dispose();
+      process.removeListener("unhandledRejection", onUnhandled);
+    }
   });
 
   it("deeply owns committed specs and freezes public snapshots", async () => {

@@ -1,7 +1,5 @@
 import { RuntimeError } from "../contract/types.js";
 
-const FORBIDDEN_SEGMENTS = new Set(["__proto__", "prototype", "constructor"]);
-
 export function parsePointer(pointer: string): string[] {
   if (pointer === "") return [];
   if (!pointer.startsWith("/")) {
@@ -11,11 +9,7 @@ export function parsePointer(pointer: string): string[] {
     if (/~(?![01])/u.test(segment)) {
       throw new RuntimeError("patch_invalid", "JSON Pointer has invalid escape");
     }
-    const decoded = segment.replace(/~1/g, "/").replace(/~0/g, "~");
-    if (FORBIDDEN_SEGMENTS.has(decoded)) {
-      throw new RuntimeError("patch_invalid", "JSON Pointer targets a reserved key");
-    }
-    return decoded;
+    return segment.replace(/~1/g, "/").replace(/~0/g, "~");
   });
 }
 
@@ -24,7 +18,13 @@ export function readPointer(document: unknown, pointer: string): unknown {
   for (const segment of parsePointer(pointer)) {
     if (Array.isArray(current)) {
       if (!/^(0|[1-9]\d*)$/u.test(segment)) return undefined;
-      current = current[Number(segment)];
+      const index = Number(segment);
+      if (
+        !Number.isSafeInteger(index) ||
+        index >= current.length ||
+        !Object.prototype.hasOwnProperty.call(current, index)
+      ) return undefined;
+      current = current[index];
     } else if (current && typeof current === "object") {
       if (!Object.prototype.hasOwnProperty.call(current, segment)) return undefined;
       current = (current as Record<string, unknown>)[segment];

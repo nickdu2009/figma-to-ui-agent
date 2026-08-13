@@ -13,6 +13,75 @@ function byteLength(value: string): number {
   return new TextEncoder().encode(value).byteLength;
 }
 
+const arrayBufferIsView = ArrayBuffer.isView;
+const reflectApply = Reflect.apply;
+const reflectGet = Reflect.get;
+const Uint8ArrayConstructor = Uint8Array;
+const typedArrayPrototype = Object.getPrototypeOf(Uint8Array.prototype) as object;
+const typedArrayTagGetter = Object.getOwnPropertyDescriptor(
+  typedArrayPrototype,
+  Symbol.toStringTag,
+)?.get;
+const typedArrayBufferGetter = Object.getOwnPropertyDescriptor(
+  typedArrayPrototype,
+  "buffer",
+)?.get;
+const typedArrayByteLengthGetter = Object.getOwnPropertyDescriptor(
+  typedArrayPrototype,
+  "byteLength",
+)?.get;
+const typedArrayByteOffsetGetter = Object.getOwnPropertyDescriptor(
+  typedArrayPrototype,
+  "byteOffset",
+)?.get;
+const readableStreamGetReader = typeof ReadableStream === "function"
+  ? ReadableStream.prototype.getReader
+  : undefined;
+
+function normalizeUint8Array(
+  value: unknown,
+): { byteLength: number; view: Uint8Array } | null {
+  if (
+    !arrayBufferIsView(value) ||
+    !typedArrayTagGetter ||
+    !typedArrayBufferGetter ||
+    !typedArrayByteLengthGetter ||
+    !typedArrayByteOffsetGetter
+  ) return null;
+  try {
+    if (reflectApply(typedArrayTagGetter, value, []) !== "Uint8Array") return null;
+    const buffer = reflectApply(typedArrayBufferGetter, value, []) as ArrayBufferLike;
+    const byteLength = reflectApply(typedArrayByteLengthGetter, value, []) as number;
+    const byteOffset = reflectApply(typedArrayByteOffsetGetter, value, []) as number;
+    return {
+      byteLength,
+      view: new Uint8ArrayConstructor(buffer, byteOffset, byteLength),
+    };
+  } catch {
+    return null;
+  }
+}
+
+function getReadableStreamReader(
+  input: unknown,
+): ReadableStreamDefaultReader<string | Uint8Array> | null {
+  if (!readableStreamGetReader) return null;
+  try {
+    return reflectApply(readableStreamGetReader, input, []) as
+      ReadableStreamDefaultReader<string | Uint8Array>;
+  } catch {
+    return null;
+  }
+}
+
+function decodeUtf8(operation: () => string): string {
+  try {
+    return operation();
+  } catch {
+    throw new RuntimeError("contract_invalid", "Source is not valid UTF-8");
+  }
+}
+
 async function waitFor<T>(
   promise: Promise<T>,
   signal: AbortSignal | undefined,
@@ -50,11 +119,12 @@ export async function* readSourceChunks(
     yield input;
     return;
   }
-  if (input instanceof Uint8Array) {
-    if (input.byteLength > maxBytes) {
+  const byteInput = normalizeUint8Array(input);
+  if (byteInput) {
+    if (byteInput.byteLength > maxBytes) {
       throw new RuntimeError("source_limit_exceeded", "Source exceeds maxBytes");
     }
-    yield new TextDecoder("utf-8", { fatal: true }).decode(input);
+    yield decodeUtf8(() => new TextDecoder("utf-8", { fatal: true }).decode(byteInput.view));
     return;
   }
 
@@ -87,26 +157,44 @@ export async function* readSourceChunks(
   const decode = (chunk: string | Uint8Array): string => {
     let value: string;
     if (typeof chunk === "string") {
-      value = `${decodingBytes ? decoder.decode() : ""}${chunk}`;
-      decodingBytes = false;
       countStringChunk(chunk);
+      value = `${decodingBytes ? decodeUtf8(() => decoder.decode()) : ""}${chunk}`;
+      decodingBytes = false;
     } else {
+      const byteChunk = normalizeUint8Array(chunk);
+      if (!byteChunk) {
+        throw new RuntimeError(
+          "contract_invalid",
+          "Source chunks must be strings or Uint8Array values",
+        );
+      }
       flushPendingHighSurrogate();
-      value = decoder.decode(chunk, { stream: true });
-      decodingBytes = true;
-      bytes += chunk.byteLength;
+      bytes += byteChunk.byteLength;
       assertWithinLimit();
+      value = decodeUtf8(() => decoder.decode(byteChunk.view, { stream: true }));
+      decodingBytes = true;
     }
     return value;
   };
 
-  if ("getReader" in input) {
-    const reader = input.getReader();
+  const reader = getReadableStreamReader(input);
+  if (reader) {
+    let cancelPromise: Promise<void> | null = null;
+    const cancelOnce = (reason?: unknown) => {
+      if (!cancelPromise) {
+        try {
+          cancelPromise = reader.cancel(reason).then(() => undefined, () => undefined);
+        } catch {
+          cancelPromise = Promise.resolve();
+        }
+      }
+      return cancelPromise;
+    };
     let complete = false;
     try {
       while (true) {
         const item = await waitFor(reader.read(), signal, () => {
-          void reader.cancel(abortError()).catch(() => undefined);
+          void cancelOnce(abortError());
         });
         assertNotAborted(signal);
         if (item.done) break;
@@ -115,11 +203,43 @@ export async function* readSourceChunks(
       }
       complete = true;
     } finally {
-      if (!complete) await reader.cancel().catch(() => undefined);
-      reader.releaseLock();
+      try {
+        if (!complete) {
+          const cancellation = cancelOnce(signal?.aborted ? abortError() : undefined);
+          if (!signal?.aborted) {
+            await waitFor(cancellation, signal, () => undefined);
+          }
+        }
+      } finally {
+        reader.releaseLock();
+      }
     }
   } else {
-    const iterator = input[Symbol.asyncIterator]();
+    let asyncIterator: unknown;
+    try {
+      asyncIterator = reflectGet(input as object, Symbol.asyncIterator);
+    } catch {
+      throw new RuntimeError(
+        "contract_invalid",
+        "Source must be a string, Uint8Array, ReadableStream, or AsyncIterable",
+      );
+    }
+    if (typeof asyncIterator !== "function") {
+      throw new RuntimeError(
+        "contract_invalid",
+        "Source must be a string, Uint8Array, ReadableStream, or AsyncIterable",
+      );
+    }
+    let iterator: AsyncIterator<string | Uint8Array>;
+    try {
+      iterator = reflectApply(asyncIterator, input, []) as
+        AsyncIterator<string | Uint8Array>;
+    } catch {
+      throw new RuntimeError(
+        "contract_invalid",
+        "Source must be a string, Uint8Array, ReadableStream, or AsyncIterable",
+      );
+    }
     let closePromise: Promise<void> | null = null;
     const closeOnce = () => {
       closePromise ??= Promise.resolve()
@@ -140,13 +260,18 @@ export async function* readSourceChunks(
       }
       complete = true;
     } finally {
-      if (!complete) await closeOnce();
+      if (!complete) {
+        const close = closeOnce();
+        if (!signal?.aborted) {
+          await waitFor(close, signal, () => undefined);
+        }
+      }
     }
   }
 
   flushPendingHighSurrogate();
   if (decodingBytes) {
-    const final = decoder.decode();
+    const final = decodeUtf8(() => decoder.decode());
     if (final) yield final;
   }
 }

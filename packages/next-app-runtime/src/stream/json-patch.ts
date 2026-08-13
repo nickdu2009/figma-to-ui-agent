@@ -14,6 +14,15 @@ function clone<T>(value: T): T {
   return structuredClone(value);
 }
 
+function defineOwn(target: Record<string, unknown>, key: string, value: unknown): void {
+  Object.defineProperty(target, key, {
+    configurable: true,
+    enumerable: true,
+    value,
+    writable: true,
+  });
+}
+
 function patchInvalid(): RuntimeError {
   return new RuntimeError("patch_invalid", "Value is not an RFC 6902 operation");
 }
@@ -125,7 +134,7 @@ function add(document: unknown, path: string, value: unknown): unknown {
   if (Array.isArray(parent)) {
     parent.splice(parseIndex(key, parent.length, true), 0, clone(value));
   } else {
-    parent[key] = clone(value);
+    defineOwn(parent, key, clone(value));
   }
   return document;
 }
@@ -154,7 +163,7 @@ function replace(document: unknown, path: string, value: unknown): unknown {
     if (!Object.prototype.hasOwnProperty.call(parent, key)) {
       throw new RuntimeError("patch_invalid", "Replace target does not exist");
     }
-    parent[key] = clone(value);
+    defineOwn(parent, key, clone(value));
   }
   return document;
 }

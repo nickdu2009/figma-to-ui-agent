@@ -44,6 +44,20 @@ const linkPropsSchema = z
   .strict();
 const expressionAwareLinkPropsSchema = expressionAwareCatalogSchema(linkPropsSchema);
 
+function assertCatalogSchema(
+  schema: ZodType,
+  value: unknown,
+  message: string,
+): void {
+  let success = false;
+  try {
+    success = schema.safeParse(value).success;
+  } catch {
+    throw new RuntimeError("catalog_invalid", message);
+  }
+  if (!success) throw new RuntimeError("catalog_invalid", message);
+}
+
 function trees(spec: NextAppSpec): Spec[] {
   const result = [...Object.values(spec.layouts ?? {})];
   for (const route of Object.values(spec.routes)) {
@@ -87,7 +101,7 @@ export function assertCatalogAndRegistry(
     throw new RuntimeError(
       "catalog_registry_mismatch",
       "Catalog components and registry implementations do not match",
-      { declared, implemented },
+      { declaredCount: declared.length, implementedCount: implemented.length },
     );
   }
   const declaredActions = [...catalog.actionNames].sort();
@@ -99,7 +113,10 @@ export function assertCatalogAndRegistry(
     throw new RuntimeError(
       "catalog_registry_mismatch",
       "Catalog actions and handler implementations do not match",
-      { declared: declaredActions, implemented: implementedActions },
+      {
+        declaredCount: declaredActions.length,
+        implementedCount: implementedActions.length,
+      },
     );
   }
 }
@@ -109,13 +126,17 @@ export function assertCatalogSpec(catalog: Catalog, spec: NextAppSpec): void {
   const componentSchemas = new Map(
     Object.entries(data.components).map(([name, definition]) => [
       name,
-      definition.props ? expressionAwareCatalogSchema(definition.props) : undefined,
+      definition.props
+        ? expressionAwareCatalogSchema(definition.props)
+        : undefined,
     ]),
   );
   const actionSchemas = new Map(
     Object.entries(data.actions).map(([name, definition]) => [
       name,
-      definition.params ? expressionAwareCatalogSchema(definition.params) : undefined,
+      definition.params
+        ? expressionAwareCatalogSchema(definition.params)
+        : undefined,
     ]),
   );
   for (const tree of trees(spec)) {
@@ -130,28 +151,28 @@ export function assertCatalogSpec(catalog: Catalog, spec: NextAppSpec): void {
         element.type !== "Link" &&
         !componentSchemas.has(element.type)
       ) {
-        throw new RuntimeError("catalog_invalid", "Element type is not in the host catalog", {
-          component: element.type,
-        });
+        throw new RuntimeError("catalog_invalid", "Element type is not in the host catalog");
       }
-      if (propsSchema && !propsSchema.safeParse(element.props).success) {
-        throw new RuntimeError("catalog_invalid", "Element props do not match the host catalog", {
-          component: element.type,
-        });
+      if (propsSchema) {
+        assertCatalogSchema(
+          propsSchema,
+          element.props,
+          "Element props do not match the host catalog",
+        );
       }
       for (const bindings of [element.on, element.watch]) {
         for (const value of Object.values(bindings ?? {})) {
           for (const binding of Array.isArray(value) ? value : [value]) {
             if (!RESERVED_ACTIONS.has(binding.action) && !actionSchemas.has(binding.action)) {
-              throw new RuntimeError("catalog_invalid", "Action is not in the host catalog", {
-                action: binding.action,
-              });
+              throw new RuntimeError("catalog_invalid", "Action is not in the host catalog");
             }
             const paramsSchema = actionSchemas.get(binding.action);
-            if (paramsSchema && !paramsSchema.safeParse(binding.params ?? {}).success) {
-              throw new RuntimeError("catalog_invalid", "Action params do not match the host catalog", {
-                action: binding.action,
-              });
+            if (paramsSchema) {
+              assertCatalogSchema(
+                paramsSchema,
+                binding.params ?? {},
+                "Action params do not match the host catalog",
+              );
             }
             for (const followUp of [binding.onSuccess, binding.onError]) {
               if (
@@ -160,9 +181,7 @@ export function assertCatalogSpec(catalog: Catalog, spec: NextAppSpec): void {
                 !RESERVED_ACTIONS.has(followUp.action) &&
                 !actionSchemas.has(followUp.action)
               ) {
-                throw new RuntimeError("catalog_invalid", "Chained action is not in the host catalog", {
-                  action: followUp.action,
-                });
+                throw new RuntimeError("catalog_invalid", "Chained action is not in the host catalog");
               }
             }
           }

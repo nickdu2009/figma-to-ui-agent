@@ -314,7 +314,10 @@ const createCatalog: typeof baseSchema.createCatalog = ((catalogInput: never) =>
     componentNames: catalog.componentNames,
     actionNames: catalog.actionNames,
     prompt: catalog.prompt,
-    jsonSchema: () => z.toJSONSchema(catalogSchema, { reused: "ref" }),
+    jsonSchema: () => z.toJSONSchema(catalogSchema, {
+      reused: "ref",
+      unrepresentable: "any",
+    }),
     validate: (input: unknown) => {
       const result = exactSchema.safeParse(input);
       return result.success

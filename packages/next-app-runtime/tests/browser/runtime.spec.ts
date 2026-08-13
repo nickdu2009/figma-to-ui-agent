@@ -288,6 +288,62 @@ test("dangerous Link and navigate action targets are inert after URL normalizati
   }))).toEqual({ link: false, action: false });
 });
 
+test("Link is inert when a valid href expression resolves to a non-string", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(async () => {
+    const host = window as unknown as {
+      runtime: {
+        getSnapshot(): { current: Record<string, unknown> };
+        applySource(source: { kind: "object"; value: unknown }): Promise<{ status: string }>;
+      };
+    };
+    const spec = structuredClone(host.runtime.getSnapshot().current) as {
+      routes: Record<string, { page: { elements: Record<string, unknown> } }>;
+    };
+    const elements = spec.routes["/"]!.page.elements;
+    (elements.page as { children: string[] }).children.push("missingHref", "missingHrefText");
+    elements.missingHref = {
+      type: "Link",
+      props: { href: { $state: "/missingHref" } },
+      children: ["missingHrefText"],
+    };
+    elements.missingHrefText = { type: "Text", props: { text: "Missing href" } };
+    const result = await host.runtime.applySource({ kind: "object", value: spec });
+    if (result.status !== "committed") throw new Error("fixture source was rejected");
+  });
+  const link = page.locator("a").filter({ hasText: "Missing href" });
+  const before = await page.evaluate(() => {
+    const snapshot = (window as unknown as {
+      runtime: { getSnapshot(): { revision: number; location: unknown; routeStatus: string } };
+    }).runtime.getSnapshot();
+    return {
+      historyLength: history.length,
+      href: location.href,
+      revision: snapshot.revision,
+      location: snapshot.location,
+      routeStatus: snapshot.routeStatus,
+    };
+  });
+
+  await link.dispatchEvent("click");
+
+  expect(await page.evaluate(() => {
+    const snapshot = (window as unknown as {
+      runtime: { getSnapshot(): { revision: number; location: unknown; routeStatus: string } };
+    }).runtime.getSnapshot();
+    return {
+      historyLength: history.length,
+      href: location.href,
+      revision: snapshot.revision,
+      location: snapshot.location,
+      routeStatus: snapshot.routeStatus,
+    };
+  })).toEqual(before);
+  await expect(link).toHaveAttribute("role", "link");
+  await expect(link).toHaveAttribute("aria-disabled", "true");
+  await expect(link).not.toHaveAttribute("href");
+});
+
 test("runtime observer receives scoped action lifecycle events", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(async () => {
@@ -324,6 +380,59 @@ test("runtime observer receives scoped action lifecycle events", async ({ page }
       event.name === "action_dispatched" || event.name === "action_settled"
     )).map((event) => event.name);
   })).toEqual(["action_dispatched", "action_settled"]);
+});
+
+test("repeat and pushState preserve standard array behavior", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(async () => {
+    const runtime = (window as unknown as {
+      runtime: {
+        applySource(source: { kind: "object"; value: unknown }): Promise<{ status: string }>;
+      };
+    }).runtime;
+    const result = await runtime.applySource({
+      kind: "object",
+      value: {
+        routes: {
+          "/": {
+            page: {
+              root: "root",
+              state: { items: [{ label: "One" }] },
+              elements: {
+                root: {
+                  type: "Box",
+                  props: { id: "array-state" },
+                  children: ["list", "add"],
+                },
+                list: {
+                  type: "Box",
+                  props: { id: "array-list" },
+                  children: ["row"],
+                  repeat: { statePath: "/items", key: "label" },
+                },
+                row: { type: "Text", props: { text: { $item: "/label" } } },
+                add: {
+                  type: "ActionButton",
+                  props: { label: "Add item" },
+                  on: {
+                    press: {
+                      action: "pushState",
+                      params: { statePath: "/items", value: { label: "Two" } },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    if (result.status !== "committed") throw new Error("array fixture source was rejected");
+  });
+
+  await expect(page.locator("#array-list")).toContainText("One");
+  await page.getByRole("button", { name: "Add item" }).click();
+  await expect(page.locator("#array-list")).toContainText("OneTwo");
 });
 
 test("unmatched and boundary failures use host fallbacks without leaking errors", async ({ page }) => {
@@ -660,6 +769,92 @@ test("StrictMode replay and runtime switching keep metadata controllers live", a
     host.lifecycleView.dispose();
     host.lifecycleFirst.dispose();
     host.lifecycleSecond.dispose();
+  });
+});
+
+test("runtime switching resets page state even when route keys are equal", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(async () => {
+    const host = window as unknown as {
+      runtime: { dispose(): void; getSnapshot(): { current: unknown } };
+      createFixtureRuntime(): {
+        applySource(source: { kind: "object"; value: unknown }): Promise<unknown>;
+        getSnapshot(): { revision: number };
+        dispose(): void;
+      };
+      mountRuntimeView(runtime: unknown): {
+        host: HTMLElement;
+        render(runtime: unknown): void;
+        dispose(): void;
+      };
+    };
+    host.runtime.dispose();
+    const first = host.createFixtureRuntime();
+    const second = host.createFixtureRuntime();
+    const stateSpec = structuredClone(host.runtime.getSnapshot().current) as {
+      state?: Record<string, unknown>;
+      routes: Record<string, unknown>;
+    };
+    stateSpec.state = { value: "initial" };
+    stateSpec.routes = {
+      "/": {
+        page: {
+          root: "statePage",
+          elements: {
+            statePage: {
+              type: "Box",
+              props: { id: "isolated-state" },
+              children: ["stateValue", "stateAction"],
+            },
+            stateValue: {
+              type: "Text",
+              props: { id: "isolated-value", text: { $state: "/value" } },
+            },
+            stateAction: {
+              type: "ActionButton",
+              props: { label: "Mutate isolated state" },
+              on: {
+                press: {
+                  action: "setState",
+                  params: { statePath: "/value", value: "mutated-in-first" },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+    await first.applySource({ kind: "object", value: stateSpec });
+    await second.applySource({ kind: "object", value: stateSpec });
+    if (first.getSnapshot().revision !== second.getSnapshot().revision) {
+      throw new Error("fixture revisions differ");
+    }
+    const view = host.mountRuntimeView(first);
+    view.host.id = "runtime-state-isolation";
+    Object.assign(window, { stateFirst: first, stateSecond: second, stateView: view });
+  });
+
+  const view = page.locator("#runtime-state-isolation");
+  await expect(view.locator("#isolated-value")).toHaveText("initial");
+  await view.getByRole("button", { name: "Mutate isolated state" }).click();
+  await expect(view.locator("#isolated-value")).toHaveText("mutated-in-first");
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      stateSecond: unknown;
+      stateView: { render(runtime: unknown): void };
+    };
+    host.stateView.render(host.stateSecond);
+  });
+  await expect(view.locator("#isolated-value")).toHaveText("initial");
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      stateFirst: { dispose(): void };
+      stateSecond: { dispose(): void };
+      stateView: { dispose(): void };
+    };
+    host.stateView.dispose();
+    host.stateFirst.dispose();
+    host.stateSecond.dispose();
   });
 });
 

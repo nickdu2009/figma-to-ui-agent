@@ -52,4 +52,19 @@ describe("object source JSON graph", () => {
       expect(() => assertJsonValueGraph(value)).toThrowError(RuntimeError);
     }
   });
+
+  it("does not disclose object-source property names in error details", () => {
+    const secret = "https://user:password@example.test/path?token=secret";
+    let error: RuntimeError | undefined;
+
+    try {
+      assertJsonValueGraph({ [secret]: undefined });
+    } catch (cause) {
+      error = cause as RuntimeError;
+    }
+
+    expect(error).toBeInstanceOf(RuntimeError);
+    expect(error?.details).not.toHaveProperty("path");
+    expect(JSON.stringify(error)).not.toContain(secret);
+  });
 });

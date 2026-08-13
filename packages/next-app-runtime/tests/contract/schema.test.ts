@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
 import { schema } from "../../src/contract/schema.js";
+import type { NextAppSpec } from "../../src/contract/types.js";
 import { nextAppSpecSchema } from "../../src/contract/zod-schema.js";
 import { assertCatalogSpec } from "../../src/validation/catalog-gate.js";
 import { assertReferences } from "../../src/validation/reference-gate.js";
@@ -9,6 +10,14 @@ import { assertReferences } from "../../src/validation/reference-gate.js";
 describe("NextAppSpec 0.19.0 contract", () => {
   it("accepts the minimal public shape", () => {
     expect(nextAppSpecSchema.parse({ routes: {} })).toEqual({ routes: {} });
+  });
+
+  it("keeps the exported schema representable as JSON Schema", () => {
+    expect(() => z.toJSONSchema(nextAppSpecSchema)).not.toThrow();
+    expect(z.toJSONSchema(nextAppSpecSchema)).toMatchObject({
+      type: "object",
+      required: ["routes"],
+    });
   });
 
   it("preserves every public Spec element field", () => {
@@ -68,6 +77,168 @@ describe("NextAppSpec 0.19.0 contract", () => {
       state: { app: "ready" },
     };
     expect(nextAppSpecSchema.parse(spec)).toEqual(spec);
+  });
+
+  it("preserves own __proto__ keys in public Record values", () => {
+    const spec = JSON.parse(`{
+      "routes": {},
+      "state": {
+        "__proto__": { "role": "admin" },
+        "nested": { "__proto__": { "enabled": true } }
+      }
+    }`);
+
+    const parsed = nextAppSpecSchema.parse(spec);
+    const state = parsed.state!;
+    const nested = state.nested as Record<string, unknown>;
+
+    expect(Object.hasOwn(state, "__proto__")).toBe(true);
+    expect(state["__proto__"]).toEqual({ role: "admin" });
+    expect(Object.hasOwn(nested, "__proto__")).toBe(true);
+    expect(nested["__proto__"]).toEqual({ enabled: true });
+    expect(Object.getPrototypeOf(state)).toBe(Object.prototype);
+    expect(Object.getPrototypeOf(nested)).toBe(Object.prototype);
+  });
+
+  it("reports literal reserved Record keys without private escape tokens", () => {
+    const routes = Object.create(null) as Record<string, unknown>;
+    Object.defineProperty(routes, "__proto__", {
+      configurable: true,
+      enumerable: true,
+      value: 42,
+      writable: true,
+    });
+
+    const result = nextAppSpecSchema.safeParse({ routes });
+    expect(result.success).toBe(false);
+    if (result.success) throw new Error("Expected invalid routes");
+    expect(result.error.issues[0]?.path).toEqual(["routes", "__proto__"]);
+    expect(JSON.stringify(result.error.issues)).not.toContain(
+      "next-app-runtime-record-key",
+    );
+  });
+
+  it("does not make non-JSON objects valid while preserving Record keys", () => {
+    expect(nextAppSpecSchema.safeParse({
+      routes: {},
+      state: { createdAt: new Date() },
+    }).success).toBe(false);
+  });
+
+  it("rejects an unknown accessor without executing it during record-key mapping", () => {
+    let getterCalls = 0;
+    const spec = Object.defineProperty({ routes: {} }, "unknown", {
+      enumerable: true,
+      get() {
+        getterCalls += 1;
+        throw new Error("sensitive unknown getter");
+      },
+    });
+
+    expect(nextAppSpecSchema.safeParse(spec).success).toBe(false);
+    expect(getterCalls).toBe(0);
+  });
+
+  it("does not execute an action params schema while constructing a Catalog", () => {
+    const constructionFailure = new Error("params schema was executed during construction");
+
+    expect(() => schema.createCatalog({
+      components: {},
+      actions: {
+        save: {
+          params: z.any().transform(() => {
+            throw constructionFailure;
+          }),
+          description: "Save",
+        },
+      },
+    })).not.toThrow();
+  });
+
+  it("validates omitted action params only when the binding is actually checked", () => {
+    const actualValidationFailure = new Error("params schema actual validation failure");
+    let providedValidations = 0;
+    let throwingValidations = 0;
+    const catalog = schema.createCatalog({
+      components: {},
+      actions: {
+        required: {
+          params: z.object({ id: z.string() }).strict(),
+          description: "Required params",
+        },
+        optional: {
+          params: z.object({ id: z.string().optional() }).strict(),
+          description: "Optional params",
+        },
+        counted: {
+          params: z
+            .object({ id: z.string() })
+            .strict()
+            .transform((value) => {
+              providedValidations += 1;
+              return value;
+            }),
+          description: "Counted params",
+        },
+        throwing: {
+          params: z.any().transform(() => {
+            throwingValidations += 1;
+            throw actualValidationFailure;
+          }),
+          description: "Throwing params",
+        },
+      },
+    });
+    const actionSpec = (
+      action: string,
+      params?: Record<string, unknown>,
+    ) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "button",
+            elements: {
+              button: {
+                type: "Slot",
+                props: {},
+                on: {
+                  press: params === undefined ? { action } : { action, params },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    expect(providedValidations).toBe(0);
+    expect(throwingValidations).toBe(0);
+
+    const missingRequired = actionSpec("required");
+    expect(catalog.validate(missingRequired).success).toBe(false);
+    expect(() => assertCatalogSpec(catalog, missingRequired)).toThrowError(
+      expect.objectContaining({ code: "catalog_invalid" }),
+    );
+
+    const missingOptional = actionSpec("optional");
+    expect(catalog.validate(missingOptional).success).toBe(true);
+    expect(() => assertCatalogSpec(catalog, missingOptional)).not.toThrow();
+
+    const provided = actionSpec("counted", { id: "one" });
+    expect(catalog.validate(provided).success).toBe(true);
+    expect(providedValidations).toBe(1);
+    providedValidations = 0;
+    expect(() => assertCatalogSpec(catalog, provided)).not.toThrow();
+    expect(providedValidations).toBe(1);
+
+    const missingThrowing = actionSpec("throwing");
+    expect(() => catalog.validate(missingThrowing)).toThrow(actualValidationFailure);
+    expect(throwingValidations).toBe(1);
+    throwingValidations = 0;
+    expect(() => assertCatalogSpec(catalog, missingThrowing)).toThrowError(
+      expect.objectContaining({ code: "catalog_invalid" }),
+    );
+    expect(throwingValidations).toBe(1);
   });
 
   it.each([
@@ -173,6 +344,361 @@ describe("NextAppSpec 0.19.0 contract", () => {
       "$template",
     ]) {
       expect(serialized).toContain(JSON.stringify(expression));
+    }
+  });
+
+  it("represents host transform schemas as unconstrained JSON Schema nodes", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Counter: {
+          props: z
+            .object({ count: z.string() })
+            .transform((value) => ({ count: Number(value.count) })),
+          slots: [],
+          description: "Transformed counter",
+          example: { count: "1" },
+        },
+      },
+      actions: {},
+    });
+
+    expect(() => catalog.jsonSchema()).not.toThrow();
+    expect(JSON.stringify(catalog.jsonSchema())).toContain('"const":"Counter"');
+  });
+
+  it("validates own __proto__ entries in nested host Catalog records", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Lookup: {
+          props: z.object({
+            values: z.record(
+              z.string().refine((key) => key !== "__proto__"),
+              z.number(),
+            ),
+          }).strict(),
+          slots: [],
+          description: "Lookup",
+          example: { values: {} },
+        },
+      },
+      actions: {
+        save: {
+          params: z.object({
+            values: z.record(z.string(), z.number()),
+          }).strict(),
+          description: "Save",
+        },
+      },
+    });
+    const spec = JSON.parse(`{
+      "routes": {
+        "/": {
+          "page": {
+            "root": "lookup",
+            "elements": {
+              "lookup": {
+                "type": "Lookup",
+                "props": { "values": { "__proto__": 1 } },
+                "on": {
+                  "press": {
+                    "action": "save",
+                    "params": { "values": { "__proto__": "not-a-number" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`);
+
+    expect(catalog.validate(spec).success).toBe(false);
+    expect(() => assertCatalogSpec(catalog, spec)).toThrowError(
+      expect.objectContaining({ code: "catalog_invalid" }),
+    );
+
+    const invalidValue = JSON.parse(`{
+      "routes": {
+        "/": {
+          "page": {
+            "root": "lookup",
+            "elements": {
+              "lookup": {
+                "type": "Lookup",
+                "props": { "values": { "ordinary": 1 } },
+                "on": {
+                  "press": {
+                    "action": "save",
+                    "params": { "values": { "__proto__": "not-a-number" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`);
+    expect(catalog.validate(invalidValue).success).toBe(false);
+    expect(() => assertCatalogSpec(catalog, invalidValue)).toThrowError(
+      expect.objectContaining({ code: "catalog_invalid" }),
+    );
+
+    const validOwnKey = JSON.parse(`{
+      "routes": {
+        "/": {
+          "page": {
+            "root": "lookup",
+            "elements": {
+              "lookup": {
+                "type": "Lookup",
+                "props": { "values": { "ordinary": 1 } },
+                "on": {
+                  "press": {
+                    "action": "save",
+                    "params": { "values": { "__proto__": 2 } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`);
+    const validResult = catalog.validate(validOwnKey);
+    expect(validResult.success).toBe(true);
+    expect(() => assertCatalogSpec(catalog, validOwnKey)).not.toThrow();
+    if (!validResult.success || !validResult.data) {
+      throw new Error("Expected legal own Record key");
+    }
+    const element = validResult.data.routes["/"]!.page.elements.lookup!;
+    const bindings = element.on as Record<string, unknown> | undefined;
+    const binding = bindings?.press as
+      | { params?: Record<string, unknown> }
+      | Array<{ params?: Record<string, unknown> }>
+      | undefined;
+    const action = Array.isArray(binding) ? binding[0] : binding;
+    const values = action?.params?.values as Record<string, unknown>;
+    expect(Object.hasOwn(values, "__proto__")).toBe(true);
+    expect(values["__proto__"]).toBe(2);
+  });
+
+  it("executes a matching union transform once when validating a nested own key", () => {
+    let transformCalls = 0;
+    const catalog = schema.createCatalog({
+      components: {
+        Lookup: {
+          props: z.union([
+            z
+              .object({
+                kind: z.literal("record"),
+                values: z.record(z.string(), z.number()),
+              })
+              .strict()
+              .transform((value) => {
+                transformCalls += 1;
+                return value;
+              }),
+            z.object({ kind: z.literal("empty") }).strict(),
+          ]),
+          slots: [],
+          description: "Union lookup",
+          example: { kind: "empty" },
+        },
+      },
+      actions: {},
+    });
+    const spec = JSON.parse(`{
+      "routes": {
+        "/": {
+          "page": {
+            "root": "lookup",
+            "elements": {
+              "lookup": {
+                "type": "Lookup",
+                "props": {
+                  "kind": "record",
+                  "values": { "__proto__": 1 }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`);
+
+    expect(transformCalls).toBe(0);
+    const result = catalog.validate(spec);
+    expect(result.success).toBe(true);
+    expect(transformCalls).toBe(1);
+    transformCalls = 0;
+    expect(() => assertCatalogSpec(catalog, spec)).not.toThrow();
+    expect(transformCalls).toBe(1);
+  });
+
+  it("keeps direct expressions beside nested host record fields", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Lookup: {
+          props: z.object({
+            values: z.record(z.string(), z.number()),
+            label: z.string(),
+          }).strict(),
+          slots: [],
+          description: "Expression lookup",
+          example: { values: {}, label: "Lookup" },
+        },
+      },
+      actions: {},
+    });
+    const spec = {
+      routes: {
+        "/": {
+          page: {
+            root: "lookup",
+            elements: {
+              lookup: {
+                type: "Lookup",
+                props: {
+                  values: { $state: "/values" },
+                  label: { $state: "/label" },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+    const expressionResult = catalog.validate(spec);
+    expect(expressionResult.success).toBe(true);
+    expect(() => assertCatalogSpec(catalog, spec)).not.toThrow();
+  });
+
+  it("validates own reserved keys inside lazy host schemas", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Lookup: {
+          props: z.lazy(() => z.object({
+            values: z.record(z.string(), z.number()),
+          }).strict()),
+          slots: [],
+          description: "Lazy lookup",
+          example: { values: {} },
+        },
+      },
+      actions: {},
+    });
+    const spec = (values: unknown) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "lookup",
+            elements: {
+              lookup: { type: "Lookup", props: { values } },
+            },
+          },
+        },
+      },
+    });
+    const invalid = spec(JSON.parse(`{"__proto__":"not-a-number"}`));
+    const dynamic = spec({ $state: "/values" });
+
+    expect(catalog.validate(invalid).success).toBe(false);
+    expect(() => assertCatalogSpec(catalog, invalid)).toThrowError(
+      expect.objectContaining({ code: "catalog_invalid" }),
+    );
+    expect(catalog.validate(dynamic).success).toBe(true);
+    expect(() => assertCatalogSpec(catalog, dynamic)).not.toThrow();
+  });
+
+  it("does not expose spec-provided component or action names in Catalog errors", () => {
+    const catalog = schema.createCatalog({ components: {}, actions: {} });
+    const sensitiveComponent = "https://private.example/?credential=component-secret";
+    const sensitiveAction = "Bearer action-secret";
+    const specs: NextAppSpec[] = [
+      {
+        routes: {
+          "/": {
+            page: {
+              root: "sensitive",
+              elements: {
+                sensitive: { type: sensitiveComponent, props: {} },
+              },
+            },
+          },
+        },
+      },
+      {
+        routes: {
+          "/": {
+            page: {
+              root: "slot",
+              elements: {
+                slot: {
+                  type: "Slot",
+                  props: {},
+                  on: { press: { action: sensitiveAction } },
+                },
+              },
+            },
+          },
+        },
+      },
+    ];
+
+    for (const [index, spec] of specs.entries()) {
+      try {
+        assertCatalogSpec(catalog, spec);
+        throw new Error("expected Catalog validation to fail");
+      } catch (error) {
+        expect(error).toMatchObject({ code: "catalog_invalid" });
+        const serialized = JSON.stringify(error);
+        expect(serialized).not.toContain(index === 0 ? "component-secret" : "action-secret");
+        expect(serialized).not.toContain(index === 0 ? sensitiveComponent : sensitiveAction);
+      }
+    }
+  });
+
+  it("does not skip own __proto__ entries in structural Catalog records", () => {
+    const catalog = schema.createCatalog({ components: {}, actions: {} });
+    const specs = [
+      JSON.parse(`{
+        "routes": {
+          "/": {
+            "page": {
+              "root": "slot",
+              "elements": {
+                "slot": {
+                  "type": "Slot",
+                  "props": {},
+                  "on": {
+                    "__proto__": { "action": "unknown" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`),
+      JSON.parse(`{
+        "routes": {
+          "/": {
+            "page": {
+              "root": "slot",
+              "elements": {
+                "slot": { "type": "Slot", "props": {} },
+                "__proto__": { "type": "unknown", "props": {} }
+              }
+            }
+          }
+        }
+      }`),
+    ] as NextAppSpec[];
+
+    for (const spec of specs) {
+      expect(catalog.validate(spec).success).toBe(false);
+      expect(() => assertCatalogSpec(catalog, spec)).toThrowError(
+        expect.objectContaining({ code: "catalog_invalid" }),
+      );
     }
   });
 
@@ -564,6 +1090,49 @@ describe("NextAppSpec 0.19.0 contract", () => {
     );
   });
 
+  it("does not defer a static refinement exception because of an unrelated expression", () => {
+    const staticFailure = new Error("static refinement failed");
+    const catalog = schema.createCatalog({
+      components: {
+        Counter: {
+          props: z
+            .object({ label: z.string(), count: z.number() })
+            .strict()
+            .refine((value) => {
+              if (value.count < 0) throw staticFailure;
+              return true;
+            }),
+          slots: [],
+          description: "Throwing static refinement",
+          example: { label: "Count", count: 1 },
+        },
+      },
+      actions: {},
+    });
+    const spec = (label: unknown) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "counter",
+            elements: {
+              counter: {
+                type: "Counter",
+                props: { label, count: -1 },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    for (const label of ["literal", { $state: "/label" }]) {
+      expect(() => catalog.validate(spec(label))).toThrow(staticFailure);
+      expect(() => assertCatalogSpec(catalog, spec(label))).toThrowError(
+        expect.objectContaining({ code: "catalog_invalid" }),
+      );
+    }
+  });
+
   it("accepts expressions in typed object catchall values", () => {
     const catalog = schema.createCatalog({
       components: {
@@ -785,7 +1354,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
     );
     expect(() => catalog.validate(spec("bad", "Count"))).toThrow(decodeFailure);
     expect(() => catalog.validate(spec("bad"))).toThrow(decodeFailure);
-    expect(() => assertCatalogSpec(catalog, spec("bad"))).toThrow(decodeFailure);
+    expect(() => assertCatalogSpec(catalog, spec("bad"))).toThrowError(
+      expect.objectContaining({ code: "catalog_invalid" }),
+    );
   });
 
   it("defers proxy-incompatible opaque pipe transforms", () => {

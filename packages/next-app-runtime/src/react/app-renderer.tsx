@@ -13,6 +13,17 @@ import {
 } from "./action-observer-manager.js";
 import { RuntimeActionObserverScope } from "./action-observer-scope.js";
 
+const runtimeContentKeys = new WeakMap<object, number>();
+let runtimeContentKeySequence = 0;
+
+function runtimeContentKey(runtime: object): number {
+  const existing = runtimeContentKeys.get(runtime);
+  if (existing !== undefined) return existing;
+  runtimeContentKeySequence += 1;
+  runtimeContentKeys.set(runtime, runtimeContentKeySequence);
+  return runtimeContentKeySequence;
+}
+
 function RuntimeContent({
   runtime,
 }: {
@@ -61,6 +72,7 @@ function RuntimeContent({
 
 export function NextAppRenderer() {
   const runtime = useNextAppRuntime();
+  const contentKey = runtimeContentKey(runtime);
   const snapshot = useSyncExternalStore(
     runtime.subscribe,
     runtime.getSnapshot,
@@ -134,7 +146,7 @@ export function NextAppRenderer() {
       <RuntimeActionObserverScope
         registration={internals.options.observer ? actionObserverRegistration : null}
       >
-        <RuntimeContent runtime={runtime} />
+        <RuntimeContent key={contentKey} runtime={runtime} />
       </RuntimeActionObserverScope>
     </RuntimeErrorBoundary>
   );

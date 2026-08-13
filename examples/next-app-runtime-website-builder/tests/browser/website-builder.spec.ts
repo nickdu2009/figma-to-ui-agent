@@ -3,6 +3,37 @@ import { expect, test } from "@playwright/test";
 const storageKey = "next-app-runtime:website-builder:spec:v1";
 const localEvent = "next-app-runtime:website-builder:spec-change";
 const defaultHeadline = "Build the future with Acme";
+const rootTitle = "Next Website Builder | @next-app-runtime/client";
+const rootDescription =
+  "Build client-rendered websites from NextAppSpec 0.19.0 with @next-app-runtime/client";
+
+async function expectDocumentMetadata(
+  page: import("@playwright/test").Page,
+  expected: { title: string; descriptions: readonly string[]; icons: readonly string[] },
+) {
+  await expect.poll(() => page.evaluate(() => ({
+    title: document.title,
+    descriptions: [...document.head.querySelectorAll<HTMLMetaElement>('meta[name="description"]')]
+      .map((element) => element.content),
+    icons: [...document.head.querySelectorAll<HTMLLinkElement>('link[rel="icon"]')]
+      .map((element) => element.getAttribute("href")),
+  }))).toEqual(expected);
+}
+
+async function expectDocumentIconLinks(
+  page: import("@playwright/test").Page,
+  expected: readonly { rel: string | null; href: string | null; owner: string | null }[],
+) {
+  await expect.poll(() => page.evaluate(() => (
+    [...document.head.querySelectorAll<HTMLLinkElement>(
+      'link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]',
+    )].map((element) => ({
+      rel: element.getAttribute("rel"),
+      href: element.getAttribute("href"),
+      owner: element.getAttribute("data-owner"),
+    }))
+  ))).toEqual(expected);
+}
 
 async function editVisualJsonHeadline(
   page: import("@playwright/test").Page,
@@ -75,12 +106,22 @@ test("renders the complete default website and navigates all pages", async ({ pa
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Build the future with Acme" })).toBeVisible();
   await expect(page).toHaveTitle("Home | Acme Inc");
+  await expectDocumentMetadata(page, {
+    title: "Home | Acme Inc",
+    descriptions: ["Welcome to Acme Inc - we build the future of software."],
+    icons: ["/icon.svg"],
+  });
   await page.evaluate(() => Object.assign(window, { __runtimeNavigationMarker: "preserved" }));
 
   await page.getByRole("link", { name: "About" }).first().click();
   await expect(page).toHaveURL(/\/about$/u);
   await expect(page.getByRole("heading", { name: "About Acme Inc" })).toBeVisible();
   await expect(page).toHaveTitle("About | Acme Inc");
+  await expectDocumentMetadata(page, {
+    title: "About | Acme Inc",
+    descriptions: ["Learn about our mission, values, and the team behind Acme."],
+    icons: ["/icon.svg"],
+  });
   expect(await page.evaluate(() => (window as unknown as { __runtimeNavigationMarker?: string }).__runtimeNavigationMarker))
     .toBe("preserved");
 
@@ -88,6 +129,11 @@ test("renders the complete default website and navigates all pages", async ({ pa
   await expect(page).toHaveURL(/\/contact$/u);
   await expect(page.getByRole("heading", { name: "Get in Touch" })).toBeVisible();
   await expect(page).toHaveTitle("Contact | Acme Inc");
+  await expectDocumentMetadata(page, {
+    title: "Contact | Acme Inc",
+    descriptions: ["Get in touch with the Acme team."],
+    icons: ["/icon.svg"],
+  });
 
   await page.goBack();
   await expect(page).toHaveURL(/\/about$/u);
@@ -106,7 +152,12 @@ test("edits through Visual JSON, persists, opens the website and synchronizes ta
   await builder.reload();
   try {
     await expect(builder.getByText("Next Website Builder", { exact: true })).toBeVisible();
-    await expect(builder).toHaveTitle("Next Website Builder | @next-app-runtime/client");
+    await expect(builder).toHaveTitle(rootTitle);
+    await expectDocumentMetadata(builder, {
+      title: rootTitle,
+      descriptions: [rootDescription],
+      icons: ["/icon.svg"],
+    });
     await expect(builder.getByText("spec.json", { exact: true })).toBeVisible();
     await expect(builder.getByTitle("Hide sidebar")).toBeVisible();
     await expect(builder.getByPlaceholder("/")).toHaveValue("/");
@@ -252,6 +303,80 @@ test("switches between website and builder through History and blocks unsafe web
       });
     }, { key: storageKey, eventName: localEvent, spec: navigationSpec });
 
+    await expectDocumentMetadata(page, {
+      title: rootTitle,
+      descriptions: [rootDescription],
+      icons: ["/icon.svg"],
+    });
+
+    for (const [metadata, expected, expectedIconLinks] of [
+      [
+        { description: "Runtime description" },
+        {
+          title: rootTitle,
+          descriptions: ["Runtime description"],
+          icons: ["/icon.svg"],
+        },
+        [{ rel: "icon", href: "/icon.svg", owner: null }],
+      ],
+      [
+        { icons: "/runtime-icon.svg" },
+        {
+          title: rootTitle,
+          descriptions: [rootDescription],
+          icons: ["/runtime-icon.svg"],
+        },
+        [{ rel: "icon", href: "/runtime-icon.svg", owner: "next-app-runtime" }],
+      ],
+      [
+        { icons: { shortcut: "/runtime-shortcut.svg" } },
+        {
+          title: rootTitle,
+          descriptions: [rootDescription],
+          icons: [],
+        },
+        [{
+          rel: "shortcut icon",
+          href: "/runtime-shortcut.svg",
+          owner: "next-app-runtime",
+        }],
+      ],
+      [
+        { icons: { apple: "/runtime-apple-touch-icon.svg" } },
+        {
+          title: rootTitle,
+          descriptions: [rootDescription],
+          icons: [],
+        },
+        [{
+          rel: "apple-touch-icon",
+          href: "/runtime-apple-touch-icon.svg",
+          owner: "next-app-runtime",
+        }],
+      ],
+      [
+        { title: "Runtime title" },
+        {
+          title: "Runtime title",
+          descriptions: [rootDescription],
+          icons: ["/icon.svg"],
+        },
+        [{ rel: "icon", href: "/icon.svg", owner: null }],
+      ],
+    ] as const) {
+      await page.evaluate(({ key, eventName, spec, nextMetadata }) => {
+        localStorage.setItem(key, JSON.stringify({ ...spec, metadata: nextMetadata }));
+        window.dispatchEvent(new Event(eventName));
+      }, {
+        key: storageKey,
+        eventName: localEvent,
+        spec: navigationSpec,
+        nextMetadata: metadata,
+      });
+      await expectDocumentMetadata(page, expected);
+      await expectDocumentIconLinks(page, expectedIconLinks);
+    }
+
     await page.getByRole("link", { name: "Unsafe" }).dispatchEvent("click");
     expect(await page.evaluate(() => (
       window as unknown as { __unsafeExampleExecuted: boolean }
@@ -265,6 +390,11 @@ test("switches between website and builder through History and blocks unsafe web
     await page.getByRole("link", { name: "Builder" }).click();
     await expect(page).toHaveURL(/\/builder$/u);
     await expect(page.getByText("Next Website Builder", { exact: true })).toBeVisible();
+    await expectDocumentMetadata(page, {
+      title: rootTitle,
+      descriptions: [rootDescription],
+      icons: ["/icon.svg"],
+    });
     expect(await page.evaluate(() => (
       window as unknown as { __rootMarker?: string }
     ).__rootMarker)).toBe("preserved");
@@ -272,6 +402,11 @@ test("switches between website and builder through History and blocks unsafe web
     await page.goBack();
     await expect(page).toHaveURL(/\/$/u);
     await expect(page.getByText("Navigation Test", { exact: true })).toBeVisible();
+    await expectDocumentMetadata(page, {
+      title: "Runtime title",
+      descriptions: [rootDescription],
+      icons: ["/icon.svg"],
+    });
   } finally {
     await clearTestStorage(page);
   }

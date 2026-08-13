@@ -18,7 +18,7 @@ export interface LinkProps {
 export function Link({ element, children }: ComponentRenderProps<LinkProps>) {
   const { href, replace, className, style } = element.props;
   const navigation = useNextAppNavigation();
-  const target = typeof window === "undefined"
+  const target = typeof href !== "string" || typeof window === "undefined"
     ? null
     : resolveBrowserNavigationTarget(href, window.location.href);
   const inert = target === null;

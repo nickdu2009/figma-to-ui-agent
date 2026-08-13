@@ -3,6 +3,18 @@ import { assertPositiveRuntimeLimit } from "../validation/limits.js";
 import { applyJsonPatch, isJsonPatchOperation, type JsonPatchOperation } from "./json-patch.js";
 import { readSourceChunks } from "./source.js";
 
+function handleObserverRejection(value: unknown): void {
+  if (
+    value === null ||
+    (typeof value !== "object" && typeof value !== "function")
+  ) return;
+  try {
+    void Promise.resolve(value).catch(() => undefined);
+  } catch {
+    // Observer results are best-effort and cannot affect the patch transaction.
+  }
+}
+
 export async function compileJsonlPatch(
   base: unknown,
   input: SourceInput,
@@ -12,7 +24,7 @@ export async function compileJsonlPatch(
 ): Promise<{ value: unknown; operations: number }> {
   assertPositiveRuntimeLimit("maxBytes", limits.maxBytes);
   assertPositiveRuntimeLimit("maxOperations", limits.maxOperations);
-  let value = structuredClone(base);
+  let value = applyJsonPatch(base, []);
   let operations = 0;
   let buffer = "";
 
@@ -32,7 +44,16 @@ export async function compileJsonlPatch(
       throw new RuntimeError("patch_invalid", "JSONL line is not an RFC 6902 operation");
     }
     value = applyJsonPatch(value, [operation]);
-    onOperation?.(value, operation, operations);
+    try {
+      const observerResult: unknown = onOperation?.(
+        structuredClone(value),
+        operation,
+        operations,
+      );
+      handleObserverRejection(observerResult);
+    } catch {
+      // Observers receive best-effort snapshots and cannot affect the patch transaction.
+    }
     operations += 1;
   };
 

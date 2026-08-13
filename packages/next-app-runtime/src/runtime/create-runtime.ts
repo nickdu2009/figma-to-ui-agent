@@ -18,6 +18,7 @@ import {
 import type { Catalog } from "@json-render/core";
 import { deepFreeze, ownAndDeepFreeze } from "../contract/immutable.js";
 import { assertJsonValueGraph } from "../contract/json-value.js";
+import { ownJsonEqual } from "../contract/own-json-equal.js";
 import { nextAppSpecSchema } from "../contract/zod-schema.js";
 import { createBrowserHistoryDriver } from "../navigation/browser-history.js";
 import { toRoutePathname, type NavigationDriver } from "../navigation/location.js";
@@ -58,6 +59,18 @@ const LOADER_INVOCATION_SKIPPED = Symbol("loader invocation skipped");
 
 const INTERNALS = new WeakMap<NextAppRuntime, RuntimeInternals>();
 
+function handleBestEffortRejection(value: unknown): void {
+  if (
+    value === null ||
+    (typeof value !== "object" && typeof value !== "function")
+  ) return;
+  try {
+    void Promise.resolve(value).catch(() => undefined);
+  } catch {
+    // Best-effort hooks cannot alter runtime behavior.
+  }
+}
+
 function isAbortError(value: unknown): boolean {
   try {
     return value instanceof DOMException && value.name === "AbortError";
@@ -82,7 +95,15 @@ function mergeState(
 ): Record<string, unknown> | undefined {
   const result: Record<string, unknown> = {};
   for (const source of sources) {
-    if (source) Object.assign(result, source);
+    if (!source) continue;
+    for (const key of Object.keys(source)) {
+      Object.defineProperty(result, key, {
+        configurable: true,
+        enumerable: true,
+        value: source[key],
+        writable: true,
+      });
+    }
   }
   return Object.keys(result).length > 0 ? deepFreeze(result) : undefined;
 }
@@ -98,6 +119,8 @@ class RuntimeImplementation implements NextAppRuntime {
   private sourceError: RuntimeError | null = null;
   private sourceController: AbortController | null = null;
   private loaderState: LoaderState | null = null;
+  private loaderTokenSequence = 0;
+  private routeTokenSequence = 0;
   private mergedStateCache: {
     app: Record<string, unknown> | undefined;
     page: Record<string, unknown> | undefined;
@@ -190,7 +213,8 @@ class RuntimeImplementation implements NextAppRuntime {
     beforeSubscribers?.(published);
     for (const listener of this.listeners) {
       try {
-        listener();
+        const result: unknown = listener();
+        handleBestEffortRejection(result);
       } catch {
         // Host subscribers cannot alter runtime transaction semantics.
       }
@@ -201,16 +225,38 @@ class RuntimeImplementation implements NextAppRuntime {
   emitEvent = (name: RuntimeEvent["name"], extra?: Partial<RuntimeEvent>): void => {
     if (this.disposed) return;
     try {
-      this.options.observer?.({
+      const result: unknown = this.options.observer?.({
         name,
         at: Date.now(),
         revision: this.snapshot.revision,
         ...extra,
       });
+      handleBestEffortRejection(result);
     } catch {
       // Observability is best-effort and cannot alter runtime behavior.
     }
   };
+
+  private loaderToken(): string {
+    this.loaderTokenSequence += 1;
+    return `loader-${this.loaderTokenSequence}`;
+  }
+
+  private routeToken(): string {
+    this.routeTokenSequence += 1;
+    return `route-${this.routeTokenSequence}`;
+  }
+
+  private routeEvent(): Pick<RuntimeEvent, "pattern"> {
+    return { pattern: this.routeToken() };
+  }
+
+  private loaderEvent(): Pick<RuntimeEvent, "loader" | "pattern"> {
+    return {
+      loader: this.loaderToken(),
+      pattern: this.routeToken(),
+    };
+  }
 
   private pageData(
     spec: NextAppSpec,
@@ -221,20 +267,22 @@ class RuntimeImplementation implements NextAppRuntime {
     const appState = spec.state;
     const pageState = route.page.state as Record<string, unknown> | undefined;
     const cache = this.mergedStateCache;
-    const cacheHit = Boolean(
-      cache && cache.app === appState && cache.page === pageState && cache.loader === loaderData,
-    );
-    const initialState = cacheHit
-        ? cache!.value
-        : mergeState(appState, pageState, loaderData);
-    if (!cacheHit) {
-      this.mergedStateCache = {
-        app: appState,
-        page: pageState,
-        loader: loaderData,
-        value: initialState,
-      };
-    }
+    const cacheHit = Boolean(cache &&
+      ownJsonEqual(cache.app, appState) &&
+      ownJsonEqual(cache.page, pageState) &&
+      ownJsonEqual(cache.loader, loaderData));
+    const mergedState = cacheHit
+      ? cache!.value
+      : mergeState(appState, pageState, loaderData);
+    const initialState = cache && ownJsonEqual(cache.value, mergedState)
+      ? cache.value
+      : mergedState;
+    this.mergedStateCache = {
+      app: appState,
+      page: pageState,
+      loader: loaderData,
+      value: initialState,
+    };
     return deepFreeze({
       spec: route.page,
       initialState,
@@ -508,6 +556,7 @@ class RuntimeImplementation implements NextAppRuntime {
       );
     };
     if (!loaderName) {
+      const routeEvent = this.routeEvent();
       if (source === "current") {
         this.loaderRun += 1;
         this.loaderState = { key: loaderKey, status: "ready" };
@@ -520,14 +569,16 @@ class RuntimeImplementation implements NextAppRuntime {
         error: null,
       });
       if (isMatchedPresentationCurrent(published, matched)) {
-        this.emitEvent("route_matched", { pattern: matched.pattern });
+        this.emitEvent("route_matched", routeEvent);
       }
       return Boolean(published);
     }
     const loader = this.options.loaders?.[loaderName];
     if (!loader) {
+      const routeEvent = this.routeEvent();
+      const loaderToken = this.loaderToken();
       const error = new RuntimeError("loader_missing", "Route loader is not registered", {
-        loader: loaderName,
+        loader: loaderToken,
       });
       if (source === "current") {
         this.loaderRun += 1;
@@ -541,12 +592,13 @@ class RuntimeImplementation implements NextAppRuntime {
         error,
       });
       if (isMatchedPresentationCurrent(published, matched)) {
-        this.emitEvent("route_matched", { pattern: matched.pattern });
+        this.emitEvent("route_matched", routeEvent);
       }
       return Boolean(published);
     }
 
     if (!retry && this.loaderState?.key === loaderKey) {
+      const routeEvent = this.routeEvent();
       const published = publishPresentation({
         routeStatus: this.loaderState.status,
         routeSource: source,
@@ -555,12 +607,13 @@ class RuntimeImplementation implements NextAppRuntime {
         error: this.loaderState.error ?? null,
       });
       if (isMatchedPresentationCurrent(published, matched)) {
-        this.emitEvent("route_matched", { pattern: matched.pattern });
+        this.emitEvent("route_matched", routeEvent);
       }
       return Boolean(published);
     }
 
     if (source === "candidate") {
+      const routeEvent = this.routeEvent();
       const published = publishPresentation({
         routeStatus: "loading",
         routeSource: source,
@@ -569,12 +622,14 @@ class RuntimeImplementation implements NextAppRuntime {
         error: null,
       });
       if (isMatchedPresentationCurrent(published, matched)) {
-        this.emitEvent("route_matched", { pattern: matched.pattern });
+        this.emitEvent("route_matched", routeEvent);
       }
       return Boolean(published);
     }
 
     const run = ++this.loaderRun;
+    const loaderEvent = this.loaderEvent();
+    const routeEvent = { pattern: loaderEvent.pattern };
     this.loaderState = { key: loaderKey, status: "loading" };
     const published = publishPresentation({
       routeStatus: "loading",
@@ -587,7 +642,7 @@ class RuntimeImplementation implements NextAppRuntime {
     if (!mayStartHiddenRetry && !isMatchedPresentationCurrent(published, matched)) {
       return Boolean(published);
     }
-    this.emitEvent("route_matched", { pattern: matched.pattern });
+    this.emitEvent("route_matched", routeEvent);
     if (this.disposed) return Boolean(published);
     if (
       options.preservePresentation &&
@@ -601,11 +656,11 @@ class RuntimeImplementation implements NextAppRuntime {
     ) {
       return Boolean(published);
     }
-    this.emitEvent("loader_started", { loader: loaderName, pattern: matched.pattern });
+    this.emitEvent("loader_started", loaderEvent);
     void Promise.resolve()
       .then(() => {
         if (run !== this.loaderRun || this.disposed || !currentRouteHasLoaderKey()) {
-          this.emitEvent("loader_stale", { loader: loaderName, pattern: matched.pattern });
+          this.emitEvent("loader_stale", loaderEvent);
           return LOADER_INVOCATION_SKIPPED;
         }
         return loader(matched.params);
@@ -613,7 +668,7 @@ class RuntimeImplementation implements NextAppRuntime {
       .then((data) => {
         if (data === LOADER_INVOCATION_SKIPPED) return;
         if (run !== this.loaderRun || this.disposed) {
-          this.emitEvent("loader_stale", { loader: loaderName, pattern: matched.pattern });
+          this.emitEvent("loader_stale", loaderEvent);
           return;
         }
         const currentSpec = this.snapshot.current;
@@ -629,7 +684,7 @@ class RuntimeImplementation implements NextAppRuntime {
             currentMatched.route.loader ?? null,
           ]) !== loaderKey
         ) {
-          this.emitEvent("loader_stale", { loader: loaderName, pattern: matched.pattern });
+          this.emitEvent("loader_stale", loaderEvent);
           return;
         }
         const ownedData = ownAndDeepFreeze(data);
@@ -648,7 +703,7 @@ class RuntimeImplementation implements NextAppRuntime {
             latestCurrentMatched.route.loader ?? null,
           ]) !== loaderKey
         ) {
-          this.emitEvent("loader_stale", { loader: loaderName, pattern: matched.pattern });
+          this.emitEvent("loader_stale", loaderEvent);
           return;
         }
         const ownedMatched = freezeMatchedRoute(latestCurrentMatched);
@@ -666,29 +721,26 @@ class RuntimeImplementation implements NextAppRuntime {
             ),
             error: this.snapshot.specStatus === "invalid" ? this.sourceError : null,
           }, () => {
-            this.emitEvent("loader_succeeded", {
-              loader: loaderName,
-              pattern: matched.pattern,
-            });
+            this.emitEvent("loader_succeeded", loaderEvent);
           });
         } else {
-          this.emitEvent("loader_succeeded", { loader: loaderName, pattern: matched.pattern });
+          this.emitEvent("loader_succeeded", loaderEvent);
         }
       })
       .catch((cause: unknown) => {
         if (run !== this.loaderRun || this.disposed || !currentRouteHasLoaderKey()) {
-          this.emitEvent("loader_stale", { loader: loaderName, pattern: matched.pattern });
+          this.emitEvent("loader_stale", loaderEvent);
           return;
         }
         const notFound = isRouteNotFoundInstance(cause);
         const error = new RuntimeError(
           notFound ? "route_not_found" : "loader_failed",
           notFound ? "Route loader returned not found" : "Route loader failed",
-          { loader: loaderName, retry },
+          { loader: loaderEvent.loader, retry },
         );
         const status: RouteStatus = notFound ? "not_found" : "error";
         if (run !== this.loaderRun || this.disposed || !currentRouteHasLoaderKey()) {
-          this.emitEvent("loader_stale", { loader: loaderName, pattern: matched.pattern });
+          this.emitEvent("loader_stale", loaderEvent);
           return;
         }
         this.loaderState = {
@@ -699,15 +751,13 @@ class RuntimeImplementation implements NextAppRuntime {
         if (this.snapshot.routeSource !== "candidate") {
           this.publish({ ...this.snapshot, routeStatus: status, error }, () => {
             this.emitEvent("loader_failed", {
-              loader: loaderName,
-              pattern: matched.pattern,
+              ...loaderEvent,
               code: error.code,
             });
           });
         } else {
           this.emitEvent("loader_failed", {
-            loader: loaderName,
-            pattern: matched.pattern,
+            ...loaderEvent,
             code: error.code,
           });
         }

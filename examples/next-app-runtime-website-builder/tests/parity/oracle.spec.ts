@@ -6,13 +6,34 @@ const oracleUrl = process.env.JSON_RENDER_ORACLE_URL!;
 const candidateUrl = process.env.NEXT_APP_RUNTIME_CANDIDATE_URL!;
 
 const cases = [
-  { path: "/", oracleTitle: "Home | Acme Inc", candidateTitle: "Home | Acme Inc", heading: "Build the future with Acme" },
-  { path: "/about", oracleTitle: "About | Acme Inc", candidateTitle: "About | Acme Inc", heading: "About Acme Inc" },
-  { path: "/contact", oracleTitle: "Contact | Acme Inc", candidateTitle: "Contact | Acme Inc", heading: "Get in Touch" },
+  {
+    path: "/",
+    oracleTitle: "Home | Acme Inc",
+    candidateTitle: "Home | Acme Inc",
+    description: "Welcome to Acme Inc - we build the future of software.",
+    heading: "Build the future with Acme",
+  },
+  {
+    path: "/about",
+    oracleTitle: "About | Acme Inc",
+    candidateTitle: "About | Acme Inc",
+    description: "Learn about our mission, values, and the team behind Acme.",
+    heading: "About Acme Inc",
+  },
+  {
+    path: "/contact",
+    oracleTitle: "Contact | Acme Inc",
+    candidateTitle: "Contact | Acme Inc",
+    description: "Get in touch with the Acme team.",
+    heading: "Get in Touch",
+  },
   {
     path: "/builder",
     oracleTitle: "Next Website Builder | json-render",
     candidateTitle: "Next Website Builder | @next-app-runtime/client",
+    oracleDescription: "Build entire Next.js websites from JSON specs with @json-render/next",
+    candidateDescription:
+      "Build client-rendered websites from NextAppSpec 0.19.0 with @next-app-runtime/client",
     heading: "Build the future with Acme",
   },
 ] as const;
@@ -28,6 +49,15 @@ async function settle(page: Page): Promise<void> {
     await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
   });
   await page.waitForTimeout(500);
+}
+
+async function readDocumentMetadata(page: Page) {
+  return page.evaluate(() => ({
+    descriptions: [...document.head.querySelectorAll<HTMLMetaElement>('meta[name="description"]')]
+      .map((element) => element.content),
+    icons: [...document.head.querySelectorAll<HTMLLinkElement>('link[rel="icon"]')]
+      .map((element) => element.getAttribute("href")),
+  }));
 }
 
 function paeth(left: number, above: number, upperLeft: number): number {
@@ -191,6 +221,10 @@ test("matches the official 0.19.0 example behavior and rendered pixels", async (
     await settle(page);
     await expect(page).toHaveTitle(entry.oracleTitle);
     await expect(page.getByRole("heading", { name: entry.heading }).first()).toBeVisible();
+    expect(await readDocumentMetadata(page)).toEqual({
+      descriptions: ["oracleDescription" in entry ? entry.oracleDescription : entry.description],
+      icons: ["/icon.svg"],
+    });
 
     if (entry.path === "/builder") {
       await expect(page.getByText("spec.json", { exact: true })).toBeVisible();
@@ -209,6 +243,10 @@ test("matches the official 0.19.0 example behavior and rendered pixels", async (
     await settle(page);
     await expect(page).toHaveTitle(entry.candidateTitle);
     await expect(page.getByRole("heading", { name: entry.heading }).first()).toBeVisible();
+    expect(await readDocumentMetadata(page)).toEqual({
+      descriptions: ["candidateDescription" in entry ? entry.candidateDescription : entry.description],
+      icons: ["/icon.svg"],
+    });
     if (entry.path === "/builder") {
       await expect(page.getByText("spec.json", { exact: true })).toBeVisible();
       await expect(page.getByPlaceholder("/")).toHaveValue("/");

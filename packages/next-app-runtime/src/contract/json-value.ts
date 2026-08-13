@@ -2,7 +2,6 @@ import { RuntimeError } from "./types.js";
 
 function fail(path: string, reason: string): never {
   throw new RuntimeError("contract_invalid", "Object source is not transport-safe JSON", {
-    path,
     reason,
   });
 }
