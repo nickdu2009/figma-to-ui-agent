@@ -1,0 +1,50 @@
+{
+  "name": "@next-app-runtime/client",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSES",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema": {
+      "types": "./dist/schema.d.ts",
+      "import": "./dist/schema.js"
+    },
+    "./router": {
+      "types": "./dist/router.d.ts",
+      "import": "./dist/router.js"
+    },
+    "./stream": {
+      "types": "./dist/stream.d.ts",
+      "import": "./dist/stream.js"
+    },
+    "./testing": {
+      "types": "./dist/testing.d.ts",
+      "import": "./dist/testing.js"
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && vite build --config vite.config.ts && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --config vitest.config.ts tests/contract/json-value.test.ts tests/contract/public-api.test.ts tests/contract/schema.test.ts tests/router tests/runtime tests/security tests/stream",
+    "test:browser": "npm run build && playwright test --config playwright.config.ts",
+    "test:consumer": "npm run build && vitest run --config vitest.config.ts tests/consumer",
+    "test:dependencies": "npm run build && vitest run --config vitest.config.ts tests/contract/dependency-boundary.test.ts"
+  },
+  "peerDependencies": {
+    "@json-render/core": "0.19.0",
+    "@json-render/react": "0.19.0",
+    "react": "^19.2.3",
+    "zod": "^4.0.0"
+  }
+}

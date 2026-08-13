@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "scripts": {
     "start:agent": "node scripts/start-agent.mjs",
     "typecheck": "tsc --noEmit",

@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "upstream": {
+    "repository": "https://github.com/vercel-labs/json-render",
+    "tag": "v0.19.0",
+    "commit": "0bbe6ed6394b23b5aee25320d03c9b7ac717e5b7",
+    "sourceRoot": "examples/next-website-builder"
+  },
+  "bundledArtifacts": {
+    "sourcePackage": "geist@1.7.0",
+    "entries": [
+      {
+        "sourcePath": "dist/fonts/geist-sans/Geist-Variable.woff2",
+        "sourceSha256": "e24cec106619c03f0b3519e31b9bc55e0d5e926b6a95b8d798cd8cef215b1505",
+        "targetPath": "app/assets/Geist-Variable.woff2"
+      },
+      {
+        "sourcePath": "dist/fonts/geist-mono/GeistMono-Variable.woff2",
+        "sourceSha256": "5f687a5dd4c87da13deaff9f6b9503d5e62249ff501265a96b134565f9aa8c87",
+        "targetPath": "app/assets/GeistMono-Variable.woff2"
+      },
+      {
+        "sourcePath": "LICENSE.txt",
+        "sourceSha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+        "targetPath": "LICENSES/OFL-1.1.txt"
+      }
+    ]
+  },
+  "entries": [
+    {
+      "sourcePath": "examples/next-website-builder/CHANGELOG.md",
+      "sourceSha256": "03bfd43595eefe09f20f18eeb098329455431559ac1b1265e1910d356207584c",
+      "targetPath": "CHANGELOG.md",
+      "classification": "unchanged",
+      "reason": "Historical upstream changelog retained as provenance."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/app/[[...slug]]/layout.tsx",
+      "sourceSha256": "194bfea7d41150b54e6ce4ac81b556cdfef2df740d57964a8e88d7e261f42ef2",
+      "targetPath": "app/[[...slug]]/layout.tsx",
+      "classification": "ported",
+      "reason": "Server layout wrapper became a framework-neutral React fragment."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/app/[[...slug]]/page.tsx",
+      "sourceSha256": "16fe498ba1dc420162b48e81c04df08539a6f6691948c781fe23ff326b618386",
+      "targetPath": "app/[[...slug]]/page.tsx",
+      "classification": "replaced",
+      "reason": "Next catch-all server page became the Browser History runtime host."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/app/[[...slug]]/renderer.tsx",
+      "sourceSha256": "70794a6300a1cf1d775f1abc8c60fee1a1be9bc8dc0f39bd7e5ff3f124cd4410",
+      "targetPath": "app/[[...slug]]/renderer.tsx",
+      "classification": "ported",
+      "reason": "Page renderer now mounts the private client runtime."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/app/api/spec/route.ts",
+      "sourceSha256": "a9d20ad307a8d5b31a011220f2eccad5dcf23a3a71be4b8374d61a23224747e4",
+      "targetPath": null,
+      "classification": "excluded-server-only",
+      "reason": "Next route-handler API is excluded; localStorage owns the client store."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/app/builder/page.tsx",
+      "sourceSha256": "1abe61f9b6106a05ef20dec098a76029031f386099cfbfdfa0018f7c822054f4",
+      "targetPath": "app/builder/page.tsx",
+      "classification": "ported",
+      "reason": "Builder component is retained with a named Vite entry export."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/app/globals.css",
+      "sourceSha256": "d50e750b46f42ebdd3e04294e6f02c85dc5c4905bc1bf6ff77ccf6b3032bf146",
+      "targetPath": "app/globals.css",
+      "classification": "ported",
+      "reason": "Styles retained; shadcn source discovery points at the published package."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/app/layout.tsx",
+      "sourceSha256": "f0007df252ec011a5ca64be055676deda6953ed97b1482373f21e01ec05dc66a",
+      "targetPath": "app/layout.tsx",
+      "classification": "ported",
+      "reason": "Next document metadata/layout became a framework-neutral root wrapper."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/components/editor.tsx",
+      "sourceSha256": "f04c910f33d5ae7740cc39ad8b23a16b08a32105cc954974880dedbf5f8af3e7",
+      "targetPath": "components/editor.tsx",
+      "classification": "ported",
+      "reason": "Builder UI retained; fetch store replaced by debounced localStorage."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/components/route-tabs.tsx",
+      "sourceSha256": "b03c00af2518f05d75b3ae0872427b497267eb4b671ba9a8bd89bb20a2a89d66",
+      "targetPath": "components/route-tabs.tsx",
+      "classification": "unchanged",
+      "reason": "Address bar behavior and UI are unchanged."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/components/ui/resizable.tsx",
+      "sourceSha256": "a6939bc3b234b2afd84564c31e829745269ffd48be0e2af571339eb0623ef05d",
+      "targetPath": "components/ui/resizable.tsx",
+      "classification": "unchanged",
+      "reason": "Resizable panel behavior and UI are unchanged."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/lib/app.ts",
+      "sourceSha256": "b8dbaa31ca75025084b4ce5c03b6ba4084fc3a7a79c4f0e1506f70c7402d41cc",
+      "targetPath": null,
+      "classification": "excluded-server-only",
+      "reason": "createNextApp server glue is outside the client runtime scope."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/lib/catalog.ts",
+      "sourceSha256": "0fb8da011ce3c56214fa57f347484cf6c594eea44657030c2c7bfbc3a343dea8",
+      "targetPath": "lib/catalog.ts",
+      "classification": "ported",
+      "reason": "Catalog now uses the private 0.19.0 schema entry."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/lib/default-spec.ts",
+      "sourceSha256": "e17830fb5332db4f7655b83f01b93fd9ec5d141fdda2435e72e10b694578b90d",
+      "targetPath": "lib/default-spec.ts",
+      "classification": "ported",
+      "reason": "Application spec is unchanged apart from its type import."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/lib/registry.tsx",
+      "sourceSha256": "e25a13fa005dbaf01cfeca15b630e6ac51c6638511b585aa2bc632a2868a98b3",
+      "targetPath": "lib/registry.tsx",
+      "classification": "ported",
+      "reason": "The runtime-owned Link is removed and the shadcn Stack adapter supplies the 0.19.0-compatible nullable defaults."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/lib/spec-store.ts",
+      "sourceSha256": "0600b549f7a886ded70bd1d56fc80121915b0ea06840ab622aea1b962d867f83",
+      "targetPath": "lib/spec-store.ts",
+      "classification": "replaced",
+      "reason": "Process memory store became versioned localStorage with storage events."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/lib/utils.ts",
+      "sourceSha256": "d1f1e0d62cb8d8d1e04c26e14de842d8a151f75812d81b046c65b5d1fe8e4b27",
+      "targetPath": "lib/utils.ts",
+      "classification": "unchanged",
+      "reason": "Class-name utility is unchanged."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/lib/website-catalog.ts",
+      "sourceSha256": "c60c724e311c5749f632fbc3706ff4129c38530442335befa1e6b5c69f49bfa3",
+      "targetPath": "lib/website-catalog.ts",
+      "classification": "unchanged",
+      "reason": "Website component catalog is unchanged."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/lib/website-components.tsx",
+      "sourceSha256": "d9b31b3915f3d8f2024ed9c08b2c3ca0fbf78c8e4df3408f83da156de40b92a5",
+      "targetPath": "lib/website-components.tsx",
+      "classification": "ported",
+      "reason": "Visible components and anchor DOM are unchanged; same-origin anchors are wired to the private Browser History router."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/next.config.ts",
+      "sourceSha256": "ed46c1d9111ff979a2c31e1f490cfb14fe3ef9b1da5c8814cf622d3f5e712fb8",
+      "targetPath": "vite.config.ts",
+      "classification": "replaced",
+      "reason": "Next build configuration became Vite SPA configuration."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/package.json",
+      "sourceSha256": "e23a422fd20109be5a899f01c541deebe371787f1ea34b4263a411eb82d14781",
+      "targetPath": "package.json",
+      "classification": "replaced",
+      "reason": "Next workspace dependencies/scripts became private runtime and Vite dependencies."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/postcss.config.mjs",
+      "sourceSha256": "5b0bc4c78be977cd81f947fb5563aaa7cc6d451e6f1c53a3260b7656a7144d20",
+      "targetPath": "postcss.config.mjs",
+      "classification": "unchanged",
+      "reason": "Tailwind PostCSS configuration is unchanged."
+    },
+    {
+      "sourcePath": "examples/next-website-builder/tsconfig.json",
+      "sourceSha256": "0ad739b467cc7ebc822d327acdd3afeed173b036f191bdf00808afa82b4497b9",
+      "targetPath": "tsconfig.json",
+      "classification": "replaced",
+      "reason": "Next TypeScript preset became the repository Vite/React configuration."
+    }
+  ]
+}
