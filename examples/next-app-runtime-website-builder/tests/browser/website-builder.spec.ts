@@ -198,6 +198,8 @@ test("edits through Visual JSON, persists, opens the website and synchronizes ta
     await website.waitForLoadState("domcontentloaded");
     await expect(website.getByRole("heading", { name: firstEdit })).toBeVisible();
 
+    await builder.clock.install();
+    await builder.clock.pauseAt(Date.now());
     const pendingLocalEdit = "Pending local edit";
     await builder.getByText(firstEdit, { exact: true }).first().dblclick();
     const pendingEditor = builder.locator('input[placeholder="<value>"]');
@@ -220,11 +222,12 @@ test("edits through Visual JSON, persists, opens the website and synchronizes ta
     await expect(builder.getByRole("heading", { name: externalEdit })).toBeVisible();
     await expect(builder.locator('[data-form-container]').getByText(externalEdit, { exact: true }))
       .toBeVisible();
-    await builder.waitForTimeout(600);
+    await builder.clock.fastForward(600);
     expect(await builder.evaluate((key) => localStorage.getItem(key), storageKey))
       .toContain(externalEdit);
     expect(await builder.evaluate((key) => localStorage.getItem(key), storageKey))
       .not.toContain(pendingLocalEdit);
+    await builder.clock.resume();
 
     const secondEdit = "Synchronized through storage event";
     await editVisualJsonHeadline(builder, externalEdit, secondEdit);
