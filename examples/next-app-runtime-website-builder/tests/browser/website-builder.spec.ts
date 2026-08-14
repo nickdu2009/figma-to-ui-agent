@@ -174,9 +174,21 @@ test("edits through Visual JSON, persists, opens the website and synchronizes ta
     await expect(builder.getByPlaceholder("/")).toHaveValue("/");
 
     const firstEdit = "Edited through Visual JSON";
+    await builder.evaluate(() => {
+      const formContainer = document.querySelector('[data-form-container]');
+      if (!formContainer) throw new Error("Visual JSON form container is missing");
+      Object.assign(window, { __visualJsonFormContainer: formContainer });
+    });
     await editVisualJsonHeadline(builder, defaultHeadline, firstEdit);
     await expect.poll(() => builder.evaluate((key) => localStorage.getItem(key), storageKey))
       .toContain(firstEdit);
+    expect(await builder.evaluate(async () => {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      });
+      return document.querySelector('[data-form-container]')
+        === (window as unknown as { __visualJsonFormContainer?: Element }).__visualJsonFormContainer;
+    })).toBe(true);
     await builder.reload();
     await expect(builder.getByRole("heading", { name: firstEdit })).toBeVisible();
 
@@ -186,8 +198,36 @@ test("edits through Visual JSON, persists, opens the website and synchronizes ta
     await website.waitForLoadState("domcontentloaded");
     await expect(website.getByRole("heading", { name: firstEdit })).toBeVisible();
 
+    const pendingLocalEdit = "Pending local edit";
+    await builder.getByText(firstEdit, { exact: true }).first().dblclick();
+    const pendingEditor = builder.locator('input[placeholder="<value>"]');
+    await expect(pendingEditor).toHaveValue(firstEdit);
+    await pendingEditor.fill(pendingLocalEdit);
+    await pendingEditor.press("Enter");
+    expect(await builder.evaluate((key) => localStorage.getItem(key), storageKey))
+      .not.toContain(pendingLocalEdit);
+
+    const externalEdit = "Synchronized into the editor";
+    await website.evaluate(({ key, headline }) => {
+      const raw = localStorage.getItem(key);
+      if (!raw) throw new Error("Stored spec is missing");
+      const spec = JSON.parse(raw) as {
+        routes: { "/": { page: { elements: { hero: { props: { headline: string } } } } } };
+      };
+      spec.routes["/"].page.elements.hero.props.headline = headline;
+      localStorage.setItem(key, JSON.stringify(spec));
+    }, { key: storageKey, headline: externalEdit });
+    await expect(builder.getByRole("heading", { name: externalEdit })).toBeVisible();
+    await expect(builder.locator('[data-form-container]').getByText(externalEdit, { exact: true }))
+      .toBeVisible();
+    await builder.waitForTimeout(600);
+    expect(await builder.evaluate((key) => localStorage.getItem(key), storageKey))
+      .toContain(externalEdit);
+    expect(await builder.evaluate((key) => localStorage.getItem(key), storageKey))
+      .not.toContain(pendingLocalEdit);
+
     const secondEdit = "Synchronized through storage event";
-    await editVisualJsonHeadline(builder, firstEdit, secondEdit);
+    await editVisualJsonHeadline(builder, externalEdit, secondEdit);
     await expect.poll(() => builder.evaluate((key) => localStorage.getItem(key), storageKey))
       .toContain(secondEdit);
     await expect(website.getByRole("heading", { name: secondEdit })).toBeVisible();
@@ -266,6 +306,32 @@ test("keeps contract-invalid candidates editable while the last valid preview st
   await page.reload();
   try {
     await expect(page.getByRole("heading", { name: defaultHeadline })).toBeVisible();
+    await page.evaluate((key) => {
+      const candidate: Record<string, unknown> = { routes: {} };
+      let cursor = candidate;
+      for (let depth = 0; depth < 210; depth += 1) {
+        const next: Record<string, unknown> = {};
+        cursor.deep = next;
+        cursor = next;
+      }
+      localStorage.setItem(key, JSON.stringify(candidate));
+    }, storageKey);
+    await page.reload();
+    await expect(page.locator('[data-storage-error="source_limit_exceeded"]')).toBeVisible();
+    await expect(page.locator('[data-form-container]').getByText("metadata", { exact: true }).first())
+      .toBeVisible();
+    await expect(page.locator('[data-form-container]').getByText("deep", { exact: true }))
+      .toHaveCount(0);
+    await expect(page.getByRole("heading", { name: defaultHeadline })).toBeVisible();
+
+    await page.evaluate((key) => localStorage.setItem(key, "null"), storageKey);
+    await page.reload();
+    await expect(page.locator('[data-storage-error="stored_spec_contract_invalid"]')).toBeVisible();
+    await expect(page.getByText("Loading...", { exact: true })).toHaveCount(0);
+    await expect(page.locator('[data-form-container]').getByText("null", { exact: true }).first())
+      .toBeVisible();
+    await expect(page.getByRole("heading", { name: defaultHeadline })).toBeVisible();
+
     await page.evaluate(({ key, eventName }) => {
       localStorage.setItem(key, JSON.stringify({ routes: null }));
       window.dispatchEvent(new Event(eventName));

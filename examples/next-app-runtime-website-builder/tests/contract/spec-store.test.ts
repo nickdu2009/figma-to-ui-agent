@@ -43,8 +43,17 @@ describe("localStorage spec store", () => {
     const listener = vi.fn();
     target.addEventListener(SPEC_STORAGE_EVENT, listener);
     expect(writeSpec(defaultSpec, storage, target)).toEqual({ ok: true });
-    expect(storage.getItem(SPEC_STORAGE_KEY)).toBe(JSON.stringify(defaultSpec));
-    expect(readSpec(storage)).toEqual({ ok: true, source: "storage", spec: defaultSpec });
+    const stored = JSON.stringify(defaultSpec);
+    expect(storage.getItem(SPEC_STORAGE_KEY)).toBe(stored);
+    const result = readSpec(storage);
+    expect(result).toEqual({
+      ok: true,
+      source: "storage",
+      spec: defaultSpec,
+      candidate: defaultSpec,
+    });
+    expect(result.ok && result.source === "storage" && JSON.stringify(result.candidate))
+      .toBe(stored);
     expect(listener).toHaveBeenCalledTimes(1);
   });
 

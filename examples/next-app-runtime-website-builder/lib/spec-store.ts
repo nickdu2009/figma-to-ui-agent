@@ -10,7 +10,8 @@ export const SPEC_STORAGE_KEY = "next-app-runtime:website-builder:spec:v1";
 export const SPEC_STORAGE_EVENT = "next-app-runtime:website-builder:spec-change";
 
 export type StoredSpecResult =
-  | { ok: true; spec: NextAppSpec; source: "default" | "storage" }
+  | { ok: true; spec: NextAppSpec; source: "default" }
+  | { ok: true; spec: NextAppSpec; source: "storage"; candidate: unknown }
   | {
       ok: false;
       code: "stored_spec_contract_invalid" | "source_limit_exceeded";
@@ -127,7 +128,8 @@ export function readSpec(storage?: Storage): StoredSpecResult {
     return { ok: false, code: "stored_spec_parse_failed" };
   }
   try {
-    return validateSpecCandidate(candidate);
+    const result = validateSpecCandidate(candidate);
+    return result.ok ? { ...result, candidate } : result;
   } catch {
     return {
       ok: false,

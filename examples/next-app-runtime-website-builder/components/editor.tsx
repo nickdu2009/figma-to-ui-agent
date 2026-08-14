@@ -27,6 +27,7 @@ import { defaultSpec } from "@/lib/default-spec";
 import {
   readSpec,
   subscribeSpec,
+  type StoredSpecResult,
   validatePreviewSpecCandidate,
   WEBSITE_RUNTIME_LIMITS,
   writeSpec,
@@ -51,10 +52,18 @@ async function validateCandidateForPreview(candidate: unknown) {
   }
 }
 
+function candidateFromStoredResult(result: StoredSpecResult): JsonValue {
+  if (result.ok) {
+    return (result.source === "storage" ? result.candidate : result.spec) as JsonValue;
+  }
+  if (result.code === "stored_spec_contract_invalid") {
+    return result.candidate as JsonValue;
+  }
+  return structuredClone(defaultSpec) as unknown as JsonValue;
+}
+
 export function Editor() {
-  const [candidate, setCandidate] = useState<JsonValue>(
-    () => structuredClone(defaultSpec) as unknown as JsonValue,
-  );
+  const [candidate, setCandidate] = useState<JsonValue | undefined>(undefined);
   const [previewSpec, setPreviewSpec] = useState<NextAppSpec>(
     () => structuredClone(defaultSpec),
   );
@@ -64,13 +73,22 @@ export function Editor() {
   const [writeError, setWriteError] = useState<string | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const validationRevisionRef = useRef(0);
+  const selfWriteRef = useRef(false);
+  const bootstrapRef = useRef<{
+    result: StoredSpecResult;
+    candidate: JsonValue;
+  } | null>(null);
 
   useEffect(() => {
-    const load = async () => {
+    const applyStoredResult = async (
+      result: StoredSpecResult,
+      synchronizeCandidate: boolean,
+    ) => {
       const revision = ++validationRevisionRef.current;
-      const result = readSpec();
       if (result.ok) {
-        setCandidate(result.spec as unknown as JsonValue);
+        if (synchronizeCandidate) {
+          setCandidate(candidateFromStoredResult(result));
+        }
         setWriteError(null);
         const validation = await validateCandidateForPreview(result.spec);
         if (revision !== validationRevisionRef.current) return;
@@ -81,14 +99,31 @@ export function Editor() {
           setCandidateError(validation.code);
         }
       } else if (result.code === "stored_spec_contract_invalid") {
-        setCandidate(result.candidate as JsonValue);
+        if (synchronizeCandidate) {
+          setCandidate(result.candidate as JsonValue);
+        }
         setCandidateError(result.code);
       } else {
         setCandidateError(result.code);
       }
     };
-    void load();
-    const unsubscribe = subscribeSpec(() => { void load(); });
+    const unsubscribe = subscribeSpec(() => {
+      if (selfWriteRef.current) return;
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+      void applyStoredResult(readSpec(), true);
+    });
+    if (!bootstrapRef.current) {
+      const result = readSpec();
+      bootstrapRef.current = {
+        result,
+        candidate: candidateFromStoredResult(result),
+      };
+    }
+    setCandidate(bootstrapRef.current.candidate);
+    void applyStoredResult(bootstrapRef.current.result, false);
     return () => {
       validationRevisionRef.current += 1;
       unsubscribe();
@@ -111,8 +146,14 @@ export function Editor() {
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      const result = writeSpec(value);
-      setWriteError(result.ok ? null : result.code);
+      debounceRef.current = null;
+      selfWriteRef.current = true;
+      try {
+        const result = writeSpec(value);
+        setWriteError(result.ok ? null : result.code);
+      } finally {
+        selfWriteRef.current = false;
+      }
     }, 500);
   }, []);
 
@@ -152,6 +193,14 @@ export function Editor() {
         : candidateError === "source_limit_exceeded"
           ? "The stored candidate exceeds runtime limits. The last valid preview remains active."
         : "The stored candidate violates NextAppSpec 0.19.0. The last valid preview remains active.";
+
+  if (candidate === undefined) {
+    return (
+      <div className="flex items-center justify-center h-screen text-muted-foreground">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen flex flex-col">

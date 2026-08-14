@@ -149,7 +149,12 @@ function comparePixels(oraclePng: Buffer, candidatePng: Buffer) {
   };
 }
 
-async function editAndExerciseBuilder(page: Page, baseUrl: string, candidate: boolean) {
+async function editAndExerciseBuilder(
+  page: Page,
+  baseUrl: string,
+  candidate: boolean,
+  screenshotPath: string,
+) {
   if (!candidate) {
     const reset = await page.request.put(new URL("/api/spec", baseUrl).href, { data: defaultSpec });
     expect(reset.ok()).toBe(true);
@@ -174,11 +179,24 @@ async function editAndExerciseBuilder(page: Page, baseUrl: string, candidate: bo
   await editor.fill(editedHeadline);
   await editor.press("Enter");
   await expect(page.getByRole("heading", { name: editedHeadline })).toBeVisible();
-  await page.waitForTimeout(700);
+  if (candidate) {
+    await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), storageKey))
+      .toContain(editedHeadline);
+  } else {
+    await expect.poll(async () => {
+      const response = await page.request.get(new URL("/api/spec", baseUrl).href);
+      return response.ok() ? response.text() : "";
+    }).toContain(editedHeadline);
+  }
   await page.reload();
   await expect(page.getByRole("heading", { name: editedHeadline })).toBeVisible();
   await settle(page);
-  const screenshot = await page.screenshot({ fullPage: true, animations: "disabled", caret: "hide" });
+  const screenshot = await page.screenshot({
+    path: screenshotPath,
+    fullPage: true,
+    animations: "disabled",
+    caret: "hide",
+  });
 
   const opened = page.waitForEvent("popup");
   await page.getByRole("link", { name: "View Website" }).click();
@@ -265,8 +283,18 @@ test("matches the official 0.19.0 example behavior and rendered pixels", async (
     });
   }
 
-  const oracleEdited = await editAndExerciseBuilder(page, oracleUrl, false);
-  const candidateEdited = await editAndExerciseBuilder(page, candidateUrl, true);
+  const oracleEdited = await editAndExerciseBuilder(
+    page,
+    oracleUrl,
+    false,
+    testInfo.outputPath("oracle-edited.png"),
+  );
+  const candidateEdited = await editAndExerciseBuilder(
+    page,
+    candidateUrl,
+    true,
+    testInfo.outputPath("candidate-edited.png"),
+  );
   const editedComparison = comparePixels(oracleEdited, candidateEdited);
   expect(editedComparison, "pixel output differs after Visual JSON edit").toMatchObject({
     changedPixels: 0,
