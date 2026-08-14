@@ -590,100 +590,6 @@ function containsOwnRecordKeyCandidate(
   }
 }
 
-function isRequiredObjectPropertyInput(
-  schema: ZodType,
-  seen = new Set<ZodType>(),
-): boolean {
-  if (seen.has(schema)) return true;
-  seen.add(schema);
-  const definition = zodInternals(schema);
-  switch (definition.type) {
-    case "optional":
-    case "default":
-    case "prefault":
-    case "catch":
-    case "undefined":
-    case "void":
-      return false;
-    case "nonoptional":
-      return true;
-    case "nullable":
-    case "readonly":
-      return definition.innerType
-        ? isRequiredObjectPropertyInput(definition.innerType, seen)
-        : true;
-    case "pipe":
-      return definition.in
-        ? isRequiredObjectPropertyInput(definition.in, seen)
-        : true;
-    case "union":
-      return definition.options
-        ? definition.options.every((option) =>
-            isRequiredObjectPropertyInput(option, seen)
-          )
-        : true;
-    case "intersection":
-      return Boolean(
-        (definition.left && isRequiredObjectPropertyInput(definition.left, seen)) ||
-        (definition.right && isRequiredObjectPropertyInput(definition.right, seen)),
-      );
-    case "lazy":
-      return definition.getter
-        ? isRequiredObjectPropertyInput(definition.getter(), seen)
-        : true;
-    default:
-      return true;
-  }
-}
-
-function acceptsEmptyObjectInput(
-  schema: ZodType,
-  seen = new Set<ZodType>(),
-): boolean {
-  if (seen.has(schema)) return false;
-  seen.add(schema);
-  const definition = zodInternals(schema);
-  switch (definition.type) {
-    case "any":
-    case "unknown":
-    case "catch":
-      return true;
-    case "object":
-      if ((definition.checks?.length ?? 0) > 0) return false;
-      return Object.values(definition.shape ?? {}).every((child) =>
-        !isRequiredObjectPropertyInput(child)
-      );
-    case "record":
-      return zodRuntimeInternals(definition.keyType!).values === undefined;
-    case "union":
-      return Boolean(definition.options?.some((option) =>
-        acceptsEmptyObjectInput(option, seen)
-      ));
-    case "intersection":
-      return Boolean(
-        definition.left &&
-        definition.right &&
-        acceptsEmptyObjectInput(definition.left, seen) &&
-        acceptsEmptyObjectInput(definition.right, seen),
-      );
-    case "optional":
-    case "default":
-    case "prefault":
-    case "nullable":
-    case "readonly":
-    case "nonoptional":
-      return definition.innerType
-        ? acceptsEmptyObjectInput(definition.innerType, seen)
-        : false;
-    case "lazy":
-      return definition.getter
-        ? acceptsEmptyObjectInput(definition.getter(), seen)
-        : false;
-    default:
-      return false;
-  }
-}
-
 /**
  * Catalog schemas describe values after json-render resolves expressions, while
  * NextAppSpec stores those expressions before resolution. Preserve the host
@@ -1012,10 +918,16 @@ interface CatalogSchemaEntry {
 
 const dynamicParamsSchema = ownRecordSchema(z.string(), jsonValueSchema);
 const jsonPropsSchema = ownRecordSchema(z.string(), jsonValueSchema);
-const actionBindingParamsRequired = new WeakMap<ZodType, boolean>();
+const actionBindingParamsSchemas = new WeakMap<ZodType, ZodType>();
 
 export function actionBindingRequiresParams(schema: ZodType): boolean | undefined {
-  return actionBindingParamsRequired.get(schema);
+  const params = actionBindingParamsSchemas.get(schema);
+  if (!params) return undefined;
+  try {
+    return !params.safeParse({}).success;
+  } catch {
+    return true;
+  }
 }
 
 function catalogActionBindingSchema(
@@ -1047,7 +959,7 @@ function catalogActionBindingSchema(
         } as core.$ZodSuperRefineIssue);
       }
     });
-  actionBindingParamsRequired.set(binding, !acceptsEmptyObjectInput(params));
+  actionBindingParamsSchemas.set(binding, params);
   return binding;
 }
 

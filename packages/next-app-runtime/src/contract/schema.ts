@@ -44,16 +44,41 @@ function constrainedJsonSchema(schema: ZodType): Record<string, unknown> {
   return result;
 }
 
+function prefaultDefaultValue(definition: Record<string, unknown>): unknown {
+  const descriptor = Object.getOwnPropertyDescriptor(definition, "defaultValue");
+  if (!descriptor) return undefined;
+  return "value" in descriptor
+    ? descriptor.value
+    : descriptor.get?.call(definition);
+}
+
+function schemaAcceptsInput(schema: ZodType, input: unknown): boolean {
+  try {
+    return schema.safeParse(input).success;
+  } catch {
+    return false;
+  }
+}
+
+function isTransformSchema(schema: ZodType | undefined): boolean {
+  if (!schema) return false;
+  const definition = schema._def as unknown as Record<string, unknown>;
+  return normalizedZodType(definition) === "transform";
+}
+
 function isRequiredInputProperty(schema: ZodType): boolean {
   const definition = schema._def as unknown as Record<string, unknown>;
   switch (normalizedZodType(definition)) {
     case "optional":
     case "default":
-    case "prefault":
     case "catch":
     case "undefined":
     case "void":
       return false;
+    case "prefault": {
+      const inner = definition.innerType as ZodType | undefined;
+      return inner ? !schemaAcceptsInput(inner, prefaultDefaultValue(definition)) : false;
+    }
     case "nonoptional":
       return true;
     case "nullable":
@@ -63,7 +88,12 @@ function isRequiredInputProperty(schema: ZodType): boolean {
     }
     case "pipe": {
       const input = definition.in as ZodType | undefined;
-      return input ? isRequiredInputProperty(input) : true;
+      const output = definition.out as ZodType | undefined;
+      if (isTransformSchema(input)) return false;
+      return Boolean(
+        (input && isRequiredInputProperty(input)) ||
+        (output && isRequiredInputProperty(output)),
+      );
     }
     case "union": {
       const options = definition.options as ZodType[] | undefined;

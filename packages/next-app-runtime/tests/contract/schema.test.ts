@@ -774,10 +774,21 @@ describe("NextAppSpec 0.19.0 contract", () => {
             caught: z.string().catch("catch"),
             optionalDefault: z.string().default("optional").optional(),
             nonoptionalDefault: z.string().default("required default").nonoptional(),
+            prefaultTooShort: z.string().min(3).prefault("x"),
+            defaultPipeInvalid: z.string().default("").pipe(z.string().min(1)),
+            preprocessed: z.preprocess(
+              (value) => value === undefined ? "generated" : value,
+              z.string(),
+            ),
           }).strict(),
           slots: [],
           description: "Defaulted props",
-          example: { required: "value", nonoptionalDefault: "value" },
+          example: {
+            required: "value",
+            nonoptionalDefault: "value",
+            prefaultTooShort: "value",
+            defaultPipeInvalid: "value",
+          },
         },
       },
       actions: {},
@@ -797,13 +808,46 @@ describe("NextAppSpec 0.19.0 contract", () => {
       required: "value",
       caught: { invalidForInnerSchema: true },
       nonoptionalDefault: "value",
+      prefaultTooShort: "value",
+      defaultPipeInvalid: "value",
     });
-    const missingRequired = makeSpec({ nonoptionalDefault: "value" });
-    const missingNonoptional = makeSpec({ required: "value" });
+    const missingRequired = makeSpec({
+      nonoptionalDefault: "value",
+      prefaultTooShort: "value",
+      defaultPipeInvalid: "value",
+    });
+    const missingNonoptional = makeSpec({
+      required: "value",
+      prefaultTooShort: "value",
+      defaultPipeInvalid: "value",
+    });
+    const missingPrefaultTooShort = makeSpec({
+      required: "value",
+      nonoptionalDefault: "value",
+      defaultPipeInvalid: "value",
+    });
+    const missingDefaultPipeInvalid = makeSpec({
+      required: "value",
+      nonoptionalDefault: "value",
+      prefaultTooShort: "value",
+    });
+    const missingPreprocessed = makeSpec({
+      required: "value",
+      nonoptionalDefault: "value",
+      prefaultTooShort: "value",
+      defaultPipeInvalid: "value",
+    });
 
     expect(validateJsonSchema(valid)).toBe(true);
     expect(catalog.validate(valid).success).toBe(true);
-    for (const invalid of [missingRequired, missingNonoptional]) {
+    expect(validateJsonSchema(missingPreprocessed)).toBe(true);
+    expect(catalog.validate(missingPreprocessed).success).toBe(true);
+    for (const invalid of [
+      missingRequired,
+      missingNonoptional,
+      missingPrefaultTooShort,
+      missingDefaultPipeInvalid,
+    ]) {
       expect(validateJsonSchema(invalid)).toBe(false);
       expect(catalog.validate(invalid).success).toBe(false);
     }
@@ -823,6 +867,7 @@ describe("NextAppSpec 0.19.0 contract", () => {
         save: { params, description: "Save" },
       },
     });
+    const sharedOptionalParams = z.object({ id: z.string().optional() }).strict();
     const makeSpec = (
       binding: Record<string, unknown>,
       placement: "single" | "array",
@@ -865,6 +910,30 @@ describe("NextAppSpec 0.19.0 contract", () => {
       [
         z.object({ id: z.string().default("generated").nonoptional() }).strict(),
         { action: "save", params: { id: "one" } },
+        true,
+      ],
+      [z.object({}).transform((value) => value), { action: "save" }, true],
+      [
+        z.intersection(sharedOptionalParams, sharedOptionalParams),
+        { action: "save" },
+        true,
+      ],
+      [
+        z.object({ id: z.string().min(3).prefault("x") }).strict(),
+        { action: "save" },
+        false,
+      ],
+      [
+        z.object({ id: z.string().default("").pipe(z.string().min(1)) }).strict(),
+        { action: "save" },
+        false,
+      ],
+      [
+        z.preprocess(
+          () => ({ id: "generated" }),
+          z.object({ id: z.string() }).strict(),
+        ),
+        { action: "save" },
         true,
       ],
     ] as const;
