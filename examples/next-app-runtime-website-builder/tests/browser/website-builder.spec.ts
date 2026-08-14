@@ -148,6 +148,8 @@ test("renders the complete default website and navigates all pages", async ({ pa
 test("edits through Visual JSON, persists, opens the website and synchronizes tabs", async ({ context }) => {
   const builder = await context.newPage();
   let website: import("@playwright/test").Page | null = null;
+  const clockStart = new Date("2026-01-01T00:00:00.000Z");
+  await builder.clock.install({ time: clockStart });
   await builder.goto("/builder");
   await clearTestStorage(builder);
   await builder.reload();
@@ -198,8 +200,7 @@ test("edits through Visual JSON, persists, opens the website and synchronizes ta
     await website.waitForLoadState("domcontentloaded");
     await expect(website.getByRole("heading", { name: firstEdit })).toBeVisible();
 
-    await builder.clock.install();
-    await builder.clock.pauseAt(Date.now());
+    await builder.clock.pauseAt(new Date(clockStart.getTime() + 60_000));
     const pendingLocalEdit = "Pending local edit";
     await builder.getByText(firstEdit, { exact: true }).first().dblclick();
     const pendingEditor = builder.locator('input[placeholder="<value>"]');
