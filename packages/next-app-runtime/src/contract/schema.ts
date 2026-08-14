@@ -8,6 +8,7 @@ import {
 import { z, type ZodType } from "zod";
 
 import {
+  actionBindingRequiresParams,
   createCatalogAwareNextAppSpecSchema,
   decodeRecordKey,
   nextAppSpecSchema,
@@ -44,11 +45,45 @@ function constrainedJsonSchema(schema: ZodType): Record<string, unknown> {
 }
 
 function isRequiredInputProperty(schema: ZodType): boolean {
-  // This is the same input-side signal used by Zod's object JSON Schema processor.
-  const internals = (schema as unknown as {
-    _zod?: { optin?: "optional" };
-  })._zod;
-  return internals?.optin !== "optional";
+  const definition = schema._def as unknown as Record<string, unknown>;
+  switch (normalizedZodType(definition)) {
+    case "optional":
+    case "default":
+    case "prefault":
+    case "catch":
+    case "undefined":
+    case "void":
+      return false;
+    case "nonoptional":
+      return true;
+    case "nullable":
+    case "readonly": {
+      const inner = definition.innerType as ZodType | undefined;
+      return inner ? isRequiredInputProperty(inner) : true;
+    }
+    case "pipe": {
+      const input = definition.in as ZodType | undefined;
+      return input ? isRequiredInputProperty(input) : true;
+    }
+    case "union": {
+      const options = definition.options as ZodType[] | undefined;
+      return options ? options.every(isRequiredInputProperty) : true;
+    }
+    case "intersection": {
+      const left = definition.left as ZodType | undefined;
+      const right = definition.right as ZodType | undefined;
+      return Boolean(
+        (left && isRequiredInputProperty(left)) ||
+        (right && isRequiredInputProperty(right)),
+      );
+    }
+    case "lazy": {
+      const getter = definition.getter as (() => ZodType) | undefined;
+      return getter ? isRequiredInputProperty(getter()) : true;
+    }
+    default:
+      return true;
+  }
 }
 
 function officialJsonSchema(
@@ -114,6 +149,9 @@ function officialJsonSchema(
           value: propertySchema,
           writable: true,
         });
+      }
+      if (!strict && actionBindingRequiresParams(schema) === true) {
+        required.push("params");
       }
       return {
         type: "object",

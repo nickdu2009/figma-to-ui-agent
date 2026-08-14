@@ -809,6 +809,77 @@ describe("NextAppSpec 0.19.0 contract", () => {
     }
   });
 
+  it("keeps action params required fields aligned between JSON Schema and Catalog validation", () => {
+    const makeCatalog = (params: z.ZodType) => schema.createCatalog({
+      components: {
+        Button: {
+          props: z.object({ label: z.string() }).strict(),
+          slots: [],
+          description: "Button",
+          example: { label: "Run" },
+        },
+      },
+      actions: {
+        save: { params, description: "Save" },
+      },
+    });
+    const makeSpec = (
+      binding: Record<string, unknown>,
+      placement: "single" | "array",
+    ) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "button",
+            elements: {
+              button: {
+                type: "Button",
+                props: { label: "Run" },
+                ...(placement === "single"
+                  ? { on: { press: binding } }
+                  : { watch: { change: [binding] } }),
+              },
+            },
+          },
+        },
+      },
+    });
+    const cases = [
+      [z.object({ id: z.string() }).strict(), { action: "save" }, false],
+      [z.object({ id: z.string() }).strict(), { action: "save", params: {} }, false],
+      [z.object({ id: z.string() }).strict(), { action: "save", params: { id: "one" } }, true],
+      [z.object({ id: z.string().default("generated") }).strict(), { action: "save" }, true],
+      [z.object({ id: z.string().default("generated") }).strict(), { action: "save", params: {} }, true],
+      [z.object({ id: z.string().catch("fallback") }).strict(), { action: "save" }, true],
+      [z.object({ id: z.string().catch("fallback") }).strict(), { action: "save", params: {} }, true],
+      [
+        z.object({ id: z.string().default("generated").nonoptional() }).strict(),
+        { action: "save" },
+        false,
+      ],
+      [
+        z.object({ id: z.string().default("generated").nonoptional() }).strict(),
+        { action: "save", params: {} },
+        false,
+      ],
+      [
+        z.object({ id: z.string().default("generated").nonoptional() }).strict(),
+        { action: "save", params: { id: "one" } },
+        true,
+      ],
+    ] as const;
+
+    for (const [params, binding, expected] of cases) {
+      const catalog = makeCatalog(params);
+      const validateJsonSchema = new Ajv({ strict: false }).compile(catalog.jsonSchema());
+      for (const placement of ["single", "array"] as const) {
+        const candidate = makeSpec(binding, placement);
+        expect(validateJsonSchema(candidate)).toBe(expected);
+        expect(catalog.validate(candidate).success).toBe(expected);
+      }
+    }
+  }, 60_000);
+
   it("serializes fixed own __proto__ JSON Schema properties without changing prototypes", () => {
     const propsShape: Record<string, z.ZodType> = {};
     Object.defineProperty(propsShape, "__proto__", {
