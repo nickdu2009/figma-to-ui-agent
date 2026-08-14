@@ -17,7 +17,10 @@ import {
 } from "../contract/types.js";
 import type { Catalog } from "@json-render/core";
 import { deepFreeze, ownAndDeepFreeze } from "../contract/immutable.js";
-import { assertJsonValueGraph } from "../contract/json-value.js";
+import {
+  assertNormalizedJsonDocumentWithinMaxBytes,
+  normalizeJsonValueGraph,
+} from "../contract/json-value.js";
 import { ownJsonEqual } from "../contract/own-json-equal.js";
 import { nextAppSpecSchema } from "../contract/zod-schema.js";
 import { createBrowserHistoryDriver } from "../navigation/browser-history.js";
@@ -27,7 +30,6 @@ import { compileJsonlPatch } from "../stream/jsonl-compiler.js";
 import { readSource } from "../stream/source.js";
 import { assertCatalogAndRegistry, assertCatalogSpec } from "../validation/catalog-gate.js";
 import {
-  assertRuntimeInputDepth,
   assertRuntimeLimitConfig,
   assertRuntimeLimits,
 } from "../validation/limits.js";
@@ -38,15 +40,26 @@ interface RuntimeInternals {
   fallbacks: RuntimeFallbacks;
   options: RuntimeOptions;
   emitEvent(name: RuntimeEvent["name"], extra?: Partial<RuntimeEvent>): void;
+  getPresentationIdentity(): number;
   onDispose(listener: () => void): () => void;
 }
 
-interface LoaderState {
+interface LoaderInvocation {
   key: string;
-  status: Extract<RouteStatus, "loading" | "ready" | "not_found" | "error">;
-  data?: Record<string, unknown>;
-  error?: RuntimeError;
+  run: number;
+  retry: boolean;
+  event: Pick<RuntimeEvent, "loader" | "pattern">;
+  loader: NonNullable<RuntimeOptions["loaders"]>[string];
+  params: MatchedRoute["params"];
+  started: boolean;
+  terminal: boolean;
+  promise: Promise<void> | null;
 }
+
+type LoaderState =
+  | { key: string; status: "loading"; invocation: LoaderInvocation }
+  | { key: string; status: "ready"; data?: Record<string, unknown> }
+  | { key: string; status: "not_found" | "error"; error: RuntimeError };
 
 interface ResolveRouteOptions {
   retry?: boolean;
@@ -90,6 +103,14 @@ function freezeMatchedRoute(matched: MatchedRoute): MatchedRoute {
   });
 }
 
+function loaderKeyFor(matched: MatchedRoute): string {
+  return JSON.stringify([
+    matched.pattern,
+    matched.params,
+    matched.route.loader ?? null,
+  ]);
+}
+
 function mergeState(
   ...sources: Array<Record<string, unknown> | undefined | null>
 ): Record<string, unknown> | undefined {
@@ -116,6 +137,8 @@ class RuntimeImplementation implements NextAppRuntime {
   private applying = false;
   private disposed = false;
   private loaderRun = 0;
+  private presentationIdentity = 0;
+  private routeTransition = 0;
   private sourceError: RuntimeError | null = null;
   private sourceController: AbortController | null = null;
   private loaderState: LoaderState | null = null;
@@ -165,13 +188,23 @@ class RuntimeImplementation implements NextAppRuntime {
           },
         );
       } else {
-        this.publish({
+        const next = {
           ...this.snapshot,
           location,
           revision: this.snapshot.revision + 1,
-        }, (published) => {
+        };
+        const onPublished = (published: RuntimeSnapshot) => {
           this.emitEvent("location_changed", { revision: published.revision });
-        });
+        };
+        if (
+          location.search !== this.snapshot.location.search ||
+          location.hash !== this.snapshot.location.hash ||
+          location.href !== this.snapshot.location.href
+        ) {
+          this.publishPresentationSnapshot(next, onPublished);
+        } else {
+          this.publish(next, onPublished);
+        }
       }
     });
   }
@@ -183,6 +216,8 @@ class RuntimeImplementation implements NextAppRuntime {
   }
 
   getSnapshot = (): RuntimeSnapshot => this.snapshot;
+
+  getPresentationIdentity = (): number => this.presentationIdentity;
 
   subscribe = (listener: () => void): (() => void) => {
     if (this.disposed) return () => undefined;
@@ -208,10 +243,11 @@ class RuntimeImplementation implements NextAppRuntime {
     beforeSubscribers?: (snapshot: RuntimeSnapshot) => void,
   ): RuntimeSnapshot | null {
     if (this.disposed) return null;
+    const listeners = [...this.listeners];
     const published = deepFreeze(next);
     this.snapshot = published;
     beforeSubscribers?.(published);
-    for (const listener of this.listeners) {
+    for (const listener of listeners) {
       try {
         const result: unknown = listener();
         handleBestEffortRejection(result);
@@ -220,6 +256,15 @@ class RuntimeImplementation implements NextAppRuntime {
       }
     }
     return published;
+  }
+
+  private publishPresentationSnapshot(
+    next: RuntimeSnapshot,
+    beforeSubscribers?: (snapshot: RuntimeSnapshot) => void,
+  ): RuntimeSnapshot | null {
+    if (this.disposed) return null;
+    this.presentationIdentity += 1;
+    return this.publish(next, beforeSubscribers);
   }
 
   emitEvent = (name: RuntimeEvent["name"], extra?: Partial<RuntimeEvent>): void => {
@@ -291,8 +336,8 @@ class RuntimeImplementation implements NextAppRuntime {
   }
 
   private validate(input: unknown): NextAppSpec {
-    assertRuntimeInputDepth(input, this.options.limits);
-    const parsed = nextAppSpecSchema.safeParse(input);
+    const normalized = normalizeJsonValueGraph(input, this.options.limits.maxDepth);
+    const parsed = nextAppSpecSchema.safeParse(normalized);
     if (!parsed.success) {
       throw new RuntimeError("contract_invalid", "Input is not a NextAppSpec 0.19.0 object");
     }
@@ -374,13 +419,7 @@ class RuntimeImplementation implements NextAppRuntime {
       if (signal.aborted) throw new DOMException("Aborted", "AbortError");
       let input: unknown;
       if (source.kind === "object") {
-        assertRuntimeInputDepth(source.value, this.options.limits);
-        assertJsonValueGraph(source.value);
-        const text = JSON.stringify(source.value);
-        if (new TextEncoder().encode(text).byteLength > this.options.limits.maxBytes) {
-          throw new RuntimeError("source_limit_exceeded", "Source exceeds maxBytes");
-        }
-        input = JSON.parse(text);
+        input = normalizeJsonValueGraph(source.value, this.options.limits.maxDepth);
       } else if (source.kind === "json") {
         const text = await readSource(source.value, this.options.limits.maxBytes, signal);
         try {
@@ -403,6 +442,15 @@ class RuntimeImplementation implements NextAppRuntime {
           )
         ).value;
       }
+
+      const normalizedInput = source.kind === "object"
+        ? input
+        : normalizeJsonValueGraph(input, this.options.limits.maxDepth);
+      const canonicalText = assertNormalizedJsonDocumentWithinMaxBytes(
+        normalizedInput,
+        this.options.limits.maxBytes,
+      );
+      input = JSON.parse(canonicalText);
 
       if (signal.aborted) throw new DOMException("Aborted", "AbortError");
       const candidate = this.validate(input);
@@ -462,11 +510,148 @@ class RuntimeImplementation implements NextAppRuntime {
     }
   }
 
+  private currentLoaderMatch(loaderKey: string): {
+    spec: NextAppSpec;
+    matched: MatchedRoute;
+  } | null {
+    const spec = this.snapshot.current;
+    const matched = spec
+      ? matchRoute(spec, toRoutePathname(this.snapshot.location.pathname))
+      : null;
+    return spec && matched && loaderKeyFor(matched) === loaderKey
+      ? { spec, matched }
+      : null;
+  }
+
+  private isLoaderInvocationCurrent(invocation: LoaderInvocation): boolean {
+    return Boolean(
+      !this.disposed &&
+      invocation.run === this.loaderRun &&
+      this.loaderState?.status === "loading" &&
+      this.loaderState.invocation === invocation &&
+      this.currentLoaderMatch(invocation.key),
+    );
+  }
+
+  private finishLoaderInvocation(
+    invocation: LoaderInvocation,
+    name: Extract<RuntimeEvent["name"], "loader_succeeded" | "loader_failed" | "loader_stale">,
+    extra?: Partial<RuntimeEvent>,
+  ): void {
+    if (invocation.terminal) return;
+    invocation.terminal = true;
+    this.emitEvent(name, { ...invocation.event, ...extra });
+  }
+
+  private retireLoaderInvocation(invocation: LoaderInvocation | undefined): void {
+    if (!invocation || invocation.terminal) return;
+    if (invocation.started) {
+      this.finishLoaderInvocation(invocation, "loader_stale");
+    } else {
+      invocation.terminal = true;
+    }
+  }
+
+  private invalidateLoaderState(): void {
+    const invocation = this.loaderState?.status === "loading"
+      ? this.loaderState.invocation
+      : undefined;
+    this.loaderRun += 1;
+    this.loaderState = null;
+    this.retireLoaderInvocation(invocation);
+  }
+
+  private startLoaderInvocation(invocation: LoaderInvocation): void {
+    if (invocation.started || !this.isLoaderInvocationCurrent(invocation)) return;
+    invocation.started = true;
+    this.emitEvent("loader_started", invocation.event);
+    invocation.promise = Promise.resolve()
+      .then(() => {
+        if (!this.isLoaderInvocationCurrent(invocation)) {
+          this.finishLoaderInvocation(invocation, "loader_stale");
+          return LOADER_INVOCATION_SKIPPED;
+        }
+        return invocation.loader(invocation.params);
+      })
+      .then((data) => {
+        if (data === LOADER_INVOCATION_SKIPPED) return;
+        if (!this.isLoaderInvocationCurrent(invocation)) {
+          this.finishLoaderInvocation(invocation, "loader_stale");
+          return;
+        }
+        const ownedData = ownAndDeepFreeze(data);
+        const latest = this.currentLoaderMatch(invocation.key);
+        if (!latest || !this.isLoaderInvocationCurrent(invocation)) {
+          this.finishLoaderInvocation(invocation, "loader_stale");
+          return;
+        }
+        const ownedMatched = freezeMatchedRoute(latest.matched);
+        this.loaderState = {
+          key: invocation.key,
+          status: "ready",
+          data: ownedData,
+        };
+        if (this.snapshot.routeSource !== "candidate") {
+          this.publishPresentationSnapshot({
+            ...this.snapshot,
+            routeStatus: "ready",
+            routeSource: "current",
+            matched: ownedMatched,
+            pageData: this.pageData(latest.spec, ownedMatched, ownedData),
+            error: this.snapshot.specStatus === "invalid" ? this.sourceError : null,
+          }, () => {
+            this.finishLoaderInvocation(invocation, "loader_succeeded");
+          });
+        } else {
+          this.finishLoaderInvocation(invocation, "loader_succeeded");
+        }
+      })
+      .catch((cause: unknown) => {
+        if (!this.isLoaderInvocationCurrent(invocation)) {
+          this.finishLoaderInvocation(invocation, "loader_stale");
+          return;
+        }
+        const notFound = isRouteNotFoundInstance(cause);
+        const error = new RuntimeError(
+          notFound ? "route_not_found" : "loader_failed",
+          notFound ? "Route loader returned not found" : "Route loader failed",
+          { loader: invocation.event.loader, retry: invocation.retry },
+        );
+        const status: Extract<RouteStatus, "not_found" | "error"> = notFound
+          ? "not_found"
+          : "error";
+        if (!this.isLoaderInvocationCurrent(invocation)) {
+          this.finishLoaderInvocation(invocation, "loader_stale");
+          return;
+        }
+        this.loaderState = {
+          key: invocation.key,
+          status,
+          error,
+        };
+        if (this.snapshot.routeSource !== "candidate") {
+          this.publishPresentationSnapshot({
+            ...this.snapshot,
+            routeStatus: status,
+            error,
+          }, () => {
+            this.finishLoaderInvocation(invocation, "loader_failed", { code: error.code });
+          });
+        } else {
+          this.finishLoaderInvocation(invocation, "loader_failed", { code: error.code });
+        }
+      });
+  }
+
   private resolveRoute(
     spec: NextAppSpec | null,
     source: "current" | "candidate",
     options: ResolveRouteOptions = {},
   ): boolean {
+    const routeTransition = ++this.routeTransition;
+    const ownsRouteTransition = () => Boolean(
+      !this.disposed && routeTransition === this.routeTransition,
+    );
     const retry = options.retry ?? false;
     const snapshotPatch = options.preservePresentation
       ? undefined
@@ -475,11 +660,18 @@ class RuntimeImplementation implements NextAppRuntime {
         : options.snapshotPatch;
     const rawPathname = snapshotPatch?.location?.pathname ?? this.snapshot.location.pathname;
     const pathname = toRoutePathname(rawPathname);
+    const resumeSupersededSourceTransition = (): boolean => (
+      !this.disposed &&
+      options.snapshotPatch !== undefined &&
+      snapshotPatch?.location === undefined
+        ? this.resolveRoute(spec, source, options)
+        : false
+    );
     const publishPresentation = (
       presentation: Partial<RuntimeSnapshot>,
     ): RuntimeSnapshot | null => {
-      if (options.preservePresentation) return null;
-      return this.publish({
+      if (options.preservePresentation || !ownsRouteTransition()) return null;
+      return this.publishPresentationSnapshot({
         ...this.snapshot,
         ...snapshotPatch,
         ...presentation,
@@ -495,14 +687,14 @@ class RuntimeImplementation implements NextAppRuntime {
       matched: MatchedRoute,
     ) => Boolean(
       published &&
-      !this.disposed &&
+      ownsRouteTransition() &&
       this.snapshot.routeSource === source &&
       this.snapshot.matched === matched,
     );
     if (!spec) {
       if (source === "current") {
-        this.loaderRun += 1;
-        this.loaderState = null;
+        this.invalidateLoaderState();
+        if (!ownsRouteTransition()) return resumeSupersededSourceTransition();
       }
       return Boolean(publishPresentation({
         routeStatus: "idle",
@@ -514,8 +706,8 @@ class RuntimeImplementation implements NextAppRuntime {
     const match = matchRoute(spec, pathname);
     if (!match) {
       if (source === "current") {
-        this.loaderRun += 1;
-        this.loaderState = null;
+        this.invalidateLoaderState();
+        if (!ownsRouteTransition()) return resumeSupersededSourceTransition();
       }
       const published = publishPresentation({
         routeStatus: "unmatched",
@@ -536,29 +728,12 @@ class RuntimeImplementation implements NextAppRuntime {
     }
     const matched = freezeMatchedRoute(match);
     const loaderName = matched.route.loader;
-    const loaderKey = JSON.stringify([
-      matched.pattern,
-      matched.params,
-      loaderName ?? null,
-    ]);
-    const currentRouteHasLoaderKey = () => {
-      const current = this.snapshot.current;
-      const currentMatched = current
-        ? matchRoute(current, toRoutePathname(this.snapshot.location.pathname))
-        : null;
-      return Boolean(
-        currentMatched &&
-        JSON.stringify([
-          currentMatched.pattern,
-          currentMatched.params,
-          currentMatched.route.loader ?? null,
-        ]) === loaderKey,
-      );
-    };
+    const loaderKey = loaderKeyFor(matched);
     if (!loaderName) {
       const routeEvent = this.routeEvent();
       if (source === "current") {
-        this.loaderRun += 1;
+        this.invalidateLoaderState();
+        if (!ownsRouteTransition()) return resumeSupersededSourceTransition();
         this.loaderState = { key: loaderKey, status: "ready" };
       }
       const published = publishPresentation({
@@ -581,7 +756,8 @@ class RuntimeImplementation implements NextAppRuntime {
         loader: loaderToken,
       });
       if (source === "current") {
-        this.loaderRun += 1;
+        this.invalidateLoaderState();
+        if (!ownsRouteTransition()) return resumeSupersededSourceTransition();
         this.loaderState = { key: loaderKey, status: "error", error };
       }
       const published = publishPresentation({
@@ -598,16 +774,28 @@ class RuntimeImplementation implements NextAppRuntime {
     }
 
     if (!retry && this.loaderState?.key === loaderKey) {
-      const routeEvent = this.routeEvent();
+      const loaderState = this.loaderState;
+      const routeEvent = loaderState.status === "loading"
+        ? { pattern: loaderState.invocation.event.pattern }
+        : this.routeEvent();
       const published = publishPresentation({
-        routeStatus: this.loaderState.status,
+        routeStatus: loaderState.status,
         routeSource: source,
         matched,
-        pageData: this.pageData(spec, matched, this.loaderState.data),
-        error: this.loaderState.error ?? null,
+        pageData: this.pageData(
+          spec,
+          matched,
+          loaderState.status === "ready" ? loaderState.data : undefined,
+        ),
+        error: loaderState.status === "not_found" || loaderState.status === "error"
+          ? loaderState.error
+          : null,
       });
       if (isMatchedPresentationCurrent(published, matched)) {
         this.emitEvent("route_matched", routeEvent);
+      }
+      if (loaderState.status === "loading") {
+        this.startLoaderInvocation(loaderState.invocation);
       }
       return Boolean(published);
     }
@@ -627,10 +815,24 @@ class RuntimeImplementation implements NextAppRuntime {
       return Boolean(published);
     }
 
-    const run = ++this.loaderRun;
-    const loaderEvent = this.loaderEvent();
-    const routeEvent = { pattern: loaderEvent.pattern };
-    this.loaderState = { key: loaderKey, status: "loading" };
+    const previousInvocation = this.loaderState?.status === "loading"
+      ? this.loaderState.invocation
+      : undefined;
+    const invocation: LoaderInvocation = {
+      key: loaderKey,
+      run: ++this.loaderRun,
+      retry,
+      event: this.loaderEvent(),
+      loader,
+      params: matched.params,
+      started: false,
+      terminal: false,
+      promise: null,
+    };
+    const routeEvent = { pattern: invocation.event.pattern };
+    this.loaderState = { key: loaderKey, status: "loading", invocation };
+    this.retireLoaderInvocation(previousInvocation);
+    if (!ownsRouteTransition()) return resumeSupersededSourceTransition();
     const published = publishPresentation({
       routeStatus: "loading",
       routeSource: source,
@@ -639,129 +841,13 @@ class RuntimeImplementation implements NextAppRuntime {
       error: null,
     });
     const mayStartHiddenRetry = options.preservePresentation && !this.disposed;
-    if (!mayStartHiddenRetry && !isMatchedPresentationCurrent(published, matched)) {
+    if (!mayStartHiddenRetry && !published) {
       return Boolean(published);
     }
-    this.emitEvent("route_matched", routeEvent);
-    if (this.disposed) return Boolean(published);
-    if (
-      options.preservePresentation &&
-      (run !== this.loaderRun || !currentRouteHasLoaderKey())
-    ) {
-      return Boolean(published);
+    if (this.isLoaderInvocationCurrent(invocation)) {
+      this.emitEvent("route_matched", routeEvent);
+      this.startLoaderInvocation(invocation);
     }
-    if (
-      !options.preservePresentation &&
-      (this.snapshot.routeSource !== source || this.snapshot.matched !== matched)
-    ) {
-      return Boolean(published);
-    }
-    this.emitEvent("loader_started", loaderEvent);
-    void Promise.resolve()
-      .then(() => {
-        if (run !== this.loaderRun || this.disposed || !currentRouteHasLoaderKey()) {
-          this.emitEvent("loader_stale", loaderEvent);
-          return LOADER_INVOCATION_SKIPPED;
-        }
-        return loader(matched.params);
-      })
-      .then((data) => {
-        if (data === LOADER_INVOCATION_SKIPPED) return;
-        if (run !== this.loaderRun || this.disposed) {
-          this.emitEvent("loader_stale", loaderEvent);
-          return;
-        }
-        const currentSpec = this.snapshot.current;
-        const currentMatched = currentSpec
-          ? matchRoute(currentSpec, toRoutePathname(this.snapshot.location.pathname))
-          : null;
-        if (
-          !currentSpec ||
-          !currentMatched ||
-          JSON.stringify([
-            currentMatched.pattern,
-            currentMatched.params,
-            currentMatched.route.loader ?? null,
-          ]) !== loaderKey
-        ) {
-          this.emitEvent("loader_stale", loaderEvent);
-          return;
-        }
-        const ownedData = ownAndDeepFreeze(data);
-        const latestCurrentSpec = this.snapshot.current;
-        const latestCurrentMatched = latestCurrentSpec
-          ? matchRoute(latestCurrentSpec, toRoutePathname(this.snapshot.location.pathname))
-          : null;
-        if (
-          run !== this.loaderRun ||
-          this.disposed ||
-          !latestCurrentSpec ||
-          !latestCurrentMatched ||
-          JSON.stringify([
-            latestCurrentMatched.pattern,
-            latestCurrentMatched.params,
-            latestCurrentMatched.route.loader ?? null,
-          ]) !== loaderKey
-        ) {
-          this.emitEvent("loader_stale", loaderEvent);
-          return;
-        }
-        const ownedMatched = freezeMatchedRoute(latestCurrentMatched);
-        this.loaderState = { key: loaderKey, status: "ready", data: ownedData };
-        if (this.snapshot.routeSource !== "candidate") {
-          this.publish({
-            ...this.snapshot,
-            routeStatus: "ready",
-            routeSource: "current",
-            matched: ownedMatched,
-            pageData: this.pageData(
-              latestCurrentSpec,
-              ownedMatched,
-              ownedData,
-            ),
-            error: this.snapshot.specStatus === "invalid" ? this.sourceError : null,
-          }, () => {
-            this.emitEvent("loader_succeeded", loaderEvent);
-          });
-        } else {
-          this.emitEvent("loader_succeeded", loaderEvent);
-        }
-      })
-      .catch((cause: unknown) => {
-        if (run !== this.loaderRun || this.disposed || !currentRouteHasLoaderKey()) {
-          this.emitEvent("loader_stale", loaderEvent);
-          return;
-        }
-        const notFound = isRouteNotFoundInstance(cause);
-        const error = new RuntimeError(
-          notFound ? "route_not_found" : "loader_failed",
-          notFound ? "Route loader returned not found" : "Route loader failed",
-          { loader: loaderEvent.loader, retry },
-        );
-        const status: RouteStatus = notFound ? "not_found" : "error";
-        if (run !== this.loaderRun || this.disposed || !currentRouteHasLoaderKey()) {
-          this.emitEvent("loader_stale", loaderEvent);
-          return;
-        }
-        this.loaderState = {
-          key: loaderKey,
-          status,
-          error,
-        };
-        if (this.snapshot.routeSource !== "candidate") {
-          this.publish({ ...this.snapshot, routeStatus: status, error }, () => {
-            this.emitEvent("loader_failed", {
-              ...loaderEvent,
-              code: error.code,
-            });
-          });
-        } else {
-          this.emitEvent("loader_failed", {
-            ...loaderEvent,
-            code: error.code,
-          });
-        }
-      });
     return Boolean(published);
   }
 
@@ -842,6 +928,7 @@ export function createRuntimeWithNavigation(
     fallbacks: normalizedOptions.fallbacks,
     options: normalizedOptions,
     emitEvent: runtime.emitEvent,
+    getPresentationIdentity: runtime.getPresentationIdentity,
     onDispose: runtime.onDispose,
   });
   runtime.startInitialSource();

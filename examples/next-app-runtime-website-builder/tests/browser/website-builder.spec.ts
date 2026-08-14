@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import type { NextAppSpec } from "@next-app-runtime/client";
 
 const storageKey = "next-app-runtime:website-builder:spec:v1";
 const localEvent = "next-app-runtime:website-builder:spec-change";
@@ -79,7 +80,7 @@ const editedSpec = {
   },
 };
 
-const navigationSpec = {
+const navigationSpec: NextAppSpec = {
   routes: {
     "/": {
       page: {
@@ -329,6 +330,15 @@ test("switches between website and builder through History and blocks unsafe web
         [{ rel: "icon", href: "/runtime-icon.svg", owner: "next-app-runtime" }],
       ],
       [
+        { icons: {} },
+        {
+          title: rootTitle,
+          descriptions: [rootDescription],
+          icons: [],
+        },
+        [],
+      ],
+      [
         { icons: { shortcut: "/runtime-shortcut.svg" } },
         {
           title: rootTitle,
@@ -407,6 +417,79 @@ test("switches between website and builder through History and blocks unsafe web
       descriptions: [rootDescription],
       icons: ["/icon.svg"],
     });
+  } finally {
+    await clearTestStorage(page);
+  }
+});
+
+test("uses active metadata field presence for route inheritance, clearing, and restoration", async ({ page }) => {
+  await page.goto("/");
+  await clearTestStorage(page);
+  try {
+    const applyMetadata = async (
+      globalIcons: string,
+      routeMetadata?: { icons: string | Record<string, never> },
+    ) => {
+      await page.evaluate(({ key, eventName, spec, icons, route }) => {
+        const next = structuredClone(spec);
+        next.metadata = { icons };
+        if (route === undefined) {
+          delete next.routes["/"].metadata;
+        } else {
+          next.routes["/"].metadata = route;
+        }
+        localStorage.setItem(key, JSON.stringify(next));
+        window.dispatchEvent(new Event(eventName));
+      }, {
+        key: storageKey,
+        eventName: localEvent,
+        spec: navigationSpec,
+        icons: globalIcons,
+        route: routeMetadata,
+      });
+    };
+
+    await applyMetadata("/global-icon.svg");
+    await expectDocumentIconLinks(page, [{
+      rel: "icon",
+      href: "/global-icon.svg",
+      owner: "next-app-runtime",
+    }]);
+
+    await applyMetadata("/global-icon.svg", { icons: {} });
+    await expectDocumentIconLinks(page, []);
+
+    await page.evaluate(({ key, eventName }) => {
+      const candidate = JSON.parse(localStorage.getItem(key)!);
+      candidate.routes["/"].page.root = "missing";
+      localStorage.setItem(key, JSON.stringify(candidate));
+      window.dispatchEvent(new Event(eventName));
+    }, { key: storageKey, eventName: localEvent });
+    await expect(page.locator('[data-storage-error="references_invalid"]')).toBeVisible();
+    await expectDocumentIconLinks(page, []);
+
+    await applyMetadata("/global-icon.svg", { icons: "/route-icon.svg" });
+    await expectDocumentIconLinks(page, [{
+      rel: "icon",
+      href: "/route-icon.svg",
+      owner: "next-app-runtime",
+    }]);
+
+    await applyMetadata("/global-icon.svg");
+    await expectDocumentIconLinks(page, [{
+      rel: "icon",
+      href: "/global-icon.svg",
+      owner: "next-app-runtime",
+    }]);
+
+    await applyMetadata("/global-icon.svg", { icons: {} });
+    await expectDocumentIconLinks(page, []);
+    await page.getByRole("link", { name: "Builder" }).click();
+    await expect(page).toHaveURL(/\/builder$/u);
+    await expectDocumentIconLinks(page, [{ rel: "icon", href: "/icon.svg", owner: null }]);
+    await page.goBack();
+    await expect(page).toHaveURL(/\/$/u);
+    await expectDocumentIconLinks(page, []);
   } finally {
     await clearTestStorage(page);
   }

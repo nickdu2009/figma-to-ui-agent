@@ -79,6 +79,7 @@ export function NextAppRenderer() {
     runtime.getSnapshot,
   );
   const internals = getRuntimeInternals(runtime);
+  const presentationIdentity = internals.getPresentationIdentity();
   const actionObserverRegistration = useMemo<RuntimeActionObserverRegistration>(() => {
     const actionNames = new Set([
       ...internals.options.catalog.actionNames,
@@ -138,6 +139,7 @@ export function NextAppRenderer() {
   return (
     <RuntimeErrorBoundary
       runtime={runtime}
+      presentationIdentity={presentationIdentity}
       fallback={internals.fallbacks.error}
       observer={internals.options.observer
         ? (event) => internals.emitEvent(event.name, event)

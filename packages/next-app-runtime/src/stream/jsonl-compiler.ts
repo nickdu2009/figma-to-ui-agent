@@ -1,4 +1,8 @@
 import { RuntimeError, type SourceInput } from "../contract/types.js";
+import {
+  assertNormalizedJsonDocumentWithinMaxBytes,
+  normalizeJsonValueGraph,
+} from "../contract/json-value.js";
 import { assertPositiveRuntimeLimit } from "../validation/limits.js";
 import { applyJsonPatch, isJsonPatchOperation, type JsonPatchOperation } from "./json-patch.js";
 import { readSourceChunks } from "./source.js";
@@ -25,6 +29,7 @@ export async function compileJsonlPatch(
   assertPositiveRuntimeLimit("maxBytes", limits.maxBytes);
   assertPositiveRuntimeLimit("maxOperations", limits.maxOperations);
   let value = applyJsonPatch(base, []);
+  assertNormalizedJsonDocumentWithinMaxBytes(value, limits.maxBytes);
   let operations = 0;
   let buffer = "";
 
@@ -44,9 +49,10 @@ export async function compileJsonlPatch(
       throw new RuntimeError("patch_invalid", "JSONL line is not an RFC 6902 operation");
     }
     value = applyJsonPatch(value, [operation]);
+    assertNormalizedJsonDocumentWithinMaxBytes(value, limits.maxBytes);
     try {
       const observerResult: unknown = onOperation?.(
-        structuredClone(value),
+        normalizeJsonValueGraph(value),
         operation,
         operations,
       );

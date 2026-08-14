@@ -105,6 +105,60 @@ async function waitFor<T>(
   }
 }
 
+async function waitForProvider<T>(
+  operation: () => PromiseLike<T> | T,
+  signal: AbortSignal | undefined,
+  onAbort: () => void,
+): Promise<T> {
+  try {
+    return await waitFor(Promise.resolve().then(operation), signal, onAbort);
+  } catch {
+    if (signal?.aborted) throw abortError();
+    throw new RuntimeError("contract_invalid", "Source provider failed");
+  }
+}
+
+function iteratorResult(value: unknown): {
+  done: boolean;
+  value: string | Uint8Array;
+} {
+  if (value === null || typeof value !== "object") {
+    throw new RuntimeError(
+      "contract_invalid",
+      "Source provider returned an invalid result",
+    );
+  }
+  let doneDescriptor: PropertyDescriptor | undefined;
+  let valueDescriptor: PropertyDescriptor | undefined;
+  try {
+    doneDescriptor = Object.getOwnPropertyDescriptor(value, "done");
+    valueDescriptor = Object.getOwnPropertyDescriptor(value, "value");
+  } catch {
+    throw new RuntimeError(
+      "contract_invalid",
+      "Source provider returned an invalid result",
+    );
+  }
+  if (
+    (doneDescriptor !== undefined && (
+      !("value" in doneDescriptor) ||
+      typeof doneDescriptor.value !== "boolean"
+    )) ||
+    (valueDescriptor && !("value" in valueDescriptor))
+  ) {
+    throw new RuntimeError(
+      "contract_invalid",
+      "Source provider returned an invalid result",
+    );
+  }
+  return {
+    done: doneDescriptor?.value ?? false,
+    value: (valueDescriptor && "value" in valueDescriptor
+      ? valueDescriptor.value
+      : undefined) as string | Uint8Array,
+  };
+}
+
 export async function* readSourceChunks(
   input: SourceInput,
   maxBytes: number,
@@ -193,9 +247,9 @@ export async function* readSourceChunks(
     let complete = false;
     try {
       while (true) {
-        const item = await waitFor(reader.read(), signal, () => {
+        const item = iteratorResult(await waitForProvider(() => reader.read(), signal, () => {
           void cancelOnce(abortError());
-        });
+        }));
         assertNotAborted(signal);
         if (item.done) break;
         const value = decode(item.value);
@@ -250,9 +304,9 @@ export async function* readSourceChunks(
     let complete = false;
     try {
       while (true) {
-        const item = await waitFor(iterator.next(), signal, () => {
+        const item = iteratorResult(await waitForProvider(() => iterator.next(), signal, () => {
           void closeOnce();
-        });
+        }));
         assertNotAborted(signal);
         if (item.done) break;
         const value = decode(item.value);

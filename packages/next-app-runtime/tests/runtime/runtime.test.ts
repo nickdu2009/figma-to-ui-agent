@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { runInNewContext } from "node:vm";
 import { z } from "zod";
 
 import { schema } from "../../src/contract/schema.js";
@@ -50,7 +51,114 @@ function withLoader(name: string, text = "Home"): NextAppSpec {
   });
 }
 
+function withDynamicLoader(name: string, text = "User"): NextAppSpec {
+  return createTestSpec({
+    routes: {
+      "/user/[name]": {
+        loader: name,
+        page: {
+          root: "root",
+          elements: { root: { type: "Text", props: { text } } },
+        },
+      },
+    },
+  });
+}
+
 describe("route runtime", () => {
+  it("commits equivalent cross-realm object, JSON, and empty-base JSONL sources", async () => {
+    const serialized = `{
+      "routes": {
+        "/": {
+          "page": {
+            "root": "root",
+            "elements": { "root": { "type": "Text", "props": { "text": "Cross realm" } } },
+            "state": { "__proto__": { "page": true } }
+          }
+        }
+      },
+      "state": { "__proto__": { "global": true } }
+    }`;
+    const expected = JSON.stringify(JSON.parse(serialized));
+    const crossRealm = runInNewContext(`(() => {
+      Object.defineProperty(Object.prototype, "constructor", {
+        configurable: true,
+        value: function HardenedObject() {},
+      });
+      Object.defineProperty(Array.prototype, "constructor", {
+        configurable: true,
+        value: function HardenedArray() {},
+      });
+      return JSON.parse(${JSON.stringify(serialized)});
+    })()`);
+    const patch = `${JSON.stringify({
+      op: "add",
+      path: "",
+      value: JSON.parse(serialized),
+    })}\n`;
+    const sources = [
+      { kind: "object" as const, value: crossRealm },
+      { kind: "json" as const, value: serialized },
+      { kind: "jsonl-patch" as const, base: "empty" as const, value: patch },
+    ];
+
+    for (const source of sources) {
+      const runtime = createRuntimeWithNavigation(runtimeOptions(), createMemoryNavigation());
+      const result = await runtime.applySource(source);
+      expect(result).toMatchObject({ status: "committed" });
+      expect(JSON.stringify(runtime.getSnapshot().current)).toBe(expected);
+      expect(Object.hasOwn(runtime.getSnapshot().current?.state ?? {}, "__proto__"))
+        .toBe(true);
+      expect(Object.hasOwn(
+        runtime.getSnapshot().current?.routes["/"]?.page.state ?? {},
+        "__proto__",
+      )).toBe(true);
+      runtime.dispose();
+    }
+  });
+
+  it("commits only normalized own object-source data when a prototype defines toJSON", async () => {
+    const intended = createTestSpec({ state: { intended: true } });
+    const replacement = createTestSpec({ state: { tampered: true } });
+    let toJsonCalls = 0;
+    const prototype = Object.create(null) as { toJSON?: () => unknown };
+    Object.defineProperty(prototype, "toJSON", {
+      value() {
+        toJsonCalls += 1;
+        return replacement;
+      },
+    });
+    Object.setPrototypeOf(intended, prototype);
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), createMemoryNavigation());
+
+    const result = await runtime.applySource({ kind: "object", value: intended });
+
+    expect(result).toMatchObject({ status: "committed" });
+    expect(toJsonCalls).toBe(0);
+    expect(runtime.getSnapshot().current?.state).toEqual({ intended: true });
+    expect(runtime.getSnapshot().current?.state).not.toHaveProperty("tampered");
+    runtime.dispose();
+  });
+
+  it("does not preserve caller-thrown RuntimeErrors from object-source reflection", async () => {
+    const sensitive = "https://user:password@private.example/?token=reflection-secret";
+    const source = new Proxy(createTestSpec(), {
+      ownKeys() {
+        throw new RuntimeError("source_limit_exceeded", sensitive);
+      },
+    });
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), createMemoryNavigation());
+
+    const result = await runtime.applySource({ kind: "object", value: source });
+
+    expect(result).toMatchObject({
+      status: "rejected",
+      error: { code: "contract_invalid", message: "Object source is not transport-safe JSON" },
+    });
+    expect(JSON.stringify(result)).not.toContain(sensitive);
+    runtime.dispose();
+  });
+
   it("does not expose host catalog or registry identifiers in mismatch errors", () => {
     const declared = "https://catalog-user:catalog-password@private.example/?token=catalog-secret";
     const implemented = "https://registry-user:registry-password@private.example/?token=registry-secret";
@@ -846,6 +954,113 @@ describe("route runtime", () => {
     expect(loader).not.toHaveBeenCalled();
   });
 
+  it.each(["subscriber", "route_matched"] as const)(
+    "starts exactly one loader when a %s replaces loading with a decoded-equivalent pathname",
+    async (reenterAt) => {
+      const navigation = createMemoryNavigation("/user/a");
+      const loader = vi.fn(() => ({ loaded: true }));
+      let replaced = false;
+      const runtime = createRuntimeWithNavigation(
+        runtimeOptions({
+          loaders: { user: loader },
+          observer: (event: RuntimeEvent) => {
+            if (reenterAt === "route_matched" && event.name === "route_matched" && !replaced) {
+              replaced = true;
+              navigation.replace("/user/%61");
+            }
+          },
+        }),
+        navigation,
+      );
+      if (reenterAt === "subscriber") {
+        runtime.subscribe(() => {
+          if (runtime.getSnapshot().routeStatus === "loading" && !replaced) {
+            replaced = true;
+            navigation.replace("/user/%61");
+          }
+        });
+      }
+
+      const result = await runtime.applySource({
+        kind: "object",
+        value: withDynamicLoader("user"),
+      });
+      await tick();
+
+      expect(result).toMatchObject({ status: "committed" });
+      expect(loader).toHaveBeenCalledTimes(1);
+      expect(loader).toHaveBeenCalledWith({ name: "a" });
+      expect(runtime.getSnapshot()).toMatchObject({
+        location: { pathname: "/user/%61" },
+        matched: { pattern: "/user/[name]", params: { name: "a" } },
+        routeStatus: "ready",
+      });
+      runtime.dispose();
+    },
+  );
+
+  it.each(["subscriber", "route_matched"] as const)(
+    "starts exactly one loader when a loading %s reapplies the same loader key",
+    async (reenterAt) => {
+      const navigation = createMemoryNavigation("/plain");
+      const spec = createTestSpec({
+        routes: {
+          "/plain": {
+            page: {
+              root: "plain",
+              elements: { plain: { type: "Text", props: { text: "Plain" } } },
+            },
+          },
+          ...withDynamicLoader("user").routes,
+        },
+      });
+      const loader = vi.fn(() => ({ loaded: true }));
+      let runtime!: ReturnType<typeof createRuntimeWithNavigation>;
+      let armed = false;
+      let reapplied = false;
+      let nestedResult: Promise<unknown> | undefined;
+      const reapply = () => {
+        const snapshot = runtime.getSnapshot();
+        if (
+          armed &&
+          snapshot.location.pathname === "/user/a" &&
+          snapshot.routeStatus === "loading" &&
+          !reapplied
+        ) {
+          reapplied = true;
+          nestedResult = runtime.applySource({ kind: "object", value: spec });
+        }
+      };
+      runtime = createRuntimeWithNavigation(
+        runtimeOptions({
+          loaders: { user: loader },
+          observer: (event: RuntimeEvent) => {
+            if (reenterAt === "route_matched" && event.name === "route_matched") reapply();
+          },
+        }),
+        navigation,
+      );
+      if (reenterAt === "subscriber") runtime.subscribe(reapply);
+
+      await runtime.applySource({ kind: "object", value: spec });
+      armed = true;
+      navigation.push("/user/a");
+      expect(nestedResult).toBeDefined();
+      if (!nestedResult) throw new Error("Expected same-key source re-entry");
+      await expect(nestedResult).resolves.toMatchObject({ status: "committed" });
+      await tick();
+
+      expect(loader).toHaveBeenCalledTimes(1);
+      expect(loader).toHaveBeenCalledWith({ name: "a" });
+      expect(runtime.getSnapshot()).toMatchObject({
+        matched: { pattern: "/user/[name]", params: { name: "a" } },
+        routeStatus: "ready",
+        pageData: { initialState: { loaded: true } },
+      });
+      runtime.dispose();
+    },
+  );
+
   it("retries the current loader without replacing a live candidate presentation", async () => {
     let releaseSource!: () => void;
     const loader = vi.fn()
@@ -1381,6 +1596,115 @@ describe("route runtime", () => {
     runtime.dispose();
   });
 
+  it("terminates a replaced pending loader owner exactly once before retry starts", async () => {
+    let resolveFirst!: (value: Record<string, unknown>) => void;
+    let resolveSecond!: (value: Record<string, unknown>) => void;
+    const loader = vi.fn()
+      .mockImplementationOnce(() => new Promise<Record<string, unknown>>((resolve) => {
+        resolveFirst = resolve;
+      }))
+      .mockImplementationOnce(() => new Promise<Record<string, unknown>>((resolve) => {
+        resolveSecond = resolve;
+      }));
+    const events: RuntimeEvent[] = [];
+    const runtime = createRuntimeWithNavigation(
+      runtimeOptions({
+        loaders: { pending: loader },
+        observer: (event: RuntimeEvent) => events.push(event),
+      }),
+      createMemoryNavigation(),
+    );
+
+    await runtime.applySource({ kind: "object", value: withLoader("pending") });
+    await tick();
+    runtime.retryLoader();
+    await tick();
+
+    const started = events.filter((event) => event.name === "loader_started");
+    const stale = events.filter((event) => event.name === "loader_stale");
+    expect(loader).toHaveBeenCalledTimes(2);
+    expect(started).toHaveLength(2);
+    expect(started[0]?.loader).not.toBe(started[1]?.loader);
+    expect(stale).toEqual([
+      expect.objectContaining({
+        loader: started[0]?.loader,
+        pattern: started[0]?.pattern,
+      }),
+    ]);
+
+    resolveSecond({ attempt: 2 });
+    await tick();
+    expect(events.filter((event) => event.name === "loader_succeeded")).toEqual([
+      expect.objectContaining({
+        loader: started[1]?.loader,
+        pattern: started[1]?.pattern,
+      }),
+    ]);
+    resolveFirst({ attempt: 1 });
+    await tick();
+    expect(events.filter((event) => event.name === "loader_stale")).toHaveLength(1);
+    expect(runtime.getSnapshot().pageData?.initialState?.attempt).toBe(2);
+    runtime.dispose();
+  });
+
+  it("does not let a loader_stale observer overwrite a newer navigation transition", async () => {
+    const navigation = createMemoryNavigation("/a");
+    const loadA = vi.fn(() => new Promise<Record<string, unknown>>(() => undefined));
+    const loadC = vi.fn(() => ({ route: "c" }));
+    const events: RuntimeEvent[] = [];
+    let reentered = false;
+    const page = (text: string) => ({
+      root: "root",
+      elements: { root: { type: "Text", props: { text } } },
+    });
+    const runtime = createRuntimeWithNavigation(
+      runtimeOptions({
+        loaders: { loadA, loadC },
+        observer: (event: RuntimeEvent) => {
+          events.push(event);
+          if (event.name === "loader_stale" && !reentered) {
+            reentered = true;
+            navigation.push("/c");
+          }
+        },
+      }),
+      navigation,
+    );
+    await runtime.applySource({
+      kind: "object",
+      value: createTestSpec({
+        routes: {
+          "/a": { loader: "loadA", page: page("A") },
+          "/b": { page: page("B") },
+          "/c": { loader: "loadC", page: page("C") },
+        },
+      }),
+    });
+    await tick();
+
+    navigation.push("/b");
+    await tick();
+
+    expect(navigation.getSnapshot().pathname).toBe("/c");
+    expect(runtime.getSnapshot()).toMatchObject({
+      location: { pathname: "/c" },
+      matched: { pattern: "/c" },
+      routeStatus: "ready",
+      pageData: { initialState: { route: "c" } },
+    });
+    expect(loadA).toHaveBeenCalledOnce();
+    expect(loadC).toHaveBeenCalledOnce();
+    const started = events.filter((event) => event.name === "loader_started");
+    expect(started).toHaveLength(2);
+    expect(events.filter((event) => event.name === "loader_stale")).toEqual([
+      expect.objectContaining({ loader: started[0]?.loader }),
+    ]);
+    expect(events.filter((event) => event.name === "loader_succeeded")).toEqual([
+      expect.objectContaining({ loader: started[1]?.loader }),
+    ]);
+    runtime.dispose();
+  });
+
   it("stops navigation and subscriber notifications after dispose", async () => {
     const navigation = createMemoryNavigation("/");
     const runtime = createRuntimeWithNavigation(runtimeOptions(), navigation);
@@ -1394,6 +1718,129 @@ describe("route runtime", () => {
 
     expect(runtime.getSnapshot()).toBe(before);
     expect(listener).not.toHaveBeenCalled();
+  });
+
+  it("notifies only the listener snapshot captured at publish start", async () => {
+    const navigation = createMemoryNavigation("/");
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), navigation);
+    await runtime.applySource({ kind: "object", value: createTestSpec() });
+    let calls = 0;
+    let unsubscribe: () => void = () => undefined;
+    const listener = () => {
+      calls += 1;
+      if (calls === 1) {
+        unsubscribe();
+        unsubscribe = runtime.subscribe(listener);
+      }
+    };
+    unsubscribe = runtime.subscribe(listener);
+
+    navigation.replace("/?published=1");
+
+    expect(calls).toBe(1);
+    navigation.replace("/?published=2");
+    expect(calls).toBe(2);
+    unsubscribe();
+    runtime.dispose();
+  });
+
+  it("defers listeners added during a publication until the next publication", async () => {
+    const navigation = createMemoryNavigation("/");
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), navigation);
+    await runtime.applySource({ kind: "object", value: createTestSpec() });
+    let firstCalls = 0;
+    let addedCalls = 0;
+    let added = false;
+    const addedListener = () => { addedCalls += 1; };
+    runtime.subscribe(() => {
+      firstCalls += 1;
+      if (!added) {
+        added = true;
+        runtime.subscribe(addedListener);
+      }
+    });
+
+    navigation.replace("/?publication=one");
+    expect(firstCalls).toBe(1);
+    expect(addedCalls).toBe(0);
+
+    navigation.replace("/?publication=two");
+    expect(firstCalls).toBe(2);
+    expect(addedCalls).toBe(1);
+    runtime.dispose();
+  });
+
+  it.each(["add", "remove"] as const)(
+    "captures subscribers before a beforeSubscribers observer can %s one",
+    async (operation) => {
+      const navigation = createMemoryNavigation("/");
+      const listener = vi.fn();
+      let runtime!: ReturnType<typeof createRuntimeWithNavigation>;
+      let unsubscribe: () => void = () => undefined;
+      let armed = false;
+      let mutated = false;
+      runtime = createRuntimeWithNavigation(
+        runtimeOptions({
+          observer: (event: RuntimeEvent) => {
+            if (armed && event.name === "location_changed" && !mutated) {
+              mutated = true;
+              if (operation === "add") unsubscribe = runtime.subscribe(listener);
+              else unsubscribe();
+            }
+          },
+        }),
+        navigation,
+      );
+      await runtime.applySource({ kind: "object", value: createTestSpec() });
+      if (operation === "remove") unsubscribe = runtime.subscribe(listener);
+      armed = true;
+
+      navigation.replace("/?publication=one");
+      expect(listener).toHaveBeenCalledTimes(operation === "add" ? 0 : 1);
+
+      navigation.replace("/?publication=two");
+      expect(listener).toHaveBeenCalledTimes(1);
+      unsubscribe();
+      runtime.dispose();
+    },
+  );
+
+  it("finishes the captured listener snapshot when a listener unsubscribes another", async () => {
+    const navigation = createMemoryNavigation("/");
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), navigation);
+    await runtime.applySource({ kind: "object", value: createTestSpec() });
+    let firstCalls = 0;
+    let secondCalls = 0;
+    let unsubscribeSecond: () => void = () => undefined;
+    runtime.subscribe(() => {
+      firstCalls += 1;
+      unsubscribeSecond();
+    });
+    unsubscribeSecond = runtime.subscribe(() => { secondCalls += 1; });
+
+    navigation.replace("/?publication=one");
+    expect({ firstCalls, secondCalls }).toEqual({ firstCalls: 1, secondCalls: 1 });
+
+    navigation.replace("/?publication=two");
+    expect({ firstCalls, secondCalls }).toEqual({ firstCalls: 2, secondCalls: 1 });
+    runtime.dispose();
+  });
+
+  it("finishes the captured listener snapshot when a listener disposes the runtime", async () => {
+    const navigation = createMemoryNavigation("/");
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), navigation);
+    await runtime.applySource({ kind: "object", value: createTestSpec() });
+    let firstCalls = 0;
+    let secondCalls = 0;
+    runtime.subscribe(() => {
+      firstCalls += 1;
+      runtime.dispose();
+    });
+    runtime.subscribe(() => { secondCalls += 1; });
+
+    navigation.replace("/?publication=one");
+
+    expect({ firstCalls, secondCalls }).toEqual({ firstCalls: 1, secondCalls: 1 });
   });
 
   it("does not retry loaders or emit late observer events after dispose", async () => {
@@ -1477,6 +1924,126 @@ describe("transaction gates", () => {
     expect(objectValue).toBe(jsonValue);
     objectRuntime.dispose();
     jsonRuntime.dispose();
+  });
+
+  it("normalizes negative zero across object, raw JSON, and JSONL sources", async () => {
+    const serialized = JSON.stringify(createTestSpec({ state: { negativeZero: 0 } }))
+      .replace('"negativeZero":0', '"negativeZero":-0');
+    const parsed = JSON.parse(serialized) as NextAppSpec;
+    const patch = `${JSON.stringify({ op: "add", path: "", value: parsed })}\n`
+      .replace('"negativeZero":0', '"negativeZero":-0');
+    const sources = [
+      { kind: "object" as const, value: createTestSpec({ state: { negativeZero: -0 } }) },
+      { kind: "json" as const, value: serialized },
+      { kind: "jsonl-patch" as const, base: "empty" as const, value: patch },
+    ];
+
+    for (const source of sources) {
+      const runtime = createRuntimeWithNavigation(runtimeOptions(), createMemoryNavigation());
+      expect(await runtime.applySource(source)).toMatchObject({ status: "committed" });
+      expect(Object.is(runtime.getSnapshot().current?.state?.negativeZero, -0)).toBe(false);
+      runtime.dispose();
+    }
+  });
+
+  it("applies the canonical document byte limit to every source kind", async () => {
+    const compact = `{"routes":{},"state":{"values":[${Array.from(
+      { length: 20 },
+      () => "1e20",
+    ).join(",")}]}}`;
+    const value = JSON.parse(compact) as NextAppSpec;
+    const patch = `{"op":"add","path":"","value":${compact}}\n`;
+    const encoder = new TextEncoder();
+    const canonicalText = JSON.stringify(value);
+    const canonicalBytes = encoder.encode(canonicalText).byteLength;
+    expect(encoder.encode(compact).byteLength).toBeLessThan(canonicalBytes);
+    expect(encoder.encode(patch).byteLength).toBeLessThan(canonicalBytes);
+    const sources = [
+      { kind: "object" as const, value },
+      { kind: "json" as const, value: compact },
+      { kind: "jsonl-patch" as const, base: "empty" as const, value: patch },
+    ];
+
+    for (const { maxBytes, status } of [
+      { maxBytes: canonicalBytes, status: "committed" as const },
+      { maxBytes: canonicalBytes - 1, status: "rejected" as const },
+    ]) {
+      for (const source of sources) {
+        const runtime = createRuntimeWithNavigation(
+          runtimeOptions({ limits: { ...testLimits, maxBytes } }),
+          createMemoryNavigation(),
+        );
+        const current: NextAppSpec = { routes: {} };
+        await expect(runtime.applySource({ kind: "object", value: current }))
+          .resolves.toMatchObject({ status: "committed" });
+        const result = await runtime.applySource(source);
+        expect(result.status).toBe(status);
+        if (status === "committed") {
+          expect(JSON.stringify(runtime.getSnapshot().current)).toBe(canonicalText);
+        } else {
+          expect(result).toMatchObject({ error: { code: "source_limit_exceeded" } });
+          expect(runtime.getSnapshot().current).toEqual(current);
+        }
+        runtime.dispose();
+      }
+    }
+  });
+
+  it("normalizes negative zero before exposing a progressive JSONL candidate", async () => {
+    const serialized = JSON.stringify(createTestSpec({ state: { negativeZero: 0 } }))
+      .replace('"negativeZero":0', '"negativeZero":-0');
+    let controller!: ReadableStreamDefaultController<string>;
+    const source = new ReadableStream<string>({
+      start(value) {
+        controller = value;
+      },
+    });
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), createMemoryNavigation());
+    const pending = runtime.applySource({
+      kind: "jsonl-patch",
+      base: "empty",
+      value: source,
+    });
+
+    controller.enqueue(`{"op":"add","path":"","value":${serialized}}\n`);
+    await tick();
+
+    const candidateValue = runtime.getSnapshot().candidate?.state?.negativeZero;
+    expect(runtime.getSnapshot()).toMatchObject({
+      specStatus: "streaming",
+      routeSource: "candidate",
+    });
+    expect(candidateValue).toBe(0);
+    expect(Object.is(candidateValue, -0)).toBe(false);
+
+    controller.close();
+    await expect(pending).resolves.toMatchObject({ status: "committed" });
+    const currentValue = runtime.getSnapshot().current?.state?.negativeZero;
+    expect(currentValue).toBe(0);
+    expect(Object.is(currentValue, -0)).toBe(false);
+    runtime.dispose();
+  });
+
+  it("normalizes object-source Proxy failures instead of trusting forged RuntimeErrors", async () => {
+    const secret = "https://user:password@example.test/?token=secret";
+    const source = new Proxy({}, {
+      ownKeys() {
+        throw new RuntimeError("source_limit_exceeded", secret);
+      },
+    });
+    const runtime = createRuntimeWithNavigation(runtimeOptions(), createMemoryNavigation());
+
+    const result = await runtime.applySource({ kind: "object", value: source });
+
+    expect(result).toMatchObject({
+      status: "rejected",
+      error: {
+        code: "contract_invalid",
+        message: "Object source is not transport-safe JSON",
+      },
+    });
+    expect(String(result.status === "rejected" ? result.error : "")).not.toContain(secret);
+    runtime.dispose();
   });
 
   it("keeps a disposed memory navigation driver inert", () => {

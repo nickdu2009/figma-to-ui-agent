@@ -30,7 +30,9 @@ describe("JSON Pointer security", () => {
       { op: "remove", path: "/constructor/prototype/copied" },
     ]) as Record<string, unknown>;
 
-    expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
+    // Patch documents are detached transport graphs; a null prototype keeps
+    // every reserved segment as own JSON data without ambient inheritance.
+    expect(Object.getPrototypeOf(result)).toBeNull();
     expect(Object.hasOwn(result, "__proto__")).toBe(true);
     expect(Object.hasOwn(result, "constructor")).toBe(true);
     expect(Object.hasOwn(result, "prototype")).toBe(true);

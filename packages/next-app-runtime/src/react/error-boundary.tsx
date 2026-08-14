@@ -4,6 +4,7 @@ import type { NextAppRuntime, RuntimeFallbacks } from "../contract/types.js";
 
 interface RuntimeErrorBoundaryProps {
   runtime: NextAppRuntime;
+  presentationIdentity: number;
   fallback: RuntimeFallbacks["error"];
   observer?: (event: {
     name: "render_failed";
@@ -16,7 +17,7 @@ interface RuntimeErrorBoundaryProps {
 
 interface RuntimeErrorBoundaryState {
   failed: boolean;
-  failedRevision: number | null;
+  presentationIdentity: number;
   runtime: NextAppRuntime;
 }
 
@@ -26,7 +27,7 @@ export class RuntimeErrorBoundary extends React.Component<
 > {
   state: RuntimeErrorBoundaryState = {
     failed: false,
-    failedRevision: null,
+    presentationIdentity: this.props.presentationIdentity,
     runtime: this.props.runtime,
   };
 
@@ -34,34 +35,31 @@ export class RuntimeErrorBoundary extends React.Component<
     props: RuntimeErrorBoundaryProps,
     state: RuntimeErrorBoundaryState,
   ): Partial<RuntimeErrorBoundaryState> | null {
-    return props.runtime === state.runtime
-      ? null
-      : { failed: false, failedRevision: null, runtime: props.runtime };
+    if (
+      props.runtime !== state.runtime ||
+      props.presentationIdentity !== state.presentationIdentity
+    ) {
+      return {
+        failed: false,
+        presentationIdentity: props.presentationIdentity,
+        runtime: props.runtime,
+      };
+    }
+    return null;
   }
 
   static getDerivedStateFromError(): Partial<RuntimeErrorBoundaryState> {
-    return { failed: true, failedRevision: null };
+    return { failed: true };
   }
 
   componentDidCatch(_error: Error, _info: ErrorInfo): void {
     const snapshot = this.props.runtime.getSnapshot();
-    this.setState({ failedRevision: snapshot.revision });
     this.props.observer?.({
       name: "render_failed",
       at: Date.now(),
       revision: snapshot.revision,
       code: "render_failed",
     });
-  }
-
-  componentDidUpdate(): void {
-    if (
-      this.state.failed &&
-      this.state.failedRevision !== null &&
-      this.state.failedRevision !== this.props.runtime.getSnapshot().revision
-    ) {
-      this.setState({ failed: false, failedRevision: null });
-    }
   }
 
   render() {

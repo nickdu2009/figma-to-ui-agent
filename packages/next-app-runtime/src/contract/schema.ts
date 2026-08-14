@@ -1,15 +1,160 @@
 import {
   defineSchema,
   type Catalog,
+  type JsonSchemaOptions,
   type PromptContext,
   type SchemaBuilder,
 } from "@json-render/core";
-import { z, type ZodType } from "zod";
+import type { ZodType } from "zod";
 
 import {
   createCatalogAwareNextAppSpecSchema,
+  decodeRecordKey,
   nextAppSpecSchema,
 } from "./zod-schema.js";
+
+function zodTypeName(definition: Record<string, unknown>): string {
+  if (typeof definition.type === "string") return definition.type;
+  if (typeof definition.typeName === "string") return definition.typeName;
+  return "";
+}
+
+function normalizedZodType(definition: Record<string, unknown>): string {
+  const name = zodTypeName(definition);
+  return name.startsWith("Zod") ? name.slice(3).toLowerCase() : name.toLowerCase();
+}
+
+function officialJsonSchema(
+  schema: ZodType,
+  strict = false,
+  ancestors = new Set<ZodType>(),
+): object {
+  if (ancestors.has(schema)) {
+    return strict
+      ? { type: "object", properties: {}, required: [], additionalProperties: false }
+      : {};
+  }
+  const nextAncestors = new Set(ancestors);
+  nextAncestors.add(schema);
+  const definition = schema._def as unknown as Record<string, unknown>;
+  switch (normalizedZodType(definition)) {
+    case "string": return { type: "string" };
+    case "number": return { type: "number" };
+    case "boolean": return { type: "boolean" };
+    case "literal": {
+      const values = definition.values as unknown[] | undefined;
+      return { const: values ? values[0] : definition.value };
+    }
+    case "enum": {
+      const entries = definition.entries as Record<string, string> | undefined;
+      const values = entries
+        ? Object.values(entries)
+        : definition.values as string[] | undefined;
+      return { enum: values ?? [] };
+    }
+    case "array": {
+      const inner = (definition.element ?? definition.type) as ZodType | undefined;
+      return {
+        type: "array",
+        items: inner ? officialJsonSchema(inner, strict, nextAncestors) : {},
+      };
+    }
+    case "object": {
+      const rawShape = definition.shape;
+      const shape = (typeof rawShape === "function" ? rawShape() : rawShape) as
+        | Record<string, ZodType>
+        | undefined;
+      if (!shape) {
+        return strict
+          ? { type: "object", properties: {}, required: [], additionalProperties: false }
+          : { type: "object" };
+      }
+      const properties = Object.create(null) as Record<string, object>;
+      const required: string[] = [];
+      for (const [key, value] of Object.entries(shape)) {
+        const publicKey = decodeRecordKey(key);
+        const valueDefinition = value._def as unknown as Record<string, unknown>;
+        const valueType = normalizedZodType(valueDefinition);
+        const optional = valueType === "optional" || valueType === "nullable";
+        let propertySchema: object;
+        if (strict) {
+          required.push(publicKey);
+          const converted = officialJsonSchema(value, true, nextAncestors);
+          propertySchema = optional
+            ? { anyOf: [converted, { type: "null" }] }
+            : converted;
+        } else {
+          propertySchema = officialJsonSchema(value, false, nextAncestors);
+          if (!optional) required.push(publicKey);
+        }
+        Object.defineProperty(properties, publicKey, {
+          configurable: true,
+          enumerable: true,
+          value: propertySchema,
+          writable: true,
+        });
+      }
+      return {
+        type: "object",
+        properties,
+        required: required.length > 0 ? required : undefined,
+        additionalProperties: false,
+      };
+    }
+    case "record": {
+      if (strict) {
+        return { type: "object", properties: {}, required: [], additionalProperties: false };
+      }
+      const valueType = definition.valueType as ZodType | undefined;
+      return {
+        type: "object",
+        additionalProperties: valueType
+          ? officialJsonSchema(valueType, false, nextAncestors)
+          : true,
+      };
+    }
+    case "optional":
+    case "nullable": {
+      const inner = definition.innerType as ZodType | undefined;
+      return inner ? officialJsonSchema(inner, strict, nextAncestors) : {};
+    }
+    case "default":
+    case "prefault":
+    case "catch":
+    case "readonly":
+    case "nonoptional": {
+      const inner = definition.innerType as ZodType | undefined;
+      return inner ? officialJsonSchema(inner, strict, nextAncestors) : {};
+    }
+    case "pipe": {
+      const output = definition.out as ZodType | undefined;
+      return output ? officialJsonSchema(output, strict, nextAncestors) : {};
+    }
+    case "union": {
+      const options = definition.options as ZodType[] | undefined;
+      return options
+        ? {
+            anyOf: options.map((option) => (
+              officialJsonSchema(option, strict, nextAncestors)
+            )),
+          }
+        : {};
+    }
+    case "lazy": {
+      const getter = definition.getter as (() => ZodType) | undefined;
+      return getter
+        ? officialJsonSchema(getter(), strict, nextAncestors)
+        : {};
+    }
+    case "any":
+    case "unknown":
+      return strict
+        ? { type: "object", properties: {}, required: [], additionalProperties: false }
+        : {};
+    default:
+      return {};
+  }
+}
 
 function nextAppPromptTemplate(context: PromptContext): string {
   const { catalog, options, formatZodType } = context;
@@ -288,18 +433,7 @@ function catalogData(catalog: Catalog): {
 function exactCatalogSchema(catalog: Catalog) {
   const data = catalogData(catalog);
   const catalogSchema = createCatalogAwareNextAppSpecSchema(data.components, data.actions);
-  const exactSchema = nextAppSpecSchema.superRefine((spec, context) => {
-    const result = catalogSchema.safeParse(spec);
-    if (!result.success) {
-      for (const issue of result.error.issues) {
-        context.addIssue({
-          code: "custom",
-          path: issue.path,
-          message: issue.message,
-        });
-      }
-    }
-  });
+  const exactSchema = nextAppSpecSchema.pipe(catalogSchema as never) as ZodType;
   return { catalogSchema, exactSchema };
 }
 
@@ -314,10 +448,10 @@ const createCatalog: typeof baseSchema.createCatalog = ((catalogInput: never) =>
     componentNames: catalog.componentNames,
     actionNames: catalog.actionNames,
     prompt: catalog.prompt,
-    jsonSchema: () => z.toJSONSchema(catalogSchema, {
-      reused: "ref",
-      unrepresentable: "any",
-    }),
+    jsonSchema: (options: JsonSchemaOptions = {}) => officialJsonSchema(
+      catalogSchema,
+      options.strict ?? false,
+    ),
     validate: (input: unknown) => {
       const result = exactSchema.safeParse(input);
       return result.success

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createStateStore, resolveDynamicValue } from "@json-render/core";
+import { resolveDynamicValue } from "@json-render/core";
 
 import {
   createPrototypeSafeStateStore,
@@ -135,19 +135,102 @@ describe("runtime StateStore write boundary", () => {
     }
   });
 
-  it.each(["/items/1", "/items/01", "/items/1x", "/items/-1"])(
-    "matches core array path parsing for %s while requiring own indices",
-    (path) => {
-      const initial = { items: ["zero", "one"] };
-      const coreStore = createStateStore(initial);
-      const safeStore = createPrototypeSafeStateStore(initial);
+  it.each([
+    ["0", "0"],
+    ["01", "1"],
+    ["1x", "1"],
+    ["1e2", "1"],
+    ["-1", "-1"],
+    ["", "NaN"],
+    ["not-a-number", "NaN"],
+    ["-", "NaN"],
+    ["1000000000000000000000", "1e+21"],
+    ["3", "3"],
+  ] as const)(
+    "canonicalizes an intermediate array segment %s to the own key %s for both read and write",
+    (segment, canonical) => {
+      const store = createPrototypeSafeStateStore({
+        items: [{ value: "zero" }, { value: "one" }],
+      });
+      const path = `/items/${segment}/value`;
 
-      expect(safeStore.get(path)).toBe(coreStore.get(path));
-      safeStore.set(path, "updated");
-      coreStore.set(path, "updated");
-      expect(safeStore.get(path)).toBe(coreStore.get(path));
+      store.set(path, `updated:${segment}`);
+
+      expect(store.get(path)).toBe(`updated:${segment}`);
+      const items = store.get("/items") as unknown[];
+      const canonicalEntry = Reflect.get(items, canonical) as { value?: unknown } | undefined;
+      expect(canonicalEntry?.value).toBe(`updated:${segment}`);
+      expect(Object.hasOwn(items, canonical)).toBe(true);
+      if (segment !== canonical) expect(Object.hasOwn(items, segment)).toBe(false);
+      expect(items.length).toBe(canonical === "3" ? 4 : 2);
     },
   );
+
+  it.each([
+    ["0", "0", 2],
+    ["01", "1", 2],
+    ["1x", "1", 2],
+    ["1e2", "1", 2],
+    ["-1", "-1", 2],
+    ["", "NaN", 2],
+    ["not-a-number", "NaN", 2],
+    ["1000000000000000000000", "1e+21", 2],
+    ["3", "3", 4],
+  ] as const)(
+    "canonicalizes a final array segment %s to %s with length %i",
+    (segment, canonical, expectedLength) => {
+      const store = createPrototypeSafeStateStore({ items: ["zero", "one"] });
+      const path = `/items/${segment}`;
+
+      store.set(path, `updated:${segment}`);
+
+      expect(store.get(path)).toBe(`updated:${segment}`);
+      const items = store.get("/items") as unknown[];
+      expect(Reflect.get(items, canonical)).toBe(`updated:${segment}`);
+      expect(Object.hasOwn(items, canonical)).toBe(true);
+      if (segment !== canonical) expect(Object.hasOwn(items, segment)).toBe(false);
+      expect(items.length).toBe(expectedLength);
+    },
+  );
+
+  it("writes non-index canonical array keys as own data without touching prototypes", () => {
+    const keys = ["NaN", "-1", "1e+21"] as const;
+    for (const key of keys) {
+      Object.defineProperty(Array.prototype, key, {
+        configurable: true,
+        value: `prototype:${key}`,
+        writable: true,
+      });
+    }
+    try {
+      const store = createPrototypeSafeStateStore({ items: [] });
+      store.set("/items/not-a-number/value", "nan own value");
+      store.set("/items/-1/value", "negative own value");
+      store.set("/items/1000000000000000000000/value", "huge own value");
+
+      expect(store.get("/items/not-a-number/value")).toBe("nan own value");
+      expect(store.get("/items/-1/value")).toBe("negative own value");
+      expect(store.get("/items/1000000000000000000000/value")).toBe("huge own value");
+      const items = store.get("/items") as unknown[];
+      for (const key of keys) {
+        expect(Object.hasOwn(items, key)).toBe(true);
+        expect(Reflect.get(Array.prototype, key)).toBe(`prototype:${key}`);
+      }
+      expect(items.length).toBe(0);
+    } finally {
+      for (const key of keys) delete (Array.prototype as unknown as Record<string, unknown>)[key];
+    }
+  });
+
+  it("treats only a final dash as append and exposes the appended numeric index", () => {
+    const store = createPrototypeSafeStateStore({ items: ["zero", "one"] });
+    const oldLength = (store.get("/items") as unknown[]).length;
+
+    store.set("/items/-", "appended");
+
+    expect((store.get("/items") as unknown[]).length).toBe(oldLength + 1);
+    expect(store.get(`/items/${oldLength}`)).toBe("appended");
+  });
 
   it("syncs changed initial-state paths without resetting user state", () => {
     const previousInitial = { server: { value: "A", stable: true } };

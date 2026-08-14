@@ -199,7 +199,10 @@ function immutableSetOwn(root: StateModel, path: string, value: unknown): StateM
         ? prototypeSafeArray(0)
         : Object.create(null) as Record<string, unknown>;
     }
-    defineOwn(current, segment, next);
+    const property = Array.isArray(current)
+      ? String(arrayProperty(segment))
+      : segment;
+    defineOwn(current, property, next);
     current = next;
   }
 

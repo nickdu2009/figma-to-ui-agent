@@ -435,6 +435,56 @@ test("repeat and pushState preserve standard array behavior", async ({ page }) =
   await expect(page.locator("#array-list")).toContainText("OneTwo");
 });
 
+test("setState uses the same canonical intermediate array path for read and write", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(async () => {
+    const runtime = (window as unknown as {
+      runtime: {
+        applySource(source: { kind: "object"; value: unknown }): Promise<{ status: string }>;
+      };
+    }).runtime;
+    const result = await runtime.applySource({
+      kind: "object",
+      value: {
+        routes: {
+          "/": {
+            page: {
+              root: "root",
+              state: { items: [{ value: "zero" }, { value: "one" }] },
+              elements: {
+                root: {
+                  type: "Box",
+                  props: { id: "canonical-array-state" },
+                  children: ["value", "update"],
+                },
+                value: {
+                  type: "Text",
+                  props: { id: "canonical-array-value", text: { $state: "/items/1x/value" } },
+                },
+                update: {
+                  type: "ActionButton",
+                  props: { label: "Update canonical array path" },
+                  on: {
+                    press: {
+                      action: "setState",
+                      params: { statePath: "/items/1x/value", value: "updated" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    if (result.status !== "committed") throw new Error("canonical array source was rejected");
+  });
+
+  await expect(page.locator("#canonical-array-value")).toHaveText("one");
+  await page.getByRole("button", { name: "Update canonical array path" }).click();
+  await expect(page.locator("#canonical-array-value")).toHaveText("updated");
+});
+
 test("unmatched and boundary failures use host fallbacks without leaking errors", async ({ page }) => {
   await page.goto("/missing");
   await expect(page.locator('[data-fallback="unmatched"]')).toBeVisible();
@@ -449,6 +499,336 @@ test("unmatched and boundary failures use host fallbacks without leaking errors"
 
   await page.goto("/crash");
   await expect(page.locator("body")).not.toContainText("secret render detail");
+});
+
+test("error boundary recovers when a failed loading presentation settles at the same revision", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      createFixtureRuntime(options?: Record<string, unknown>): {
+        getSnapshot(): { revision: number; routeStatus: string };
+        dispose(): void;
+      };
+      mountRuntimeView(runtime: unknown): { dispose(): void; host: HTMLElement };
+    };
+    let resolveLoader: ((value: Record<string, unknown>) => void) | undefined;
+    const runtime = host.createFixtureRuntime({
+      initialSource: {
+        kind: "object",
+        value: {
+          routes: {
+            "/": {
+              loader: "recover",
+              page: {
+                root: "ready",
+                elements: {
+                  ready: { type: "Text", props: { id: "settled-ready", text: "Recovered" } },
+                },
+              },
+            },
+          },
+        },
+      },
+      loaders: {
+        recover: () => new Promise<Record<string, unknown>>((resolve) => {
+          resolveLoader = resolve;
+        }),
+      },
+      fallbacks: {
+        loading: () => { throw new Error("loading render failed"); },
+        error: () => "Boundary safe error",
+        notFound: () => "Not found",
+        unmatched: () => "Unmatched",
+      },
+    });
+    const view = host.mountRuntimeView(runtime);
+    view.host.id = "loader-settle-boundary";
+    Object.assign(window, {
+      loaderSettleRuntime: runtime,
+      loaderSettleView: view,
+      resolveLoaderSettle: () => resolveLoader?.({ loaded: true }),
+    });
+  });
+
+  const view = page.locator("#loader-settle-boundary");
+  await expect(view.getByText("Boundary safe error", { exact: true })).toBeVisible();
+  const revision = await page.evaluate(() => (
+    window as unknown as { loaderSettleRuntime: { getSnapshot(): { revision: number } } }
+  ).loaderSettleRuntime.getSnapshot().revision);
+  await page.evaluate(() => (
+    window as unknown as { resolveLoaderSettle(): void }
+  ).resolveLoaderSettle());
+
+  await expect(view.locator("#settled-ready")).toHaveText("Recovered");
+  expect(await page.evaluate(() => (
+    window as unknown as {
+      loaderSettleRuntime: { getSnapshot(): { revision: number; routeStatus: string } };
+    }
+  ).loaderSettleRuntime.getSnapshot())).toMatchObject({ revision, routeStatus: "ready" });
+  await expect(view.getByText("Boundary safe error", { exact: true })).toHaveCount(0);
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      loaderSettleRuntime: { dispose(): void };
+      loaderSettleView: { dispose(): void };
+    };
+    host.loaderSettleView.dispose();
+    host.loaderSettleRuntime.dispose();
+  });
+});
+
+test("error boundary recovers when retry loading fails to render before succeeding at the same revision", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      createFixtureRuntime(options?: Record<string, unknown>): {
+        getSnapshot(): { revision: number; routeStatus: string };
+        retryLoader(): void;
+        dispose(): void;
+      };
+      mountRuntimeView(runtime: unknown): { dispose(): void; host: HTMLElement };
+    };
+    let calls = 0;
+    let resolveRetry: ((value: Record<string, unknown>) => void) | undefined;
+    let renderFailures = 0;
+    const runtime = host.createFixtureRuntime({
+      initialSource: {
+        kind: "object",
+        value: {
+          routes: {
+            "/": {
+              loader: "retry",
+              page: {
+                root: "ready",
+                elements: {
+                  ready: { type: "Text", props: { id: "retry-ready", text: "Retry recovered" } },
+                },
+              },
+            },
+          },
+        },
+      },
+      loaders: {
+        retry: () => {
+          calls += 1;
+          return calls === 1
+            ? Promise.reject(new Error("first loader failure"))
+            : new Promise<Record<string, unknown>>((resolve) => {
+                resolveRetry = resolve;
+              });
+        },
+      },
+      fallbacks: {
+        loading: () => { throw new Error("retry loading render failed"); },
+        error: () => "Retry boundary safe error",
+        notFound: () => "Not found",
+        unmatched: () => "Unmatched",
+      },
+      observer: (event: { name: string }) => {
+        if (event.name === "render_failed") renderFailures += 1;
+      },
+    });
+    const view = host.mountRuntimeView(runtime);
+    view.host.id = "loader-retry-boundary";
+    Object.assign(window, {
+      loaderRetryRuntime: runtime,
+      loaderRetryView: view,
+      resolveLoaderRetry: () => resolveRetry?.({ recovered: true }),
+      loaderRetryRenderFailures: () => renderFailures,
+    });
+  });
+
+  const view = page.locator("#loader-retry-boundary");
+  await expect(view.getByText("Retry boundary safe error", { exact: true })).toBeVisible();
+  const revision = await page.evaluate(() => (
+    window as unknown as { loaderRetryRuntime: { getSnapshot(): { revision: number } } }
+  ).loaderRetryRuntime.getSnapshot().revision);
+  await page.evaluate(() => (
+    window as unknown as { loaderRetryRuntime: { retryLoader(): void } }
+  ).loaderRetryRuntime.retryLoader());
+  await expect.poll(() => page.evaluate(() => (
+    window as unknown as { loaderRetryRenderFailures(): number }
+  ).loaderRetryRenderFailures())).toBeGreaterThan(0);
+  await page.evaluate(() => (
+    window as unknown as { resolveLoaderRetry(): void }
+  ).resolveLoaderRetry());
+
+  await expect(view.locator("#retry-ready")).toHaveText("Retry recovered");
+  expect(await page.evaluate(() => (
+    window as unknown as {
+      loaderRetryRuntime: { getSnapshot(): { revision: number; routeStatus: string } };
+    }
+  ).loaderRetryRuntime.getSnapshot())).toMatchObject({ revision, routeStatus: "ready" });
+  await expect(view.getByText("Retry boundary safe error", { exact: true })).toHaveCount(0);
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      loaderRetryRuntime: { dispose(): void };
+      loaderRetryView: { dispose(): void };
+    };
+    host.loaderRetryView.dispose();
+    host.loaderRetryRuntime.dispose();
+  });
+});
+
+for (const locationKind of ["query", "hash"] as const) {
+  test(`error boundary recovers when a same-path ${locationKind} presentation changes`, async ({ page }) => {
+    await page.goto("/");
+    await page.evaluate((kind) => {
+      const host = window as unknown as {
+        createFixtureRuntime(options?: Record<string, unknown>): {
+          dispose(): void;
+        };
+        mountRuntimeView(runtime: unknown): { dispose(): void; host: HTMLElement };
+      };
+      history.replaceState(null, "", kind === "query" ? "/?crash=1" : "/#crash");
+      const runtime = host.createFixtureRuntime({
+        initialSource: {
+          kind: "object",
+          value: {
+            routes: {
+              "/known": {
+                page: {
+                  root: "known",
+                  elements: {
+                    known: { type: "Text", props: { text: "Known" } },
+                  },
+                },
+              },
+            },
+          },
+        },
+        fallbacks: {
+          loading: () => "Loading",
+          error: () => `Safe ${kind} boundary error`,
+          notFound: () => "Not found",
+          unmatched: ({ snapshot }: {
+            snapshot: { location: { hash: string; search: string } };
+          }) => {
+            const shouldCrash = kind === "query"
+              ? snapshot.location.search === "?crash=1"
+              : snapshot.location.hash === "#crash";
+            if (shouldCrash) throw new Error(`${kind} presentation failed`);
+            return `Recovered same-path ${kind}`;
+          },
+        },
+      });
+      const view = host.mountRuntimeView(runtime);
+      view.host.id = `${kind}-presentation-boundary`;
+      Object.assign(window, {
+        samePathBoundaryRuntime: runtime,
+        samePathBoundaryView: view,
+      });
+    }, locationKind);
+
+    const view = page.locator(`#${locationKind}-presentation-boundary`);
+    await expect(view.getByText(`Safe ${locationKind} boundary error`, { exact: true }))
+      .toBeVisible();
+    await page.evaluate((kind) => {
+      history.replaceState(null, "", kind === "query" ? "/?ready=1" : "/#ready");
+      window.dispatchEvent(new Event("next-app-runtime:navigate"));
+    }, locationKind);
+
+    await expect(view.getByText(`Recovered same-path ${locationKind}`, { exact: true }))
+      .toBeVisible();
+    await page.evaluate(() => {
+      const host = window as unknown as {
+        samePathBoundaryRuntime: { dispose(): void };
+        samePathBoundaryView: { dispose(): void };
+      };
+      host.samePathBoundaryView.dispose();
+      host.samePathBoundaryRuntime.dispose();
+    });
+  });
+}
+
+test("error boundary does not retry a failed tree for a streaming-only snapshot", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      createFixtureRuntime(options?: Record<string, unknown>): {
+        applySource(
+          source: { kind: "json"; value: ReadableStream<string> },
+          options: { signal: AbortSignal },
+        ): Promise<unknown>;
+        getSnapshot(): { specStatus: string };
+        dispose(): void;
+      };
+      mountRuntimeView(runtime: unknown): { dispose(): void; host: HTMLElement };
+    };
+    let renderFailures = 0;
+    const runtime = host.createFixtureRuntime({
+      initialSource: {
+        kind: "object",
+        value: {
+          routes: {
+            "/known": {
+              page: {
+                root: "known",
+                elements: {
+                  known: { type: "Text", props: { text: "Known" } },
+                },
+              },
+            },
+          },
+        },
+      },
+      fallbacks: {
+        loading: () => "Loading",
+        error: () => "Stable boundary error",
+        notFound: () => "Not found",
+        unmatched: () => { throw new Error("unmatched render failed"); },
+      },
+      observer: (event: { name: string }) => {
+        if (event.name === "render_failed") renderFailures += 1;
+      },
+    });
+    const view = host.mountRuntimeView(runtime);
+    view.host.id = "streaming-boundary";
+    const controller = new AbortController();
+    Object.assign(window, {
+      streamingBoundaryRuntime: runtime,
+      streamingBoundaryView: view,
+      streamingBoundaryFailures: () => renderFailures,
+      startStreamingOnlySource: () => runtime.applySource(
+        { kind: "json", value: new ReadableStream<string>() },
+        { signal: controller.signal },
+      ),
+      abortStreamingOnlySource: () => controller.abort(),
+    });
+  });
+
+  const view = page.locator("#streaming-boundary");
+  await expect(view.getByText("Stable boundary error", { exact: true })).toBeVisible();
+  const failures = await page.evaluate(() => (
+    window as unknown as { streamingBoundaryFailures(): number }
+  ).streamingBoundaryFailures());
+  await page.evaluate(() => {
+    const host = window as unknown as {
+      startStreamingOnlySource(): Promise<unknown>;
+      streamingBoundaryPending?: Promise<unknown>;
+    };
+    host.streamingBoundaryPending = host.startStreamingOnlySource();
+  });
+  await expect.poll(() => page.evaluate(() => (
+    window as unknown as { streamingBoundaryRuntime: { getSnapshot(): { specStatus: string } } }
+  ).streamingBoundaryRuntime.getSnapshot().specStatus)).toBe("streaming");
+  await page.waitForTimeout(50);
+
+  await expect(view.getByText("Stable boundary error", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => (
+    window as unknown as { streamingBoundaryFailures(): number }
+  ).streamingBoundaryFailures())).toBe(failures);
+  await page.evaluate(async () => {
+    const host = window as unknown as {
+      abortStreamingOnlySource(): void;
+      streamingBoundaryPending: Promise<unknown>;
+      streamingBoundaryRuntime: { dispose(): void };
+      streamingBoundaryView: { dispose(): void };
+    };
+    host.abortStreamingOnlySource();
+    await host.streamingBoundaryPending;
+    host.streamingBoundaryView.dispose();
+    host.streamingBoundaryRuntime.dispose();
+  });
 });
 
 test("applies standard Open Graph and Twitter field names", async ({ page }) => {

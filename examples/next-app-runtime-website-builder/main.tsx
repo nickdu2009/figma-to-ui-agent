@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 
 import { RootLayout } from "./app/layout";
 import { BuilderPage } from "./app/builder/page";
-import { WebsitePage } from "./app/[[...slug]]/page";
+import {
+  WebsitePage,
+  type WebsiteMetadataOwnership,
+} from "./app/[[...slug]]/page";
 import "./app/globals.css";
 
 document.documentElement.className = "font-geist";
@@ -22,24 +25,37 @@ function setConnected(element: HTMLElement | null, connected: boolean) {
   if (!connected && element.isConnected) element.remove();
 }
 
-function syncStaticHead(pathname: string) {
+const initialMetadataOwnership: WebsiteMetadataOwnership = {
+  description: false,
+  icons: false,
+};
+
+function syncStaticHead(
+  pathname: string,
+  ownership: WebsiteMetadataOwnership,
+) {
   const builder = pathname === "/builder";
-  const runtimeOwnsDescription = document.head.querySelector(
-    'meta[name="description"][data-owner="next-app-runtime"]',
-  ) !== null;
-  const runtimeOwnsIcon = document.head.querySelector(
-    'link[rel="icon"][data-owner="next-app-runtime"], ' +
-      'link[rel="shortcut icon"][data-owner="next-app-runtime"], ' +
-      'link[rel="apple-touch-icon"][data-owner="next-app-runtime"]',
-  ) !== null;
-  setConnected(builderDescription, builder || !runtimeOwnsDescription);
-  setConnected(builderIcon, builder || !runtimeOwnsIcon);
+  setConnected(builderDescription, builder || !ownership.description);
+  setConnected(builderIcon, builder || !ownership.icons);
 }
 
-syncStaticHead(window.location.pathname);
+syncStaticHead(window.location.pathname, initialMetadataOwnership);
 
 function App() {
   const [pathname, setPathname] = useState(() => window.location.pathname);
+  const [metadataOwnership, setMetadataOwnership] = useState(
+    initialMetadataOwnership,
+  );
+  const updateMetadataOwnership = useCallback(
+    (next: WebsiteMetadataOwnership) => {
+      setMetadataOwnership((current) => (
+        current.description === next.description && current.icons === next.icons
+          ? current
+          : next
+      ));
+    },
+    [],
+  );
 
   useEffect(() => {
     const update = () => setPathname(window.location.pathname);
@@ -55,15 +71,19 @@ function App() {
     if (pathname === "/builder") {
       document.title = "Next Website Builder | @next-app-runtime/client";
     }
-    syncStaticHead(pathname);
-    const observer = new MutationObserver(() => syncStaticHead(pathname));
+    syncStaticHead(pathname, metadataOwnership);
+    const observer = new MutationObserver(() => {
+      syncStaticHead(pathname, metadataOwnership);
+    });
     observer.observe(document.head, { childList: true });
     return () => observer.disconnect();
-  }, [pathname]);
+  }, [metadataOwnership, pathname]);
 
   return (
     <RootLayout>
-      {pathname === "/builder" ? <BuilderPage /> : <WebsitePage />}
+      {pathname === "/builder"
+        ? <BuilderPage />
+        : <WebsitePage onMetadataOwnershipChange={updateMetadataOwnership} />}
     </RootLayout>
   );
 }

@@ -1,9 +1,10 @@
 # NextAppSpec 0.19.0 私有 CSR Runtime 与完整 Website Builder Example 实施计划
 
-- 状态：Plan review 通过（`clean_with_assumptions`）；完整搬迁、CSR Store、独立 example 与 oracle 对比边界已确认
+- 状态：原实施计划已执行；稳定化复核为 `issues_found`，当前不得判定可交付（见第 14 节）
 - 范围：私有 workspace 包 + 独立完整 example workspace；不接入当前应用
 - 基线分支：`codex/next-app-runtime-plan`
 - 基线提交：`7fcb928c3f38ccd7044a7ebf1c011feef9a8f94b`（`main`）
+- 稳定化审核基线：`5bc7f8e0ee6c71cf6e3c000a72853bd99cced216`（`codex/next-app-runtime-plan`）
 - 计划日期：2026-08-12
 - 目标目录：`packages/next-app-runtime/`、`examples/next-app-runtime-website-builder/`
 - 兼容目标：`@json-render/next@0.19.0` 的公开 `NextAppSpec` 客户端功能合同
@@ -14,6 +15,8 @@
 - shared write surfaces: 根 package.json/package-lock.json、包 public exports、RuntimeSnapshot/RuntimeError/SourceResult 公共合同、example package.json/app composition/Spec Store、对比基线均为单一所有者
 - delegation: 0；包公共合同、example composition 与根 lockfile 存在顺序依赖，当前计划不委派并行写入
 ]
+
+> 历史基线说明：第 1—13 节记录从 `main@7fcb928c` 开始的原实施计划、当时仓库事实与已执行增量；其中“当前”“待新增”“下一步”等时态均相对于原实施阶段，不再描述 `5bc7f8e` 的实时工作树。稳定化执行只以第 14 节为当前来源；两者冲突时第 14 节优先。
 
 ## 1. 目标与成功定义
 
@@ -102,7 +105,7 @@
 
 ### 3.3 当前仓库事实
 
-- 根 `package.json` 目前不是 workspace，且已有 Vite 8、TypeScript 7、Vitest 4、React 19、Zod 4 和 json-render 0.19.0。
+- 原始 `main@7fcb928c` 的根 `package.json` 当时不是 workspace，且已有 Vite 8、TypeScript 7、Vitest 4、React 19、Zod 4 和 json-render 0.19.0；稳定化基线 `5bc7f8e` 已包含本计划实施产生的 workspaces。
 - 根 `tsconfig.json` 的 `noEmit: true` 必须保持不变；私有包使用自己的 declaration 配置。
 - 当前普通 json-render Catalog 在 `src/preview/catalog.ts`，UISpec adapter 在 `src/preview/json-render-adapter.ts`；两者都不进入新包。
 - 当前四工具合同在 `src/runtime/tool-boundary.ts`，仍冻结为 UISpec 语义；本计划不触碰。
@@ -856,7 +859,7 @@ git status --short
 
 ## 12. 计划完成后的下一步
 
-本轮 `plan-review-loop` 结果为 `clean_with_assumptions`：没有未解决的 blocking、warning 或 low-risk issue；第 10.1 节保留六项环境/发布假设，每项都有具体验证方法。复核已纠正上游文件总数、只读 oracle 执行方式、视觉比较机制和 example 独立许可覆盖。
+历史计划评审结果（已被第 14 节取代）：原实施计划在编码前曾为 `clean_with_assumptions`，当时没有计划层面的 blocking、warning 或 low-risk issue；第 10.1 节保留六项环境/发布假设。该结论只评价当时的实施计划完整性，不代表后来实现已稳定；当前实现状态以第 14 节的 `issues_found` 和冻结基线为准。
 
 下一步只有在用户明确授权开始编码和依赖变更后，才进入 Increment 0。实施开始时先重新执行 GATE-00 动态检查（设计 SHA、runtime/example provenance、workspace diff allowlist 和依赖边界）；不得从本计划自动继续实施，不得顺带接入当前应用，也不得自动安装/修改原上游 checkout。
 
@@ -927,7 +930,7 @@ git status --short
 
 ### 13.5 修复结果与最终证据
 
-状态：2026-08-13 的再次审核问题已全部修复；最后一轮补充审查发现的 commit/navigation snapshot 非原子、candidate 期间 `retryLoader()` 切回 current、source/loader terminal event 重入乱序、invalid source error 所有权和旧 route loader failure 误归属等 blocking，也已逐项先建立失败复现再修复。未改变 NextAppSpec 0.19.0、五个公开入口、包名、依赖、client-only 边界或 Example 范围。
+历史状态（已被第 14 节取代）：截至本节收口时，当时已知的再次审核问题已修复；随后以 commit `5bc7f8e0ee6c71cf6e3c000a72853bd99cced216` 为冻结基线的独立对抗审核又确认 9 个 blocking 与 2 个待关闭的公开行为 warning。因此本节只能证明“当时已知问题已修复”，不得继续作为整体稳定或可交付证据。未改变 NextAppSpec 0.19.0、五个公开入口、包名、依赖、client-only 边界或 Example 范围。
 
 主要结果：
 
@@ -947,3 +950,384 @@ git status --short
 本轮修复后未重新启动上游 Oracle；最近一次 Oracle 记录仍是 2026-08-12，在 `/`、`/about`、`/contact`、`/builder` 与 edited Builder checkpoint 上为零 RGB 像素差。该历史记录不能替代本轮 candidate 门禁，故本轮结论只使用上面的 unit/build/browser/E2E 证据。
 
 与官方有意不一致且必须保留披露：服务端 API/RSC/SSR 不实现；loader snapshot 改为深 ownership，无法安全拥有的值 fail-closed；core 0.19.0 无 runtime identity 的 unscoped/watch/chained action lifecycle 不上报但动作照常执行；malformed JSON 原文保留在 storage，但 Visual JSON AST editor 只能继续编辑可解析 candidate；Next SSG 与浏览器 localStorage 的读取点/共享范围不同。完整边界见 Example 的 `comparison/allowed-differences.md`。
+
+## 14. 稳定化收敛增量（冻结基线 `5bc7f8e`）
+
+### 14.1 来源、结论与授权边界
+
+- 审核对象：commit `5bc7f8e0ee6c71cf6e3c000a72853bd99cced216`，分支 `codex/next-app-runtime-plan`。
+- 审核结论：`issues_found`。当前已确认 9 个 blocking 与 2 个必须在编码前关闭的公开行为 warning；既有 unit/typecheck/build/browser 全绿只能证明已知样例，不足以推导整体稳定。
+- 需求与设计来源：第 3 节钉住的 `@json-render/next@0.19.0` 公共类型/实现证据、D1—D6、第 8 节 PKG/EX 验收项，以及本轮针对同步重入、跨 Realm、Record key、presentation 与 metadata ownership 的动态复现。
+- 决策锁：NextAppSpec 0.19.0 字段不扩展、不缩小；纯 CSR；五个公开 subpath；原生 Browser History + 私有 Router；服务端能力不实现；不做 core 缺陷的 bug-for-bug 复刻。
+- 本次只规划稳定化修复，不接入当前 UISpec 项目，不新增依赖/公开 API/服务端能力，不扩大 allowed differences。
+- 用户本轮 “do next” 仅授权修改并复核本计划；不自动授权生产代码修改、依赖变更、外部 Oracle 启动、commit、push、publish 或清理数据。
+
+### 14.2 Truth、Ownership 与稳定化不变量
+
+真相来源：
+
+- `NextAppSpec`/Catalog/Router 的公开合同以钉住的 0.19.0 TypeScript 类型和公开客户端行为为真相；内部 Zod 转换、snapshot、cache、DOM tag、测试 fixture 均不是合同真相。
+- source transaction 的语义真相是规范化 JSON 数据图；在各自 wire/intermediate 资源 envelope 通过后，同一 JSON 值不得因 object/json/jsonl、Realm 或合法 Record key 而产生不同最终 Spec。原始 JSON/JSONL 表示超出 wire envelope 时允许失败关闭，不把表示开销伪装成语义差异。
+- source revision 表示 source transaction；route/loader/render presentation 的生命周期必须使用包内独立 identity，不得偷用 source revision 表达。
+- metadata 字段是否存在与最终是否生成 DOM tag 是两件事；字段 presence 是 ownership 真相，tag 只是输出。
+
+系统不变量：
+
+| ID | 不变量 |
+|---|---|
+| I-LOADER-01 | 任一 current presentation 若为 `routeStatus="loading"` 且具有 loader key，必须恰有一个未终结 invocation owner；不允许 `loading + 0 invocation` 或同 key 多次启动。 |
+| I-LOADER-02 | 同 key 重入复用同一个 invocation；新 key 使旧 invocation stale；每个已启动 invocation 恰有一个 succeeded/failed/stale 终态，并保留开始到终态的脱敏 token 关联。 |
+| I-PRESENTATION-01 | 每次可渲染 presentation 变化都有独立于 source revision 的内部 epoch/identity；ErrorBoundary 只在 presentation 变化时恢复，不能因同 revision 永久卡在旧 fallback。 |
+| I-SUBSCRIBER-01 | 一次 publish 最多调用通知开始时快照中的每个 subscriber 一次；本轮内 unsubscribe/resubscribe 只影响后续 publish，不得延长或阻断当前事务。 |
+| I-JSON-01 | 单个 `maxBytes` 同时约束 JSON/JSONL 原始 wire bytes 与所有 source 的规范化文档 bytes；JSONL 每个 intermediate candidate 在发布前也受限。各自 wire/intermediate envelope 通过后，JSON 等价数据在 object/json/jsonl 与跨 Realm 输入中具有相同合同接受结果和最终 Spec；空白、Patch 包装或中间放大导致的 representation-specific 资源拒绝是明确允许差异。 |
+| I-RECORD-01 | NextAppSpec 全量/子 Schema 与 Catalog props 对所有合法 own string key 一致保真；`__proto__` 不丢失、不绕过 strict/catchall；accessor 不执行。 |
+| I-STATE-01 | 被接受的 statePath 在读取、clone、写入和后续读取中使用同一 canonical segment；普通路径 `set(path, v)` 后 `get(path)` 可观察到该值，末端 `-` 是唯一例外并按 append 后的新 numeric index 观察。 |
+| I-METADATA-01 | 字段缺省与显式空值语义不同；`icons` 缺省可继承 host/root，显式 `icons:{}` 拥有并清空继承图标。 |
+| I-AUDIT-01 | 两轮独立审核必须针对同一 commit hash；任意源码、测试、计划或 lockfile 变化都把连续 clean 计数重置为 0。 |
+
+共享写面单 owner：
+
+- Contract owner：`packages/next-app-runtime/src/contract/**`、`packages/next-app-runtime/src/validation/catalog-gate.ts`、`packages/next-app-runtime/src/schema.ts` 与 package contract tests。
+- Runtime owner：`packages/next-app-runtime/src/runtime/create-runtime.ts`、`packages/next-app-runtime/src/react/error-boundary.tsx` 与 package runtime/browser reentrancy tests。
+- State/metadata owner：`packages/next-app-runtime/src/react/prototype-safe-state-store.ts`、Example metadata composition 与对应 tests。
+- 主 Agent：本计划、公共 exports、manifests/lockfile、跨 lane 集成与最终门禁。
+- 同一个未提交共享工作树中禁止多个 write-capable lane 并行修改；只允许并行只读取证，且每轮验证前必须记录 `git rev-parse HEAD` 和 `git status --short`。
+
+### 14.3 稳定化验收标准
+
+已确认问题台账（均以 `5bc7f8e` 为复现基线）：
+
+| ID | 级别 | 根因/复现边界 | 主要责任文件 | 关闭标准 |
+|---|---|---|---|---|
+| B14-01 | blocking | `Catalog.jsonSchema({ strict: true })` 忽略 options；动态 properties 用普通对象写 own `__proto__` 时字段丢失并改变 prototype | `packages/next-app-runtime/src/contract/schema.ts` | STAB-AC-01 |
+| B14-02 | blocking | 合法跨 Realm plain object source 被判 `non_plain_object`；三种 source 未统一限制规范化 final/intermediate 文档，JSONL 小 wire 可放大后提交超限 Spec | `packages/next-app-runtime/src/contract/json-value.ts`、`packages/next-app-runtime/src/runtime/create-runtime.ts`、`packages/next-app-runtime/src/stream/jsonl-compiler.ts` | STAB-AC-02 |
+| B14-03 | blocking | `elementTreeSchema`/`nextRouteSpecSchema` 成功解析却删除 own `__proto__` element key | `packages/next-app-runtime/src/contract/zod-schema.ts`、`packages/next-app-runtime/src/schema.ts` | STAB-AC-03 |
+| B14-04 | blocking | Catalog object props 的 own `__proto__` 绕过 `.strict()`/typed catchall | `packages/next-app-runtime/src/contract/zod-schema.ts` | STAB-AC-03 |
+| B14-05 | blocking | loading publish 中的 subscriber/observer/同 key source 重入可留下 `loading + 0 loader invocation` | `packages/next-app-runtime/src/runtime/create-runtime.ts` | STAB-AC-04 |
+| B14-06 | blocking | loader settle 或同 pathname query/hash presentation 变化不改变 source revision，ErrorBoundary 永久保留旧失败 | `packages/next-app-runtime/src/react/error-boundary.tsx`、`packages/next-app-runtime/src/runtime/create-runtime.ts` | STAB-AC-05 |
+| B14-07 | blocking | live `Set` 通知中 unsubscribe/resubscribe 可使一次 publish 重复或不返回 | `packages/next-app-runtime/src/runtime/create-runtime.ts` | STAB-AC-06 |
+| B14-08 | blocking | 数组中间 statePath 读取 canonical index、写回 raw segment，同路径 set/get 不闭合 | `packages/next-app-runtime/src/react/prototype-safe-state-store.ts` | STAB-AC-07 |
+| B14-09 | blocking | Example 从已生成 icon tag 反推 ownership，显式 `icons:{}` 无法清空继承 icon | `examples/next-app-runtime-website-builder/main.tsx` | STAB-AC-08 |
+| W14-01 | warning / behavior gate | public `nextAppSpecSchema.safeParse` 会执行 required accessor 并透传 getter error | `packages/next-app-runtime/src/contract/zod-schema.ts` | STAB-AC-09 / 行为假设 A |
+| W14-02 | warning / behavior gate | public `readSource` 透传 iterator/stream provider error 与 malformed result 原始异常 | `packages/next-app-runtime/src/stream/source.ts` | STAB-AC-09 / 行为假设 B |
+
+| ID | 验收标准 | 追溯 |
+|---|---|---|
+| STAB-AC-01 | `Catalog.jsonSchema({ strict: true })` 实现 0.19.0 strict 语义；默认/strict fixtures 与官方 core 结构化对照，options 不再被忽略；包括 own `__proto__` 在内的 properties key 可序列化往返且不改变 prototype。 | PKG-AC-01、21；D1 |
+| STAB-AC-02 | 跨 Realm plain object/array 的 object source 与其 JSON 文本在资源 envelope 内等价，class/exotic/accessor/cycle 仍失败关闭；所有 source 的规范化 final 文档与每个 JSONL intermediate 均受 `maxBytes` 限制，JSON/JSONL wire bytes 继续前置失败关闭。 | PKG-AC-05、07、20；I-JSON-01 |
+| STAB-AC-03 | 公开全量 Schema、`elementTreeSchema`、`nextRouteSpecSchema` 和 Catalog strict/typed-catchall 全部保留并校验 own `__proto__` 等 Record key，未知 accessor 不执行。 | PKG-AC-01、09、20；I-RECORD-01 |
+| STAB-AC-04 | subscriber、observer 或同 key source commit 在 loading publish 中同步重入时，恰有一个 loader invocation，最终离开 loading；不同 key 旧结果仍 stale。 | PKG-AC-13、14、20；I-LOADER-01/02 |
+| STAB-AC-05 | loading/error fallback render 失败后，loader success/failure/retry 以及实际 query/hash/href 变化的新 presentation 可恢复 ErrorBoundary；仅 streaming 状态变化不误触发重试；source revision 语义与公开 RuntimeSnapshot 类型不变。 | PKG-AC-13、15、20；I-PRESENTATION-01 |
+| STAB-AC-06 | subscriber 在通知中 unsubscribe/resubscribe、dispose 或新增 listener 都不会重复调用、死循环或改变当前 publication 的有限完成性。 | PKG-AC-20；I-SUBSCRIBER-01 |
+| STAB-AC-07 | statePath 中间数组 segment 的 canonical read/write 一致；`0`、`01`、`1x`、`1e2`、`-1`、`-`、空/非数字、超长与 out-of-range segment 均按行为决定 C 的精确表验证；普通路径满足同 path set/get coherence，末端 `-` 按 appended numeric index 验证。 | PKG-AC-10、15；I-STATE-01 |
+| STAB-AC-08 | Example 对 metadata field presence 建立显式 ownership；`icons` omitted、`{}`、`icon`、`shortcut`、`apple` 及 website↔builder 切换均与官方语义一致且无重复节点。 | PKG-AC-17；EX-AC-07、10；I-METADATA-01 |
+| STAB-AC-09 | 两项 warning 在 GATE-14-00 得到明确行为结论和测试：公开 Schema accessor 行为；公开 `readSource` provider error 的稳定、脱敏边界。 | PKG-AC-01、07、20 |
+| STAB-AC-10 | 五个 subpath、公开类型、依赖图、NextAppSpec 字段和 client-only 边界不变；任何需要公共 API/依赖变化的方案必须停止并回到设计复核。 | PKG-AC-01—24 |
+| STAB-AC-11 | package、Example、consumer、dependency、browser、根回归和官方 Oracle 全部在冻结 candidate commit 上通过，且没有未解释 allowed difference。 | PKG-AC-01—24；EX-AC-01—12 |
+| STAB-AC-12 | 同一冻结 commit 连续完成两轮独立 read-only 审核且均为 `review_result: clean`；中间任何 finding 或文件变化都重新冻结并从第一轮开始。 | I-AUDIT-01 |
+
+### 14.4 GATE-14-00：先锁不变量和公开行为，再改生产代码
+
+- goal：把 9 个 blocking 与 2 个 warning 转换为整类可执行不变量，关闭公开行为选择，防止继续以局部条件叠加修复状态机。
+- prerequisites：后续开始编码、依赖变化或 commit 必须分别取得明确授权；当前计划通过不等于这些授权。
+- owns：稳定化 gate ledger、失败复现、官方/类型证据、go/no-go 结论。
+- must-not-touch：GATE 未完成前不得修改生产代码、public exports、manifest、lockfile、allowed differences 或 Oracle。
+- actions：
+  1. 在 production edit 前先加入/独立保存 9 个 blocking 的最小失败复现，并为 I-LOADER/I-PRESENTATION/I-SUBSCRIBER 建立状态迁移矩阵。
+  2. 对 Schema/transport 建立 full schema、public sub-schema、Catalog object/record、跨 Realm、descriptor/accessor 组合矩阵；同一 fixture 同时跑 object/json/jsonl。
+  3. 对 loader 建立入口 × 重入点矩阵：subscriber、`route_matched` observer、同 key `applySource`、encoded-equivalent navigation、retry、dispose；断言 invocation count、terminal event、snapshot 与 presentation。
+  4. 对 metadata 建立 field presence × route switch 矩阵，显式区分 omitted 与 empty。
+  5. 关闭下面两项行为假设；未关闭不得开始对应 production edit。
+- expected outputs：每个 issue 的 failing test id、正式 source、owner、选定行为、受影响文件、rollback 点；gate 结论为 `go` 或带明确 blocker 的 `no-go`。
+- verify：复现必须在 commit `5bc7f8e` 上失败；记录命令、失败断言和 hash。仅靠静态阅读或旧测试全绿不算证据。
+- done conditions：9 个 blocking 均有失败回归；两项行为假设有 owner 决策；没有需要扩大 public API/依赖/allowed differences 的方案，才允许进入步骤 2。
+- stop/escalate conditions：官方 0.19.0 类型与公开行为冲突、需要改变公开 API、需要新增依赖、需要网络/Oracle、或 owner 未关闭行为假设时停止。
+- handoff：冻结的 invariant ledger、测试矩阵、文件 allowlist、owner 决策交给唯一 production writer。
+
+behavioral assumptions to close：
+
+- 【行为假设 A：公开 Schema accessor】source：Zod strict public schema 与 I-RECORD-01；owner decision：推荐“只读取 own enumerable data descriptor，required/known accessor 返回 Zod failure，unknown accessor 不执行”，不允许原始 getter error 逃逸；done condition：全量/子 Schema 与 Catalog descriptor corpus 一致，公开 `safeParse` 从不执行 accessor。owner：Contract owner；若官方证据要求执行 accessor，停止并回到设计复核。
+- 【行为假设 B：公开 `readSource` provider error】source：`/stream` 公开 helper、PKG-AC-07/20 与现有 runtime 脱敏边界；owner decision：推荐把 discriminator、iterator factory、`next()`/`read()`、malformed IteratorResult 的 provider 异常统一成稳定且不含原异常正文的 `RuntimeError`，同时保留 AbortError、source limits 和 UTF-8 的既有优先级；done condition：AsyncIterable/ReadableStream 同一 provider-failure corpus 结果一致且无 unhandled rejection。owner：Stream contract owner；若 0.19.0/现有 public consumer 明确依赖原错误 identity，停止并升级。
+- 【行为决定 C：数组 statePath】source：公开 statePath 未限制 canonical 格式、0.19.0 读取侧 `parseInt` 行为、D2 与 I-STATE-01；owner decision：除末端 `"-"` 表示 append 外，数组每一层都以 `String(Number.parseInt(segment, 10))` 作为同一个 own-property key 读取和写回，不引入新的 throw/no-op validation，`StateStore.set(): void` 保持不变。精确表：`"0"→"0"`；`"01"/"1x"/"1e2"→"1"`；`"-1"→"-1"`；空串/非数字/中间 `"-"→"NaN"`；超长数字使用 JS `parseInt` 后的规范字符串（例如 `1e+21`）。只有末端 `"-"` append；越过现有长度的 canonical array index 按 JavaScript 数组 own-property/length 语义扩展，负数、`NaN`、指数形式结果等非 array-index key 不改变 length；全程只读写 own property，不沿 prototype。done condition：上述每行在中间段、末端段、existing/out-of-range 和 built-in action Chromium 中均验证；普通路径证明 `set(path,v)` 后 `get(path)===v`，末端 `-` 证明长度增加 1 且 `get(parent + "/" + oldLength)===v`，并保持原型隔离。owner：State owner。
+- 【行为决定 D：`maxBytes` 双 envelope】source：RuntimeLimits 只冻结一个公开 `maxBytes`，0.19.0 上游不定义私有 source/limits 语义，I-JSON-01 与 fail-closed 资源边界；owner decision：不改 public API、不引入隐藏倍数。object 约束规范化 canonical document；JSON 同时约束 raw wire 与 canonical document；JSONL 同时约束 raw wire 与每个 operation 后、candidate 发布前的 canonical intermediate document。任一 intermediate 超限立即拒绝，即使后续 operation 本可缩小。等价数据只在各自 envelope 通过后要求同一最终 Spec；padding、Patch envelope 和 intermediate amplification 导致的传输拒绝属于允许差异。owner：主 Agent；done condition：wire N/N-1、document N/N-1、JSONL copy/add 放大、oversized candidate 零发布、current 保留及宽裕 envelope 三通道等价矩阵通过。
+
+### 14.5 并行与顺序
+
+[parallelism:
+- independent lanes: GATE 阶段只允许 Contract、Runtime、State/Metadata 三类只读取证与测试矩阵设计并行；冻结 candidate 后允许两名独立 read-only reviewer 并行
+- sequential blockers: GATE-14-00 -> Contract/transport -> Runtime ownership/presentation/subscriber -> State/metadata -> pre-commit targeted smoke/self-review -> candidate commit -> 同一 commit 全门禁/Oracle -> Audit A -> Audit B
+- shared write surfaces: 每个阶段仅一个 production writer；公共 exports、package manifests/lock、计划、Example app composition 与最终验证由主 Agent 单一所有
+- delegation: 最多 2 个只读 reviewer；禁止多个 write-capable Agent 在同一未提交 worktree 并行写入
+]
+
+### 14.6 实施步骤
+
+#### 步骤 1：建立 invariant ledger 与红灯矩阵
+
+- 落地文件/模块：对应 `tests/contract/**`、`tests/runtime/**`、`tests/security/**`、`tests/browser/**` 和 Example browser tests；不改生产代码。
+- 依赖：GATE-14-00 的授权与行为决定。
+- 操作要点：每个 blocking 先在 `5bc7f8e` 上红；测试名称引用 STAB-AC/I-ID；矩阵测试覆盖整类维度，不只复制单个探针。
+- verify：focused red run 的失败原因必须是目标缺陷而非 fixture/typecheck/environment。
+- 覆盖：STAB-AC-01—09。
+
+#### 步骤 2：修复 Contract、Schema 与 transport 根模型
+
+- 落地文件/模块：`packages/next-app-runtime/src/contract/schema.ts`、`packages/next-app-runtime/src/contract/json-value.ts`、`packages/next-app-runtime/src/contract/zod-schema.ts`、必要的 package stream source 文件及 owned tests。
+- 依赖：步骤 1；行为假设 A/B 已关闭。
+- 操作要点：让 jsonSchema options 真正进入 converter；以 descriptor/JSON brand 而非本 Realm prototype identity 判断传输数据；统一 full/sub/Catalog Record key pipeline；不通过散落的 `__proto__` 特判重复修复。
+- verify：official strict schema fixture、跨 Realm VM、object/json/jsonl、full/sub/Catalog/accessor 属性矩阵；wire/final/intermediate `maxBytes` 与 JSONL 放大矩阵；公开 subpath consumer 回归。
+- 覆盖：STAB-AC-01—03、09、10。
+
+#### 步骤 3：用显式 invocation owner 与 presentation epoch 修复 Runtime
+
+- 落地文件/模块：`packages/next-app-runtime/src/runtime/create-runtime.ts`、必要的私有 runtime helper、`packages/next-app-runtime/src/react/error-boundary.tsx` 及 runtime/browser tests。
+- 依赖：步骤 2。
+- 操作要点：loading state 必须携带私有 invocation owner/promise；发布与实际调用不能出现无 owner 窗口；同 key 重入采用 owner 而非 MatchedRoute 引用判断；引入不公开的 presentation epoch/identity供 ErrorBoundary reset；subscriber 对开始时 listener 快照通知。
+- must-not-touch：公开 `RuntimeSnapshot.revision` 语义、公开 type union/event shape、loader 签名、依赖。
+- verify：完整 reentrancy 矩阵、invocation count、terminal/stale token、loading→ready/error/retry boundary、unsubscribe/resubscribe/dispose 有限性。
+- 覆盖：STAB-AC-04—06、10。
+
+#### 步骤 4：收口 statePath 与 metadata ownership
+
+- 落地文件/模块：`packages/next-app-runtime/src/react/prototype-safe-state-store.ts`、`examples/next-app-runtime-website-builder/app/[[...slug]]/page.tsx`、`examples/next-app-runtime-website-builder/main.tsx`、必要的 Example 私有 metadata-ownership bridge 与对应 unit/browser tests。
+- 依赖：步骤 3；行为决定 C 已关闭。
+- 操作要点：数组 segment 在读取/写入使用行为决定 C 的单一 canonical property；metadata ownership 由 `WebsitePage` 订阅的 active snapshot presentation source/matched route 计算 resolved field presence，再经 Example 私有 bridge 传给 `main.tsx`，不能从 DOM tag presence 反推；显式 empty 清除继承值，invalid candidate 仍以 current presentation 为真相。
+- verify：statePath corpus + built-in actions Chromium；icons omitted/empty/string/shortcut/apple 与 website↔builder 矩阵。
+- 覆盖：STAB-AC-07、08、10。
+
+#### 步骤 5：targeted smoke、自审并冻结 candidate commit
+
+- 落地文件/模块：仅修复步骤 2—4 已授权的范围；不得边跑门禁边追加无回归测试的生产修改。
+- 依赖：步骤 4；用户明确授权 commit 后才能创建 candidate commit。
+- 操作要点：先运行各 lane focused red→green、typecheck、self-review、`git diff --check` 与公开 API diff；这些是 pre-commit smoke，不作为 STAB-AC-11 最终证据。取得明确 commit 授权后创建 candidate commit，确认 worktree clean 并记录 candidate hash。若未获 commit 授权则停在此处，状态为 `blocked`，不能进入全门禁/双审核。
+- verify：focused tests 与 typecheck 通过；candidate commit 后 `git status --short` 为空，`git rev-parse HEAD` 为后续唯一验证 hash。
+- 覆盖：STAB-AC-10；为 STAB-AC-11 建立冻结输入。
+
+#### 步骤 6：在 candidate commit 上完成全门禁与 Oracle
+
+- 依赖：步骤 5 的 clean candidate commit。
+- 操作要点：按第 14.8 节从头运行 package、Example、consumer、dependency、browser、根回归、supply/scan 与 Oracle；每组前后核验 hash/status。任一失败回到责任步骤；修复必须形成新的 candidate commit，然后从本步骤第一条命令重跑。
+- verify：STAB-AC-11 全部证据对应同一 clean hash；candidate-only browser 不替代 Oracle。
+- 覆盖：STAB-AC-10、11。
+
+#### 步骤 7：同一 commit 两轮独立审核
+
+- 依赖：步骤 6 全门禁通过且 candidate commit 未变化。
+- 操作要点：Audit A 与 Audit B 均只读、独立，不共享 finding 假设清单之外的结论；覆盖 contract/stream、runtime/React、state/metadata、Example/supply、public consumer。每轮开始和结束记录 hash/status。
+- verify：两轮均必须为 `review_result: clean`（不是仅“无 blocking”或 `clean_with_assumptions`）且 hash 完全一致；任意 blocking/warning/low-risk/未关闭 clarification 或任意文件变化立即把计数归零，修复并重新从步骤 5 开始。
+- 覆盖：STAB-AC-12。
+
+### 14.7 Coding Agent 任务卡
+
+#### T14-A：Contract/transport 稳定化
+
+- goal：关闭 STAB-AC-01—03 与行为假设 A/B。
+- prerequisites：GATE-14-00 `go`；所有 owned issue 已有红灯。
+- must-read：第 3.2、7.1、14.2—14.4 节；0.19.0 core/next schema 与 public types。
+- owns：Contract/Zod/stream source owned files及对应 tests。
+- must-not-touch：runtime/React/Example、exports、manifest/lock、依赖、allowed differences。
+- actions：按步骤 2 修根模型，不增加一次性 key/Realm 分支。
+- expected outputs：红转绿证据、official fixture diff、跨 Realm/descriptor/transport matrix。
+- verify：focused contract/stream/security、typecheck、build、public consumer。
+- done conditions：STAB-AC-01—03/09 通过，无 public API diff。
+- stop/escalate conditions：需要改变字段、依赖、公开错误 identity 或官方证据冲突。
+- handoff：稳定 Contract commit/diff、行为结论和完整测试命令给 T14-B。
+
+#### T14-B：Runtime ownership 与 presentation
+
+- goal：以明确 invocation/presentation 模型关闭 STAB-AC-04—06。
+- prerequisites：T14-A 通过且源码稳定。
+- must-read：I-LOADER-01/02、I-PRESENTATION-01、I-SUBSCRIBER-01 与步骤 1 的迁移矩阵。
+- owns：runtime create/helper、ErrorBoundary 和对应 runtime/browser tests。
+- must-not-touch：Contract/stream、State/Example、public types/exports、依赖。
+- actions：按步骤 3 实现私有 owner/epoch；禁止继续只叠加 MatchedRoute identity 特判。
+- expected outputs：状态转移说明、全重入矩阵、terminal event correlation 证据。
+- verify：runtime focused、browser fallback/retry、typecheck/build。
+- done conditions：所有进入 loading 的路径最终有且仅有一 owner；ErrorBoundary 可恢复；subscriber 有限。
+- stop/escalate conditions：需更改 source revision、public event/type/loader 签名。
+- handoff：稳定 runtime diff 与矩阵结果给 T14-C。
+
+#### T14-C：State/metadata 与集成
+
+- goal：关闭 STAB-AC-07/08 并完成跨 lane 回归。
+- prerequisites：T14-B 通过且源码稳定。
+- must-read：I-STATE-01、I-METADATA-01、行为决定 C、官方 metadata merge/Next inheritance evidence。
+- owns：`packages/next-app-runtime/src/react/prototype-safe-state-store.ts`、`examples/next-app-runtime-website-builder/app/[[...slug]]/page.tsx`、`examples/next-app-runtime-website-builder/main.tsx`、必要的 Example 私有 metadata-ownership bridge 与对应 tests。
+- must-not-touch：Contract/runtime、public API、manifest/lock、依赖、allowed differences。
+- actions：按步骤 4 实施；`WebsitePage` 从 active runtime snapshot 的 presentation source + matched route 推导 resolved metadata own-field presence，通过 Example 私有 prop/context/回调桥接给 `main.tsx` 管理 host fallback；不能从 DOM 输出反推，不能新增 runtime public API。
+- expected outputs：statePath corpus、metadata presence matrix、Example browser 证据。
+- verify：state/security/runtime focused、package browser、Example browser/typecheck/build。
+- done conditions：STAB-AC-07/08 通过且旧 state/prototype/metadata ownership 回归全绿。
+- stop/escalate conditions：需要扩展 NextAppSpec、改变官方 metadata merge 或引入新 public marker。
+- handoff：稳定 candidate diff 交给主 Agent 全门禁。
+
+#### T14-D：冻结验证与双审核
+
+- goal：在一个不再变化的 commit 上完成 STAB-AC-10—12。
+- prerequisites：T14-A/B/C 完成；用户分别授权 Oracle（若需外部安装/网络）和 commit。
+- must-read：第 8、14.3、14.8 节与 Example comparison allowed differences。
+- owns：验证记录、candidate commit、review ledger；不拥有生产修改。
+- must-not-touch：Audit A/B 期间任何源码、测试、计划、manifest、lockfile。
+- actions：pre-commit smoke→取得 commit 授权→candidate commit/clean hash→全门禁与 Oracle→Audit A→Audit B；发现问题回相应任务卡，形成新 candidate commit，并重置完整门禁与审核计数。
+- expected outputs：每条命令结果、clean status、candidate hash、两份独立 review result。
+- verify：hash/status before/after 完全一致。
+- done conditions：STAB-AC-10—12 全部成立。
+- stop/escalate conditions：环境缺失、Oracle 需要网络、worktree 漂移、任一 reviewer 有 blocking/warning/low-risk/未关闭 clarification。
+- handoff：仅在完成后给出“稳定化完成、可进入交付决策”；不自动 push/publish/接入。
+
+### 14.8 全量门禁
+
+在同一 candidate commit 上按顺序运行；任何源码/测试变化后从头重跑：
+
+```bash
+STAB_CANDIDATE_COMMIT="$(git rev-parse HEAD)"
+test -z "$(git status --porcelain)"
+test -n "${PLAYWRIGHT_CHROMIUM_EXECUTABLE:-}"
+test -x "$PLAYWRIGHT_CHROMIUM_EXECUTABLE"
+ROOT_E2E_CHROMIUM="$(pwd)/data/playwright-browsers/chromium_headless_shell-1228/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+test -x "$ROOT_E2E_CHROMIUM"
+git diff --check
+
+npm run --workspace @next-app-runtime/client test
+npm run --workspace @next-app-runtime/client typecheck
+npm run --workspace @next-app-runtime/client build
+npm run --workspace @next-app-runtime/client test:consumer
+npm run --workspace @next-app-runtime/client test:dependencies
+PLAYWRIGHT_CHROMIUM_EXECUTABLE="$PLAYWRIGHT_CHROMIUM_EXECUTABLE" npm run --workspace @next-app-runtime/client test:browser
+
+npm run --workspace next-app-runtime-website-builder test
+npm run --workspace next-app-runtime-website-builder typecheck
+npm run --workspace next-app-runtime-website-builder build
+PLAYWRIGHT_CHROMIUM_EXECUTABLE="$PLAYWRIGHT_CHROMIUM_EXECUTABLE" npm run --workspace next-app-runtime-website-builder test:browser
+
+npm run typecheck
+npm run test:unit
+npm run test:integration
+npm run test:e2e
+npm exec -- vite build --config vite.config.ts
+
+npm ls --all
+npm query ':invalid, :extraneous, :missing' --json
+npm pack --workspace @next-app-runtime/client --dry-run
+if rg -n "UISpec|ui-spec|load_ui_spec|save_ui_spec" packages/next-app-runtime/src packages/next-app-runtime/package.json; then
+  echo "unexpected UISpec compatibility surface in runtime package" >&2
+  exit 1
+fi
+if rg -n -e 'sk-[A-Za-z0-9_-]{16,}' \
+  -e 'figd_[A-Za-z0-9_-]{16,}' \
+  -e 'https?://[^/@[:space:]]+:[^/@[:space:]]+@' \
+  -e '/Users/[A-Za-z0-9._-]+/' \
+  packages/next-app-runtime/src \
+  examples/next-app-runtime-website-builder/app \
+  examples/next-app-runtime-website-builder/components \
+  examples/next-app-runtime-website-builder/lib \
+  examples/next-app-runtime-website-builder/main.tsx \
+  examples/next-app-runtime-website-builder/index.html; then
+  echo "high-confidence sensitive pattern found in production scope" >&2
+  exit 1
+fi
+git diff --check
+test -z "$(git status --porcelain)"
+test "$(git rev-parse HEAD)" = "$STAB_CANDIDATE_COMMIT"
+```
+
+根 `test:e2e` 的 Chromium 路径由 `playwright.e2e.config.ts` 固定；上面的 `ROOT_E2E_CHROMIUM` 只做真实路径预检，不能用 package browser 环境变量冒充。若路径缺失，停止请求复用/安装授权；除非单独授权修改根配置，否则不改变该行为。
+
+Oracle 必须使用当前 `tests/parity/oracle.spec.ts` 与 `playwright.parity.config.ts`，并由验证者显式启动两个 production server；旧 Increment 8 的 `tests/browser/parity.spec.ts`/单一目录变量命令仅属历史计划，不再执行。detached clone 已具备 frozen 依赖时使用以下流程：
+
+```bash
+STAB_CANDIDATE_COMMIT="$(git rev-parse HEAD)"
+test -z "$(git status --porcelain)"
+test -n "${JSON_RENDER_ORACLE_DIR:-}"
+test "$(git -C "$JSON_RENDER_ORACLE_DIR" rev-parse HEAD)" = "0bbe6ed6394b23b5aee25320d03c9b7ac717e5b7"
+test -z "$(git -C "$JSON_RENDER_ORACLE_DIR" status --porcelain)"
+test -n "${PLAYWRIGHT_CHROMIUM_EXECUTABLE:-}"
+test -x "$PLAYWRIGHT_CHROMIUM_EXECUTABLE"
+
+(
+  cd "$JSON_RENDER_ORACLE_DIR"
+  pnpm --filter @internal/react-state build
+  pnpm --filter @json-render/core build
+  pnpm --filter @json-render/react build
+  pnpm --filter @json-render/next build
+  pnpm --filter @json-render/shadcn build
+  pnpm --filter example-next-website-builder build
+)
+npm run --workspace next-app-runtime-website-builder build
+
+PARITY_RUN_DIR="$(mktemp -d)"
+JSON_RENDER_ORACLE_URL="http://127.0.0.1:43193"
+NEXT_APP_RUNTIME_CANDIDATE_URL="http://127.0.0.1:43194"
+(
+  cd "$JSON_RENDER_ORACLE_DIR"
+  exec pnpm --filter example-next-website-builder exec next start -H 127.0.0.1 -p 43193
+) >"$PARITY_RUN_DIR/oracle.log" 2>&1 &
+PARITY_ORACLE_PID=$!
+(
+  cd examples/next-app-runtime-website-builder
+  exec ../../node_modules/.bin/vite preview --host 127.0.0.1 --port 43194 --strictPort
+) >"$PARITY_RUN_DIR/candidate.log" 2>&1 &
+PARITY_CANDIDATE_PID=$!
+trap 'kill "$PARITY_ORACLE_PID" "$PARITY_CANDIDATE_PID" 2>/dev/null || true; wait "$PARITY_ORACLE_PID" "$PARITY_CANDIDATE_PID" 2>/dev/null || true' EXIT INT TERM
+
+PARITY_READY=0
+for PARITY_ATTEMPT in $(seq 1 60); do
+  if curl --max-time 2 --fail --silent "$JSON_RENDER_ORACLE_URL/" >/dev/null \
+    && curl --max-time 2 --fail --silent "$NEXT_APP_RUNTIME_CANDIDATE_URL/" >/dev/null; then
+    PARITY_READY=1
+    break
+  fi
+  sleep 1
+done
+test "$PARITY_READY" = "1"
+
+PLAYWRIGHT_CHROMIUM_EXECUTABLE="$PLAYWRIGHT_CHROMIUM_EXECUTABLE" \
+JSON_RENDER_ORACLE_URL="$JSON_RENDER_ORACLE_URL" \
+NEXT_APP_RUNTIME_CANDIDATE_URL="$NEXT_APP_RUNTIME_CANDIDATE_URL" \
+npm run --workspace next-app-runtime-website-builder test:parity
+
+kill "$PARITY_ORACLE_PID" "$PARITY_CANDIDATE_PID" 2>/dev/null || true
+wait "$PARITY_ORACLE_PID" "$PARITY_CANDIDATE_PID" 2>/dev/null || true
+trap - EXIT INT TERM
+test -z "$(git status --porcelain)"
+test "$(git rev-parse HEAD)" = "$STAB_CANDIDATE_COMMIT"
+```
+
+若 detached clone 依赖未就绪且需要安装或网络，标记 `blocked` 并请求授权；不得修改原上游 checkout，candidate-only browser 不能替代 Oracle parity。`PARITY_RUN_DIR` 保留本轮日志用于诊断，清理由验证者在确认 exact path 后另行执行。
+
+高置信敏感信息扫描只覆盖 production scope，固定检测 OpenAI/Figma credential 形状、带 userinfo 的 URL 与用户绝对路径；tests 中用于证明脱敏的 synthetic canary 不属于该扫描，仍由 PKG-AC-20 测试断言不得进入 RuntimeError/event/DOM。扫描零命中时 `rg` 退出 1，因此必须使用上面的负断言包装；不得把真实凭据值写入命令、测试或报告。
+
+### 14.9 风险、回滚与残留假设
+
+| 风险 | 影响 | 缓解 / 回滚 |
+|---|---|---|
+| Zod strict JSON Schema/Record adapter 依赖内部 def 形状 | peer 范围内版本可能行为漂移 | 先以 4.4.3 + 已有 4.3.6 fixture 验证；每个支持版本跑 public schema matrix；不通过则收窄已验证 peer 范围需要单独设计/依赖授权。 |
+| loader root-model 修复影响 candidate/current/retry/event 顺序 | 状态机大范围回归 | 先写迁移矩阵；以独立 helper/owner 模型落地；整 lane 可回滚，不保留半套新旧 ownership。 |
+| presentation epoch 被误暴露为 source revision | 公共合同破坏 | epoch 仅私有；public `.d.ts`/API fixture 必须零变化；若无法私有实现则停止。 |
+| metadata presence marker 泄露进 NextAppSpec/DOM | 规范扩展或污染输出 | marker 只存在 Example composition/解析结果内部；DOM 只输出官方 link 集；可按 T14-C 整体回滚。 |
+| 共享工作树在验证后被其他 lane 修改 | 证据对应错误基线 | 顺序单 writer；每轮记录 hash/status；任何变化重跑并重置双审核。 |
+| 历史 opaque token map 长期保留 raw identifiers | 生命周期/内存 warning | 不阻塞本轮 9 项 correctness 修复，但在最终审核中验证 dispose 清空；若要求跨 revision token 稳定性，必须有公开合同依据，否则使用单调计数 + reachability pruning。 |
+
+残留机械假设：
+
+- 当前本地验证以 Zod 4.4.3 为主，4.3.6 有部分 adapter probe；完整 `^4.0.0` 矩阵尚未验证。验证失败影响支持声明/peer 范围，不得静默忽略。
+- `PLAYWRIGHT_CHROMIUM_EXECUTABLE` 与 detached Oracle clone 属环境输入；路径缺失是机械 blocker，不允许自动下载或把未运行写成通过。
+- Oracle 若需要网络/安装属于新的外部状态变更授权；未授权时 STAB-AC-11 保持 blocked。
+
+### 14.10 覆盖与完成定义
+
+- STAB-AC-01—03、09 → GATE-14-00、步骤 1—2、T14-A。
+- STAB-AC-04—06 → GATE-14-00、步骤 1/3、T14-B。
+- STAB-AC-07—08 → GATE-14-00、步骤 1/4、T14-C。
+- STAB-AC-10—12 → 步骤 5—7、T14-D。
+- PKG-AC-01—24 与 EX-AC-01—12 → 第 14.8 节全量门禁与 Oracle。
+
+只有同时满足以下条件，才能把状态从 `issues_found` 改为“稳定化完成”：
+
+1. 9 个 blocking 与 2 个 warning 均有整类回归和正式行为结论；
+2. 第 14.8 节所有适用门禁在同一 candidate commit 上通过；
+3. 官方 Oracle 没有未解释差异；
+4. 同一 commit 连续两轮独立审核均为 `review_result: clean`，期间无任何 finding 或文件变化；
+5. 用户另行确认后续生命周期动作；完成不自动授权 push、publish 或接入当前应用。
+
+下一步：在用户明确授权生产代码修订后执行 GATE-14-00；在此之前只允许计划复核和只读取证。

@@ -124,12 +124,15 @@ const delayedLoader = () => new Promise<Record<string, unknown>>((resolve) => {
   releaseDelayedLoader = () => resolve({ loaded: true });
 });
 function createFixtureRuntime(
-  overrides: Partial<Pick<RuntimeOptions, "initialSource" | "fallbacks" | "observer">> = {},
+  overrides: Partial<Pick<
+    RuntimeOptions,
+    "initialSource" | "fallbacks" | "loaders" | "observer"
+  >> = {},
 ) {
   return createNextAppRuntime({
     catalog,
     registry,
-    loaders: { delayed: delayedLoader },
+    loaders: overrides.loaders ?? { delayed: delayedLoader },
     limits: runtimeLimits,
     fallbacks: overrides.fallbacks ?? runtimeFallbacks,
     initialSource: overrides.initialSource,

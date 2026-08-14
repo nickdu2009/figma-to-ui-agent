@@ -1,5 +1,9 @@
-import { useEffect, useState } from "react";
-import { createNextAppRuntime } from "@next-app-runtime/client";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import {
+  createNextAppRuntime,
+  type RuntimeSnapshot,
+} from "@next-app-runtime/client";
+import { resolveMetadata } from "@next-app-runtime/client/router";
 
 import { catalog } from "@/lib/catalog";
 import { defaultSpec } from "@/lib/default-spec";
@@ -11,7 +15,29 @@ import {
 } from "@/lib/spec-store";
 import { WebsiteRenderer } from "./renderer";
 
-export function WebsitePage() {
+export interface WebsiteMetadataOwnership {
+  description: boolean;
+  icons: boolean;
+}
+
+function metadataOwnership(snapshot: RuntimeSnapshot): WebsiteMetadataOwnership {
+  const spec = snapshot.routeSource === "candidate"
+    ? snapshot.candidate
+    : snapshot.current;
+  const metadata = spec
+    ? resolveMetadata(spec, snapshot.matched?.route ?? null)
+    : {};
+  return {
+    description: Object.hasOwn(metadata, "description"),
+    icons: Object.hasOwn(metadata, "icons"),
+  };
+}
+
+export function WebsitePage({
+  onMetadataOwnershipChange,
+}: {
+  onMetadataOwnershipChange: (ownership: WebsiteMetadataOwnership) => void;
+}) {
   const [storageError, setStorageError] = useState<string | null>(null);
   const [runtime] = useState(() => createNextAppRuntime({
     initialSource: { kind: "object", value: defaultSpec },
@@ -41,6 +67,16 @@ export function WebsitePage() {
       ),
     },
   }));
+  const snapshot = useSyncExternalStore(
+    runtime.subscribe,
+    runtime.getSnapshot,
+    runtime.getSnapshot,
+  );
+  const ownership = metadataOwnership(snapshot);
+
+  useEffect(() => {
+    onMetadataOwnershipChange(ownership);
+  }, [onMetadataOwnershipChange, ownership.description, ownership.icons]);
 
   useEffect(() => {
     let applyRevision = 0;

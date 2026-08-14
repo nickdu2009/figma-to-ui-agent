@@ -144,6 +144,134 @@ describe("JSONL source compiler", () => {
     await expect(readSource(stream, 5)).resolves.toBe("hello");
   });
 
+  it("normalizes and redacts AsyncIterator and ReadableStream provider failures", async () => {
+    let iteratorGetterCalls = 0;
+    let doneGetterCalls = 0;
+    let valueGetterCalls = 0;
+    const iteratorGetter = Object.defineProperty({}, Symbol.asyncIterator, {
+      get() {
+        iteratorGetterCalls += 1;
+        throw new Error("sensitive iterator getter failure");
+      },
+    });
+    const malformedDone = Object.defineProperty({}, "done", {
+      enumerable: true,
+      get() {
+        doneGetterCalls += 1;
+        throw new Error("sensitive done getter failure");
+      },
+    });
+    const malformedValue = Object.defineProperties({}, {
+      done: { enumerable: true, value: false },
+      value: {
+        enumerable: true,
+        get() {
+          valueGetterCalls += 1;
+          throw new Error("sensitive value getter failure");
+        },
+      },
+    });
+    const iterable = (next: () => unknown) => ({
+      [Symbol.asyncIterator]() {
+        return { next };
+      },
+    });
+    const sources: Array<{ source: unknown; message: string }> = [
+      {
+        source: iteratorGetter,
+        message: "Source must be a string, Uint8Array, ReadableStream, or AsyncIterable",
+      },
+      {
+        source: {
+          [Symbol.asyncIterator]() {
+            throw new Error("sensitive iterator factory failure");
+          },
+        },
+        message: "Source must be a string, Uint8Array, ReadableStream, or AsyncIterable",
+      },
+      {
+        source: iterable(() => { throw new Error("sensitive sync iterator failure"); }),
+        message: "Source provider failed",
+      },
+      {
+        source: iterable(() => Promise.reject(new Error("sensitive async iterator failure"))),
+        message: "Source provider failed",
+      },
+      { source: iterable(() => null), message: "Source provider returned an invalid result" },
+      { source: iterable(() => 1), message: "Source provider returned an invalid result" },
+      { source: iterable(() => malformedDone), message: "Source provider returned an invalid result" },
+      { source: iterable(() => malformedValue), message: "Source provider returned an invalid result" },
+      {
+        source: new ReadableStream<string>({
+          pull() {
+            throw new Error("sensitive readable failure");
+          },
+        }),
+        message: "Source provider failed",
+      },
+    ];
+
+    for (const { source, message } of sources) {
+      let failure: unknown;
+      try {
+        await readSource(source as AsyncIterable<string>, 100);
+      } catch (error) {
+        failure = error;
+      }
+      expect(failure).toBeInstanceOf(RuntimeError);
+      expect(failure).toMatchObject({ code: "contract_invalid", message });
+      expect(String(failure)).not.toContain("sensitive");
+      expect(String(failure)).not.toContain("Cannot read properties");
+      expect(JSON.stringify(failure)).not.toContain("sensitive");
+      expect(JSON.stringify(failure)).not.toContain("Cannot read properties");
+    }
+    expect(iteratorGetterCalls).toBe(1);
+    expect(doneGetterCalls).toBe(0);
+    expect(valueGetterCalls).toBe(0);
+  });
+
+  it("accepts the standard IteratorResult form with an omitted false done field", async () => {
+    let index = 0;
+    const source: AsyncIterable<string> = {
+      [Symbol.asyncIterator](): AsyncIterator<string> {
+        return {
+          next() {
+            index += 1;
+            return index === 1
+              ? Promise.resolve({ value: "ok" })
+              : Promise.resolve({ done: true as const, value: undefined });
+          },
+        };
+      },
+    };
+    await expect(readSource(source, 100)).resolves.toBe("ok");
+  });
+
+  it("consumes cleanup rejection after an AsyncIterator provider failure", async () => {
+    const providerFailure = new Error("provider secret");
+    const cleanupFailure = new Error("cleanup secret");
+    const unhandled: unknown[] = [];
+    const onUnhandled = (reason: unknown) => unhandled.push(reason);
+    process.on("unhandledRejection", onUnhandled);
+    try {
+      await expect(readSource({
+        [Symbol.asyncIterator]() {
+          return {
+            next: () => Promise.reject(providerFailure),
+            return: () => Promise.reject(cleanupFailure),
+          };
+        },
+      }, 100)).rejects.toMatchObject({
+        code: "contract_invalid",
+        message: "Source provider failed",
+      });
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(unhandled).toEqual([]);
+    } finally {
+      process.removeListener("unhandledRejection", onUnhandled);
+    }
+  });
+
   it("normalizes fatal UTF-8 decoding failures", async () => {
     const sources = [
       new Uint8Array([0xff]),
@@ -215,9 +343,30 @@ describe("JSONL source compiler", () => {
     expect(JSON.stringify(compiled.value)).toBe(JSON.stringify(direct));
     const state = (compiled.value as { state: Record<string, unknown> }).state;
     expect(Object.hasOwn(state, "__proto__")).toBe(true);
-    expect(Object.getPrototypeOf(compiled.value)).toBe(Object.prototype);
-    expect(Object.getPrototypeOf(state)).toBe(Object.prototype);
+    expect(Object.getPrototypeOf(compiled.value)).toBeNull();
+    expect(Object.getPrototypeOf(state)).toBeNull();
     expect(({} as { enabled?: boolean }).enabled).toBeUndefined();
+  });
+
+  it("normalizes negative zero before publishing each operation candidate", async () => {
+    const candidates: unknown[] = [];
+    const result = await compileJsonlPatch(
+      {},
+      '{"op":"add","path":"/value","value":-0}\n' +
+        '{"op":"replace","path":"/value","value":-0}',
+      { maxBytes: 1_000, maxOperations: 10 },
+      undefined,
+      (candidate) => candidates.push(candidate),
+    );
+
+    for (const candidate of candidates as Array<{ value: number }>) {
+      expect(candidate.value).toBe(0);
+      expect(Object.is(candidate.value, -0)).toBe(false);
+      expect(Object.getPrototypeOf(candidate)).toBeNull();
+    }
+    const value = (result.value as { value: number }).value;
+    expect(value).toBe(0);
+    expect(Object.is(value, -0)).toBe(false);
   });
 
   it("publishes every operation candidate", async () => {
@@ -375,6 +524,29 @@ describe("JSONL source compiler", () => {
       '{"op":"add","path":"/a","value":1}\n{"op":"add","path":"/b","value":2}',
       { maxBytes: 1_000, maxOperations: 1 },
     )).rejects.toBeInstanceOf(RuntimeError);
+  });
+
+  it("rejects an oversized intermediate document before publishing a candidate", async () => {
+    const base = { state: { seed: "x".repeat(200) } };
+    const input = [
+      '{"op":"copy","from":"/state/seed","path":"/state/copy"}',
+      '{"op":"remove","path":"/state/copy"}',
+    ].join("\n");
+    const maxBytes = new TextEncoder().encode(JSON.stringify(base)).byteLength;
+    expect(new TextEncoder().encode(input).byteLength).toBeLessThan(maxBytes);
+    expect(new TextEncoder().encode(JSON.stringify({
+      state: { seed: base.state.seed, copy: base.state.seed },
+    })).byteLength).toBeGreaterThan(maxBytes);
+    const candidates: unknown[] = [];
+
+    await expect(compileJsonlPatch(
+      base,
+      input,
+      { maxBytes, maxOperations: 10 },
+      undefined,
+      (candidate) => candidates.push(candidate),
+    )).rejects.toMatchObject({ code: "source_limit_exceeded" });
+    expect(candidates).toEqual([]);
   });
 
   it("rejects non-finite and non-positive limits", async () => {

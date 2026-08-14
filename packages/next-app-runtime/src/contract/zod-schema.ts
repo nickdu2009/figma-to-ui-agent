@@ -1,7 +1,26 @@
 import { z, type core, type ZodType } from "zod";
 import type { UIElement, VisibilityCondition } from "@json-render/core";
 
+import {
+  isPlainJsonArray,
+  isPlainJsonObject,
+} from "./json-value.js";
 import type { NextAppSpec, NextMetadata, NextRouteSpec } from "./types.js";
+
+const RECORD_KEY_ESCAPE = "\u0000next-app-runtime-record-key:";
+
+function encodeRecordKey(key: string): string {
+  if (key === "__proto__") return `${RECORD_KEY_ESCAPE}proto`;
+  return key.startsWith(RECORD_KEY_ESCAPE)
+    ? `${RECORD_KEY_ESCAPE}literal:${key}`
+    : key;
+}
+
+export function decodeRecordKey(key: string): string {
+  if (key === `${RECORD_KEY_ESCAPE}proto`) return "__proto__";
+  const literalPrefix = `${RECORD_KEY_ESCAPE}literal:`;
+  return key.startsWith(literalPrefix) ? key.slice(literalPrefix.length) : key;
+}
 
 const jsonValueSchema: z.ZodType<unknown> = z.lazy(() =>
   z.union([
@@ -97,6 +116,20 @@ interface ZodCheckInternals {
   _def?: { abort?: boolean; check?: string };
 }
 
+interface ZodRunPayload {
+  value: unknown;
+  issues: unknown[];
+  [key: string]: unknown;
+}
+
+interface ZodRuntimeInternals {
+  run: (
+    payload: ZodRunPayload,
+    context: unknown,
+  ) => ZodRunPayload | Promise<ZodRunPayload>;
+  values?: Set<PropertyKey>;
+}
+
 function zodInternals(schema: ZodType): ZodInternals {
   return (schema as ZodType & { _def: ZodInternals })._def;
 }
@@ -105,6 +138,10 @@ function cloneZod(schema: ZodType, definition: ZodInternals): ZodType {
   return (schema as ZodType & {
     clone: (definition: ZodInternals) => ZodType;
   }).clone(definition);
+}
+
+function zodRuntimeInternals(schema: ZodType): ZodRuntimeInternals {
+  return (schema as ZodType & { _zod: ZodRuntimeInternals })._zod;
 }
 
 function containsDynamicExpression(value: unknown): boolean {
@@ -273,45 +310,235 @@ function withStaticDeferredChecks(
   });
 }
 
-function withOwnProtoRecordValidation(
-  keySchema: ZodType,
-  valueSchema: ZodType,
-  candidate: ZodType,
-): ZodType {
-  return z
-    .any()
-    .superRefine((value, context) => {
-      if (
-        value === null ||
-        typeof value !== "object" ||
-        Array.isArray(value) ||
-        !Object.hasOwn(value, "__proto__")
-      ) {
-        return;
-      }
-      const reservedValue = Object.getOwnPropertyDescriptor(value, "__proto__")?.value;
-      for (const result of [
-        keySchema.safeParse("__proto__"),
-        valueSchema.safeParse(reservedValue),
-      ]) {
-        if (result.success) continue;
-        for (const issue of result.error.issues) {
-          context.addIssue({
-            ...issue,
-            path: ["__proto__", ...issue.path],
-          } as core.$ZodSuperRefineIssue);
-        }
-      }
-    })
-    .pipe(candidate);
+function encodedRecordKeySchema(keySchema: ZodType): ZodType {
+  const candidate = cloneZod(keySchema, zodInternals(keySchema));
+  const originalRuntime = zodRuntimeInternals(keySchema);
+  const candidateRuntime = zodRuntimeInternals(candidate);
+  const mapResult = (result: ZodRunPayload): ZodRunPayload => {
+    if (result.issues.length === 0 && typeof result.value === "string") {
+      result.value = encodeRecordKey(result.value);
+    }
+    return result;
+  };
+  candidateRuntime.run = (payload, context) => {
+    const result = originalRuntime.run({
+      ...payload,
+      issues: [...payload.issues],
+      value: typeof payload.value === "string"
+        ? decodeRecordKey(payload.value)
+        : payload.value,
+    }, context);
+    return result instanceof Promise ? result.then(mapResult) : mapResult(result);
+  };
+  Object.defineProperty(candidateRuntime, "values", {
+    configurable: true,
+    enumerable: true,
+    value: originalRuntime.values === undefined
+      ? undefined
+      : new Set(
+          [...originalRuntime.values].map((value) =>
+            typeof value === "string" ? encodeRecordKey(value) : value
+          ),
+        ),
+    writable: false,
+  });
+  return candidate;
 }
 
-function ownRecordSchema(keySchema: z.ZodString, valueSchema: ZodType): ZodType {
-  return withOwnProtoRecordValidation(
-    cloneZod(keySchema, zodInternals(keySchema)),
-    valueSchema,
-    z.record(keySchema, valueSchema),
-  );
+function ownRecordSchema<T>(
+  keySchema: z.ZodString,
+  valueSchema: z.ZodType<T>,
+): z.ZodType<Record<string, T>> {
+  const candidateKeySchema = encodedRecordKeySchema(keySchema);
+  return withDirectRecordKeyMapping(
+    z.record(candidateKeySchema as z.ZodType<PropertyKey>, valueSchema),
+  ) as z.ZodType<Record<string, T>>;
+}
+
+interface DirectRecordKeyMapping {
+  value: unknown;
+  provenance: Map<string, string>;
+}
+
+function mapDirectRecordKeys(
+  value: unknown,
+  mapKey: (key: string) => string,
+  knownKeys: readonly string[] = [],
+): DirectRecordKeyMapping {
+  const provenance = new Map<string, string>();
+  for (const key of knownKeys) provenance.set(mapKey(key), key);
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    return { value, provenance };
+  }
+  const mapped: Record<PropertyKey, unknown> = {};
+  for (const key of Reflect.ownKeys(value)) {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    if (!descriptor?.enumerable) continue;
+    if (typeof key === "string") {
+      const mappedKey = mapKey(key);
+      provenance.set(mappedKey, key);
+      Object.defineProperty(mapped, mappedKey, descriptor);
+    } else {
+      Object.defineProperty(mapped, key, descriptor);
+    }
+  }
+  return { value: mapped, provenance };
+}
+
+function remapDirectRecordIssueInput(
+  input: unknown,
+  provenance: ReadonlyMap<string, string>,
+): { changed: boolean; value: unknown } {
+  if (typeof input === "string") {
+    const mapped = provenance.get(input) ?? input;
+    return { changed: mapped !== input, value: mapped };
+  }
+  if (input === null || typeof input !== "object" || Array.isArray(input)) {
+    return { changed: false, value: input };
+  }
+
+  let changed = false;
+  const mapped: Record<PropertyKey, unknown> = {};
+  for (const key of Reflect.ownKeys(input)) {
+    const descriptor = Object.getOwnPropertyDescriptor(input, key);
+    if (!descriptor) continue;
+    const mappedKey = typeof key === "string"
+      ? provenance.get(key) ?? key
+      : key;
+    if (mappedKey !== key) changed = true;
+    Object.defineProperty(mapped, mappedKey, descriptor);
+  }
+  return { changed, value: changed ? mapped : input };
+}
+
+function remapUnrecognizedKeysMessage(
+  message: string,
+  keyProvenance: ReadonlyMap<string, string>,
+): string {
+  const replacements = [...keyProvenance]
+    .flatMap(([encoded, publicKey]) => [
+      { encoded, publicKey },
+      {
+        encoded: JSON.stringify(encoded).slice(1, -1),
+        publicKey: JSON.stringify(publicKey).slice(1, -1),
+      },
+    ])
+    .filter(({ encoded, publicKey }) => encoded !== publicKey)
+    .sort((left, right) => right.encoded.length - left.encoded.length);
+  if (replacements.length === 0) return message;
+
+  let remapped = "";
+  for (let index = 0; index < message.length;) {
+    const replacement = replacements.find(({ encoded }) =>
+      message.startsWith(encoded, index)
+    );
+    if (!replacement) {
+      remapped += message[index];
+      index += 1;
+      continue;
+    }
+    remapped += replacement.publicKey;
+    index += replacement.encoded.length;
+  }
+  return remapped;
+}
+
+interface RemappedDirectRecordIssue {
+  changed: boolean;
+  issue: Record<string, unknown>;
+}
+
+function remapDirectRecordIssue(
+  issue: Record<string, unknown>,
+  provenance: ReadonlyMap<string, string>,
+): RemappedDirectRecordIssue {
+  const mapped = { ...issue };
+  const messageKeyProvenance = new Map<string, string>();
+  let changed = false;
+  if (Array.isArray(issue.path) && typeof issue.path[0] === "string") {
+    const first = provenance.get(issue.path[0]);
+    if (first !== undefined && first !== issue.path[0]) {
+      mapped.path = [first, ...issue.path.slice(1)];
+      changed = true;
+    }
+  }
+  if (Array.isArray(issue.keys)) {
+    const originalKeys = issue.keys;
+    const keys = originalKeys.map((key) => {
+      if (typeof key !== "string") return key;
+      const publicKey = provenance.get(key) ?? key;
+      if (publicKey !== key) messageKeyProvenance.set(key, publicKey);
+      return publicKey;
+    });
+    mapped.keys = keys;
+    if (keys.some((key, index) => key !== originalKeys[index])) changed = true;
+  }
+  if (Array.isArray(issue.errors)) {
+    mapped.errors = issue.errors.map((branch) => {
+      if (!Array.isArray(branch)) return branch;
+      return branch.map((nested) => {
+        const result = remapDirectRecordIssue(
+          nested as Record<string, unknown>,
+          provenance,
+        );
+        if (result.changed) changed = true;
+        return result.issue;
+      });
+    });
+  }
+  if (Object.hasOwn(issue, "input")) {
+    const input = remapDirectRecordIssueInput(issue.input, provenance);
+    mapped.input = input.value;
+    if (input.changed) changed = true;
+  }
+  if (
+    issue.code === "unrecognized_keys" &&
+    typeof issue.message === "string" &&
+    messageKeyProvenance.size > 0
+  ) {
+    mapped.message = remapUnrecognizedKeysMessage(
+      issue.message,
+      messageKeyProvenance,
+    );
+  }
+  return { changed, issue: mapped };
+}
+
+function withDirectRecordKeyMapping(
+  candidate: ZodType,
+  knownKeys: readonly string[] = [],
+): ZodType {
+  const bridge = cloneZod(candidate, zodInternals(candidate));
+  const originalRuntime = zodRuntimeInternals(candidate);
+  const bridgeRuntime = zodRuntimeInternals(bridge);
+  const finish = (
+    result: ZodRunPayload,
+    provenance: ReadonlyMap<string, string>,
+  ): ZodRunPayload => {
+    if (result.issues.length > 0) {
+      result.issues = result.issues.map((issue) =>
+        remapDirectRecordIssue(
+          issue as Record<string, unknown>,
+          provenance,
+        ).issue
+      );
+    } else {
+      result.value = mapDirectRecordKeys(result.value, decodeRecordKey).value;
+    }
+    return result;
+  };
+  bridgeRuntime.run = (payload, context) => {
+    const encoded = mapDirectRecordKeys(payload.value, encodeRecordKey, knownKeys);
+    const result = originalRuntime.run({
+      ...payload,
+      issues: [...payload.issues],
+      value: encoded.value,
+    }, context);
+    return result instanceof Promise
+      ? result.then((parsed) => finish(parsed, encoded.provenance))
+      : finish(result, encoded.provenance);
+  };
+  return bridge;
 }
 
 function containsOwnRecordKeyCandidate(
@@ -402,9 +629,12 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
       case "object": {
         const shape = definition.shape ?? {};
         const relaxedShape = Object.fromEntries(
-          Object.entries(shape).map(([name, value]) => [name, visit(value, true)]),
+          Object.entries(shape).map(([name, value]) => [
+            encodeRecordKey(name),
+            visit(value, true),
+          ]),
         );
-        result = wrapCandidate(withStaticDeferredChecks(
+        const candidate = withStaticDeferredChecks(
           cloneZod(current, {
             ...withoutDeferredChecks(definition),
             shape: relaxedShape,
@@ -413,7 +643,18 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
               : definition.catchall,
           }),
           definition,
-        ));
+        );
+        const hasMappedShapeKey = Object.keys(shape).some(
+          (key) => encodeRecordKey(key) !== key,
+        );
+        result = withDirectRecordKeyMapping(
+          hasMappedShapeKey
+            ? allowDirectExpression
+              ? z.union([dynamicExpressionSchema, candidate])
+              : candidate
+            : wrapCandidate(candidate),
+          Object.keys(shape),
+        );
         break;
       }
       case "array":
@@ -427,18 +668,23 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
         break;
       case "record":
         {
-          const keyType = cloneZod(definition.keyType!, zodInternals(definition.keyType!));
+          const keyType = definition.keyType!;
           const valueType = visit(definition.valueType!, true);
+          const candidateKeyType = encodedRecordKeySchema(keyType);
           const candidate = withStaticDeferredChecks(cloneZod(current, {
             ...withoutDeferredChecks(definition),
+            keyType: candidateKeyType,
             valueType,
           }), definition);
-          result = withOwnProtoRecordValidation(
-            keyType,
-            valueType,
+          result = withDirectRecordKeyMapping(
             allowDirectExpression
               ? z.union([dynamicExpressionSchema, candidate])
               : candidate,
+            [...(zodRuntimeInternals(keyType).values ?? [])]
+              .filter((value): value is string | number =>
+                typeof value === "string" || typeof value === "number"
+              )
+              .map(String),
           );
         }
         break;
@@ -562,12 +808,15 @@ export function expressionAwareCatalogSchema(schema: ZodType): ZodType {
             throw error;
           }
         };
-        const candidate = z.any().superRefine((value, context) => {
+        const candidate = z.any().transform((value, context) => {
           const evaluation = evaluatePipeline(current, value, allowDirectExpression);
-          if (evaluation.status !== "failed") return;
-          for (const issue of evaluation.issues) {
-            context.addIssue(issue as core.$ZodSuperRefineIssue);
+          if (evaluation.status === "failed") {
+            for (const issue of evaluation.issues) {
+              context.addIssue(issue as core.$ZodSuperRefineIssue);
+            }
+            return value;
           }
+          return evaluation.status === "passed" ? evaluation.data : value;
         });
         result = wrapCandidate(candidate);
         break;
@@ -602,26 +851,26 @@ const actionConfirmSchema = z
 
 const actionOnSuccessSchema = z.union([
   z.object({ navigate: z.string() }).strict(),
-  z.object({ set: z.record(z.string(), jsonValueSchema) }).strict(),
+  z.object({ set: ownRecordSchema(z.string(), jsonValueSchema) }).strict(),
   z.object({ action: z.string() }).strict(),
 ]);
 
 const actionOnErrorSchema = z.union([
-  z.object({ set: z.record(z.string(), jsonValueSchema) }).strict(),
+  z.object({ set: ownRecordSchema(z.string(), jsonValueSchema) }).strict(),
   z.object({ action: z.string() }).strict(),
 ]);
 
 function catalogActionOnSuccessSchema(actionName: ZodType) {
   return z.union([
     z.object({ navigate: z.string() }).strict(),
-    z.object({ set: z.record(z.string(), jsonValueSchema) }).strict(),
+    z.object({ set: ownRecordSchema(z.string(), jsonValueSchema) }).strict(),
     z.object({ action: actionName }).strict(),
   ]);
 }
 
 function catalogActionOnErrorSchema(actionName: ZodType) {
   return z.union([
-    z.object({ set: z.record(z.string(), jsonValueSchema) }).strict(),
+    z.object({ set: ownRecordSchema(z.string(), jsonValueSchema) }).strict(),
     z.object({ action: actionName }).strict(),
   ]);
 }
@@ -667,8 +916,8 @@ interface CatalogSchemaEntry {
   params?: ZodType;
 }
 
-const dynamicParamsSchema = z.record(z.string(), jsonValueSchema);
-const jsonPropsSchema = z.record(z.string(), jsonValueSchema);
+const dynamicParamsSchema = ownRecordSchema(z.string(), jsonValueSchema);
+const jsonPropsSchema = ownRecordSchema(z.string(), jsonValueSchema);
 
 function catalogActionBindingSchema(
   name: string,
@@ -770,7 +1019,7 @@ function createCatalogElementTreeSchema(
   return z.object({
     root: z.string(),
     elements: ownRecordSchema(z.string(), element),
-    state: z.record(z.string(), jsonValueSchema).optional(),
+    state: ownRecordSchema(z.string(), jsonValueSchema).optional(),
   }).strict();
 }
 
@@ -787,17 +1036,17 @@ export function createCatalogAwareNextAppSpecSchema(
     error: tree.optional(),
     notFound: tree.optional(),
     loader: z.string().optional(),
-    staticParams: z.array(z.record(z.string(), z.string())).optional(),
+    staticParams: z.array(ownRecordSchema(z.string(), z.string())).optional(),
   }).strict();
   return z.object({
     metadata: nextMetadataSchema.optional(),
     routes: ownRecordSchema(z.string(), route),
     layouts: ownRecordSchema(z.string(), tree).optional(),
-    state: z.record(z.string(), jsonValueSchema).optional(),
+    state: ownRecordSchema(z.string(), jsonValueSchema).optional(),
   }).strict() as z.ZodType<NextAppSpec>;
 }
 
-export const elementTreeSchema = z
+const elementTreeStructureSchema = z
   .object({
     root: z.string(),
     elements: z.record(z.string(), uiElementSchema),
@@ -805,7 +1054,7 @@ export const elementTreeSchema = z
   })
   .strict();
 
-export const nextMetadataSchema: z.ZodType<NextMetadata> = z
+const nextMetadataStructureSchema: z.ZodType<NextMetadata> = z
   .object({
     title: z
       .union([
@@ -868,113 +1117,254 @@ export const nextMetadataSchema: z.ZodType<NextMetadata> = z
   })
   .strict();
 
-export const nextRouteSpecSchema: z.ZodType<NextRouteSpec> = z
+const nextRouteSpecStructureSchema: z.ZodType<NextRouteSpec> = z
   .object({
-    page: elementTreeSchema,
-    metadata: nextMetadataSchema.optional(),
+    page: elementTreeStructureSchema,
+    metadata: nextMetadataStructureSchema.optional(),
     layout: z.string().optional(),
-    loading: elementTreeSchema.optional(),
-    error: elementTreeSchema.optional(),
-    notFound: elementTreeSchema.optional(),
+    loading: elementTreeStructureSchema.optional(),
+    error: elementTreeStructureSchema.optional(),
+    notFound: elementTreeStructureSchema.optional(),
     loader: z.string().optional(),
     staticParams: z.array(z.record(z.string(), z.string())).optional(),
   })
   .strict();
 
-const RECORD_KEY_ESCAPE = "\u0000next-app-runtime-record-key:";
-
-function encodeRecordKey(key: string): string {
-  if (key === "__proto__") return `${RECORD_KEY_ESCAPE}proto`;
-  return key.startsWith(RECORD_KEY_ESCAPE)
-    ? `${RECORD_KEY_ESCAPE}literal:${key}`
-    : key;
+interface RecordKeyMapping {
+  value: unknown;
+  provenance: Map<string, string>;
 }
 
-function decodeRecordKey(key: string): string {
-  if (key === `${RECORD_KEY_ESCAPE}proto`) return "__proto__";
-  const literalPrefix = `${RECORD_KEY_ESCAPE}literal:`;
-  return key.startsWith(literalPrefix) ? key.slice(literalPrefix.length) : key;
+const recordKeySnapshotFailure = Symbol("record key snapshot failure");
+
+function snapshotRecordKeyInput(
+  value: unknown,
+  active = new WeakSet<object>(),
+  snapshots = new WeakMap<object, unknown>(),
+): unknown {
+  if (value === null || typeof value !== "object") return value;
+  if (active.has(value)) throw recordKeySnapshotFailure;
+  if (snapshots.has(value)) return snapshots.get(value);
+
+  let array: boolean;
+  let plain: boolean;
+  let keys: PropertyKey[];
+  try {
+    array = Array.isArray(value);
+    plain = array
+      ? isPlainJsonArray(value as unknown[])
+      : isPlainJsonObject(value);
+    keys = Reflect.ownKeys(value);
+  } catch {
+    throw recordKeySnapshotFailure;
+  }
+  if (!plain) throw recordKeySnapshotFailure;
+
+  let arrayLength: number | undefined;
+  const entries: Array<{ descriptor: PropertyDescriptor; key: string }> = [];
+  for (const key of keys) {
+    let descriptor: PropertyDescriptor | undefined;
+    try {
+      descriptor = Object.getOwnPropertyDescriptor(value, key);
+    } catch {
+      throw recordKeySnapshotFailure;
+    }
+    if (!descriptor || !("value" in descriptor)) {
+      throw recordKeySnapshotFailure;
+    }
+    if (array && key === "length") {
+      if (
+        descriptor.enumerable ||
+        !Number.isSafeInteger(descriptor.value) ||
+        descriptor.value < 0 ||
+        descriptor.value > 0xffff_ffff
+      ) {
+        throw recordKeySnapshotFailure;
+      }
+      arrayLength = descriptor.value as number;
+      continue;
+    }
+    if (typeof key !== "string" || !descriptor.enumerable) {
+      throw recordKeySnapshotFailure;
+    }
+    entries.push({ descriptor, key });
+  }
+  if (array && arrayLength === undefined) throw recordKeySnapshotFailure;
+
+  const snapshot = (array
+    ? new Array<unknown>(arrayLength!)
+    : {}) as Record<PropertyKey, unknown>;
+  snapshots.set(value, snapshot);
+  active.add(value);
+  try {
+    for (const { descriptor, key } of entries) {
+      Object.defineProperty(snapshot, key, {
+        ...descriptor,
+        value: snapshotRecordKeyInput(descriptor.value, active, snapshots),
+      });
+    }
+  } finally {
+    active.delete(value);
+  }
+  return snapshot;
 }
 
-function mapRecordKeys(value: unknown, mapKey: (key: string) => string): unknown {
+function mapRecordKeys(
+  value: unknown,
+  mapKey: (key: string) => string,
+  provenance = new Map<string, string>(),
+): RecordKeyMapping {
   if (Array.isArray(value)) {
+    if (!isPlainJsonArray(value)) return { value, provenance };
     const mapped = new Array<unknown>(value.length);
     for (const key of Object.keys(value)) {
       const descriptor = Object.getOwnPropertyDescriptor(value, key);
       if (!descriptor) continue;
-      Object.defineProperty(mapped, mapKey(key), "value" in descriptor
-        ? { ...descriptor, value: mapRecordKeys(descriptor.value, mapKey) }
+      const mappedKey = mapKey(key);
+      provenance.set(mappedKey, key);
+      Object.defineProperty(mapped, mappedKey, "value" in descriptor
+        ? {
+            ...descriptor,
+            value: mapRecordKeys(descriptor.value, mapKey, provenance).value,
+          }
         : descriptor);
     }
-    return mapped;
+    return { value: mapped, provenance };
   }
-  if (value === null || typeof value !== "object") return value;
-  const prototype = Object.getPrototypeOf(value);
-  if (prototype !== Object.prototype && prototype !== null) return value;
+  if (value === null || typeof value !== "object") return { value, provenance };
+  if (!isPlainJsonObject(value)) return { value, provenance };
 
   const mapped: Record<string, unknown> = {};
   for (const key of Object.keys(value)) {
     const descriptor = Object.getOwnPropertyDescriptor(value, key);
     if (!descriptor) continue;
-    Object.defineProperty(mapped, mapKey(key), "value" in descriptor
-      ? { ...descriptor, value: mapRecordKeys(descriptor.value, mapKey) }
+    const mappedKey = mapKey(key);
+    provenance.set(mappedKey, key);
+    Object.defineProperty(mapped, mappedKey, "value" in descriptor
+      ? {
+          ...descriptor,
+          value: mapRecordKeys(descriptor.value, mapKey, provenance).value,
+        }
       : descriptor);
   }
-  return mapped;
-}
-
-function containsEscapedRecordKey(
-  value: unknown,
-  seen = new Set<object>(),
-): boolean {
-  if (value === null || typeof value !== "object" || seen.has(value)) return false;
-  const prototype = Object.getPrototypeOf(value);
-  if (!Array.isArray(value) && prototype !== Object.prototype && prototype !== null) {
-    return false;
-  }
-  seen.add(value);
-  for (const key of Object.keys(value)) {
-    if (key === "__proto__" || key.startsWith(RECORD_KEY_ESCAPE)) return true;
-    const descriptor = Object.getOwnPropertyDescriptor(value, key);
-    if (
-      descriptor &&
-      "value" in descriptor &&
-      containsEscapedRecordKey(descriptor.value, seen)
-    ) return true;
-  }
-  return false;
+  return { value: mapped, provenance };
 }
 
 const nextAppSpecStructureSchema: z.ZodType<NextAppSpec> = z
   .object({
-    metadata: nextMetadataSchema.optional(),
-    routes: z.record(z.string(), nextRouteSpecSchema),
-    layouts: z.record(z.string(), elementTreeSchema).optional(),
+    metadata: nextMetadataStructureSchema.optional(),
+    routes: z.record(z.string(), nextRouteSpecStructureSchema),
+    layouts: z.record(z.string(), elementTreeStructureSchema).optional(),
     state: z.record(z.string(), jsonValueSchema).optional(),
   })
   .strict();
 
-export const nextAppSpecSchema: z.ZodType<NextAppSpec> = z
-  .any()
-  .superRefine((input, context) => {
-    if (!containsEscapedRecordKey(input)) return;
-    const result = nextAppSpecStructureSchema.safeParse(
-      mapRecordKeys(input, encodeRecordKey),
+function remapRecordKeyIssueInput(
+  input: unknown,
+  provenance: ReadonlyMap<string, string>,
+): unknown {
+  if (typeof input === "string") return provenance.get(input) ?? input;
+  return mapRecordKeys(input, decodeRecordKey).value;
+}
+
+function remapRecordKeyIssue(
+  issue: Record<string, unknown>,
+  provenance: ReadonlyMap<string, string>,
+): Record<string, unknown> {
+  const mapped = { ...issue };
+  const messageKeyProvenance = new Map<string, string>();
+  if (Array.isArray(issue.path)) {
+    mapped.path = issue.path.map((segment) =>
+      typeof segment === "string" ? provenance.get(segment) ?? segment : segment
     );
-    if (result.success) return;
-    for (const issue of result.error.issues) {
-      context.addIssue({
-        ...issue,
-        continue: false,
-        path: issue.path.map((segment) =>
-          typeof segment === "string" ? decodeRecordKey(segment) : segment
-        ),
-      } as core.$ZodSuperRefineIssue);
+  }
+  if (Array.isArray(issue.keys)) {
+    mapped.keys = issue.keys.map((key) => {
+      if (typeof key !== "string") return key;
+      const publicKey = provenance.get(key) ?? key;
+      if (publicKey !== key) messageKeyProvenance.set(key, publicKey);
+      return publicKey;
+    });
+  }
+  if (Array.isArray(issue.errors)) {
+    mapped.errors = issue.errors.map((branch) =>
+      Array.isArray(branch)
+        ? branch.map((nested) => remapRecordKeyIssue(
+            nested as Record<string, unknown>,
+            provenance,
+          ))
+        : branch
+    );
+  }
+  if (Object.hasOwn(issue, "input")) {
+    mapped.input = remapRecordKeyIssueInput(issue.input, provenance);
+  }
+  if (
+    issue.code === "unrecognized_keys" &&
+    typeof issue.message === "string" &&
+    messageKeyProvenance.size > 0
+  ) {
+    mapped.message = remapUnrecognizedKeysMessage(
+      issue.message,
+      messageKeyProvenance,
+    );
+  }
+  return mapped;
+}
+
+const recordKeySnapshotFailureSchema = z.never(
+  "Input properties could not be inspected",
+);
+
+function recordKeySafeSchema<T>(structure: z.ZodType<T>): z.ZodType<T> {
+  const bridge = cloneZod(structure, zodInternals(structure));
+  const originalRuntime = zodRuntimeInternals(structure);
+  const bridgeRuntime = zodRuntimeInternals(bridge);
+  const failureRuntime = zodRuntimeInternals(recordKeySnapshotFailureSchema);
+  const finish = (
+    result: ZodRunPayload,
+    provenance: ReadonlyMap<string, string>,
+  ): ZodRunPayload => {
+    if (result.issues.length > 0) {
+      result.issues = result.issues.map((issue) =>
+        remapRecordKeyIssue(issue as Record<string, unknown>, provenance)
+      );
+    } else {
+      result.value = mapRecordKeys(result.value, decodeRecordKey).value;
     }
-  })
-  .overwrite((input) => mapRecordKeys(input, encodeRecordKey))
-  .pipe(nextAppSpecStructureSchema)
-  .overwrite((parsed) => mapRecordKeys(parsed, decodeRecordKey) as NextAppSpec);
+    return result;
+  };
+
+  bridgeRuntime.run = (payload, context) => {
+    let encoded: RecordKeyMapping;
+    try {
+      encoded = mapRecordKeys(
+        snapshotRecordKeyInput(payload.value),
+        encodeRecordKey,
+      );
+    } catch {
+      return failureRuntime.run({
+        ...payload,
+        issues: [...payload.issues],
+        value: null,
+      }, context);
+    }
+    const result = originalRuntime.run({
+      ...payload,
+      issues: [...payload.issues],
+      value: encoded.value,
+    }, context);
+    return result instanceof Promise
+      ? result.then((parsed) => finish(parsed, encoded.provenance))
+      : finish(result, encoded.provenance);
+  };
+  return bridge as z.ZodType<T>;
+}
+
+export const elementTreeSchema = recordKeySafeSchema(elementTreeStructureSchema);
+export const nextMetadataSchema = recordKeySafeSchema(nextMetadataStructureSchema);
+export const nextRouteSpecSchema = recordKeySafeSchema(nextRouteSpecStructureSchema);
+export const nextAppSpecSchema = recordKeySafeSchema(nextAppSpecStructureSchema);
 
 export function parseNextAppSpec(input: unknown): NextAppSpec {
   return nextAppSpecSchema.parse(input);

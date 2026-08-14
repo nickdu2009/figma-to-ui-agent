@@ -1,9 +1,15 @@
 import { describe, expect, it } from "vitest";
+import { runInNewContext } from "node:vm";
 import { z } from "zod";
 
 import { schema } from "../../src/contract/schema.js";
 import type { NextAppSpec } from "../../src/contract/types.js";
-import { nextAppSpecSchema } from "../../src/contract/zod-schema.js";
+import {
+  elementTreeSchema,
+  nextAppSpecSchema,
+  nextMetadataSchema,
+  nextRouteSpecSchema,
+} from "../../src/contract/zod-schema.js";
 import { assertCatalogSpec } from "../../src/validation/catalog-gate.js";
 import { assertReferences } from "../../src/validation/reference-gate.js";
 
@@ -109,7 +115,7 @@ describe("NextAppSpec 0.19.0 contract", () => {
       writable: true,
     });
 
-    const result = nextAppSpecSchema.safeParse({ routes });
+    const result = nextAppSpecSchema.safeParse({ routes }, { reportInput: true });
     expect(result.success).toBe(false);
     if (result.success) throw new Error("Expected invalid routes");
     expect(result.error.issues[0]?.path).toEqual(["routes", "__proto__"]);
@@ -119,10 +125,12 @@ describe("NextAppSpec 0.19.0 contract", () => {
   });
 
   it("does not make non-JSON objects valid while preserving Record keys", () => {
-    expect(nextAppSpecSchema.safeParse({
-      routes: {},
-      state: { createdAt: new Date() },
-    }).success).toBe(false);
+    for (const exotic of [new Date(), new Map([["value", true]])]) {
+      expect(nextAppSpecSchema.safeParse({
+        routes: {},
+        state: { exotic },
+      }).success).toBe(false);
+    }
   });
 
   it("rejects an unknown accessor without executing it during record-key mapping", () => {
@@ -136,6 +144,281 @@ describe("NextAppSpec 0.19.0 contract", () => {
     });
 
     expect(nextAppSpecSchema.safeParse(spec).success).toBe(false);
+    expect(getterCalls).toBe(0);
+  });
+
+  it("rejects a required accessor without executing or exposing its error", () => {
+    let getterCalls = 0;
+    const spec = Object.defineProperty({}, "routes", {
+      enumerable: true,
+      get() {
+        getterCalls += 1;
+        throw new Error("sensitive required getter");
+      },
+    });
+
+    const result = nextAppSpecSchema.safeParse(spec);
+    expect(result.success).toBe(false);
+    expect(getterCalls).toBe(0);
+    if (result.success) throw new Error("Expected required accessor rejection");
+    expect(JSON.stringify(result.error.issues)).not.toContain("sensitive required getter");
+  });
+
+  it("preserves native Zod semantics for explicit optional undefined values", () => {
+    const input = {
+      routes: {},
+      metadata: undefined,
+      layouts: undefined,
+      state: undefined,
+    };
+
+    const result = nextAppSpecSchema.safeParse(input);
+
+    expect(result.success).toBe(true);
+    if (!result.success) throw new Error("Expected optional undefined values to validate");
+    expect(result.data).toEqual(input);
+  });
+
+  it("snapshots Proxy array descriptors once without reading the live length property", () => {
+    const trapCalls = {
+      get: 0,
+      getPrototypeOf: 0,
+      ownKeys: 0,
+      descriptors: new Map<PropertyKey, number>(),
+    };
+    const rows = new Proxy([{ id: "one" }], {
+      get(_target, property) {
+        trapCalls.get += 1;
+        throw new Error(`sensitive live property ${String(property)}`);
+      },
+      getOwnPropertyDescriptor(target, property) {
+        trapCalls.descriptors.set(
+          property,
+          (trapCalls.descriptors.get(property) ?? 0) + 1,
+        );
+        return Reflect.getOwnPropertyDescriptor(target, property);
+      },
+      getPrototypeOf(target) {
+        trapCalls.getPrototypeOf += 1;
+        return Reflect.getPrototypeOf(target);
+      },
+      ownKeys(target) {
+        trapCalls.ownKeys += 1;
+        return Reflect.ownKeys(target);
+      },
+    });
+
+    const result = nextAppSpecSchema.safeParse({
+      routes: {},
+      state: { rows },
+    });
+
+    expect(result.success).toBe(true);
+    if (!result.success) throw new Error("Expected descriptor snapshot to validate");
+    expect(result.data.state?.rows).toEqual([{ id: "one" }]);
+    expect(trapCalls.get).toBe(0);
+    expect(trapCalls.getPrototypeOf).toBe(1);
+    expect(trapCalls.ownKeys).toBe(1);
+    expect(trapCalls.descriptors).toEqual(new Map<PropertyKey, number>([
+      ["0", 1],
+      ["length", 1],
+    ]));
+  });
+
+  it("turns Proxy snapshot failures into stable public Schema issues", () => {
+    const secret = "sensitive descriptor snapshot failure";
+    const inputs = [
+      new Proxy({}, { ownKeys() { throw new Error(secret); } }),
+      new Proxy({}, { getPrototypeOf() { throw new Error(secret); } }),
+      new Proxy({ value: true }, {
+        getOwnPropertyDescriptor() { throw new Error(secret); },
+      }),
+    ];
+
+    for (const state of inputs) {
+      let result: ReturnType<typeof nextAppSpecSchema.safeParse> | undefined;
+      expect(() => {
+        result = nextAppSpecSchema.safeParse(
+          { routes: {}, state },
+          { reportInput: true },
+        );
+      }).not.toThrow();
+      expect(result?.success).toBe(false);
+      expect(JSON.stringify(result)).not.toContain(secret);
+    }
+  });
+
+  it("preserves own Record keys in every public element-tree route schema", () => {
+    const route = JSON.parse(`{
+      "page": {
+        "root": "__proto__",
+        "elements": {
+          "__proto__": {
+            "type": "Text",
+            "props": { "text": "Page", "__proto__": "prop-value" },
+            "on": {
+              "__proto__": {
+                "action": "setState",
+                "params": {
+                  "statePath": "/result",
+                  "value": true,
+                  "__proto__": "params-value"
+                },
+                "onSuccess": { "set": { "__proto__": "success-value" } }
+              }
+            },
+            "watch": {
+              "__proto__": {
+                "action": "setState",
+                "params": { "statePath": "/watch", "value": true }
+              }
+            }
+          }
+        },
+        "state": { "__proto__": { "scope": "page" } }
+      },
+      "loading": {
+        "root": "__proto__",
+        "elements": { "__proto__": { "type": "Text", "props": { "text": "Loading" } } }
+      },
+      "error": {
+        "root": "__proto__",
+        "elements": { "__proto__": { "type": "Text", "props": { "text": "Error" } } }
+      },
+      "notFound": {
+        "root": "__proto__",
+        "elements": { "__proto__": { "type": "Text", "props": { "text": "Missing" } } }
+      },
+      "staticParams": [{ "__proto__": "reserved-param" }]
+    }`);
+
+    const assertReservedTree = (value: ReturnType<typeof elementTreeSchema.parse>) => {
+      expect(Object.hasOwn(value.elements, "__proto__")).toBe(true);
+      const element = value.elements["__proto__"]!;
+      expect(element).toMatchObject({ type: "Text" });
+      expect(Object.hasOwn(element.props, "__proto__")).toBe(true);
+      expect(element.props["__proto__"]).toBe("prop-value");
+      expect(Object.hasOwn(element.on ?? {}, "__proto__")).toBe(true);
+      expect(Object.hasOwn(element.watch ?? {}, "__proto__")).toBe(true);
+      const binding = element.on?.["__proto__"];
+      const action = Array.isArray(binding) ? binding[0] : binding;
+      expect(Object.hasOwn(action?.params ?? {}, "__proto__")).toBe(true);
+      expect(action?.params?.["__proto__"]).toBe("params-value");
+      const success = action?.onSuccess;
+      expect(success && "set" in success && Object.hasOwn(success.set, "__proto__"))
+        .toBe(true);
+      if (success && "set" in success) {
+        expect(success.set["__proto__"]).toBe("success-value");
+      }
+    };
+
+    const tree = elementTreeSchema.parse(route.page);
+    const parsedRoute = nextRouteSpecSchema.parse(route);
+    assertReservedTree(tree);
+    assertReservedTree(parsedRoute.page);
+    for (const value of [parsedRoute.loading, parsedRoute.error, parsedRoute.notFound]) {
+      expect(value).toBeDefined();
+      expect(Object.hasOwn(value!.elements, "__proto__")).toBe(true);
+      expect(value!.elements["__proto__"]).toMatchObject({ type: "Text" });
+    }
+    expect(Object.hasOwn(tree.state!, "__proto__")).toBe(true);
+    expect(tree.state!["__proto__"]).toEqual({ scope: "page" });
+    expect(Object.hasOwn(parsedRoute.staticParams![0]!, "__proto__")).toBe(true);
+    expect(parsedRoute.staticParams![0]!["__proto__"]).toBe("reserved-param");
+
+    const layouts = JSON.parse(`{"__proto__":${JSON.stringify(route.page)}}`);
+    const full = nextAppSpecSchema.parse({ routes: { "/": route }, layouts });
+    assertReservedTree(full.routes["/"]!.page);
+    expect(Object.hasOwn(full.layouts ?? {}, "__proto__")).toBe(true);
+    assertReservedTree(full.layouts!["__proto__"]!);
+  });
+
+  it("preserves own Record keys from another realm in full and public sub schemas", () => {
+    const treeJson = '{"root":"__proto__","elements":{"__proto__":' +
+      '{"type":"Text","props":{"text":"Cross realm"}}}}';
+    const tree = runInNewContext(`JSON.parse(${JSON.stringify(treeJson)})`) as unknown;
+
+    const parsedTree = elementTreeSchema.parse(tree);
+    const parsedFull = nextAppSpecSchema.parse({ routes: { "/": { page: tree } } });
+    expect(Object.hasOwn(parsedTree.elements, "__proto__")).toBe(true);
+    expect(parsedTree.elements["__proto__"]).toMatchObject({ type: "Text" });
+    expect(Object.hasOwn(parsedFull.routes["/"]!.page.elements, "__proto__")).toBe(true);
+  });
+
+  it("rejects known and Record accessors across every public schema without executing them", () => {
+    let getterCalls = 0;
+    const accessor = (target: object, key: string) => Object.defineProperty(target, key, {
+      enumerable: true,
+      get() {
+        getterCalls += 1;
+        throw new Error(`sensitive accessor ${key}`);
+      },
+    });
+    const attempts: Array<() => { success: boolean; error?: unknown }> = [];
+
+    attempts.push(() => elementTreeSchema.safeParse(accessor({ elements: {} }, "root")));
+    attempts.push(() => nextRouteSpecSchema.safeParse(accessor({}, "page")));
+    attempts.push(() => nextMetadataSchema.safeParse(accessor({}, "title")));
+    attempts.push(() => nextMetadataSchema.safeParse(accessor({}, "unknown")));
+
+    const routes = accessor({}, "/");
+    attempts.push(() => nextAppSpecSchema.safeParse({ routes }));
+    const elements = accessor({}, "root");
+    attempts.push(() => elementTreeSchema.safeParse({ root: "root", elements }));
+
+    const catalog = schema.createCatalog({
+      components: {
+        Box: {
+          props: z.object({ label: z.string() }).strict(),
+          slots: [],
+          description: "Box",
+          example: { label: "Box" },
+        },
+      },
+      actions: {},
+    });
+    const catalogSpec = (props: object) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "box",
+            elements: { box: { type: "Box", props } },
+          },
+        },
+      },
+    });
+    attempts.push(() => catalog.validate(catalogSpec(accessor({}, "label"))));
+    attempts.push(() => catalog.validate(catalogSpec(accessor({ label: "Box" }, "unknown"))));
+
+    const recordCatalog = schema.createCatalog({
+      components: {
+        Lookup: {
+          props: z.object({ values: z.record(z.string(), z.number()) }).strict(),
+          slots: [],
+          description: "Lookup",
+          example: { values: {} },
+        },
+      },
+      actions: {},
+    });
+    const recordValues = accessor({}, "__proto__");
+    attempts.push(() => recordCatalog.validate({
+      routes: {
+        "/": {
+          page: {
+            root: "lookup",
+            elements: { lookup: { type: "Lookup", props: { values: recordValues } } },
+          },
+        },
+      },
+    }));
+
+    for (const attempt of attempts) {
+      let result: { success: boolean; error?: unknown } | undefined;
+      expect(() => { result = attempt(); }).not.toThrow();
+      expect(result?.success).toBe(false);
+      expect(JSON.stringify(result?.error)).not.toContain("sensitive accessor");
+    }
     expect(getterCalls).toBe(0);
   });
 
@@ -345,6 +628,759 @@ describe("NextAppSpec 0.19.0 contract", () => {
     ]) {
       expect(serialized).toContain(JSON.stringify(expression));
     }
+  });
+
+  it("implements the official strict JSON Schema option recursively", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Card: {
+          props: z.object({
+            title: z.string(),
+            hint: z.string().optional(),
+            attributes: z.record(z.string(), z.string()).optional(),
+          }).strict(),
+          slots: [],
+          description: "Card",
+          example: { title: "Example" },
+        },
+      },
+      actions: {},
+    });
+    const normal = catalog.jsonSchema();
+    const strict = catalog.jsonSchema({ strict: true }) as Record<string, unknown>;
+
+    expect(catalog.jsonSchema({ strict: false })).toEqual(normal);
+    expect(strict).not.toEqual(normal);
+    expect(JSON.stringify(strict)).not.toContain('"propertyNames"');
+
+    const visit = (value: unknown): void => {
+      if (Array.isArray(value)) {
+        for (const entry of value) visit(entry);
+        return;
+      }
+      if (value === null || typeof value !== "object") return;
+      const node = value as Record<string, unknown>;
+      if (node.type === "object") {
+        expect(node.additionalProperties).toBe(false);
+        const properties = (node.properties ?? {}) as Record<string, unknown>;
+        expect([...(node.required as string[] ?? [])].sort()).toEqual(
+          Object.keys(properties).sort(),
+        );
+      }
+      for (const entry of Object.values(node)) visit(entry);
+    };
+    visit(strict);
+
+    const findNode = (
+      value: unknown,
+      predicate: (node: Record<string, unknown>) => boolean,
+    ): Record<string, unknown> | undefined => {
+      if (Array.isArray(value)) {
+        for (const entry of value) {
+          const found = findNode(entry, predicate);
+          if (found) return found;
+        }
+        return undefined;
+      }
+      if (value === null || typeof value !== "object") return undefined;
+      const node = value as Record<string, unknown>;
+      if (predicate(node)) return node;
+      for (const entry of Object.values(node)) {
+        const found = findNode(entry, predicate);
+        if (found) return found;
+      }
+      return undefined;
+    };
+    const rootProperties = strict.properties as Record<string, unknown>;
+    expect(strict.required).toEqual(["metadata", "routes", "layouts", "state"]);
+    expect(findNode(rootProperties.metadata, (node) => node.type === "null")).toBeDefined();
+    expect(findNode(rootProperties.layouts, (node) => node.type === "null")).toBeDefined();
+    expect(findNode(rootProperties.state, (node) => node.type === "null")).toBeDefined();
+    const opaqueRecord = {
+      type: "object",
+      properties: {},
+      required: [],
+      additionalProperties: false,
+    };
+    expect(rootProperties.routes).toEqual(opaqueRecord);
+    expect(findNode(rootProperties.layouts, (node) => (
+      node.type === "object" &&
+      Object.keys((node.properties ?? {}) as Record<string, unknown>).length === 0 &&
+      node.additionalProperties === false
+    ))).toEqual(opaqueRecord);
+  });
+
+  it("serializes fixed own __proto__ JSON Schema properties without changing prototypes", () => {
+    const propsShape: Record<string, z.ZodType> = {};
+    Object.defineProperty(propsShape, "__proto__", {
+      configurable: true,
+      enumerable: true,
+      value: z.string(),
+      writable: true,
+    });
+    const catalog = schema.createCatalog({
+      components: {
+        Reserved: {
+          props: z.object(propsShape).strict(),
+          slots: [],
+          description: "Reserved fixed property",
+          example: JSON.parse('{"__proto__":"value"}'),
+        },
+      },
+      actions: {},
+    });
+    const findReservedProperties = (value: unknown): Record<string, unknown>[] => {
+      const results: Record<string, unknown>[] = [];
+      const seen = new Set<object>();
+      const visit = (current: unknown): void => {
+        if (current === null || typeof current !== "object" || seen.has(current)) return;
+        seen.add(current);
+        const node = current as Record<string, unknown>;
+        if (Array.isArray(node.required) && node.required.includes("__proto__")) {
+          results.push(node.properties as Record<string, unknown>);
+        }
+        for (const entry of Object.values(node)) visit(entry);
+      };
+      visit(value);
+      return results;
+    };
+
+    const jsonSchema = catalog.jsonSchema();
+    const dictionaries = findReservedProperties(jsonSchema);
+    expect(dictionaries.length).toBeGreaterThan(0);
+    for (const properties of dictionaries) {
+      expect(Object.hasOwn(properties, "__proto__")).toBe(true);
+      expect(
+        Object.getPrototypeOf(properties) === null ||
+        Object.getPrototypeOf(properties) === Object.prototype,
+      ).toBe(true);
+    }
+
+    const transported = JSON.parse(JSON.stringify(jsonSchema));
+    const transportedDictionaries = findReservedProperties(transported);
+    expect(transportedDictionaries).toHaveLength(dictionaries.length);
+    for (const properties of transportedDictionaries) {
+      expect(Object.hasOwn(properties, "__proto__")).toBe(true);
+      expect(properties["__proto__"]).toMatchObject({ anyOf: expect.any(Array) });
+    }
+  });
+
+  it("enforces strict and typed catchall semantics for own __proto__ props", () => {
+    const spec = (type: string, value: unknown) => JSON.parse(`{
+      "routes": {
+        "/": {
+          "page": {
+            "root": "value",
+            "elements": {
+              "value": {
+                "type": ${JSON.stringify(type)},
+                "props": { "label": "Value", "__proto__": ${JSON.stringify(value)} }
+              }
+            }
+          }
+        }
+      }
+    }`);
+    const catalog = schema.createCatalog({
+      components: {
+        Strict: {
+          props: z.object({ label: z.string() }).strict(),
+          slots: [],
+          description: "Strict",
+          example: { label: "Value" },
+        },
+        Typed: {
+          props: z.object({ label: z.string() }).catchall(z.number()),
+          slots: [],
+          description: "Typed",
+          example: { label: "Value" },
+        },
+        Strip: {
+          props: z.object({ label: z.string() }),
+          slots: [],
+          description: "Strip",
+          example: { label: "Value" },
+        },
+        Passthrough: {
+          props: z.object({ label: z.string() }).passthrough(),
+          slots: [],
+          description: "Passthrough",
+          example: { label: "Value" },
+        },
+      },
+      actions: {},
+    });
+
+    expect(catalog.validate(spec("Strict", 1)).success).toBe(false);
+    expect(catalog.validate(spec("Typed", "invalid")).success).toBe(false);
+    const typed = catalog.validate(spec("Typed", 1));
+    const stripped = catalog.validate(spec("Strip", "preserved-host-behavior"));
+    const passthrough = catalog.validate(spec("Passthrough", "preserved-host-behavior"));
+    expect(typed.success).toBe(true);
+    expect(stripped.success).toBe(true);
+    expect(passthrough.success).toBe(true);
+    if (
+      !typed.success || !typed.data ||
+      !stripped.success || !stripped.data ||
+      !passthrough.success || !passthrough.data
+    ) {
+      throw new Error("Expected valid object-mode fixtures");
+    }
+    const typedProps = typed.data.routes["/"]!.page.elements.value!.props;
+    const strippedProps = stripped.data.routes["/"]!.page.elements.value!.props;
+    const passthroughProps = passthrough.data.routes["/"]!.page.elements.value!.props;
+    expect(Object.hasOwn(typedProps, "__proto__")).toBe(true);
+    expect(typedProps["__proto__"]).toBe(1);
+    expect(Object.hasOwn(strippedProps, "__proto__")).toBe(false);
+    expect(Object.hasOwn(passthroughProps, "__proto__")).toBe(true);
+    expect(passthroughProps["__proto__"]).toBe("preserved-host-behavior");
+  });
+
+  it("enforces own __proto__ object modes for Catalog action params", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Button: {
+          props: z.object({ label: z.string() }).strict(),
+          slots: [],
+          description: "Button",
+          example: { label: "Run" },
+        },
+      },
+      actions: {
+        strictAction: {
+          params: z.object({ id: z.string() }).strict(),
+          description: "Strict action",
+        },
+        typedAction: {
+          params: z.object({ id: z.string() }).catchall(z.number()),
+          description: "Typed action",
+        },
+      },
+    });
+    const spec = (action: string, reserved: unknown) => JSON.parse(`{
+      "routes": {
+        "/": {
+          "page": {
+            "root": "button",
+            "elements": {
+              "button": {
+                "type": "Button",
+                "props": { "label": "Run" },
+                "on": {
+                  "press": {
+                    "action": ${JSON.stringify(action)},
+                    "params": { "id": "one", "__proto__": ${JSON.stringify(reserved)} }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`);
+
+    expect(catalog.validate(spec("strictAction", 1)).success).toBe(false);
+    expect(catalog.validate(spec("typedAction", "invalid")).success).toBe(false);
+    const valid = catalog.validate(spec("typedAction", 1));
+    expect(valid.success).toBe(true);
+    if (!valid.success || !valid.data) throw new Error("Expected typed action params");
+    const bindings = valid.data.routes["/"]!.page.elements.button!.on as
+      | Record<string, unknown>
+      | undefined;
+    const binding = bindings?.press as
+      | { params?: Record<string, unknown> }
+      | Array<{ params?: Record<string, unknown> }>;
+    const action = Array.isArray(binding) ? binding[0]! : binding;
+    expect(Object.hasOwn(action.params ?? {}, "__proto__")).toBe(true);
+    expect(action.params?.["__proto__"]).toBe(1);
+  });
+
+  it("preserves literal private-prefix keys in Catalog objects and records", () => {
+    const literalKey = "\u0000next-app-runtime-record-key:literal-user-key";
+    let recordKeyChecks = 0;
+    const catalog = schema.createCatalog({
+      components: {
+        Fixed: {
+          props: z.object({ [literalKey]: z.string() }).strict(),
+          slots: [],
+          description: "Fixed key",
+          example: { [literalKey]: "fixed" },
+        },
+        Lookup: {
+          props: z.object({
+            values: z.record(
+              z.string().refine((key) => {
+                recordKeyChecks += 1;
+                return key === literalKey;
+              }),
+              z.string(),
+            ),
+          }).strict(),
+          slots: [],
+          description: "Record key",
+          example: { values: { [literalKey]: "record" } },
+        },
+      },
+      actions: {
+        fixedAction: {
+          params: z.object({ [literalKey]: z.string() }).strict(),
+          description: "Fixed action key",
+        },
+      },
+    });
+    const page = (type: "Fixed" | "Lookup", props: Record<string, unknown>) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "value",
+            elements: {
+              value: { type, props },
+            },
+          },
+        },
+      },
+    });
+
+    const fixed = catalog.validate(page("Fixed", { [literalKey]: "fixed" }));
+    const lookup = catalog.validate(page("Lookup", {
+      values: { [literalKey]: "record" },
+    }));
+    const action = catalog.validate({
+      routes: {
+        "/": {
+          page: {
+            root: "value",
+            elements: {
+              value: {
+                type: "Fixed",
+                props: { [literalKey]: "fixed" },
+                on: {
+                  press: {
+                    action: "fixedAction",
+                    params: { [literalKey]: "action" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    expect(fixed.success).toBe(true);
+    expect(lookup.success).toBe(true);
+    expect(action.success).toBe(true);
+    if (!fixed.success || !fixed.data || !lookup.success || !lookup.data ||
+      !action.success || !action.data) {
+      throw new Error("Expected literal private-prefix keys to validate");
+    }
+    expect(fixed.data.routes["/"]!.page.elements.value!.props[literalKey]).toBe("fixed");
+    const lookupValues = lookup.data.routes["/"]!.page.elements.value!.props.values as
+      Record<string, unknown>;
+    expect(lookupValues[literalKey]).toBe("record");
+    const bindings = action.data.routes["/"]!.page.elements.value!.on as
+      | Record<string, unknown>
+      | undefined;
+    const binding = bindings?.press as
+      | { params?: Record<string, unknown> }
+      | Array<{ params?: Record<string, unknown> }>;
+    const firstBinding = Array.isArray(binding) ? binding[0] : binding;
+    expect(firstBinding?.params?.[literalKey]).toBe("action");
+    expect(recordKeyChecks).toBe(1);
+    const schemaPropertyKeys: string[] = [];
+    const visitSchema = (value: unknown): void => {
+      if (Array.isArray(value)) {
+        for (const entry of value) visitSchema(entry);
+        return;
+      }
+      if (value === null || typeof value !== "object") return;
+      const node = value as Record<string, unknown>;
+      if (node.properties && typeof node.properties === "object") {
+        schemaPropertyKeys.push(...Object.keys(node.properties));
+      }
+      for (const entry of Object.values(node)) visitSchema(entry);
+    };
+    visitSchema(catalog.jsonSchema());
+    expect(schemaPropertyKeys).toContain(literalKey);
+    expect(schemaPropertyKeys).not.toContain(
+      `\u0000next-app-runtime-record-key:literal:${literalKey}`,
+    );
+
+    const invalid = catalog.validate(page("Fixed", { [literalKey]: 42 }));
+    expect(invalid.success).toBe(false);
+    if (invalid.success) throw new Error("Expected invalid private-prefix value");
+    const internalKey = `\u0000next-app-runtime-record-key:literal:${literalKey}`;
+    expect(JSON.stringify(invalid.error)).not.toContain(internalKey);
+  });
+
+  it("preserves native Zod Record key semantics in Catalog schemas", () => {
+    let numericKeyChecks = 0;
+    let numericValueChecks = 0;
+    const catalog = schema.createCatalog({
+      components: {
+        Numeric: {
+          props: z.record(
+            z.number().transform((key) => {
+              numericKeyChecks += 1;
+              return key;
+            }),
+            z.string().transform((value) => {
+              numericValueChecks += 1;
+              return value.toUpperCase();
+            }),
+          ),
+          slots: [],
+          description: "Numeric record",
+          example: { 1: "one" },
+        },
+        Finite: {
+          props: z.record(z.enum(["a", "b"]), z.string()),
+          slots: [],
+          description: "Finite record",
+          example: { a: "one", b: "two" },
+        },
+        NumericFinite: {
+          props: z.record(z.literal([1, 2]), z.string()),
+          slots: [],
+          description: "Numeric finite record",
+          example: { 1: "one", 2: "two" },
+        },
+      },
+      actions: {},
+    });
+    const spec = (type: string, props: Record<string, unknown>) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "value",
+            elements: { value: { type, props } },
+          },
+        },
+      },
+    });
+
+    const numeric = catalog.validate(spec("Numeric", { 1: "one" }));
+    expect(numeric.success).toBe(true);
+    expect(numericKeyChecks).toBe(1);
+    expect(numericValueChecks).toBe(1);
+    if (!numeric.success || !numeric.data) throw new Error("Expected numeric record");
+    expect(numeric.data.routes["/"]!.page.elements.value!.props).toEqual({ 1: "ONE" });
+
+    expect(catalog.validate(spec("Finite", { a: "one" })).success).toBe(false);
+    expect(catalog.validate(spec("Finite", { a: "one", b: "two" })).success).toBe(true);
+    expect(catalog.validate(spec("NumericFinite", { 1: "one", 2: "two" })).success)
+      .toBe(true);
+  });
+
+  it("preserves a native Zod Record transform output with one execution", () => {
+    let transformCalls = 0;
+    const propsSchema = z
+      .record(z.string(), z.number())
+      .transform((value) => {
+        transformCalls += 1;
+        return {
+          count: Object.keys(value).length,
+          total: Object.values(value).reduce((sum, entry) => sum + entry, 0),
+        };
+      });
+    const catalog = schema.createCatalog({
+      components: {
+        Summary: {
+          props: propsSchema,
+          slots: [],
+          description: "Record summary",
+          example: { first: 1 },
+        },
+      },
+      actions: {},
+    });
+    const props = { first: 1, second: 2 };
+    const native = propsSchema.safeParse(props);
+    expect(native.success).toBe(true);
+    expect(transformCalls).toBe(1);
+    transformCalls = 0;
+
+    const result = catalog.validate({
+      routes: {
+        "/": {
+          page: {
+            root: "summary",
+            elements: { summary: { type: "Summary", props } },
+          },
+        },
+      },
+    });
+
+    expect(result.success).toBe(true);
+    expect(transformCalls).toBe(1);
+    if (!native.success || !result.success || !result.data) {
+      throw new Error("Expected native and Catalog Record transforms to succeed");
+    }
+    expect(result.data.routes["/"]!.page.elements.summary!.props).toEqual(
+      native.data,
+    );
+  });
+
+  it("preserves a native Zod object transform output with one execution", () => {
+    let transformCalls = 0;
+    const propsSchema = z
+      .object({ count: z.string() })
+      .strict()
+      .transform((value) => {
+        transformCalls += 1;
+        return { count: Number(value.count) };
+      });
+    const catalog = schema.createCatalog({
+      components: {
+        Counter: {
+          props: propsSchema,
+          slots: [],
+          description: "Transformed counter",
+          example: { count: "1" },
+        },
+      },
+      actions: {},
+    });
+    const props = { count: "2" };
+    const native = propsSchema.safeParse(props);
+    expect(native.success).toBe(true);
+    expect(transformCalls).toBe(1);
+    transformCalls = 0;
+
+    const result = catalog.validate({
+      routes: {
+        "/": {
+          page: {
+            root: "counter",
+            elements: { counter: { type: "Counter", props } },
+          },
+        },
+      },
+    });
+
+    expect(result.success).toBe(true);
+    expect(transformCalls).toBe(1);
+    if (!native.success || !result.success || !result.data) {
+      throw new Error("Expected native and Catalog object transforms to succeed");
+    }
+    expect(result.data.routes["/"]!.page.elements.counter!.props).toEqual(
+      native.data,
+    );
+  });
+
+  it("preserves partialRecord key optionality for reserved finite keys", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Partial: {
+          props: z.partialRecord(z.enum(["__proto__", "a"]), z.string()),
+          slots: [],
+          description: "Partial finite record",
+          example: {},
+        },
+      },
+      actions: {},
+    });
+    const spec = (props: Record<string, unknown>) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "value",
+            elements: { value: { type: "Partial", props } },
+          },
+        },
+      },
+    });
+
+    const omittedReserved = catalog.validate(spec({ a: "one" }));
+    const reservedOnly = catalog.validate(spec(
+      JSON.parse('{"__proto__":"reserved"}') as Record<string, unknown>,
+    ));
+    expect(omittedReserved.success).toBe(true);
+    expect(reservedOnly.success).toBe(true);
+    if (!reservedOnly.success || !reservedOnly.data) {
+      throw new Error("Expected partial reserved key to validate");
+    }
+    const props = reservedOnly.data.routes["/"]!.page.elements.value!.props;
+    expect(Object.hasOwn(props, "__proto__")).toBe(true);
+    expect(props["__proto__"]).toBe("reserved");
+    expect(catalog.validate(spec({ extra: "invalid" })).success).toBe(false);
+  });
+
+  it("keeps remapped Catalog issues public and structurally complete", () => {
+    const literalKey = "\u0000next-app-runtime-record-key:literal-user";
+    const catalog = schema.createCatalog({
+      components: {
+        Finite: {
+          props: z.record(z.enum(["__proto__", "a"]), z.string()),
+          slots: [],
+          description: "Finite record",
+          example: { a: "one" },
+        },
+      },
+      actions: {},
+    });
+    const input = {
+      routes: {
+        "/": {
+          page: {
+            root: "value",
+            elements: {
+              value: {
+                type: "Finite",
+                props: JSON.parse(
+                  `{"__proto__":9,"a":"one",${JSON.stringify(literalKey)}:"extra"}`,
+                ),
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const result = catalog.zodSchema().safeParse(input, { reportInput: true });
+    expect(result.success).toBe(false);
+    if (result.success) throw new Error("Expected invalid reserved value");
+
+    const issues: Array<Record<string, unknown>> = [];
+    const visit = (value: unknown): void => {
+      if (Array.isArray(value)) {
+        for (const entry of value) visit(entry);
+        return;
+      }
+      if (value === null || typeof value !== "object") return;
+      const record = value as Record<string, unknown>;
+      if (typeof record.code === "string") issues.push(record);
+      for (const entry of Object.values(record)) visit(entry);
+    };
+    visit(result.error.issues);
+
+    expect(issues.length).toBeGreaterThan(0);
+    for (const issue of issues) {
+      expect(typeof issue.message).toBe("string");
+      expect((issue.message as string).length).toBeGreaterThan(0);
+    }
+    expect(issues.some((issue) =>
+      Array.isArray(issue.path) && issue.path.includes("__proto__")
+    )).toBe(true);
+    const serialized = JSON.stringify(result.error.issues);
+    const escaped = (value: string) => JSON.stringify(value).slice(1, -1);
+    expect(serialized).toContain(escaped(literalKey));
+    expect(serialized).not.toContain(
+      escaped("\u0000next-app-runtime-record-key:proto"),
+    );
+    expect(serialized).not.toContain(
+      escaped(`\u0000next-app-runtime-record-key:literal:${literalKey}`),
+    );
+  });
+
+  it("preserves host custom messages while remapping a public-prefix key path", () => {
+    const literalKey = "\u0000next-app-runtime-record-key:literal-user";
+    const customMessage = `Public validation failed for ${literalKey}`;
+    const catalog = schema.createCatalog({
+      components: {
+        CustomRecord: {
+          props: z.record(
+            z.string(),
+            z.string().superRefine((_value, context) => {
+              context.addIssue({
+                code: "custom",
+                message: customMessage,
+                path: [literalKey],
+              });
+            }),
+          ),
+          slots: [],
+          description: "Custom record issue",
+          example: {},
+        },
+      },
+      actions: {},
+    });
+    const result = catalog.zodSchema().safeParse({
+      routes: {
+        "/": {
+          page: {
+            root: "value",
+            elements: {
+              value: {
+                type: "CustomRecord",
+                props: { [literalKey]: "invalid" },
+              },
+            },
+          },
+        },
+      },
+    }, { reportInput: true });
+
+    expect(result.success).toBe(false);
+    if (result.success) throw new Error("Expected custom Record issue");
+    const customIssues: Array<Record<string, unknown>> = [];
+    const visit = (value: unknown): void => {
+      if (Array.isArray(value)) {
+        for (const entry of value) visit(entry);
+        return;
+      }
+      if (value === null || typeof value !== "object") return;
+      const record = value as Record<string, unknown>;
+      if (record.code === "custom") customIssues.push(record);
+      for (const entry of Object.values(record)) visit(entry);
+    };
+    visit(result.error.issues);
+
+    expect(customIssues.some((issue) => issue.message === customMessage)).toBe(true);
+    expect(customIssues.some((issue) =>
+      Array.isArray(issue.path) &&
+      issue.path.at(-2) === literalKey &&
+      issue.path.at(-1) === literalKey
+    )).toBe(true);
+    expect(JSON.stringify(result.error.issues)).not.toContain(
+      JSON.stringify(`\u0000next-app-runtime-record-key:literal:${literalKey}`)
+        .slice(1, -1),
+    );
+  });
+
+  it("preserves enumerable Symbol keys produced by host Record transforms", () => {
+    const transformedKey = Symbol("transformed-record-key");
+    const hostSchema = z.record(
+      z.string().transform(() => transformedKey),
+      z.number(),
+    );
+    const catalog = schema.createCatalog({
+      components: {
+        SymbolRecord: {
+          props: hostSchema,
+          slots: [],
+          description: "Symbol-keyed record",
+          example: {},
+        },
+      },
+      actions: {},
+    });
+    const inputProps = { first: 1, second: 2 };
+    const native = hostSchema.parse(inputProps) as Record<PropertyKey, unknown>;
+    const result = catalog.validate({
+      routes: {
+        "/": {
+          page: {
+            root: "value",
+            elements: {
+              value: { type: "SymbolRecord", props: inputProps },
+            },
+          },
+        },
+      },
+    });
+
+    expect(Reflect.ownKeys(native)).toEqual([transformedKey]);
+    expect(native[transformedKey]).toBe(2);
+    expect(result.success).toBe(true);
+    if (!result.success || !result.data) {
+      throw new Error("Expected Symbol-keyed Record transform to validate");
+    }
+    const parsed = result.data.routes["/"]!.page.elements.value!.props as
+      Record<PropertyKey, unknown>;
+    expect(Reflect.ownKeys(parsed)).toEqual([transformedKey]);
+    expect(parsed[transformedKey]).toBe(2);
   });
 
   it("represents host transform schemas as unconstrained JSON Schema nodes", () => {

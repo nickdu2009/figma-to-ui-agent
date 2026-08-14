@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { runInNewContext } from "node:vm";
 
 import { RuntimeError } from "../../src/contract/types.js";
 import {
@@ -67,13 +68,54 @@ describe("strict RFC 6902 operations", () => {
   });
 
   it("uses JSON numeric equality for negative zero", () => {
-    expect(applyJsonPatch(
+    const result = applyJsonPatch(
       { value: -0, nested: { value: 0 } },
       [
         { op: "test", path: "/value", value: 0 },
         { op: "test", path: "/nested/value", value: -0 },
       ],
-    )).toEqual({ value: -0, nested: { value: 0 } });
+    ) as { value: number; nested: { value: number } };
+
+    expect(result).toEqual({ value: 0, nested: { value: 0 } });
+    expect(Object.is(result.value, -0)).toBe(false);
+    expect(Object.is(result.nested.value, -0)).toBe(false);
+  });
+
+  it("uses normalized own data for patch comparison without invoking getters", () => {
+    let getterCalls = 0;
+    const expected = new Proxy({ value: 1 }, {
+      get(target, property, receiver) {
+        getterCalls += 1;
+        return property === "value" ? 2 : Reflect.get(target, property, receiver);
+      },
+    });
+
+    expect(applyJsonPatch({ item: { value: 1 } }, [
+      { op: "test", path: "/item", value: expected },
+    ])).toEqual({ item: { value: 1 } });
+    expect(getterCalls).toBe(0);
+  });
+
+  it("accepts cross-realm operation containers and values", () => {
+    const operations = runInNewContext(`[
+      { op: "add", path: "/value", value: { nested: true } },
+      { op: "test", path: "/value", value: { nested: true } }
+    ]`) as readonly unknown[];
+
+    expect(applyRuntimeOperations({}, operations)).toEqual({
+      value: { nested: true },
+    });
+  });
+
+  it("detaches repeated input references into independent JSON values", () => {
+    const shared = { value: 1 };
+    const result = applyJsonPatch(
+      { first: shared, second: shared },
+      [{ op: "replace", path: "/first/value", value: 2 }],
+    ) as { first: { value: number }; second: { value: number } };
+
+    expect(result).toEqual({ first: { value: 2 }, second: { value: 1 } });
+    expect(result.first).not.toBe(result.second);
   });
 
   it.each([
@@ -184,8 +226,10 @@ describe("strict RFC 6902 operations", () => {
     expect(applyRuntimeOperations("before", [
       { op: "replace", path: "", value: false },
     ])).toBe(false);
-    expect(applyRuntimeOperations(-0, [
+    const result = applyRuntimeOperations(-0, [
       { op: "test", path: "", value: 0 },
-    ])).toBe(-0);
+    ]);
+    expect(result).toBe(0);
+    expect(Object.is(result, -0)).toBe(false);
   });
 });
