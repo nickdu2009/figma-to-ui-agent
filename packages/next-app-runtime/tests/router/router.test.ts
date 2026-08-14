@@ -46,6 +46,22 @@ describe("0.19.0 router characterization", () => {
     expect(matchRoute(ambiguous, "/x")?.pattern).toBe("/[first]");
   });
 
+  it.each([
+    ["/item/[__proto__]", "/item/one", "one"],
+    ["/docs/[...__proto__]", "/docs/one/two", ["one", "two"]],
+    ["/settings/[[...__proto__]]", "/settings", []],
+  ])("preserves %s as an own route parameter", (pattern, pathname, expected) => {
+    const reserved: NextAppSpec = {
+      routes: { [pattern]: { page } },
+    };
+
+    const params = matchRoute(reserved, pathname)?.params;
+    expect(params).toBeDefined();
+    expect(Object.getPrototypeOf(params)).toBe(Object.prototype);
+    expect(Object.hasOwn(params!, "__proto__")).toBe(true);
+    expect(params?.["__proto__"]).toEqual(expected);
+  });
+
   it("converts slugs and collects static params exactly like 0.19.0", () => {
     expect(slugToPath(undefined)).toBe("/");
     expect(slugToPath([])).toBe("/");

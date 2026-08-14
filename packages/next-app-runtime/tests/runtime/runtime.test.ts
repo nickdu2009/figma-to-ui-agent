@@ -318,6 +318,140 @@ describe("route runtime", () => {
     runtime.dispose();
   });
 
+  it.each([
+    ["dynamic", "/item/[__proto__]", "/item/one", "one"],
+    ["catch-all", "/docs/[...__proto__]", "/docs/one/two", ["one", "two"]],
+    ["optional catch-all", "/settings/[[...__proto__]]", "/settings", []],
+  ])("passes own __proto__ params to a %s loader", async (
+    _kind,
+    pattern,
+    pathname,
+    expected,
+  ) => {
+    const loader = vi.fn((params: Record<string, string | string[]>) => ({
+      received: params["__proto__"],
+    }));
+    const runtime = createRuntimeWithNavigation(
+      runtimeOptions({ loaders: { reserved: loader } }),
+      createMemoryNavigation(pathname),
+    );
+    const spec = createTestSpec({
+      routes: {
+        [pattern]: {
+          loader: "reserved",
+          page: {
+            root: "root",
+            elements: { root: { type: "Text", props: { text: "Reserved" } } },
+          },
+        },
+      },
+    });
+
+    await runtime.applySource({ kind: "object", value: spec });
+    await tick();
+
+    expect(loader).toHaveBeenCalledTimes(1);
+    const params = loader.mock.calls[0]?.[0];
+    expect(Object.getPrototypeOf(params)).toBe(Object.prototype);
+    expect(Object.hasOwn(params!, "__proto__")).toBe(true);
+    expect(params?.["__proto__"]).toEqual(expected);
+    expect(runtime.getSnapshot()).toMatchObject({
+      routeStatus: "ready",
+      pageData: { initialState: { received: expected } },
+    });
+    runtime.dispose();
+  });
+
+  it("does not reuse loader data across distinct own __proto__ params", async () => {
+    const loader = vi.fn((params: Record<string, string | string[]>) => ({
+      received: params["__proto__"],
+    }));
+    const navigation = createMemoryNavigation("/item/one");
+    const runtime = createRuntimeWithNavigation(
+      runtimeOptions({ loaders: { reserved: loader } }),
+      navigation,
+    );
+    const spec = createTestSpec({
+      routes: {
+        "/item/[__proto__]": {
+          loader: "reserved",
+          page: {
+            root: "root",
+            elements: { root: { type: "Text", props: { text: "Reserved" } } },
+          },
+        },
+      },
+    });
+
+    await runtime.applySource({ kind: "object", value: spec });
+    await tick();
+    navigation.push("/item/two");
+    await tick();
+
+    expect(loader).toHaveBeenCalledTimes(2);
+    const params = runtime.getSnapshot().matched?.params;
+    expect(Object.hasOwn(params!, "__proto__")).toBe(true);
+    expect(params?.["__proto__"]).toBe("two");
+    expect(runtime.getSnapshot()).toMatchObject({
+      routeStatus: "ready",
+      pageData: { initialState: { received: "two" } },
+    });
+    runtime.dispose();
+  });
+
+  it.each([
+    ["undefined", undefined],
+    ["null", null],
+    ["number", 7],
+    ["string", "xy"],
+    ["array", ["value"]],
+    ["Map", new Map([["value", 1]])],
+    ["Set", new Set(["value"])],
+    ["Date", new Date("2026-01-01T00:00:00.000Z")],
+    ["Error", new Error("invalid loader root")],
+  ])("fails closed when a loader returns a %s root", async (_kind, value) => {
+    const events: RuntimeEvent[] = [];
+    const loader = vi.fn(() => value as never);
+    const runtime = createRuntimeWithNavigation(
+      runtimeOptions({
+        loaders: { invalid: loader },
+        observer: (event: RuntimeEvent) => events.push(event),
+      }),
+      createMemoryNavigation(),
+    );
+
+    const result = await runtime.applySource({
+      kind: "object",
+      value: withLoader("invalid", "Invalid root"),
+    });
+    await tick();
+
+    expect(result).toMatchObject({ status: "committed" });
+    expect(runtime.getSnapshot()).toMatchObject({
+      current: { routes: { "/": { page: { elements: { root: {
+        props: { text: "Invalid root" },
+      } } } } } },
+      routeStatus: "error",
+      error: { code: "loader_failed" },
+      pageData: { initialState: { source: "page", global: true } },
+    });
+    expect(events.filter((event) => event.name === "loader_started")).toHaveLength(1);
+    expect(events.filter((event) => event.name === "loader_failed")).toHaveLength(1);
+    expect(events.some((event) => event.name === "loader_succeeded")).toBe(false);
+
+    runtime.retryLoader();
+    await tick();
+    expect(loader).toHaveBeenCalledTimes(2);
+    expect(runtime.getSnapshot()).toMatchObject({
+      routeStatus: "error",
+      error: { code: "loader_failed" },
+    });
+    expect(events.filter((event) => event.name === "loader_started")).toHaveLength(2);
+    expect(events.filter((event) => event.name === "loader_failed")).toHaveLength(2);
+    expect(events.some((event) => event.name === "loader_succeeded")).toBe(false);
+    runtime.dispose();
+  });
+
   it("matches decoded browser pathnames without changing the public location", async () => {
     const userLoader = vi.fn((params: Record<string, string | string[]>) => ({ params }));
     const navigation = createMemoryNavigation("/caf%C3%A9");

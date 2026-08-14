@@ -19,6 +19,7 @@ import type { Catalog } from "@json-render/core";
 import { deepFreeze, ownAndDeepFreeze } from "../contract/immutable.js";
 import {
   assertNormalizedJsonDocumentWithinMaxBytes,
+  isPlainJsonObject,
   normalizeJsonValueGraph,
 } from "../contract/json-value.js";
 import { ownJsonEqual } from "../contract/own-json-equal.js";
@@ -87,6 +88,15 @@ function handleBestEffortRejection(value: unknown): void {
 function isAbortError(value: unknown): boolean {
   try {
     return value instanceof DOMException && value.name === "AbortError";
+  } catch {
+    return false;
+  }
+}
+
+function isLoaderRecord(value: unknown): value is Record<string, unknown> {
+  if (value === null || typeof value !== "object") return false;
+  try {
+    return isPlainJsonObject(value);
   } catch {
     return false;
   }
@@ -580,6 +590,9 @@ class RuntimeImplementation implements NextAppRuntime {
           return;
         }
         const ownedData = ownAndDeepFreeze(data);
+        if (!isLoaderRecord(ownedData)) {
+          throw new TypeError("Route loader data must be a record");
+        }
         const latest = this.currentLoaderMatch(invocation.key);
         if (!latest || !this.isLoaderInvocationCurrent(invocation)) {
           this.finishLoaderInvocation(invocation, "loader_stale");

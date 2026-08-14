@@ -190,7 +190,7 @@ async function editAndExerciseBuilder(
   }
   await page.reload();
   await expect(page.getByRole("heading", { name: editedHeadline })).toBeVisible();
-  await page.locator('[data-form-container]').getByText("Stack", { exact: true }).first().click();
+  await page.mouse.move(0, 0);
   await settle(page);
   const screenshot = await page.screenshot({
     path: screenshotPath,

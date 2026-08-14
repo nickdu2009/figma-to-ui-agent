@@ -2,6 +2,8 @@ import type { MatchedRoute, NextAppSpec } from "../contract/types.js";
 
 // Adapted from @json-render/next 0.19.0 packages/next/src/router.ts.
 
+const OBJECT_DEFINE_PROPERTY = Object.defineProperty;
+
 interface CompiledRoute {
   pattern: string;
   regex: RegExp;
@@ -77,11 +79,17 @@ export function matchRoute(
     for (let index = 0; index < route.paramNames.length; index += 1) {
       const name = route.paramNames[index]!;
       const value = match[index + 1];
-      params[name] = route.catchAll || route.optionalCatchAll
+      const param = route.catchAll || route.optionalCatchAll
         ? value
           ? value.split("/")
           : []
         : (value ?? "");
+      OBJECT_DEFINE_PROPERTY(params, name, {
+        configurable: true,
+        enumerable: true,
+        value: param,
+        writable: true,
+      });
     }
     return { route: spec.routes[route.pattern]!, pattern: route.pattern, params };
   }
