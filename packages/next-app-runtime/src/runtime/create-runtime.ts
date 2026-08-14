@@ -26,7 +26,7 @@ import { ownJsonEqual } from "../contract/own-json-equal.js";
 import { nextAppSpecSchema } from "../contract/zod-schema.js";
 import { createBrowserHistoryDriver } from "../navigation/browser-history.js";
 import { toRoutePathname, type NavigationDriver } from "../navigation/location.js";
-import { matchRoute } from "../router/match-route.js";
+import { matchRoute, routeIdentity } from "../router/match-route.js";
 import { compileJsonlPatch } from "../stream/jsonl-compiler.js";
 import { readSource } from "../stream/source.js";
 import { assertCatalogAndRegistry, assertCatalogSpec } from "../validation/catalog-gate.js";
@@ -107,18 +107,32 @@ function freezeLocation(location: RuntimeSnapshot["location"]): RuntimeSnapshot[
 }
 
 function freezeMatchedRoute(matched: MatchedRoute): MatchedRoute {
+  const params = Object.create(null) as Record<string, string | string[]>;
+  for (const key of Object.keys(matched.params)) {
+    const descriptor = Object.getOwnPropertyDescriptor(matched.params, key);
+    if (!descriptor || !("value" in descriptor)) {
+      throw new TypeError("Route parameters must be own data properties");
+    }
+    const value = descriptor.value as string | string[];
+    Object.defineProperty(params, key, {
+      configurable: false,
+      enumerable: true,
+      value: Array.isArray(value) ? Object.freeze([...value]) : value,
+      writable: false,
+    });
+  }
   return Object.freeze({
     ...matched,
-    params: Object.freeze({ ...matched.params }),
+    params: Object.freeze(params),
   });
 }
 
 function loaderKeyFor(matched: MatchedRoute): string {
-  return JSON.stringify([
+  return routeIdentity(
     matched.pattern,
     matched.params,
     matched.route.loader ?? null,
-  ]);
+  );
 }
 
 function mergeState(

@@ -5,7 +5,7 @@ import {
   type PromptContext,
   type SchemaBuilder,
 } from "@json-render/core";
-import type { ZodType } from "zod";
+import { z, type ZodType } from "zod";
 
 import {
   createCatalogAwareNextAppSpecSchema,
@@ -24,6 +24,25 @@ function normalizedZodType(definition: Record<string, unknown>): string {
   return name.startsWith("Zod") ? name.slice(3).toLowerCase() : name.toLowerCase();
 }
 
+function constrainedJsonSchema(schema: ZodType): Record<string, unknown> {
+  const converted = z.toJSONSchema(schema, {
+    io: "input",
+    unrepresentable: "any",
+  }) as Record<string, unknown>;
+  const result = Object.create(null) as Record<string, unknown>;
+  for (const [key, value] of Object.entries(converted)) {
+    if (key !== "$schema") {
+      Object.defineProperty(result, key, {
+        configurable: true,
+        enumerable: true,
+        value,
+        writable: true,
+      });
+    }
+  }
+  return result;
+}
+
 function officialJsonSchema(
   schema: ZodType,
   strict = false,
@@ -38,23 +57,17 @@ function officialJsonSchema(
   nextAncestors.add(schema);
   const definition = schema._def as unknown as Record<string, unknown>;
   switch (normalizedZodType(definition)) {
-    case "string": return { type: "string" };
-    case "number": return { type: "number" };
-    case "boolean": return { type: "boolean" };
-    case "literal": {
-      const values = definition.values as unknown[] | undefined;
-      return { const: values ? values[0] : definition.value };
-    }
-    case "enum": {
-      const entries = definition.entries as Record<string, string> | undefined;
-      const values = entries
-        ? Object.values(entries)
-        : definition.values as string[] | undefined;
-      return { enum: values ?? [] };
-    }
+    case "string":
+    case "number":
+    case "boolean":
+    case "literal":
+    case "enum":
+      return constrainedJsonSchema(schema);
     case "array": {
       const inner = (definition.element ?? definition.type) as ZodType | undefined;
+      const constrained = constrainedJsonSchema(schema);
       return {
+        ...constrained,
         type: "array",
         items: inner ? officialJsonSchema(inner, strict, nextAncestors) : {},
       };
@@ -75,7 +88,7 @@ function officialJsonSchema(
         const publicKey = decodeRecordKey(key);
         const valueDefinition = value._def as unknown as Record<string, unknown>;
         const valueType = normalizedZodType(valueDefinition);
-        const optional = valueType === "optional" || valueType === "nullable";
+        const optional = valueType === "optional";
         let propertySchema: object;
         if (strict) {
           required.push(publicKey);
@@ -113,10 +126,15 @@ function officialJsonSchema(
           : true,
       };
     }
-    case "optional":
-    case "nullable": {
+    case "optional": {
       const inner = definition.innerType as ZodType | undefined;
       return inner ? officialJsonSchema(inner, strict, nextAncestors) : {};
+    }
+    case "nullable": {
+      const inner = definition.innerType as ZodType | undefined;
+      return inner
+        ? { anyOf: [officialJsonSchema(inner, strict, nextAncestors), { type: "null" }] }
+        : { type: "null" };
     }
     case "default":
     case "prefault":

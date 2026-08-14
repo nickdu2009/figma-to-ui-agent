@@ -2,6 +2,17 @@ import type { NextAppSpec } from "../contract/types.js";
 
 // Adapted from @json-render/next 0.19.0 packages/next/src/router.ts.
 
+function ownStringParam(
+  params: Record<string, string>,
+  name: string,
+): string | undefined {
+  if (!Object.hasOwn(params, name)) return undefined;
+  const descriptor = Object.getOwnPropertyDescriptor(params, name);
+  return descriptor && "value" in descriptor && typeof descriptor.value === "string"
+    ? descriptor.value
+    : undefined;
+}
+
 function buildSlugFromPattern(
   pattern: string,
   params: Record<string, string>,
@@ -10,14 +21,14 @@ function buildSlugFromPattern(
   const result: string[] = [];
   for (const segment of pattern.split("/").slice(1)) {
     if (segment.startsWith("[[...") && segment.endsWith("]]")) {
-      const value = params[segment.slice(5, -2)];
+      const value = ownStringParam(params, segment.slice(5, -2));
       if (value) result.push(...value.split("/"));
     } else if (segment.startsWith("[...") && segment.endsWith("]")) {
-      const value = params[segment.slice(4, -1)];
+      const value = ownStringParam(params, segment.slice(4, -1));
       if (!value) return null;
       result.push(...value.split("/"));
     } else if (segment.startsWith("[") && segment.endsWith("]")) {
-      const value = params[segment.slice(1, -1)];
+      const value = ownStringParam(params, segment.slice(1, -1));
       if (!value) return null;
       result.push(value);
     } else {

@@ -1246,8 +1246,8 @@ test -x "$PLAYWRIGHT_CHROMIUM_EXECUTABLE"
 
 (
   cd "$JSON_RENDER_ORACLE_DIR"
-  pnpm --filter @internal/react-state build
   pnpm --filter @json-render/core build
+  pnpm --filter @internal/react-state build
   pnpm --filter @json-render/react build
   pnpm --filter @json-render/next build
   pnpm --filter @json-render/shadcn build

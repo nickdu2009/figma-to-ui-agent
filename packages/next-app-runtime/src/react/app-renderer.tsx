@@ -3,6 +3,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useSyncExternalStore } from
 import { createHeadController } from "../metadata/head-controller.js";
 import { completeBrowserNavigationScroll } from "../navigation/browser-history.js";
 import { resolveMetadata } from "../router/metadata.js";
+import { routeIdentity } from "../router/match-route.js";
 import { getRuntimeInternals } from "../runtime/create-runtime.js";
 import { PageRenderer } from "./page-renderer.js";
 import { RuntimeErrorBoundary } from "./error-boundary.js";
@@ -53,7 +54,10 @@ function RuntimeContent({
       ? <PageRenderer spec={route.error} />
       : internals.fallbacks.error(fallbackInput);
   } else if (snapshot.routeStatus === "ready" && snapshot.pageData) {
-    const key = `${snapshot.matched?.pattern ?? ""}:${JSON.stringify(snapshot.matched?.params ?? {})}`;
+    const key = routeIdentity(
+      snapshot.matched?.pattern ?? "",
+      snapshot.matched?.params ?? {},
+    );
     content = <PageRenderer key={key} {...snapshot.pageData} />;
   } else {
     content = internals.fallbacks.loading(fallbackInput);

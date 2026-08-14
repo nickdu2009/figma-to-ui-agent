@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { Ajv } from "ajv";
 import { runInNewContext } from "node:vm";
 import { z } from "zod";
 
@@ -708,6 +709,58 @@ describe("NextAppSpec 0.19.0 contract", () => {
       Object.keys((node.properties ?? {}) as Record<string, unknown>).length === 0 &&
       node.additionalProperties === false
     ))).toEqual(opaqueRecord);
+  });
+
+  it("keeps public JSON Schema acceptance aligned with nullable and bounded Zod props", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Card: {
+          props: z.object({
+            requiredNullable: z.string().nullable(),
+            code: z.string().min(5),
+            count: z.number().min(2).max(4),
+            tags: z.array(z.string()).min(1).max(2),
+          }).strict(),
+          slots: [],
+          description: "Constrained card",
+          example: { requiredNullable: null, code: "12345", count: 2, tags: ["one"] },
+        },
+      },
+      actions: {},
+    });
+    const makeSpec = (props: Record<string, unknown>) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "card",
+            elements: { card: { type: "Card", props } },
+          },
+        },
+      },
+    });
+    const validateJsonSchema = new Ajv({ strict: false }).compile(catalog.jsonSchema());
+    const valid = makeSpec({
+      requiredNullable: null,
+      code: "12345",
+      count: 3,
+      tags: ["one"],
+    });
+    const invalidCases = [
+      makeSpec({ code: "12345", count: 3, tags: ["one"] }),
+      makeSpec({ requiredNullable: null, code: "x", count: 3, tags: ["one"] }),
+      makeSpec({ requiredNullable: null, code: "12345", count: 5, tags: ["one"] }),
+      makeSpec({ requiredNullable: null, code: "12345", count: 3, tags: [] }),
+    ];
+
+    expect(validateJsonSchema(valid)).toBe(true);
+    expect(catalog.validate(valid).success).toBe(true);
+    for (const invalid of invalidCases) {
+      expect(validateJsonSchema(invalid)).toBe(false);
+      expect(catalog.validate(invalid).success).toBe(false);
+    }
+    expect(JSON.stringify(catalog.jsonSchema())).toContain('"minLength":5');
+    expect(JSON.stringify(catalog.jsonSchema())).toContain('"maximum":4');
+    expect(JSON.stringify(catalog.jsonSchema())).toContain('"minItems":1');
   });
 
   it("serializes fixed own __proto__ JSON Schema properties without changing prototypes", () => {

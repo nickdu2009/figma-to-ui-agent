@@ -43,8 +43,8 @@ the exact commit above, installed with its frozen pnpm lockfile, and built in
 dependency order. The reference example requires these workspace builds before
 its own build:
 
-1. `@internal/react-state`
-2. `@json-render/core`
+1. `@json-render/core`
+2. `@internal/react-state`
 3. `@json-render/react`
 4. `@json-render/next`
 5. `@json-render/shadcn`

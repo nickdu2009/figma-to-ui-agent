@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import type { NextAppSpec } from "../../src/contract/types.js";
 import { resolveMetadata } from "../../src/router/metadata.js";
-import { matchRoute, slugToPath } from "../../src/router/match-route.js";
+import { matchRoute, routeIdentity, slugToPath } from "../../src/router/match-route.js";
 import { collectStaticParams } from "../../src/router/static-params.js";
 
 const page = { root: "x", elements: { x: { type: "Text", props: { text: "x" } } } };
@@ -57,10 +57,54 @@ describe("0.19.0 router characterization", () => {
 
     const params = matchRoute(reserved, pathname)?.params;
     expect(params).toBeDefined();
-    expect(Object.getPrototypeOf(params)).toBe(Object.prototype);
+    expect(Object.getPrototypeOf(params)).toBeNull();
     expect(Object.hasOwn(params!, "__proto__")).toBe(true);
     expect(params?.["__proto__"]).toEqual(expected);
   });
+
+  it.each([
+    ["Object", Object.prototype],
+    ["Array", Array.prototype],
+  ])("keeps route identities distinct when %s.prototype defines toJSON", (_name, prototype) => {
+    const previous = Object.getOwnPropertyDescriptor(prototype, "toJSON");
+    Object.defineProperty(prototype, "toJSON", {
+      configurable: true,
+      value: () => "polluted",
+    });
+    let first: string;
+    let second: string;
+    try {
+      first = routeIdentity("/item/[id]", { id: "one" }, "first");
+      second = routeIdentity("/item/[id]", { id: "two" }, "second");
+    } finally {
+      if (previous) Object.defineProperty(prototype, "toJSON", previous);
+      else delete (prototype as { toJSON?: unknown }).toJSON;
+    }
+    expect(first).not.toBe(second);
+  });
+
+  it.each(["__proto__", "constructor", "toString"])(
+    "requires own string static param values for %s",
+    (name) => {
+      const pattern = `/item/[${name}]`;
+      const missing: NextAppSpec = {
+        routes: { [pattern]: { page, staticParams: [{}] } },
+      };
+      const own: Record<string, string> = {};
+      Object.defineProperty(own, name, {
+        configurable: true,
+        enumerable: true,
+        value: "value",
+        writable: true,
+      });
+      const present: NextAppSpec = {
+        routes: { [pattern]: { page, staticParams: [own] } },
+      };
+
+      expect(collectStaticParams(missing)).toEqual([]);
+      expect(collectStaticParams(present)).toEqual([{ slug: ["item", "value"] }]);
+    },
+  );
 
   it("converts slugs and collects static params exactly like 0.19.0", () => {
     expect(slugToPath(undefined)).toBe("/");

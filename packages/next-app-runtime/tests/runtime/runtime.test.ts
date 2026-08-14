@@ -352,7 +352,7 @@ describe("route runtime", () => {
 
     expect(loader).toHaveBeenCalledTimes(1);
     const params = loader.mock.calls[0]?.[0];
-    expect(Object.getPrototypeOf(params)).toBe(Object.prototype);
+    expect(Object.getPrototypeOf(params)).toBeNull();
     expect(Object.hasOwn(params!, "__proto__")).toBe(true);
     expect(params?.["__proto__"]).toEqual(expected);
     expect(runtime.getSnapshot()).toMatchObject({
@@ -395,6 +395,53 @@ describe("route runtime", () => {
     expect(runtime.getSnapshot()).toMatchObject({
       routeStatus: "ready",
       pageData: { initialState: { received: "two" } },
+    });
+    runtime.dispose();
+  });
+
+  it("does not reuse loader data when Object.prototype defines toJSON", async () => {
+    const first = vi.fn(() => ({ loaded: "first" }));
+    const second = vi.fn(() => ({ loaded: "second" }));
+    const navigation = createMemoryNavigation("/first");
+    const runtime = createRuntimeWithNavigation(
+      runtimeOptions({ loaders: { first, second } }),
+      navigation,
+    );
+    const spec = createTestSpec({
+      routes: {
+        "/first": {
+          loader: "first",
+          page: { root: "root", elements: { root: { type: "Text", props: { text: "First" } } } },
+        },
+        "/second": {
+          loader: "second",
+          page: { root: "root", elements: { root: { type: "Text", props: { text: "Second" } } } },
+        },
+      },
+    });
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, "toJSON");
+    Object.defineProperty(Object.prototype, "toJSON", {
+      configurable: true,
+      value: () => "polluted",
+    });
+    let snapshot: ReturnType<typeof runtime.getSnapshot>;
+    try {
+      await runtime.applySource({ kind: "object", value: spec });
+      await tick();
+      navigation.push("/second");
+      await tick();
+      snapshot = runtime.getSnapshot();
+    } finally {
+      if (previous) Object.defineProperty(Object.prototype, "toJSON", previous);
+      else delete (Object.prototype as { toJSON?: unknown }).toJSON;
+    }
+
+    expect(first).toHaveBeenCalledTimes(1);
+    expect(second).toHaveBeenCalledTimes(1);
+    expect(snapshot!).toMatchObject({
+      routeStatus: "ready",
+      matched: { pattern: "/second" },
+      pageData: { initialState: { loaded: "second" } },
     });
     runtime.dispose();
   });
