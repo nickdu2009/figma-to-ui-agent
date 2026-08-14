@@ -3,7 +3,6 @@ import type { MatchedRoute, NextAppSpec } from "../contract/types.js";
 // Adapted from @json-render/next 0.19.0 packages/next/src/router.ts.
 
 const OBJECT_DEFINE_PROPERTY = Object.defineProperty;
-const OBJECT_CREATE = Object.create;
 const OBJECT_GET_OWN_PROPERTY_DESCRIPTOR = Object.getOwnPropertyDescriptor;
 const OBJECT_KEYS = Object.keys;
 const ARRAY_IS_ARRAY = Array.isArray;
@@ -120,7 +119,7 @@ export function matchRoute(
   for (const route of compiled) {
     const match = route.regex.exec(normalizedPath);
     if (!match) continue;
-    const params = OBJECT_CREATE(null) as Record<string, string | string[]>;
+    const params = {} as Record<string, string | string[]>;
     for (let index = 0; index < route.paramNames.length; index += 1) {
       const name = route.paramNames[index]!;
       const value = match[index + 1];

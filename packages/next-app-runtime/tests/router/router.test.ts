@@ -36,6 +36,13 @@ describe("0.19.0 router characterization", () => {
     expect(matchRoute(spec, "/about#x")).toBeNull();
   });
 
+  it("returns the official ordinary-object parameter surface", () => {
+    const params = matchRoute(spec, "/blog/post")?.params;
+    expect(params).toBeDefined();
+    expect(Object.getPrototypeOf(params)).toBe(Object.prototype);
+    expect(params?.hasOwnProperty("slug")).toBe(true);
+  });
+
   it("keeps stable insertion order for equally specific patterns", () => {
     const ambiguous: NextAppSpec = {
       routes: {
@@ -57,7 +64,8 @@ describe("0.19.0 router characterization", () => {
 
     const params = matchRoute(reserved, pathname)?.params;
     expect(params).toBeDefined();
-    expect(Object.getPrototypeOf(params)).toBeNull();
+    expect(Object.getPrototypeOf(params)).toBe(Object.prototype);
+    expect(params?.hasOwnProperty("__proto__")).toBe(true);
     expect(Object.hasOwn(params!, "__proto__")).toBe(true);
     expect(params?.["__proto__"]).toEqual(expected);
   });

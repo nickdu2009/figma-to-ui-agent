@@ -107,7 +107,7 @@ function freezeLocation(location: RuntimeSnapshot["location"]): RuntimeSnapshot[
 }
 
 function freezeMatchedRoute(matched: MatchedRoute): MatchedRoute {
-  const params = Object.create(null) as Record<string, string | string[]>;
+  const params = {} as Record<string, string | string[]>;
   for (const key of Object.keys(matched.params)) {
     const descriptor = Object.getOwnPropertyDescriptor(matched.params, key);
     if (!descriptor || !("value" in descriptor)) {

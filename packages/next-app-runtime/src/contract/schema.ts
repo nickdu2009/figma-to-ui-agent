@@ -43,6 +43,14 @@ function constrainedJsonSchema(schema: ZodType): Record<string, unknown> {
   return result;
 }
 
+function isRequiredInputProperty(schema: ZodType): boolean {
+  // This is the same input-side signal used by Zod's object JSON Schema processor.
+  const internals = (schema as unknown as {
+    _zod?: { optin?: "optional" };
+  })._zod;
+  return internals?.optin !== "optional";
+}
+
 function officialJsonSchema(
   schema: ZodType,
   strict = false,
@@ -98,7 +106,7 @@ function officialJsonSchema(
             : converted;
         } else {
           propertySchema = officialJsonSchema(value, false, nextAncestors);
-          if (!optional) required.push(publicKey);
+          if (isRequiredInputProperty(value)) required.push(publicKey);
         }
         Object.defineProperty(properties, publicKey, {
           configurable: true,
@@ -138,11 +146,14 @@ function officialJsonSchema(
     }
     case "default":
     case "prefault":
-    case "catch":
     case "readonly":
     case "nonoptional": {
       const inner = definition.innerType as ZodType | undefined;
       return inner ? officialJsonSchema(inner, strict, nextAncestors) : {};
+    }
+    case "catch": {
+      const inner = definition.innerType as ZodType | undefined;
+      return strict && inner ? officialJsonSchema(inner, true, nextAncestors) : {};
     }
     case "pipe": {
       const output = definition.out as ZodType | undefined;

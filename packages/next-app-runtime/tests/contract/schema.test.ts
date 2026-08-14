@@ -763,6 +763,52 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(JSON.stringify(catalog.jsonSchema())).toContain('"minItems":1');
   });
 
+  it("keeps public JSON Schema required fields aligned with Zod input defaults", () => {
+    const catalog = schema.createCatalog({
+      components: {
+        Defaults: {
+          props: z.object({
+            required: z.string(),
+            defaulted: z.string().default("default"),
+            prefaulted: z.string().prefault("prefault"),
+            caught: z.string().catch("catch"),
+            optionalDefault: z.string().default("optional").optional(),
+            nonoptionalDefault: z.string().default("required default").nonoptional(),
+          }).strict(),
+          slots: [],
+          description: "Defaulted props",
+          example: { required: "value", nonoptionalDefault: "value" },
+        },
+      },
+      actions: {},
+    });
+    const makeSpec = (props: Record<string, unknown>) => ({
+      routes: {
+        "/": {
+          page: {
+            root: "defaults",
+            elements: { defaults: { type: "Defaults", props } },
+          },
+        },
+      },
+    });
+    const validateJsonSchema = new Ajv({ strict: false }).compile(catalog.jsonSchema());
+    const valid = makeSpec({
+      required: "value",
+      caught: { invalidForInnerSchema: true },
+      nonoptionalDefault: "value",
+    });
+    const missingRequired = makeSpec({ nonoptionalDefault: "value" });
+    const missingNonoptional = makeSpec({ required: "value" });
+
+    expect(validateJsonSchema(valid)).toBe(true);
+    expect(catalog.validate(valid).success).toBe(true);
+    for (const invalid of [missingRequired, missingNonoptional]) {
+      expect(validateJsonSchema(invalid)).toBe(false);
+      expect(catalog.validate(invalid).success).toBe(false);
+    }
+  });
+
   it("serializes fixed own __proto__ JSON Schema properties without changing prototypes", () => {
     const propsShape: Record<string, z.ZodType> = {};
     Object.defineProperty(propsShape, "__proto__", {

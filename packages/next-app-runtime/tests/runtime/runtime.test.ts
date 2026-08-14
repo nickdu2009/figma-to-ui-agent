@@ -352,7 +352,8 @@ describe("route runtime", () => {
 
     expect(loader).toHaveBeenCalledTimes(1);
     const params = loader.mock.calls[0]?.[0];
-    expect(Object.getPrototypeOf(params)).toBeNull();
+    expect(Object.getPrototypeOf(params)).toBe(Object.prototype);
+    expect(params?.hasOwnProperty("__proto__")).toBe(true);
     expect(Object.hasOwn(params!, "__proto__")).toBe(true);
     expect(params?.["__proto__"]).toEqual(expected);
     expect(runtime.getSnapshot()).toMatchObject({
