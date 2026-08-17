@@ -49,12 +49,18 @@ describe("NextAppSpec 0.19.0 contract", () => {
                 type: "Box",
                 props: { label: "Rows" },
                 children: ["row"],
-                visible: { $and: [{ $state: "/enabled" }, { $index: true, gte: 0 }] },
+                visible: {
+                  $and: [{ $state: "/enabled" }, { $index: true, gte: 0 }],
+                },
                 on: {
                   press: {
                     action: "save",
                     params: { id: { $state: "/id" } },
-                    confirm: { title: "Save", message: "Continue?", variant: "danger" as const },
+                    confirm: {
+                      title: "Save",
+                      message: "Continue?",
+                      variant: "danger" as const,
+                    },
                     onSuccess: { navigate: "/done" },
                     onError: { set: { failed: true } },
                     preventDefault: true,
@@ -68,9 +74,18 @@ describe("NextAppSpec 0.19.0 contract", () => {
           },
           metadata: { title: "Item" },
           layout: "main",
-          loading: { root: "x", elements: { x: { type: "Text", props: { text: "Loading" } } } },
-          error: { root: "x", elements: { x: { type: "Text", props: { text: "Error" } } } },
-          notFound: { root: "x", elements: { x: { type: "Text", props: { text: "Missing" } } } },
+          loading: {
+            root: "x",
+            elements: { x: { type: "Text", props: { text: "Loading" } } },
+          },
+          error: {
+            root: "x",
+            elements: { x: { type: "Text", props: { text: "Error" } } },
+          },
+          notFound: {
+            root: "x",
+            elements: { x: { type: "Text", props: { text: "Missing" } } },
+          },
           loader: "loadItem",
           staticParams: [{ id: "a" }],
         },
@@ -116,7 +131,10 @@ describe("NextAppSpec 0.19.0 contract", () => {
       writable: true,
     });
 
-    const result = nextAppSpecSchema.safeParse({ routes }, { reportInput: true });
+    const result = nextAppSpecSchema.safeParse(
+      { routes },
+      { reportInput: true },
+    );
     expect(result.success).toBe(false);
     if (result.success) throw new Error("Expected invalid routes");
     expect(result.error.issues[0]?.path).toEqual(["routes", "__proto__"]);
@@ -127,10 +145,12 @@ describe("NextAppSpec 0.19.0 contract", () => {
 
   it("does not make non-JSON objects valid while preserving Record keys", () => {
     for (const exotic of [new Date(), new Map([["value", true]])]) {
-      expect(nextAppSpecSchema.safeParse({
-        routes: {},
-        state: { exotic },
-      }).success).toBe(false);
+      expect(
+        nextAppSpecSchema.safeParse({
+          routes: {},
+          state: { exotic },
+        }).success,
+      ).toBe(false);
     }
   });
 
@@ -162,7 +182,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(result.success).toBe(false);
     expect(getterCalls).toBe(0);
     if (result.success) throw new Error("Expected required accessor rejection");
-    expect(JSON.stringify(result.error.issues)).not.toContain("sensitive required getter");
+    expect(JSON.stringify(result.error.issues)).not.toContain(
+      "sensitive required getter",
+    );
   });
 
   it("preserves native Zod semantics for explicit optional undefined values", () => {
@@ -176,7 +198,8 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const result = nextAppSpecSchema.safeParse(input);
 
     expect(result.success).toBe(true);
-    if (!result.success) throw new Error("Expected optional undefined values to validate");
+    if (!result.success)
+      throw new Error("Expected optional undefined values to validate");
     expect(result.data).toEqual(input);
   });
 
@@ -215,25 +238,47 @@ describe("NextAppSpec 0.19.0 contract", () => {
     });
 
     expect(result.success).toBe(true);
-    if (!result.success) throw new Error("Expected descriptor snapshot to validate");
+    if (!result.success)
+      throw new Error("Expected descriptor snapshot to validate");
     expect(result.data.state?.rows).toEqual([{ id: "one" }]);
     expect(trapCalls.get).toBe(0);
     expect(trapCalls.getPrototypeOf).toBe(1);
     expect(trapCalls.ownKeys).toBe(1);
-    expect(trapCalls.descriptors).toEqual(new Map<PropertyKey, number>([
-      ["0", 1],
-      ["length", 1],
-    ]));
+    expect(trapCalls.descriptors).toEqual(
+      new Map<PropertyKey, number>([
+        ["0", 1],
+        ["length", 1],
+      ]),
+    );
   });
 
   it("turns Proxy snapshot failures into stable public Schema issues", () => {
     const secret = "sensitive descriptor snapshot failure";
     const inputs = [
-      new Proxy({}, { ownKeys() { throw new Error(secret); } }),
-      new Proxy({}, { getPrototypeOf() { throw new Error(secret); } }),
-      new Proxy({ value: true }, {
-        getOwnPropertyDescriptor() { throw new Error(secret); },
-      }),
+      new Proxy(
+        {},
+        {
+          ownKeys() {
+            throw new Error(secret);
+          },
+        },
+      ),
+      new Proxy(
+        {},
+        {
+          getPrototypeOf() {
+            throw new Error(secret);
+          },
+        },
+      ),
+      new Proxy(
+        { value: true },
+        {
+          getOwnPropertyDescriptor() {
+            throw new Error(secret);
+          },
+        },
+      ),
     ];
 
     for (const state of inputs) {
@@ -293,7 +338,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
       "staticParams": [{ "__proto__": "reserved-param" }]
     }`);
 
-    const assertReservedTree = (value: ReturnType<typeof elementTreeSchema.parse>) => {
+    const assertReservedTree = (
+      value: ReturnType<typeof elementTreeSchema.parse>,
+    ) => {
       expect(Object.hasOwn(value.elements, "__proto__")).toBe(true);
       const element = value.elements["__proto__"]!;
       expect(element).toMatchObject({ type: "Text" });
@@ -306,8 +353,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
       expect(Object.hasOwn(action?.params ?? {}, "__proto__")).toBe(true);
       expect(action?.params?.["__proto__"]).toBe("params-value");
       const success = action?.onSuccess;
-      expect(success && "set" in success && Object.hasOwn(success.set, "__proto__"))
-        .toBe(true);
+      expect(
+        success && "set" in success && Object.hasOwn(success.set, "__proto__"),
+      ).toBe(true);
       if (success && "set" in success) {
         expect(success.set["__proto__"]).toBe("success-value");
       }
@@ -317,14 +365,20 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const parsedRoute = nextRouteSpecSchema.parse(route);
     assertReservedTree(tree);
     assertReservedTree(parsedRoute.page);
-    for (const value of [parsedRoute.loading, parsedRoute.error, parsedRoute.notFound]) {
+    for (const value of [
+      parsedRoute.loading,
+      parsedRoute.error,
+      parsedRoute.notFound,
+    ]) {
       expect(value).toBeDefined();
       expect(Object.hasOwn(value!.elements, "__proto__")).toBe(true);
       expect(value!.elements["__proto__"]).toMatchObject({ type: "Text" });
     }
     expect(Object.hasOwn(tree.state!, "__proto__")).toBe(true);
     expect(tree.state!["__proto__"]).toEqual({ scope: "page" });
-    expect(Object.hasOwn(parsedRoute.staticParams![0]!, "__proto__")).toBe(true);
+    expect(Object.hasOwn(parsedRoute.staticParams![0]!, "__proto__")).toBe(
+      true,
+    );
     expect(parsedRoute.staticParams![0]!["__proto__"]).toBe("reserved-param");
 
     const layouts = JSON.parse(`{"__proto__":${JSON.stringify(route.page)}}`);
@@ -335,29 +389,39 @@ describe("NextAppSpec 0.19.0 contract", () => {
   });
 
   it("preserves own Record keys from another realm in full and public sub schemas", () => {
-    const treeJson = '{"root":"__proto__","elements":{"__proto__":' +
+    const treeJson =
+      '{"root":"__proto__","elements":{"__proto__":' +
       '{"type":"Text","props":{"text":"Cross realm"}}}}';
-    const tree = runInNewContext(`JSON.parse(${JSON.stringify(treeJson)})`) as unknown;
+    const tree = runInNewContext(
+      `JSON.parse(${JSON.stringify(treeJson)})`,
+    ) as unknown;
 
     const parsedTree = elementTreeSchema.parse(tree);
-    const parsedFull = nextAppSpecSchema.parse({ routes: { "/": { page: tree } } });
+    const parsedFull = nextAppSpecSchema.parse({
+      routes: { "/": { page: tree } },
+    });
     expect(Object.hasOwn(parsedTree.elements, "__proto__")).toBe(true);
     expect(parsedTree.elements["__proto__"]).toMatchObject({ type: "Text" });
-    expect(Object.hasOwn(parsedFull.routes["/"]!.page.elements, "__proto__")).toBe(true);
+    expect(
+      Object.hasOwn(parsedFull.routes["/"]!.page.elements, "__proto__"),
+    ).toBe(true);
   });
 
   it("rejects known and Record accessors across every public schema without executing them", () => {
     let getterCalls = 0;
-    const accessor = (target: object, key: string) => Object.defineProperty(target, key, {
-      enumerable: true,
-      get() {
-        getterCalls += 1;
-        throw new Error(`sensitive accessor ${key}`);
-      },
-    });
+    const accessor = (target: object, key: string) =>
+      Object.defineProperty(target, key, {
+        enumerable: true,
+        get() {
+          getterCalls += 1;
+          throw new Error(`sensitive accessor ${key}`);
+        },
+      });
     const attempts: Array<() => { success: boolean; error?: unknown }> = [];
 
-    attempts.push(() => elementTreeSchema.safeParse(accessor({ elements: {} }, "root")));
+    attempts.push(() =>
+      elementTreeSchema.safeParse(accessor({ elements: {} }, "root")),
+    );
     attempts.push(() => nextRouteSpecSchema.safeParse(accessor({}, "page")));
     attempts.push(() => nextMetadataSchema.safeParse(accessor({}, "title")));
     attempts.push(() => nextMetadataSchema.safeParse(accessor({}, "unknown")));
@@ -365,7 +429,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const routes = accessor({}, "/");
     attempts.push(() => nextAppSpecSchema.safeParse({ routes }));
     const elements = accessor({}, "root");
-    attempts.push(() => elementTreeSchema.safeParse({ root: "root", elements }));
+    attempts.push(() =>
+      elementTreeSchema.safeParse({ root: "root", elements }),
+    );
 
     const catalog = schema.createCatalog({
       components: {
@@ -389,12 +455,16 @@ describe("NextAppSpec 0.19.0 contract", () => {
       },
     });
     attempts.push(() => catalog.validate(catalogSpec(accessor({}, "label"))));
-    attempts.push(() => catalog.validate(catalogSpec(accessor({ label: "Box" }, "unknown"))));
+    attempts.push(() =>
+      catalog.validate(catalogSpec(accessor({ label: "Box" }, "unknown"))),
+    );
 
     const recordCatalog = schema.createCatalog({
       components: {
         Lookup: {
-          props: z.object({ values: z.record(z.string(), z.number()) }).strict(),
+          props: z
+            .object({ values: z.record(z.string(), z.number()) })
+            .strict(),
           slots: [],
           description: "Lookup",
           example: { values: {} },
@@ -403,20 +473,26 @@ describe("NextAppSpec 0.19.0 contract", () => {
       actions: {},
     });
     const recordValues = accessor({}, "__proto__");
-    attempts.push(() => recordCatalog.validate({
-      routes: {
-        "/": {
-          page: {
-            root: "lookup",
-            elements: { lookup: { type: "Lookup", props: { values: recordValues } } },
+    attempts.push(() =>
+      recordCatalog.validate({
+        routes: {
+          "/": {
+            page: {
+              root: "lookup",
+              elements: {
+                lookup: { type: "Lookup", props: { values: recordValues } },
+              },
+            },
           },
         },
-      },
-    }));
+      }),
+    );
 
     for (const attempt of attempts) {
       let result: { success: boolean; error?: unknown } | undefined;
-      expect(() => { result = attempt(); }).not.toThrow();
+      expect(() => {
+        result = attempt();
+      }).not.toThrow();
       expect(result?.success).toBe(false);
       expect(JSON.stringify(result?.error)).not.toContain("sensitive accessor");
     }
@@ -424,23 +500,29 @@ describe("NextAppSpec 0.19.0 contract", () => {
   });
 
   it("does not execute an action params schema while constructing a Catalog", () => {
-    const constructionFailure = new Error("params schema was executed during construction");
+    const constructionFailure = new Error(
+      "params schema was executed during construction",
+    );
 
-    expect(() => schema.createCatalog({
-      components: {},
-      actions: {
-        save: {
-          params: z.any().transform(() => {
-            throw constructionFailure;
-          }),
-          description: "Save",
+    expect(() =>
+      schema.createCatalog({
+        components: {},
+        actions: {
+          save: {
+            params: z.any().transform(() => {
+              throw constructionFailure;
+            }),
+            description: "Save",
+          },
         },
-      },
-    })).not.toThrow();
+      }),
+    ).not.toThrow();
   });
 
   it("validates omitted action params only when the binding is actually checked", () => {
-    const actualValidationFailure = new Error("params schema actual validation failure");
+    const actualValidationFailure = new Error(
+      "params schema actual validation failure",
+    );
     let providedValidations = 0;
     let throwingValidations = 0;
     const catalog = schema.createCatalog({
@@ -473,10 +555,7 @@ describe("NextAppSpec 0.19.0 contract", () => {
         },
       },
     });
-    const actionSpec = (
-      action: string,
-      params?: Record<string, unknown>,
-    ) => ({
+    const actionSpec = (action: string, params?: Record<string, unknown>) => ({
       routes: {
         "/": {
           page: {
@@ -516,7 +595,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(providedValidations).toBe(1);
 
     const missingThrowing = actionSpec("throwing");
-    expect(() => catalog.validate(missingThrowing)).toThrow(actualValidationFailure);
+    expect(() => catalog.validate(missingThrowing)).toThrow(
+      actualValidationFailure,
+    );
     expect(throwingValidations).toBe(1);
     throwingValidations = 0;
     expect(() => assertCatalogSpec(catalog, missingThrowing)).toThrowError(
@@ -541,7 +622,10 @@ describe("NextAppSpec 0.19.0 contract", () => {
                 on: {
                   press: {
                     action: "save",
-                    onSuccess: { action: "refresh", params: { unsupported: true } },
+                    onSuccess: {
+                      action: "refresh",
+                      params: { unsupported: true },
+                    },
                   },
                 },
               },
@@ -575,18 +659,20 @@ describe("NextAppSpec 0.19.0 contract", () => {
 
     expect(catalog.validate(invalid).success).toBe(false);
     expect(catalog.zodSchema().safeParse(invalid).success).toBe(false);
-    expect(catalog.validate({
-      routes: {
-        "/": {
-          page: {
-            root: "link",
-            elements: {
-              link: { type: "Link", props: { href: "/", unsupported: true } },
+    expect(
+      catalog.validate({
+        routes: {
+          "/": {
+            page: {
+              root: "link",
+              elements: {
+                link: { type: "Link", props: { href: "/", unsupported: true } },
+              },
             },
           },
         },
-      },
-    }).success).toBe(false);
+      }).success,
+    ).toBe(false);
     const actionSpec = (params: Record<string, unknown>) => ({
       routes: {
         "/": {
@@ -635,11 +721,13 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const catalog = schema.createCatalog({
       components: {
         Card: {
-          props: z.object({
-            title: z.string(),
-            hint: z.string().optional(),
-            attributes: z.record(z.string(), z.string()).optional(),
-          }).strict(),
+          props: z
+            .object({
+              title: z.string(),
+              hint: z.string().optional(),
+              attributes: z.record(z.string(), z.string()).optional(),
+            })
+            .strict(),
           slots: [],
           description: "Card",
           example: { title: "Example" },
@@ -648,7 +736,10 @@ describe("NextAppSpec 0.19.0 contract", () => {
       actions: {},
     });
     const normal = catalog.jsonSchema();
-    const strict = catalog.jsonSchema({ strict: true }) as Record<string, unknown>;
+    const strict = catalog.jsonSchema({ strict: true }) as Record<
+      string,
+      unknown
+    >;
 
     expect(catalog.jsonSchema({ strict: false })).toEqual(normal);
     expect(strict).not.toEqual(normal);
@@ -664,7 +755,7 @@ describe("NextAppSpec 0.19.0 contract", () => {
       if (node.type === "object") {
         expect(node.additionalProperties).toBe(false);
         const properties = (node.properties ?? {}) as Record<string, unknown>;
-        expect([...(node.required as string[] ?? [])].sort()).toEqual(
+        expect([...((node.required as string[]) ?? [])].sort()).toEqual(
           Object.keys(properties).sort(),
         );
       }
@@ -694,9 +785,15 @@ describe("NextAppSpec 0.19.0 contract", () => {
     };
     const rootProperties = strict.properties as Record<string, unknown>;
     expect(strict.required).toEqual(["metadata", "routes", "layouts", "state"]);
-    expect(findNode(rootProperties.metadata, (node) => node.type === "null")).toBeDefined();
-    expect(findNode(rootProperties.layouts, (node) => node.type === "null")).toBeDefined();
-    expect(findNode(rootProperties.state, (node) => node.type === "null")).toBeDefined();
+    expect(
+      findNode(rootProperties.metadata, (node) => node.type === "null"),
+    ).toBeDefined();
+    expect(
+      findNode(rootProperties.layouts, (node) => node.type === "null"),
+    ).toBeDefined();
+    expect(
+      findNode(rootProperties.state, (node) => node.type === "null"),
+    ).toBeDefined();
     const opaqueRecord = {
       type: "object",
       properties: {},
@@ -704,27 +801,41 @@ describe("NextAppSpec 0.19.0 contract", () => {
       additionalProperties: false,
     };
     expect(rootProperties.routes).toEqual(opaqueRecord);
-    expect(findNode(rootProperties.layouts, (node) => (
-      node.type === "object" &&
-      Object.keys((node.properties ?? {}) as Record<string, unknown>).length === 0 &&
-      node.additionalProperties === false
-    ))).toEqual(opaqueRecord);
+    expect(
+      findNode(
+        rootProperties.layouts,
+        (node) =>
+          node.type === "object" &&
+          Object.keys((node.properties ?? {}) as Record<string, unknown>)
+            .length === 0 &&
+          node.additionalProperties === false,
+      ),
+    ).toEqual(opaqueRecord);
   });
 
   // 穷举 JSON Schema×Zod 对齐探测耗时约 5s，显式给足余量避免默认 5s 卡线偶发超时
-  it("keeps public JSON Schema acceptance aligned with nullable and bounded Zod props", { timeout: 30_000 }, () => {
+  it("keeps public JSON Schema acceptance aligned with nullable and bounded Zod props", {
+    timeout: 30_000,
+  }, () => {
     const catalog = schema.createCatalog({
       components: {
         Card: {
-          props: z.object({
-            requiredNullable: z.string().nullable(),
-            code: z.string().min(5),
-            count: z.number().min(2).max(4),
-            tags: z.array(z.string()).min(1).max(2),
-          }).strict(),
+          props: z
+            .object({
+              requiredNullable: z.string().nullable(),
+              code: z.string().min(5),
+              count: z.number().min(2).max(4),
+              tags: z.array(z.string()).min(1).max(2),
+            })
+            .strict(),
           slots: [],
           description: "Constrained card",
-          example: { requiredNullable: null, code: "12345", count: 2, tags: ["one"] },
+          example: {
+            requiredNullable: null,
+            code: "12345",
+            count: 2,
+            tags: ["one"],
+          },
         },
       },
       actions: {},
@@ -739,7 +850,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
         },
       },
     });
-    const validateJsonSchema = new Ajv({ strict: false }).compile(catalog.jsonSchema());
+    const validateJsonSchema = new Ajv({ strict: false }).compile(
+      catalog.jsonSchema(),
+    );
     const valid = makeSpec({
       requiredNullable: null,
       code: "12345",
@@ -749,7 +862,12 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const invalidCases = [
       makeSpec({ code: "12345", count: 3, tags: ["one"] }),
       makeSpec({ requiredNullable: null, code: "x", count: 3, tags: ["one"] }),
-      makeSpec({ requiredNullable: null, code: "12345", count: 5, tags: ["one"] }),
+      makeSpec({
+        requiredNullable: null,
+        code: "12345",
+        count: 5,
+        tags: ["one"],
+      }),
       makeSpec({ requiredNullable: null, code: "12345", count: 3, tags: [] }),
     ];
 
@@ -768,19 +886,28 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const catalog = schema.createCatalog({
       components: {
         Defaults: {
-          props: z.object({
-            required: z.string(),
-            defaulted: z.string().default("default"),
-            prefaulted: z.string().prefault("prefault"),
-            caught: z.string().catch("catch"),
-            optionalDefault: z.string().default("optional").optional(),
-            nonoptionalDefault: z.string().default("required default").nonoptional(),
-            prefaultTooShort: z.string().min(3).prefault("x"),
-            defaultPipeInvalid: z.string().default("").pipe(z.string().min(1)),
-            optionalDefaultPipe: z.string()
-              .optional()
-              .pipe(z.string().default("generated").nonoptional()),
-          }).strict(),
+          props: z
+            .object({
+              required: z.string(),
+              defaulted: z.string().default("default"),
+              prefaulted: z.string().prefault("prefault"),
+              caught: z.string().catch("catch"),
+              optionalDefault: z.string().default("optional").optional(),
+              nonoptionalDefault: z
+                .string()
+                .default("required default")
+                .nonoptional(),
+              prefaultTooShort: z.string().min(3).prefault("x"),
+              defaultPipeInvalid: z
+                .string()
+                .default("")
+                .pipe(z.string().min(1)),
+              optionalDefaultPipe: z
+                .string()
+                .optional()
+                .pipe(z.string().default("generated").nonoptional()),
+            })
+            .strict(),
           slots: [],
           description: "Defaulted props",
           example: {
@@ -803,7 +930,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
         },
       },
     });
-    const validateJsonSchema = new Ajv({ strict: false }).compile(catalog.jsonSchema());
+    const validateJsonSchema = new Ajv({ strict: false }).compile(
+      catalog.jsonSchema(),
+    );
     const valid = makeSpec({
       required: "value",
       caught: { invalidForInnerSchema: true },
@@ -854,23 +983,26 @@ describe("NextAppSpec 0.19.0 contract", () => {
   });
 
   it("fails fast instead of exporting indeterminate preprocess requiredness", () => {
-    const makeCatalog = (field: z.ZodType) => schema.createCatalog({
-      components: {
-        Indeterminate: {
-          props: z.object({ value: field }).strict(),
-          slots: [],
-          description: "Indeterminate props",
-          example: { value: "example" },
+    const makeCatalog = (field: z.ZodType) =>
+      schema.createCatalog({
+        components: {
+          Indeterminate: {
+            props: z.object({ value: field }).strict(),
+            slots: [],
+            description: "Indeterminate props",
+            example: { value: "example" },
+          },
         },
-      },
-      actions: {},
-    });
+        actions: {},
+      });
 
     const identity = makeCatalog(z.preprocess((value) => value, z.string()));
-    const generating = makeCatalog(z.preprocess(
-      (value) => value === undefined ? "generated" : value,
-      z.string(),
-    ));
+    const generating = makeCatalog(
+      z.preprocess(
+        (value) => (value === undefined ? "generated" : value),
+        z.string(),
+      ),
+    );
 
     expect(() => identity.jsonSchema()).toThrow(
       /catalog_json_schema_requiredness_indeterminate/,
@@ -881,21 +1013,26 @@ describe("NextAppSpec 0.19.0 contract", () => {
   });
 
   // 穷举 requiredness 对齐探测耗时约 60s，显式给足余量避免默认 60s 卡线偶发超时
-  it("keeps action params required fields aligned between JSON Schema and Catalog validation", { timeout: 180_000 }, () => {
-    const makeCatalog = (params: z.ZodType) => schema.createCatalog({
-      components: {
-        Button: {
-          props: z.object({ label: z.string() }).strict(),
-          slots: [],
-          description: "Button",
-          example: { label: "Run" },
+  it("keeps action params required fields aligned between JSON Schema and Catalog validation", {
+    timeout: 180_000,
+  }, () => {
+    const makeCatalog = (params: z.ZodType) =>
+      schema.createCatalog({
+        components: {
+          Button: {
+            props: z.object({ label: z.string() }).strict(),
+            slots: [],
+            description: "Button",
+            example: { label: "Run" },
+          },
         },
-      },
-      actions: {
-        save: { params, description: "Save" },
-      },
-    });
-    const sharedOptionalParams = z.object({ id: z.string().optional() }).strict();
+        actions: {
+          save: { params, description: "Save" },
+        },
+      });
+    const sharedOptionalParams = z
+      .object({ id: z.string().optional() })
+      .strict();
     const makeSpec = (
       binding: Record<string, unknown>,
       placement: "single" | "array",
@@ -919,24 +1056,54 @@ describe("NextAppSpec 0.19.0 contract", () => {
     });
     const cases = [
       [z.object({ id: z.string() }).strict(), { action: "save" }, false],
-      [z.object({ id: z.string() }).strict(), { action: "save", params: {} }, false],
-      [z.object({ id: z.string() }).strict(), { action: "save", params: { id: "one" } }, true],
-      [z.object({ id: z.string().default("generated") }).strict(), { action: "save" }, true],
-      [z.object({ id: z.string().default("generated") }).strict(), { action: "save", params: {} }, true],
-      [z.object({ id: z.string().catch("fallback") }).strict(), { action: "save" }, true],
-      [z.object({ id: z.string().catch("fallback") }).strict(), { action: "save", params: {} }, true],
       [
-        z.object({ id: z.string().default("generated").nonoptional() }).strict(),
-        { action: "save" },
-        false,
-      ],
-      [
-        z.object({ id: z.string().default("generated").nonoptional() }).strict(),
+        z.object({ id: z.string() }).strict(),
         { action: "save", params: {} },
         false,
       ],
       [
-        z.object({ id: z.string().default("generated").nonoptional() }).strict(),
+        z.object({ id: z.string() }).strict(),
+        { action: "save", params: { id: "one" } },
+        true,
+      ],
+      [
+        z.object({ id: z.string().default("generated") }).strict(),
+        { action: "save" },
+        true,
+      ],
+      [
+        z.object({ id: z.string().default("generated") }).strict(),
+        { action: "save", params: {} },
+        true,
+      ],
+      [
+        z.object({ id: z.string().catch("fallback") }).strict(),
+        { action: "save" },
+        true,
+      ],
+      [
+        z.object({ id: z.string().catch("fallback") }).strict(),
+        { action: "save", params: {} },
+        true,
+      ],
+      [
+        z
+          .object({ id: z.string().default("generated").nonoptional() })
+          .strict(),
+        { action: "save" },
+        false,
+      ],
+      [
+        z
+          .object({ id: z.string().default("generated").nonoptional() })
+          .strict(),
+        { action: "save", params: {} },
+        false,
+      ],
+      [
+        z
+          .object({ id: z.string().default("generated").nonoptional() })
+          .strict(),
         { action: "save", params: { id: "one" } },
         true,
       ],
@@ -952,25 +1119,33 @@ describe("NextAppSpec 0.19.0 contract", () => {
         false,
       ],
       [
-        z.object({ id: z.string().default("").pipe(z.string().min(1)) }).strict(),
+        z
+          .object({ id: z.string().default("").pipe(z.string().min(1)) })
+          .strict(),
         { action: "save" },
         false,
       ],
       [
-        z.object({
-          id: z.string()
-            .optional()
-            .pipe(z.string().default("generated").nonoptional()),
-        }).strict(),
+        z
+          .object({
+            id: z
+              .string()
+              .optional()
+              .pipe(z.string().default("generated").nonoptional()),
+          })
+          .strict(),
         { action: "save" },
         true,
       ],
       [
-        z.object({
-          id: z.string()
-            .optional()
-            .pipe(z.string().default("generated").nonoptional()),
-        }).strict(),
+        z
+          .object({
+            id: z
+              .string()
+              .optional()
+              .pipe(z.string().default("generated").nonoptional()),
+          })
+          .strict(),
         { action: "save", params: {} },
         true,
       ],
@@ -978,7 +1153,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
 
     for (const [params, binding, expected] of cases) {
       const catalog = makeCatalog(params);
-      const validateJsonSchema = new Ajv({ strict: false }).compile(catalog.jsonSchema());
+      const validateJsonSchema = new Ajv({ strict: false }).compile(
+        catalog.jsonSchema(),
+      );
       for (const placement of ["single", "array"] as const) {
         const candidate = makeSpec(binding, placement);
         expect(validateJsonSchema(candidate)).toBe(expected);
@@ -1000,10 +1177,13 @@ describe("NextAppSpec 0.19.0 contract", () => {
       },
       actions: {
         save: {
-          params: z.object({}).strict().transform((value) => {
-            transformCalls += 1;
-            return value;
-          }),
+          params: z
+            .object({})
+            .strict()
+            .transform((value) => {
+              transformCalls += 1;
+              return value;
+            }),
           description: "Save",
         },
       },
@@ -1018,26 +1198,34 @@ describe("NextAppSpec 0.19.0 contract", () => {
 
   it("fails fast for indeterminate action params requiredness", () => {
     let refinementCalls = 0;
-    const makeCatalog = (params: z.ZodType) => schema.createCatalog({
-      components: {
-        Button: {
-          props: z.object({ label: z.string() }).strict(),
-          slots: [],
-          description: "Button",
-          example: { label: "Run" },
+    const makeCatalog = (params: z.ZodType) =>
+      schema.createCatalog({
+        components: {
+          Button: {
+            props: z.object({ label: z.string() }).strict(),
+            slots: [],
+            description: "Button",
+            example: { label: "Run" },
+          },
         },
-      },
-      actions: {
-        save: { params, description: "Save" },
-      },
-    });
-    const refined = makeCatalog(z.object({}).strict().superRefine(() => {
-      refinementCalls += 1;
-    }));
-    const preprocessed = makeCatalog(z.preprocess(
-      () => ({ id: "generated" }),
-      z.object({ id: z.string() }).strict(),
-    ));
+        actions: {
+          save: { params, description: "Save" },
+        },
+      });
+    const refined = makeCatalog(
+      z
+        .object({})
+        .strict()
+        .superRefine(() => {
+          refinementCalls += 1;
+        }),
+    );
+    const preprocessed = makeCatalog(
+      z.preprocess(
+        () => ({ id: "generated" }),
+        z.object({ id: z.string() }).strict(),
+      ),
+    );
 
     expect(() => refined.jsonSchema()).toThrow(
       /catalog_json_schema_requiredness_indeterminate/,
@@ -1067,14 +1255,24 @@ describe("NextAppSpec 0.19.0 contract", () => {
       },
       actions: {},
     });
-    const findReservedProperties = (value: unknown): Record<string, unknown>[] => {
+    const findReservedProperties = (
+      value: unknown,
+    ): Record<string, unknown>[] => {
       const results: Record<string, unknown>[] = [];
       const seen = new Set<object>();
       const visit = (current: unknown): void => {
-        if (current === null || typeof current !== "object" || seen.has(current)) return;
+        if (
+          current === null ||
+          typeof current !== "object" ||
+          seen.has(current)
+        )
+          return;
         seen.add(current);
         const node = current as Record<string, unknown>;
-        if (Array.isArray(node.required) && node.required.includes("__proto__")) {
+        if (
+          Array.isArray(node.required) &&
+          node.required.includes("__proto__")
+        ) {
           results.push(node.properties as Record<string, unknown>);
         }
         for (const entry of Object.values(node)) visit(entry);
@@ -1090,7 +1288,7 @@ describe("NextAppSpec 0.19.0 contract", () => {
       expect(Object.hasOwn(properties, "__proto__")).toBe(true);
       expect(
         Object.getPrototypeOf(properties) === null ||
-        Object.getPrototypeOf(properties) === Object.prototype,
+          Object.getPrototypeOf(properties) === Object.prototype,
       ).toBe(true);
     }
 
@@ -1099,12 +1297,15 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(transportedDictionaries).toHaveLength(dictionaries.length);
     for (const properties of transportedDictionaries) {
       expect(Object.hasOwn(properties, "__proto__")).toBe(true);
-      expect(properties["__proto__"]).toMatchObject({ anyOf: expect.any(Array) });
+      expect(properties["__proto__"]).toMatchObject({
+        anyOf: expect.any(Array),
+      });
     }
   });
 
   it("enforces strict and typed catchall semantics for own __proto__ props", () => {
-    const spec = (type: string, value: unknown) => JSON.parse(`{
+    const spec = (type: string, value: unknown) =>
+      JSON.parse(`{
       "routes": {
         "/": {
           "page": {
@@ -1153,20 +1354,26 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(catalog.validate(spec("Typed", "invalid")).success).toBe(false);
     const typed = catalog.validate(spec("Typed", 1));
     const stripped = catalog.validate(spec("Strip", "preserved-host-behavior"));
-    const passthrough = catalog.validate(spec("Passthrough", "preserved-host-behavior"));
+    const passthrough = catalog.validate(
+      spec("Passthrough", "preserved-host-behavior"),
+    );
     expect(typed.success).toBe(true);
     expect(stripped.success).toBe(true);
     expect(passthrough.success).toBe(true);
     if (
-      !typed.success || !typed.data ||
-      !stripped.success || !stripped.data ||
-      !passthrough.success || !passthrough.data
+      !typed.success ||
+      !typed.data ||
+      !stripped.success ||
+      !stripped.data ||
+      !passthrough.success ||
+      !passthrough.data
     ) {
       throw new Error("Expected valid object-mode fixtures");
     }
     const typedProps = typed.data.routes["/"]!.page.elements.value!.props;
     const strippedProps = stripped.data.routes["/"]!.page.elements.value!.props;
-    const passthroughProps = passthrough.data.routes["/"]!.page.elements.value!.props;
+    const passthroughProps =
+      passthrough.data.routes["/"]!.page.elements.value!.props;
     expect(Object.hasOwn(typedProps, "__proto__")).toBe(true);
     expect(typedProps["__proto__"]).toBe(1);
     expect(Object.hasOwn(strippedProps, "__proto__")).toBe(false);
@@ -1195,7 +1402,8 @@ describe("NextAppSpec 0.19.0 contract", () => {
         },
       },
     });
-    const spec = (action: string, reserved: unknown) => JSON.parse(`{
+    const spec = (action: string, reserved: unknown) =>
+      JSON.parse(`{
       "routes": {
         "/": {
           "page": {
@@ -1218,10 +1426,13 @@ describe("NextAppSpec 0.19.0 contract", () => {
     }`);
 
     expect(catalog.validate(spec("strictAction", 1)).success).toBe(false);
-    expect(catalog.validate(spec("typedAction", "invalid")).success).toBe(false);
+    expect(catalog.validate(spec("typedAction", "invalid")).success).toBe(
+      false,
+    );
     const valid = catalog.validate(spec("typedAction", 1));
     expect(valid.success).toBe(true);
-    if (!valid.success || !valid.data) throw new Error("Expected typed action params");
+    if (!valid.success || !valid.data)
+      throw new Error("Expected typed action params");
     const bindings = valid.data.routes["/"]!.page.elements.button!.on as
       | Record<string, unknown>
       | undefined;
@@ -1245,15 +1456,17 @@ describe("NextAppSpec 0.19.0 contract", () => {
           example: { [literalKey]: "fixed" },
         },
         Lookup: {
-          props: z.object({
-            values: z.record(
-              z.string().refine((key) => {
-                recordKeyChecks += 1;
-                return key === literalKey;
-              }),
-              z.string(),
-            ),
-          }).strict(),
+          props: z
+            .object({
+              values: z.record(
+                z.string().refine((key) => {
+                  recordKeyChecks += 1;
+                  return key === literalKey;
+                }),
+                z.string(),
+              ),
+            })
+            .strict(),
           slots: [],
           description: "Record key",
           example: { values: { [literalKey]: "record" } },
@@ -1266,7 +1479,10 @@ describe("NextAppSpec 0.19.0 contract", () => {
         },
       },
     });
-    const page = (type: "Fixed" | "Lookup", props: Record<string, unknown>) => ({
+    const page = (
+      type: "Fixed" | "Lookup",
+      props: Record<string, unknown>,
+    ) => ({
       routes: {
         "/": {
           page: {
@@ -1280,9 +1496,11 @@ describe("NextAppSpec 0.19.0 contract", () => {
     });
 
     const fixed = catalog.validate(page("Fixed", { [literalKey]: "fixed" }));
-    const lookup = catalog.validate(page("Lookup", {
-      values: { [literalKey]: "record" },
-    }));
+    const lookup = catalog.validate(
+      page("Lookup", {
+        values: { [literalKey]: "record" },
+      }),
+    );
     const action = catalog.validate({
       routes: {
         "/": {
@@ -1308,13 +1526,21 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(fixed.success).toBe(true);
     expect(lookup.success).toBe(true);
     expect(action.success).toBe(true);
-    if (!fixed.success || !fixed.data || !lookup.success || !lookup.data ||
-      !action.success || !action.data) {
+    if (
+      !fixed.success ||
+      !fixed.data ||
+      !lookup.success ||
+      !lookup.data ||
+      !action.success ||
+      !action.data
+    ) {
       throw new Error("Expected literal private-prefix keys to validate");
     }
-    expect(fixed.data.routes["/"]!.page.elements.value!.props[literalKey]).toBe("fixed");
-    const lookupValues = lookup.data.routes["/"]!.page.elements.value!.props.values as
-      Record<string, unknown>;
+    expect(fixed.data.routes["/"]!.page.elements.value!.props[literalKey]).toBe(
+      "fixed",
+    );
+    const lookupValues = lookup.data.routes["/"]!.page.elements.value!.props
+      .values as Record<string, unknown>;
     expect(lookupValues[literalKey]).toBe("record");
     const bindings = action.data.routes["/"]!.page.elements.value!.on as
       | Record<string, unknown>
@@ -1346,7 +1572,8 @@ describe("NextAppSpec 0.19.0 contract", () => {
 
     const invalid = catalog.validate(page("Fixed", { [literalKey]: 42 }));
     expect(invalid.success).toBe(false);
-    if (invalid.success) throw new Error("Expected invalid private-prefix value");
+    if (invalid.success)
+      throw new Error("Expected invalid private-prefix value");
     const internalKey = `\u0000next-app-runtime-record-key:literal:${literalKey}`;
     expect(JSON.stringify(invalid.error)).not.toContain(internalKey);
   });
@@ -1401,26 +1628,30 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(numeric.success).toBe(true);
     expect(numericKeyChecks).toBe(1);
     expect(numericValueChecks).toBe(1);
-    if (!numeric.success || !numeric.data) throw new Error("Expected numeric record");
-    expect(numeric.data.routes["/"]!.page.elements.value!.props).toEqual({ 1: "ONE" });
+    if (!numeric.success || !numeric.data)
+      throw new Error("Expected numeric record");
+    expect(numeric.data.routes["/"]!.page.elements.value!.props).toEqual({
+      1: "ONE",
+    });
 
     expect(catalog.validate(spec("Finite", { a: "one" })).success).toBe(false);
-    expect(catalog.validate(spec("Finite", { a: "one", b: "two" })).success).toBe(true);
-    expect(catalog.validate(spec("NumericFinite", { 1: "one", 2: "two" })).success)
-      .toBe(true);
+    expect(
+      catalog.validate(spec("Finite", { a: "one", b: "two" })).success,
+    ).toBe(true);
+    expect(
+      catalog.validate(spec("NumericFinite", { 1: "one", 2: "two" })).success,
+    ).toBe(true);
   });
 
   it("preserves a native Zod Record transform output with one execution", () => {
     let transformCalls = 0;
-    const propsSchema = z
-      .record(z.string(), z.number())
-      .transform((value) => {
-        transformCalls += 1;
-        return {
-          count: Object.keys(value).length,
-          total: Object.values(value).reduce((sum, entry) => sum + entry, 0),
-        };
-      });
+    const propsSchema = z.record(z.string(), z.number()).transform((value) => {
+      transformCalls += 1;
+      return {
+        count: Object.keys(value).length,
+        total: Object.values(value).reduce((sum, entry) => sum + entry, 0),
+      };
+    });
     const catalog = schema.createCatalog({
       components: {
         Summary: {
@@ -1452,7 +1683,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(result.success).toBe(true);
     expect(transformCalls).toBe(1);
     if (!native.success || !result.success || !result.data) {
-      throw new Error("Expected native and Catalog Record transforms to succeed");
+      throw new Error(
+        "Expected native and Catalog Record transforms to succeed",
+      );
     }
     expect(result.data.routes["/"]!.page.elements.summary!.props).toEqual(
       native.data,
@@ -1499,7 +1732,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
     expect(result.success).toBe(true);
     expect(transformCalls).toBe(1);
     if (!native.success || !result.success || !result.data) {
-      throw new Error("Expected native and Catalog object transforms to succeed");
+      throw new Error(
+        "Expected native and Catalog object transforms to succeed",
+      );
     }
     expect(result.data.routes["/"]!.page.elements.counter!.props).toEqual(
       native.data,
@@ -1530,9 +1765,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
     });
 
     const omittedReserved = catalog.validate(spec({ a: "one" }));
-    const reservedOnly = catalog.validate(spec(
-      JSON.parse('{"__proto__":"reserved"}') as Record<string, unknown>,
-    ));
+    const reservedOnly = catalog.validate(
+      spec(JSON.parse('{"__proto__":"reserved"}') as Record<string, unknown>),
+    );
     expect(omittedReserved.success).toBe(true);
     expect(reservedOnly.success).toBe(true);
     if (!reservedOnly.success || !reservedOnly.data) {
@@ -1597,9 +1832,12 @@ describe("NextAppSpec 0.19.0 contract", () => {
       expect(typeof issue.message).toBe("string");
       expect((issue.message as string).length).toBeGreaterThan(0);
     }
-    expect(issues.some((issue) =>
-      Array.isArray(issue.path) && issue.path.includes("__proto__")
-    )).toBe(true);
+    expect(
+      issues.some(
+        (issue) =>
+          Array.isArray(issue.path) && issue.path.includes("__proto__"),
+      ),
+    ).toBe(true);
     const serialized = JSON.stringify(result.error.issues);
     const escaped = (value: string) => JSON.stringify(value).slice(1, -1);
     expect(serialized).toContain(escaped(literalKey));
@@ -1634,21 +1872,24 @@ describe("NextAppSpec 0.19.0 contract", () => {
       },
       actions: {},
     });
-    const result = catalog.zodSchema().safeParse({
-      routes: {
-        "/": {
-          page: {
-            root: "value",
-            elements: {
-              value: {
-                type: "CustomRecord",
-                props: { [literalKey]: "invalid" },
+    const result = catalog.zodSchema().safeParse(
+      {
+        routes: {
+          "/": {
+            page: {
+              root: "value",
+              elements: {
+                value: {
+                  type: "CustomRecord",
+                  props: { [literalKey]: "invalid" },
+                },
               },
             },
           },
         },
       },
-    }, { reportInput: true });
+      { reportInput: true },
+    );
 
     expect(result.success).toBe(false);
     if (result.success) throw new Error("Expected custom Record issue");
@@ -1665,15 +1906,21 @@ describe("NextAppSpec 0.19.0 contract", () => {
     };
     visit(result.error.issues);
 
-    expect(customIssues.some((issue) => issue.message === customMessage)).toBe(true);
-    expect(customIssues.some((issue) =>
-      Array.isArray(issue.path) &&
-      issue.path.at(-2) === literalKey &&
-      issue.path.at(-1) === literalKey
-    )).toBe(true);
+    expect(customIssues.some((issue) => issue.message === customMessage)).toBe(
+      true,
+    );
+    expect(
+      customIssues.some(
+        (issue) =>
+          Array.isArray(issue.path) &&
+          issue.path.at(-2) === literalKey &&
+          issue.path.at(-1) === literalKey,
+      ),
+    ).toBe(true);
     expect(JSON.stringify(result.error.issues)).not.toContain(
-      JSON.stringify(`\u0000next-app-runtime-record-key:literal:${literalKey}`)
-        .slice(1, -1),
+      JSON.stringify(
+        `\u0000next-app-runtime-record-key:literal:${literalKey}`,
+      ).slice(1, -1),
     );
   });
 
@@ -1715,8 +1962,8 @@ describe("NextAppSpec 0.19.0 contract", () => {
     if (!result.success || !result.data) {
       throw new Error("Expected Symbol-keyed Record transform to validate");
     }
-    const parsed = result.data.routes["/"]!.page.elements.value!.props as
-      Record<PropertyKey, unknown>;
+    const parsed = result.data.routes["/"]!.page.elements.value!
+      .props as Record<PropertyKey, unknown>;
     expect(Reflect.ownKeys(parsed)).toEqual([transformedKey]);
     expect(parsed[transformedKey]).toBe(2);
   });
@@ -1744,12 +1991,14 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const catalog = schema.createCatalog({
       components: {
         Lookup: {
-          props: z.object({
-            values: z.record(
-              z.string().refine((key) => key !== "__proto__"),
-              z.number(),
-            ),
-          }).strict(),
+          props: z
+            .object({
+              values: z.record(
+                z.string().refine((key) => key !== "__proto__"),
+                z.number(),
+              ),
+            })
+            .strict(),
           slots: [],
           description: "Lookup",
           example: { values: {} },
@@ -1757,9 +2006,11 @@ describe("NextAppSpec 0.19.0 contract", () => {
       },
       actions: {
         save: {
-          params: z.object({
-            values: z.record(z.string(), z.number()),
-          }).strict(),
+          params: z
+            .object({
+              values: z.record(z.string(), z.number()),
+            })
+            .strict(),
           description: "Save",
         },
       },
@@ -1913,10 +2164,12 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const catalog = schema.createCatalog({
       components: {
         Lookup: {
-          props: z.object({
-            values: z.record(z.string(), z.number()),
-            label: z.string(),
-          }).strict(),
+          props: z
+            .object({
+              values: z.record(z.string(), z.number()),
+              label: z.string(),
+            })
+            .strict(),
           slots: [],
           description: "Expression lookup",
           example: { values: {}, label: "Lookup" },
@@ -1951,9 +2204,13 @@ describe("NextAppSpec 0.19.0 contract", () => {
     const catalog = schema.createCatalog({
       components: {
         Lookup: {
-          props: z.lazy(() => z.object({
-            values: z.record(z.string(), z.number()),
-          }).strict()),
+          props: z.lazy(() =>
+            z
+              .object({
+                values: z.record(z.string(), z.number()),
+              })
+              .strict(),
+          ),
           slots: [],
           description: "Lazy lookup",
           example: { values: {} },
@@ -1986,7 +2243,8 @@ describe("NextAppSpec 0.19.0 contract", () => {
 
   it("does not expose spec-provided component or action names in Catalog errors", () => {
     const catalog = schema.createCatalog({ components: {}, actions: {} });
-    const sensitiveComponent = "https://private.example/?credential=component-secret";
+    const sensitiveComponent =
+      "https://private.example/?credential=component-secret";
     const sensitiveAction = "Bearer action-secret";
     const specs: NextAppSpec[] = [
       {
@@ -2026,8 +2284,12 @@ describe("NextAppSpec 0.19.0 contract", () => {
       } catch (error) {
         expect(error).toMatchObject({ code: "catalog_invalid" });
         const serialized = JSON.stringify(error);
-        expect(serialized).not.toContain(index === 0 ? "component-secret" : "action-secret");
-        expect(serialized).not.toContain(index === 0 ? sensitiveComponent : sensitiveAction);
+        expect(serialized).not.toContain(
+          index === 0 ? "component-secret" : "action-secret",
+        );
+        expect(serialized).not.toContain(
+          index === 0 ? sensitiveComponent : sensitiveAction,
+        );
       }
     }
   });
@@ -2088,7 +2350,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
         computed: z.string(),
         template: z.string(),
         nested: z.object({ label: z.string() }).strict(),
-        payload: z.object({ id: z.string(), tags: z.array(z.string()) }).strict(),
+        payload: z
+          .object({ id: z.string(), tags: z.array(z.string()) })
+          .strict(),
       })
       .strict()
       .refine((value) => value.state.startsWith("allowed"), "state prefix");
@@ -2119,7 +2383,10 @@ describe("NextAppSpec 0.19.0 contract", () => {
         $then: "enabled",
         $else: "disabled",
       },
-      computed: { $computed: "fullName", args: { first: { $state: "/first" } } },
+      computed: {
+        $computed: "fullName",
+        args: { first: { $state: "/first" } },
+      },
       template: { $template: "Hello ${/name}" },
       nested: { label: { $state: "/nested/label" } },
       payload: { id: "one", tags: ["a", "b"] },
@@ -2175,18 +2442,17 @@ describe("NextAppSpec 0.19.0 contract", () => {
 
     for (const followUp of ["onSuccess", "onError"] as const) {
       const unknownChainedAction = structuredClone(spec);
-      unknownChainedAction.routes["/"].page.elements.fields.on.press[followUp] = {
-        action: "unknown",
-      };
+      unknownChainedAction.routes["/"].page.elements.fields.on.press[followUp] =
+        {
+          action: "unknown",
+        };
       expect(catalog.validate(unknownChainedAction).success).toBe(false);
-      expect(() => assertCatalogSpec(catalog, unknownChainedAction)).toThrowError(
-        expect.objectContaining({ code: "catalog_invalid" }),
-      );
-      expect(() => assertReferences(
-        unknownChainedAction,
-        ["Fields"],
-        ["save"],
-      )).toThrowError(expect.objectContaining({ code: "references_invalid" }));
+      expect(() =>
+        assertCatalogSpec(catalog, unknownChainedAction),
+      ).toThrowError(expect.objectContaining({ code: "catalog_invalid" }));
+      expect(() =>
+        assertReferences(unknownChainedAction, ["Fields"], ["save"]),
+      ).toThrowError(expect.objectContaining({ code: "references_invalid" }));
     }
 
     const knownChainedActions = structuredClone(spec);
@@ -2197,8 +2463,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
       action: "setState",
     };
     expect(catalog.validate(knownChainedActions).success).toBe(true);
-    expect(() => assertReferences(knownChainedActions, ["Fields"], ["save"]))
-      .not.toThrow();
+    expect(() =>
+      assertReferences(knownChainedActions, ["Fields"], ["save"]),
+    ).not.toThrow();
   });
 
   it("enforces Catalog refinements that only read static sibling literals", () => {
@@ -2322,10 +2589,18 @@ describe("NextAppSpec 0.19.0 contract", () => {
         container: z
           .union([
             z
-              .object({ kind: z.literal("a"), dynamic: z.string(), count: z.number() })
+              .object({
+                kind: z.literal("a"),
+                dynamic: z.string(),
+                count: z.number(),
+              })
               .strict(),
             z
-              .object({ kind: z.literal("b"), dynamic: z.string(), count: z.number() })
+              .object({
+                kind: z.literal("b"),
+                dynamic: z.string(),
+                count: z.number(),
+              })
               .strict(),
           ])
           .refine((value) => value.count > 0),
@@ -2368,12 +2643,22 @@ describe("NextAppSpec 0.19.0 contract", () => {
         },
       });
 
-      expect(catalog.validate(spec(testCase.valid)).success, testCase.name).toBe(true);
-      expect(() => assertCatalogSpec(catalog, spec(testCase.valid)), testCase.name)
-        .not.toThrow();
-      expect(catalog.validate(spec(testCase.invalid)).success, testCase.name).toBe(false);
-      expect(() => assertCatalogSpec(catalog, spec(testCase.invalid)), testCase.name)
-        .toThrowError(expect.objectContaining({ code: "catalog_invalid" }));
+      expect(
+        catalog.validate(spec(testCase.valid)).success,
+        testCase.name,
+      ).toBe(true);
+      expect(
+        () => assertCatalogSpec(catalog, spec(testCase.valid)),
+        testCase.name,
+      ).not.toThrow();
+      expect(
+        catalog.validate(spec(testCase.invalid)).success,
+        testCase.name,
+      ).toBe(false);
+      expect(
+        () => assertCatalogSpec(catalog, spec(testCase.invalid)),
+        testCase.name,
+      ).toThrowError(expect.objectContaining({ code: "catalog_invalid" }));
     }
   });
 
@@ -2385,7 +2670,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
             .object({
               values: z
                 .array(z.number())
-                .overwrite((value) => value.length === 2 ? [value[1]!] : value)
+                .overwrite((value) =>
+                  value.length === 2 ? [value[1]!] : value,
+                )
                 .refine((value) => value[0]! > 0),
             })
             .strict(),
@@ -2647,7 +2934,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
             .strict()
             .transform((value) => value)
             .pipe(
-              z.object({ label: z.string(), count: z.number().positive() }).strict(),
+              z
+                .object({ label: z.string(), count: z.number().positive() })
+                .strict(),
             ),
           slots: [],
           description: "Identity-piped label",
@@ -2694,7 +2983,10 @@ describe("NextAppSpec 0.19.0 contract", () => {
                 if (value.count === "bad") throw decodeFailure;
                 return { count: Number(value.count) };
               },
-              encode: (value) => ({ label: "Count", count: String(value.count) }),
+              encode: (value) => ({
+                label: "Count",
+                count: String(value.count),
+              }),
             },
           ),
           slots: [],
@@ -2799,21 +3091,23 @@ describe("NextAppSpec 0.19.0 contract", () => {
     };
 
     expect(exclusiveProps.safeParse(props).success).toBe(false);
-    expect(catalog.validate({
-      routes: {
-        "/": {
-          page: {
-            root: "exclusive",
-            elements: {
-              exclusive: {
-                type: "Exclusive",
-                props: { a: "one", dynamic: { $state: "/dynamic" } },
+    expect(
+      catalog.validate({
+        routes: {
+          "/": {
+            page: {
+              root: "exclusive",
+              elements: {
+                exclusive: {
+                  type: "Exclusive",
+                  props: { a: "one", dynamic: { $state: "/dynamic" } },
+                },
               },
             },
           },
         },
-      },
-    }).success).toBe(true);
+      }).success,
+    ).toBe(true);
     expect(catalog.validate(spec).success).toBe(false);
     expect(() => assertCatalogSpec(catalog, spec)).toThrowError(
       expect.objectContaining({ code: "catalog_invalid" }),
@@ -2907,7 +3201,10 @@ describe("NextAppSpec 0.19.0 contract", () => {
             elements: {
               choice: {
                 type: "Choice",
-                props: { kind: { $state: "/kind" }, value: { $state: "/value" } },
+                props: {
+                  kind: { $state: "/kind" },
+                  value: { $state: "/value" },
+                },
               },
             },
           },
@@ -2938,16 +3235,26 @@ describe("NextAppSpec 0.19.0 contract", () => {
     });
     const prompt = catalog.prompt();
 
-    expect(prompt).toContain("Example output (each line is a separate JSON object):");
+    expect(prompt).toContain(
+      "Example output (each line is a separate JSON object):",
+    );
     expect(prompt).toContain('{"op":"add","path":"/metadata"');
     expect(prompt).toContain('{"op":"add","path":"/layouts"');
     expect(prompt).toContain('{"op":"add","path":"/routes"');
-    expect(prompt).toContain("Route '/blog/[slug]' becomes path '/routes/~1blog~1[slug]'");
-    expect(prompt.indexOf('"path":"/metadata"')).toBeLessThan(prompt.indexOf('"path":"/layouts"'));
-    expect(prompt.indexOf('"path":"/layouts"')).toBeLessThan(prompt.indexOf('"path":"/routes"'));
+    expect(prompt).toContain(
+      "Route '/blog/[slug]' becomes path '/routes/~1blog~1[slug]'",
+    );
+    expect(prompt.indexOf('"path":"/metadata"')).toBeLessThan(
+      prompt.indexOf('"path":"/layouts"'),
+    );
+    expect(prompt.indexOf('"path":"/layouts"')).toBeLessThan(
+      prompt.indexOf('"path":"/routes"'),
+    );
     expect(prompt).toContain("- save: { id: string } - Save an item");
     expect(prompt).toContain("Params: { statePath: string, value: any }");
-    expect(prompt).toContain("Params: { statePath: string, value: any, clearStatePath?: string }");
+    expect(prompt).toContain(
+      "Params: { statePath: string, value: any, clearStatePath?: string }",
+    );
     expect(prompt).toContain("Params: { statePath: string, index: number }");
     expect(prompt).toContain("Params: { href: string }");
     expect(prompt).not.toMatch(/server-side|SSR|next\/link/i);
