@@ -21,11 +21,18 @@ import { CoordinatedMastraAgent } from "./coordinated-mastra-agent.ts";
 /**
  * 服务端 LLM 设置（计划 §8）：模型与推理强度为服务端固定值，
  * 不接受也不透传请求体字段；API Key 只从进程环境读取。
+ * 聊天与 Spec 生成器使用不同模型（对话 nimble / 生成 deep）。
  */
 const SERVER_LLM_SETTINGS = {
   baseUrl: "https://api.openai.com/v1",
-  model: "gpt-5.6-luna",
-  reasoningEffort: "max",
+  chat: {
+    model: "gpt-5.6-terra",
+    reasoningEffort: "high",
+  },
+  generator: {
+    model: "gpt-5.6-sol",
+    reasoningEffort: "high",
+  },
 } as const;
 
 /**
@@ -51,10 +58,16 @@ export function createChatAgent(
     baseURL: process.env.VMA_OPENAI_BASE_URL ?? SERVER_LLM_SETTINGS.baseUrl,
   });
   // 模型与推理强度是服务端固定策略，客户端请求和本地环境都不能覆盖。
-  const model = openai(SERVER_LLM_SETTINGS.model);
-  const providerOptions = {
+  const chatModel = openai(SERVER_LLM_SETTINGS.chat.model);
+  const chatProviderOptions = {
     openai: {
-      reasoningEffort: SERVER_LLM_SETTINGS.reasoningEffort,
+      reasoningEffort: SERVER_LLM_SETTINGS.chat.reasoningEffort,
+    },
+  } as const;
+  const generatorModel = openai(SERVER_LLM_SETTINGS.generator.model);
+  const generatorProviderOptions = {
+    openai: {
+      reasoningEffort: SERVER_LLM_SETTINGS.generator.reasoningEffort,
     },
   } as const;
 
@@ -67,9 +80,9 @@ export function createChatAgent(
       id: "spec-generator",
       name: "spec-generator",
       instructions: STRUCTURED_SPEC_GENERATION_SYSTEM_PROMPT,
-      model,
+      model: generatorModel,
       tools,
-      defaultOptions: { providerOptions },
+      defaultOptions: { providerOptions: generatorProviderOptions },
     });
 
   const generateSpecTool = createGenerateSpecTool(
@@ -81,11 +94,11 @@ export function createChatAgent(
     id: "chat",
     name: "chat",
     instructions: CHAT_SYSTEM_PROMPT,
-    model,
+    model: chatModel,
     tools: { generate_spec: generateSpecTool },
     // 聊天层只负责澄清、确认和发起一次 generate_spec；上限防止模型在
     // 已有工具结果后继续无界推理/工具循环。
-    defaultOptions: { providerOptions, maxSteps: 12 },
+    defaultOptions: { providerOptions: chatProviderOptions, maxSteps: 12 },
   });
 
   const inner = new MastraAgent({ agent: chatAgent, agentId: "chat" });
