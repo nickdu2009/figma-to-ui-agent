@@ -1,6 +1,8 @@
 export {
   createNextAppRuntime,
+  createRuntimeWithNavigation,
 } from "./runtime/create-runtime.js";
+export type { NavigationDriver } from "./navigation/location.js";
 export {
   NextAppProvider,
   NextAppRuntimeProvider,

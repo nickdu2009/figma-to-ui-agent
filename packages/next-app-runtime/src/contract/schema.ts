@@ -8,7 +8,7 @@ import {
 import { z, type ZodType } from "zod";
 
 import {
-  actionBindingRequiresParams,
+  actionBindingParamsSchema,
   createCatalogAwareNextAppSpecSchema,
   decodeRecordKey,
   nextAppSpecSchema,
@@ -60,10 +60,28 @@ function schemaAcceptsInput(schema: ZodType, input: unknown): boolean {
   }
 }
 
+function jsonSchemaRequirednessIndeterminate(message: string): never {
+  throw new Error(`catalog_json_schema_requiredness_indeterminate: ${message}`);
+}
+
 function isTransformSchema(schema: ZodType | undefined): boolean {
   if (!schema) return false;
   const definition = schema._def as unknown as Record<string, unknown>;
   return normalizedZodType(definition) === "transform";
+}
+
+function hasCustomChecks(definition: Record<string, unknown>): boolean {
+  const checks = definition.checks as unknown[] | undefined;
+  return Boolean(checks?.some((check) => {
+    const candidate = check as {
+      _zod?: { def?: { check?: string } };
+      _def?: { check?: string };
+    };
+    return (
+      candidate._zod?.def?.check === "custom" ||
+      candidate._def?.check === "custom"
+    );
+  }));
 }
 
 function isRequiredInputProperty(schema: ZodType): boolean {
@@ -89,12 +107,23 @@ function isRequiredInputProperty(schema: ZodType): boolean {
     case "pipe": {
       const input = definition.in as ZodType | undefined;
       const output = definition.out as ZodType | undefined;
-      if (isTransformSchema(input)) return false;
-      return Boolean(
-        (input && isRequiredInputProperty(input)) ||
-        (output && isRequiredInputProperty(output)),
-      );
+      if (isTransformSchema(input)) {
+        jsonSchemaRequirednessIndeterminate(
+          "preprocess or transform input cannot be statically represented",
+        );
+      }
+      if (isTransformSchema(output)) {
+        return input ? isRequiredInputProperty(input) : true;
+      }
+      return !schemaAcceptsInput(schema, undefined);
     }
+    case "object":
+      return true;
+    case "any":
+    case "unknown":
+      return false;
+    case "record":
+      return true;
     case "union": {
       const options = definition.options as ZodType[] | undefined;
       return options ? options.every(isRequiredInputProperty) : true;
@@ -110,6 +139,71 @@ function isRequiredInputProperty(schema: ZodType): boolean {
     case "lazy": {
       const getter = definition.getter as (() => ZodType) | undefined;
       return getter ? isRequiredInputProperty(getter()) : true;
+    }
+    default:
+      return true;
+  }
+}
+
+function isRequiredEmptyObjectInput(schema: ZodType): boolean {
+  const definition = schema._def as unknown as Record<string, unknown>;
+  switch (normalizedZodType(definition)) {
+    case "any":
+    case "unknown":
+    case "record":
+      return false;
+    case "optional":
+    case "default":
+    case "prefault":
+    case "nullable":
+    case "readonly":
+    case "nonoptional": {
+      const inner = definition.innerType as ZodType | undefined;
+      return inner ? isRequiredEmptyObjectInput(inner) : true;
+    }
+    case "catch":
+      return false;
+    case "pipe": {
+      const input = definition.in as ZodType | undefined;
+      const output = definition.out as ZodType | undefined;
+      if (isTransformSchema(input)) {
+        jsonSchemaRequirednessIndeterminate(
+          "preprocess action params cannot be statically represented",
+        );
+      }
+      if (isTransformSchema(output)) {
+        return input ? isRequiredEmptyObjectInput(input) : true;
+      }
+      return !schemaAcceptsInput(schema, {});
+    }
+    case "object": {
+      if (hasCustomChecks(definition)) {
+        jsonSchemaRequirednessIndeterminate(
+          "custom action params object refinements cannot be statically represented",
+        );
+      }
+      const rawShape = definition.shape;
+      const shape = (typeof rawShape === "function" ? rawShape() : rawShape) as
+        | Record<string, ZodType>
+        | undefined;
+      if (!shape) return false;
+      return Object.values(shape).some(isRequiredInputProperty);
+    }
+    case "union": {
+      const options = definition.options as ZodType[] | undefined;
+      return options ? options.every(isRequiredEmptyObjectInput) : true;
+    }
+    case "intersection": {
+      const left = definition.left as ZodType | undefined;
+      const right = definition.right as ZodType | undefined;
+      return Boolean(
+        (left && isRequiredEmptyObjectInput(left)) ||
+        (right && isRequiredEmptyObjectInput(right)),
+      );
+    }
+    case "lazy": {
+      const getter = definition.getter as (() => ZodType) | undefined;
+      return getter ? isRequiredEmptyObjectInput(getter()) : true;
     }
     default:
       return true;
@@ -180,8 +274,11 @@ function officialJsonSchema(
           writable: true,
         });
       }
-      if (!strict && actionBindingRequiresParams(schema) === true) {
-        required.push("params");
+      if (!strict) {
+        const paramsSchema = actionBindingParamsSchema(schema);
+        if (paramsSchema && isRequiredEmptyObjectInput(paramsSchema)) {
+          required.push("params");
+        }
       }
       return {
         type: "object",

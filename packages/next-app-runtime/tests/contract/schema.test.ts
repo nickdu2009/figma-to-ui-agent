@@ -711,7 +711,8 @@ describe("NextAppSpec 0.19.0 contract", () => {
     ))).toEqual(opaqueRecord);
   });
 
-  it("keeps public JSON Schema acceptance aligned with nullable and bounded Zod props", () => {
+  // 穷举 JSON Schema×Zod 对齐探测耗时约 5s，显式给足余量避免默认 5s 卡线偶发超时
+  it("keeps public JSON Schema acceptance aligned with nullable and bounded Zod props", { timeout: 30_000 }, () => {
     const catalog = schema.createCatalog({
       components: {
         Card: {
@@ -776,10 +777,9 @@ describe("NextAppSpec 0.19.0 contract", () => {
             nonoptionalDefault: z.string().default("required default").nonoptional(),
             prefaultTooShort: z.string().min(3).prefault("x"),
             defaultPipeInvalid: z.string().default("").pipe(z.string().min(1)),
-            preprocessed: z.preprocess(
-              (value) => value === undefined ? "generated" : value,
-              z.string(),
-            ),
+            optionalDefaultPipe: z.string()
+              .optional()
+              .pipe(z.string().default("generated").nonoptional()),
           }).strict(),
           slots: [],
           description: "Defaulted props",
@@ -831,7 +831,7 @@ describe("NextAppSpec 0.19.0 contract", () => {
       nonoptionalDefault: "value",
       prefaultTooShort: "value",
     });
-    const missingPreprocessed = makeSpec({
+    const missingOptionalDefaultPipe = makeSpec({
       required: "value",
       nonoptionalDefault: "value",
       prefaultTooShort: "value",
@@ -840,8 +840,8 @@ describe("NextAppSpec 0.19.0 contract", () => {
 
     expect(validateJsonSchema(valid)).toBe(true);
     expect(catalog.validate(valid).success).toBe(true);
-    expect(validateJsonSchema(missingPreprocessed)).toBe(true);
-    expect(catalog.validate(missingPreprocessed).success).toBe(true);
+    expect(validateJsonSchema(missingOptionalDefaultPipe)).toBe(true);
+    expect(catalog.validate(missingOptionalDefaultPipe).success).toBe(true);
     for (const invalid of [
       missingRequired,
       missingNonoptional,
@@ -853,7 +853,35 @@ describe("NextAppSpec 0.19.0 contract", () => {
     }
   });
 
-  it("keeps action params required fields aligned between JSON Schema and Catalog validation", () => {
+  it("fails fast instead of exporting indeterminate preprocess requiredness", () => {
+    const makeCatalog = (field: z.ZodType) => schema.createCatalog({
+      components: {
+        Indeterminate: {
+          props: z.object({ value: field }).strict(),
+          slots: [],
+          description: "Indeterminate props",
+          example: { value: "example" },
+        },
+      },
+      actions: {},
+    });
+
+    const identity = makeCatalog(z.preprocess((value) => value, z.string()));
+    const generating = makeCatalog(z.preprocess(
+      (value) => value === undefined ? "generated" : value,
+      z.string(),
+    ));
+
+    expect(() => identity.jsonSchema()).toThrow(
+      /catalog_json_schema_requiredness_indeterminate/,
+    );
+    expect(() => generating.jsonSchema()).toThrow(
+      /catalog_json_schema_requiredness_indeterminate/,
+    );
+  });
+
+  // 穷举 requiredness 对齐探测耗时约 60s，显式给足余量避免默认 60s 卡线偶发超时
+  it("keeps action params required fields aligned between JSON Schema and Catalog validation", { timeout: 180_000 }, () => {
     const makeCatalog = (params: z.ZodType) => schema.createCatalog({
       components: {
         Button: {
@@ -929,11 +957,21 @@ describe("NextAppSpec 0.19.0 contract", () => {
         false,
       ],
       [
-        z.preprocess(
-          () => ({ id: "generated" }),
-          z.object({ id: z.string() }).strict(),
-        ),
+        z.object({
+          id: z.string()
+            .optional()
+            .pipe(z.string().default("generated").nonoptional()),
+        }).strict(),
         { action: "save" },
+        true,
+      ],
+      [
+        z.object({
+          id: z.string()
+            .optional()
+            .pipe(z.string().default("generated").nonoptional()),
+        }).strict(),
+        { action: "save", params: {} },
         true,
       ],
     ] as const;
@@ -947,7 +985,68 @@ describe("NextAppSpec 0.19.0 contract", () => {
         expect(catalog.validate(candidate).success).toBe(expected);
       }
     }
-  }, 60_000);
+  });
+
+  it("does not execute action params schemas while exporting JSON Schema", () => {
+    let transformCalls = 0;
+    const catalog = schema.createCatalog({
+      components: {
+        Button: {
+          props: z.object({ label: z.string() }).strict(),
+          slots: [],
+          description: "Button",
+          example: { label: "Run" },
+        },
+      },
+      actions: {
+        save: {
+          params: z.object({}).strict().transform((value) => {
+            transformCalls += 1;
+            return value;
+          }),
+          description: "Save",
+        },
+      },
+    });
+
+    expect(transformCalls).toBe(0);
+    expect(() => catalog.jsonSchema()).not.toThrow();
+    expect(transformCalls).toBe(0);
+    expect(() => catalog.jsonSchema()).not.toThrow();
+    expect(transformCalls).toBe(0);
+  });
+
+  it("fails fast for indeterminate action params requiredness", () => {
+    let refinementCalls = 0;
+    const makeCatalog = (params: z.ZodType) => schema.createCatalog({
+      components: {
+        Button: {
+          props: z.object({ label: z.string() }).strict(),
+          slots: [],
+          description: "Button",
+          example: { label: "Run" },
+        },
+      },
+      actions: {
+        save: { params, description: "Save" },
+      },
+    });
+    const refined = makeCatalog(z.object({}).strict().superRefine(() => {
+      refinementCalls += 1;
+    }));
+    const preprocessed = makeCatalog(z.preprocess(
+      () => ({ id: "generated" }),
+      z.object({ id: z.string() }).strict(),
+    ));
+
+    expect(() => refined.jsonSchema()).toThrow(
+      /catalog_json_schema_requiredness_indeterminate/,
+    );
+    expect(refinementCalls).toBe(0);
+    expect(() => preprocessed.jsonSchema()).toThrow(
+      /catalog_json_schema_requiredness_indeterminate/,
+    );
+  });
 
   it("serializes fixed own __proto__ JSON Schema properties without changing prototypes", () => {
     const propsShape: Record<string, z.ZodType> = {};

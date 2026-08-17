@@ -920,14 +920,8 @@ const dynamicParamsSchema = ownRecordSchema(z.string(), jsonValueSchema);
 const jsonPropsSchema = ownRecordSchema(z.string(), jsonValueSchema);
 const actionBindingParamsSchemas = new WeakMap<ZodType, ZodType>();
 
-export function actionBindingRequiresParams(schema: ZodType): boolean | undefined {
-  const params = actionBindingParamsSchemas.get(schema);
-  if (!params) return undefined;
-  try {
-    return !params.safeParse({}).success;
-  } catch {
-    return true;
-  }
+export function actionBindingParamsSchema(schema: ZodType): ZodType | undefined {
+  return actionBindingParamsSchemas.get(schema);
 }
 
 function catalogActionBindingSchema(

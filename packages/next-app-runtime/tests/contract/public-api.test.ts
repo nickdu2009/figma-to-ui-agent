@@ -14,6 +14,7 @@ import type {
   RuntimeEventName,
   RuntimeFallbacks,
   RuntimeLimits,
+  NavigationDriver,
   RuntimeOptions,
   RuntimeSnapshot,
   SourceResult,
@@ -79,6 +80,7 @@ describe("public type contract", () => {
       "RouteNotFound",
       "RuntimeError",
       "createNextAppRuntime",
+      "createRuntimeWithNavigation",
       "createStateStore",
       "useNextApp",
       "useNextAppRuntime",
@@ -118,6 +120,7 @@ describe("public type contract", () => {
       maxRoutes: number;
       maxElementsPerTree: number;
     }>();
+    expectTypeOf<NavigationDriver["push"]>().parameter(0).toEqualTypeOf<string>();
     expectTypeOf<RuntimeOptions>().toHaveProperty("initialSource");
     expectTypeOf<RuntimeOptions>().toHaveProperty("catalog");
     expectTypeOf<RuntimeOptions>().toHaveProperty("registry");
