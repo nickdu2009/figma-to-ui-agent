@@ -1,0 +1,394 @@
+/*
+ * @json-render/shadcn renders Tailwind utility class names. Its distributed
+ * components are outside Vite's normal source scan, so include them
+ * explicitly and provide the shadcn semantic color tokens they reference.
+ */
+@import "tailwindcss";
+
+@source "../../../node_modules/@json-render/shadcn/dist/**/*.js";
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  color-scheme: light;
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  background: #f6f7f9;
+  color: #1f2329;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  min-width: 320px;
+  max-width: 480px;
+  border-right: 1px solid #e3e6ea;
+  background: #ffffff;
+}
+
+.chat-thread {
+  flex: 1;
+  min-height: 0;
+}
+
+.ask-question-card {
+  margin: 12px 8px;
+  padding: 20px;
+  border: 1px solid #d9dde5;
+  border-radius: 18px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 8px 28px rgb(31 35 41 / 8%);
+}
+
+.ask-question-heading,
+.ask-question-footer,
+.ask-question-pagination,
+.ask-question-option,
+.ask-question-custom {
+  display: flex;
+  align-items: center;
+}
+
+.ask-question-heading { justify-content: space-between; gap: 12px; }
+.ask-question-heading h2 { margin: 0; color: #20242b; font-size: 17px; line-height: 1.4; }
+.ask-question-pagination { gap: 8px; color: #767d88; font-size: 12px; white-space: nowrap; }
+.ask-question-pagination button {
+  width: 25px; height: 25px; padding: 0; border: 0; border-radius: 6px;
+  background: transparent; color: #66707d; cursor: pointer; font-size: 22px; line-height: 1;
+}
+.ask-question-pagination button:hover:not(:disabled) { background: #edf0f4; }
+.ask-question-pagination button:disabled { opacity: .35; cursor: default; }
+.ask-question-header { margin: 5px 0 14px; color: #7b838f; font-size: 13px; }
+.ask-question-options { display: grid; gap: 8px; }
+.ask-question-option,
+.ask-question-custom {
+  width: 100%; min-height: 54px; gap: 10px; padding: 10px 12px;
+  border: 1px solid transparent; border-radius: 12px; background: #f6f7f9;
+  color: #2a3038; text-align: left; cursor: pointer; transition: border-color .15s, background .15s, transform .15s;
+}
+.ask-question-option:hover,
+.ask-question-custom:focus-within { border-color: #b9c7dc; background: #f0f4fa; }
+.ask-question-option.selected,
+.ask-question-custom.selected { border-color: #2878d4; background: #edf5ff; }
+.ask-question-number {
+  display: grid; width: 28px; height: 28px; flex: 0 0 28px; place-items: center;
+  border: 1px solid #d8dde5; border-radius: 999px; color: #68717d; font-size: 13px;
+}
+.ask-question-option-copy { display: flex; min-width: 0; flex: 1; flex-wrap: wrap; align-items: baseline; gap: 5px 8px; }
+.ask-question-option-copy strong { font-size: 14px; }
+.ask-question-option-copy em { padding: 1px 6px; border-radius: 999px; background: #e3edf9; color: #2b6faf; font-size: 11px; font-style: normal; }
+.ask-question-option-copy small { width: 100%; color: #747d88; font-size: 12px; line-height: 1.35; }
+.ask-question-arrow { color: #8b929d; font-size: 18px; }
+.ask-question-custom input { width: 100%; border: 0; outline: 0; background: transparent; color: #2a3038; font: inherit; }
+.ask-question-footer { justify-content: space-between; margin-top: 14px; }
+.ask-question-skip { border: 0; background: transparent; color: #7a828d; cursor: pointer; font-size: 12px; }
+.ask-question-continue {
+  padding: 7px 13px; border: 0; border-radius: 8px; background: #1f6feb;
+  color: #fff; cursor: pointer; font-size: 13px; font-weight: 600;
+}
+.ask-question-continue:disabled { cursor: default; opacity: .45; }
+.ask-question-card button:focus-visible,
+.ask-question-custom:focus-within { outline: 2px solid #1f6feb; outline-offset: 2px; }
+
+.ask-question-summary { margin: 8px; color: #6d7580; font-size: 13px; }
+.ask-question-summary-toggle {
+  display: inline-flex; align-items: center; gap: 7px; padding: 4px 7px;
+  border: 0; border-radius: 7px; background: transparent; color: inherit; cursor: pointer;
+  font: inherit;
+}
+.ask-question-summary-toggle:hover { background: #f0f2f5; color: #3f4752; }
+.ask-question-summary-toggle:focus-visible { outline: 2px solid #1f6feb; outline-offset: 2px; }
+.ask-question-summary-toggle > span:first-child {
+  display: grid; width: 17px; height: 17px; place-items: center; border: 1px solid #9aa2ad;
+  border-radius: 999px; font-size: 11px; font-weight: 700;
+}
+.ask-question-summary-chevron { margin-left: 1px; color: #89919c; font-size: 17px; line-height: 1; transition: transform .15s ease; }
+.ask-question-summary-chevron.open { transform: rotate(180deg); }
+.ask-question-summary-details { display: grid; gap: 12px; margin: 9px 7px 3px 31px; }
+.ask-question-summary-details div { display: grid; gap: 3px; }
+.ask-question-summary-details dt { color: #4c5561; line-height: 1.4; }
+.ask-question-summary-details dd { margin: 0; color: #8a929d; line-height: 1.4; }
+
+.generation-card {
+  margin: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.generation-running {
+  background: #eef4ff;
+  color: #1f6feb;
+}
+
+.generation-success {
+  background: #eaf6ec;
+  color: #1a7f37;
+}
+
+.generation-failure {
+  background: #fdecea;
+  color: #b3261e;
+}
+
+.generation-status {
+  font-weight: 600;
+}
+
+.generation-log {
+  margin-top: 8px;
+}
+
+.generation-log ol {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  max-height: 160px;
+  overflow: auto;
+}
+
+.generation-log code {
+  font-size: 11px;
+  word-break: break-all;
+}
+
+@media (max-width: 800px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .chat-panel {
+    width: 100%;
+    max-width: none;
+    border-right: none;
+    border-bottom: 1px solid #e3e6ea;
+    height: 50%;
+  }
+}
+
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.preview-browser-shell {
+  background: linear-gradient(180deg, #f6f7f9 0%, #eceef2 100%);
+  border-bottom: 1px solid #d8dce3;
+  box-shadow: 0 1px 10px rgb(31 35 41 / 5%);
+}
+
+.preview-browser-chrome {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  gap: 10px;
+  padding: 6px 12px;
+}
+
+.preview-browser-dots {
+  display: flex;
+  gap: 6px;
+  padding: 0 4px;
+}
+
+.preview-browser-dots i {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgb(0 0 0 / 10%);
+  border-radius: 999px;
+}
+
+.preview-browser-dots i:nth-child(1) { background: #ff5f57; }
+.preview-browser-dots i:nth-child(2) { background: #febc2e; }
+.preview-browser-dots i:nth-child(3) { background: #28c840; }
+
+.preview-browser-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.preview-browser-button {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #525866;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.preview-browser-button:hover:not(:disabled) { background: rgb(66 72 84 / 10%); }
+.preview-browser-button:focus-visible { outline: 2px solid #1f6feb; outline-offset: 2px; }
+.preview-browser-button:disabled { cursor: default; opacity: 0.35; }
+
+.preview-address {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-width: 680px;
+  flex: 1;
+  height: 28px;
+  padding: 0 14px;
+  overflow: hidden;
+  border: 1px solid rgb(30 35 43 / 10%);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 78%);
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 3%);
+  color: #505765;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-browser-spacer { width: 28px; }
+
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border-top: 1px solid rgb(255 255 255 / 65%);
+  font-size: 13px;
+}
+
+.preview-revision {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.preview-status {
+  color: #5f6672;
+}
+
+.preview-path {
+  color: #5f6672;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-reset {
+  padding: 4px 12px;
+  border: 1px solid #d3d8de;
+  border-radius: 6px;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.preview-reset:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.preview-error {
+  padding: 8px 12px;
+  background: #fdecea;
+  border-bottom: 1px solid #f5c6c0;
+  color: #b3261e;
+  font-size: 13px;
+}
+
+.preview-surface {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: #ffffff;
+}
+
+.preview-content-enter {
+  animation: preview-content-enter 180ms ease-out both;
+}
+
+@keyframes preview-content-enter {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-content-enter { animation: none; }
+}
+
+.preview-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  color: #5f6672;
+  font-size: 14px;
+}

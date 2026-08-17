@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1786889095314,
+      "tag": "0000_0001_platform_init",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1786889324503,
+      "tag": "0001_0002_utf8mb4_bin_collation",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1786894523209,
+      "tag": "0002_0003_generation_correlation",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1786899506300,
+      "tag": "0003_0003_business_data",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1786901262324,
+      "tag": "0004_0004_migration_plans",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+# vite-multipage-agent 环境变量模板（direnv）
+#
+# 用法：
+#   1. cp .envrc.example .envrc
+#   2. 在 .envrc 中填入真实凭据（.envrc 已被根 .gitignore 忽略，不会入库）
+#   3. direnv allow
+#
+# 注意：真实凭据只在本机环境中配置；不要把 .envrc 提交到版本库。
+
+# 服务器 LLM 凭据（openai 模式必填；浏览器永不持有）
+export OPENAI_API_KEY=""
+
+# 可选：OpenAI 兼容网关的基础路径（默认 https://api.openai.com/v1）
+# export VMA_OPENAI_BASE_URL="https://api.openai.com/v1"
+
+# 可选：服务端模型覆盖（默认 gpt-5.6-luna；服务端固定，不接受请求体覆盖）
+# export VMA_OPENAI_MODEL="gpt-5.6-luna"
+
+# 可选：推理强度（默认 max；none|minimal|low|medium|high|xhigh|max）
+# export VMA_OPENAI_REASONING_EFFORT="max"
+
+# 可选：Agent 模式（openai / mock / probe；默认 openai）
+# export VMA_AGENT_MODE="openai"
+
+# 可选：服务器端口（默认 3101）
+# export VMA_SERVER_PORT="3101"
+
+# 可选：浏览器测试所需的项目内 Chromium 可执行文件路径
+# export PLAYWRIGHT_CHROMIUM_EXECUTABLE="<repo>/data/playwright-browsers/chromium_headless_shell-1228/chrome-headless-shell-mac-arm64/chrome-headless-shell"

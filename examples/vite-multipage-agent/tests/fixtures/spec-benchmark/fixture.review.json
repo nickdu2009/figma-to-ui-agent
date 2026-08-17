@@ -1,0 +1,10 @@
+{
+  "experimentId": "fixture-experiment",
+  "candidates": [
+    {
+      "blindReviewId": "candidate-fixture",
+      "caseId": "todo",
+      "candidateSpecPath": "candidate.json"
+    }
+  ]
+}

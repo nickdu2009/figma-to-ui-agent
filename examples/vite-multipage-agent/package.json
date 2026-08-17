@@ -1,0 +1,63 @@
+{
+  "name": "vite-multipage-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-only example: agent generates and edits multipage apps through @next-app-runtime/client (Vite + CopilotKit v2 + Mastra/Hono).",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "node server/index.ts",
+    "dev:server:mock": "VMA_AGENT_MODE=mock node server/index.ts",
+    "dev:server:probe": "VMA_AGENT_MODE=probe node server/index.ts",
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "node scripts/db-migrate.mjs",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "pretest": "docker compose up -d --wait",
+    "test": "vitest run",
+    "pretest:browser": "docker compose up -d --wait",
+    "pretest:browser:mock": "docker compose up -d --wait",
+    "benchmark:spec-models": "node server/benchmark/spec-model-benchmark.ts",
+    "benchmark:spec-models:browser": "playwright test --config playwright.benchmark.config.ts",
+    "test:browser": "playwright test",
+    "test:browser:mock": "playwright test --config playwright.mock.config.ts"
+  },
+  "dependencies": {
+    "@ag-ui/client": "0.0.57",
+    "@ag-ui/core": "0.0.57",
+    "@ag-ui/mastra": "1.1.1",
+    "@ai-sdk/anthropic": "3.0.111",
+    "@ai-sdk/openai": "4.0.20",
+    "@copilotkit/react-core": "1.64.1",
+    "@copilotkit/runtime": "1.64.1",
+    "@hono/node-server": "2.1.1",
+    "@json-render/core": "0.19.0",
+    "@json-render/react": "0.19.0",
+    "@json-render/shadcn": "0.19.0",
+    "@mastra/core": "1.51.0",
+    "@next-app-runtime/client": "0.1.0",
+    "drizzle-orm": "0.45.2",
+    "hono": "4.13.2",
+    "mysql2": "3.23.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "rxjs": "7.8.1",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.3",
+    "drizzle-kit": "0.31.10",
+    "typescript": "7.0.2",
+    "vite": "8.1.5",
+    "vitest": "4.1.10"
+  }
+}
