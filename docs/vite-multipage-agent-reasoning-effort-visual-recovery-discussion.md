@@ -2,7 +2,7 @@
 
 - 状态：Proposed，尚未进入实施计划
 - 日期：2026-08-17
-- 范围：`examples/vite-multipage-agent/`
+- 范围：仓库根目录（`vite-multipage-agent`）
 - 上游设计：[设计系统与 Catalog 方案](./vite-multipage-agent-design-system-catalog-design.md)
 - 相关平台设计：[持久化、发布与账号平台方案](./persistence-release-platform-design.md)
 
@@ -33,7 +33,7 @@ Schema、Runtime 提交和基础交互错误，但一次 `gpt-5.6-sol` 实测表
 - 浏览器检查：全部静态路由渲染、无 Preview Error、至少一个按钮产生 `action_settled`；
 - 人工检查：首页和代表性业务页面的布局与可读性。
 
-本地结果位于 `examples/vite-multipage-agent/data/spec-model-benchmarks/`。`data/` 被忽略，
+本地结果位于 `data/spec-model-benchmarks/`。`data/` 被忽略，
 这些结果是本次讨论证据，不是版本化发布基线。网关返回成本为 0，不能据此推断上游没有费用。
 
 ### 2.2 结果摘要

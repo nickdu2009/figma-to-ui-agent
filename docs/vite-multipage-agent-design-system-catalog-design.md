@@ -1,7 +1,7 @@
 # vite-multipage-agent 完整设计系统与 Catalog 扩展方案
 
 - 状态：已确认方案；基于 2026-08-17 当前代码的第八轮设计审核修订完成，独立增量，尚未制定实施计划
-- 范围：`examples/vite-multipage-agent/` 及其使用的 `@next-app-runtime/client` Catalog/运行时边界
+- 范围：仓库根目录（`vite-multipage-agent`）及其使用的 `@next-app-runtime/client` Catalog/运行时边界
 - 日期：2026-08-17
 - 依赖方案：《持久化、发布与账号平台方案》
 - 与既有实施关系：本文不修改、替代或阻塞正在实施的持久化与发布计划；应在既有计划完成或接口稳定后作为独立增量实施

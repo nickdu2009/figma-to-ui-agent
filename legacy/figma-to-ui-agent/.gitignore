@@ -8,11 +8,16 @@ dist/
 data/
 test-results/
 playwright-report/
+reports/m7-e2e/
 
 # BEGIN WORKTRAIL MANAGED BLOCK
+# Worktrail local integration installs. These are generated per developer.
 .agents/
 .codex/
 .claude/
+
+# Worktrail runtime/local state. Formal project knowledge files under
+# .worktrail/ remain trackable by default.
 .worktrail/state/
 .worktrail/candidates/
 .worktrail/raw/
@@ -28,5 +33,7 @@ playwright-report/
 .worktrail/.cache/
 .worktrail/exports/
 /.worktrail-handoff-v2-backups/
+
+# Worktrail backup snapshots are local recovery artifacts.
 .worktrail/**/*.bak-*
 # END WORKTRAIL MANAGED BLOCK

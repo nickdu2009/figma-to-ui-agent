@@ -1,7 +1,7 @@
 # GATE-00 决策补充：会话安全、应用上下文、数据库依赖与资源上限
 
 - 状态：已关闭，经项目所有者确认
-- 范围：`examples/vite-multipage-agent/`
+- 范围：仓库根目录（`vite-multipage-agent`）
 - 上游文档：[持久化、发布与账号平台方案](./persistence-release-platform-design.md)、[实施计划](./vite-multipage-agent-persistence-release-implementation-plan.md)
 - 补充说明：GATE-00 期间项目所有者将存储决策从"SQLite（node:sqlite）"修订为 **MySQL 8.4 + Docker Compose**；原目标中"本地数据库使用 SQLite + node:sqlite"与"不做 MySQL 实现"两条边界随之作废。设计与实施计划文档已同步修订。
 

@@ -507,7 +507,7 @@ type ServerLlmSettings = {
 建议的工作区结构：
 
 ```text
-examples/vite-multipage-agent/
+./
   index.html
   package.json
   vite.config.ts
@@ -700,7 +700,7 @@ examples/vite-multipage-agent/
 
 ## 11. 验收标准
 
-AC1. 示例是位于 `examples/vite-multipage-agent` 下的 Vite 工作区。
+AC1. 顶层应用是位于仓库根目录的 Vite 工作区。
 
 AC2. 预览运行时仅在浏览器运行；服务器仅提供 Hono 中的 CopilotKit Runtime、Mastra LLM 调用与 AG-UI 转发，不写入应用文件。
 
@@ -760,7 +760,7 @@ npm query ':missing'
 
 ```bash
 git grep -n -I -E '(OPENAI_API_KEY|sk-[A-Za-z0-9_-]{20,}|https?://[^[:space:]"'"'"'<>]+:[^[:space:]"'"'"'<>@]+@)' \
-  -- examples/vite-multipage-agent package.json package-lock.json
+  -- package.json package-lock.json
 ```
 
 预期结果：不存在已提交的 API Key 或含凭据的 URL。

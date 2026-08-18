@@ -1,7 +1,7 @@
 # vite-multipage-agent 持久化平台 AC1–AC16 测试可追溯性
 
 > S8 交付物。每条验收标准映射到可执行的测试证据。全部命令在
-> `examples/vite-multipage-agent/` 下运行；浏览器测试需要
+> 仓库根目录下运行；浏览器测试需要
 > `PLAYWRIGHT_CHROMIUM_EXECUTABLE` 与 `npm run db:up`。
 
 ## 验证入口

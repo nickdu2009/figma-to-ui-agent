@@ -1,7 +1,7 @@
 # 实施计划：Vite Multipage Agent 持久化、发布与账号平台
 
 - 状态：已审核；GATE-00 已关闭（存储决策修订为 MySQL 8.4 + Docker Compose，见《GATE-00 决策补充》），S1–S8 按序实施已获项目所有者授权
-- 范围：`examples/vite-multipage-agent/`
+- 范围：仓库根目录（`vite-multipage-agent`）
 - 设计来源：[持久化、发布与账号平台方案](./persistence-release-platform-design.md)
 - 兼容策略：本地开发环境的受控迁移；不保留当前内存状态的兼容/双写路径。已有内存应用在首次升级后视为未保存内容，必须重新生成或创建。
 

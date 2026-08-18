@@ -1,29 +1,24 @@
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
-import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-import { projectDataPlugin } from "./src/preview/project-data-plugin.ts";
-
-const projectRoot = dirname(fileURLToPath(import.meta.url));
-const dataRoot = resolve(
-  projectRoot,
-  process.env.FIGMA_UI_DATA_ROOT ?? "data",
-);
-const root = process.env.VITEST
-  ? projectRoot
-  : resolve(projectRoot, "preview");
+const serverPort = process.env.VMA_SERVER_PORT ?? "3101";
 
 export default defineConfig({
-  root,
-  plugins: [react(), projectDataPlugin(dataRoot)],
+  plugins: [react()],
   server: {
-    host: "127.0.0.1",
-    fs: { allow: [projectRoot] },
-  },
-  build: {
-    outDir: resolve(projectRoot, "data/preview-dist"),
-    emptyOutDir: true,
+    port: 3100,
+    strictPort: true,
+    proxy: {
+      "/api": {
+        target: `http://localhost:${serverPort}`,
+        changeOrigin: true,
+        // SSE 必须不缓冲：禁用压缩，保持逐块转发。
+        configure: (proxy) => {
+          proxy.on("proxyReq", (proxyReq) => {
+            proxyReq.setHeader("accept-encoding", "identity");
+          });
+        },
+      },
+    },
   },
 });

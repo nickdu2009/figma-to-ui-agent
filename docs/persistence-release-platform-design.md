@@ -1,7 +1,7 @@
 # 持久化、发布与账号平台方案
 
 - 状态：已确认方案；GATE-00 已关闭（存储决策修订为 MySQL 8.4 + Docker Compose，见《GATE-00 决策补充》），实施中
-- 范围：`examples/vite-multipage-agent/`
+- 范围：仓库根目录（`vite-multipage-agent`）
 - 日期：2026-08-16
 
 ## 1. 目标与范围
