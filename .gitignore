@@ -8,6 +8,8 @@ dist/
 data/
 test-results/
 playwright-report/
+# 历史 Figma 运行报告已归档到 legacy；根目录不再追踪本地报告产物。
+reports/
 
 # BEGIN WORKTRAIL MANAGED BLOCK
 .agents/
