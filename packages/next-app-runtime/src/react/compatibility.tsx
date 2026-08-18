@@ -1,4 +1,3 @@
-import React from "react";
 import type { Spec } from "@json-render/core";
 import { Renderer, type ComponentRegistry } from "@json-render/react";
 
