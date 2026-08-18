@@ -43,11 +43,30 @@ export async function getSession(): Promise<SessionUser | null> {
 export async function startAuth(
   email: string,
   method: "otp" | "magic_link",
-): Promise<void> {
-  await request("/api/auth/start", {
+): Promise<{ ok: boolean; message?: string }> {
+  const { status, body } = await request<{ error?: { message: string } }>(
+    "/api/auth/start",
+    {
     method: "POST",
     body: JSON.stringify({ email, method }),
-  });
+    },
+  );
+  return status === 200
+    ? { ok: true }
+    : { ok: false, message: body.error?.message ?? "验证码发送失败，请稍后重试" };
+}
+
+/**
+ * 本地手工测试辅助。服务端只在非生产环境挂载此收件箱接口；调用方仍须
+ * 通过 import.meta.env.DEV 限制 UI，避免生产构建读取或显示 OTP。
+ */
+export async function getLatestDevOtp(email: string): Promise<string | null> {
+  const { status, body } = await request<{
+    mails?: Array<{ body?: string }>;
+  }>(`/api/dev/mail-inbox?email=${encodeURIComponent(email)}`);
+  if (status !== 200) return null;
+  const match = body.mails?.[0]?.body?.match(/验证码：(\d{6})/);
+  return match?.[1] ?? null;
 }
 
 export async function verifyOtp(

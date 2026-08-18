@@ -27,7 +27,10 @@ const SERVER_LLM_SETTINGS = {
   baseUrl: "https://api.openai.com/v1",
   chat: {
     model: "gpt-5.6-terra",
-    reasoningEffort: "high",
+    // 对已批准计划，聊天层只需可靠地选择 generate_spec；high 会在完整
+    // resume 历史上长时间无事件推理，令界面表现为卡住。结构化生成仍由
+    // 专用 generator 使用 high，故不牺牲 Spec 质量。
+    reasoningEffort: "medium",
   },
   generator: {
     model: "gpt-5.6-sol",

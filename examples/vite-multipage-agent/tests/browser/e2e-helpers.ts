@@ -50,6 +50,7 @@ export async function uiLogin(page: Page, email: string): Promise<void> {
   await login.getByRole("textbox").fill(email);
   await page.getByRole("button", { name: "发送验证码" }).click();
   await expect(page.getByTestId("otp-hint")).toBeVisible();
+  await expect(page.getByTestId("dev-otp-code")).toHaveText(/\d{6}/);
   const code = await fetchOtpCode(page, email);
   await login.getByRole("textbox").fill(code);
   await page.getByRole("button", { name: "登录", exact: true }).click();

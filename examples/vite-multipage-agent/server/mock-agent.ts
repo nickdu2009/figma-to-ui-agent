@@ -64,6 +64,14 @@ const GENERATE_TOOL = "generate_spec";
 const messageText = (content: unknown): string =>
   typeof content === "string" ? content : JSON.stringify(content);
 
+function safeJson(text: string): unknown {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return undefined;
+  }
+}
+
 /**
  * 脚本化 Mock 聊天 Agent（VMA_AGENT_MODE=mock，浏览器 E2E 用，不调 LLM）。
  * 作为 CoordinatedMastraAgent 的内层 agent：只产出标准 AG-UI 事件，
@@ -220,9 +228,15 @@ export class MockChatAgent extends AbstractAgent {
 
       emit({ type: EventType.RUN_STARTED, threadId, runId } as BaseEvent);
 
-      // A：run3，回显应用结果。
+      // A：run3，应用结果只用安全的产品语言反馈，绝不把 generationId、
+      // revision 或协议状态 JSON 放进聊天记录。
       if (applyResultContent !== undefined) {
-        finishTextRun(`应用结果：${applyResultContent}`);
+        const parsed = safeJson(applyResultContent) as { status?: unknown } | undefined;
+        finishTextRun(
+          parsed?.status === "committed"
+            ? "预览已更新并保存为草稿。"
+            : "预览未能保存，请重试。",
+        );
         return () => {
           for (const t of timers) clearTimeout(t);
         };

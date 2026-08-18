@@ -1,4 +1,4 @@
-import { useCallback, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 import {
   createRuntimeWithNavigation,
@@ -41,20 +41,19 @@ const PREVIEW_FALLBACKS: RuntimeFallbacks = {
   ),
 };
 
-/**
- * Module-level runtime holder. Step 2 has no LLM/AG-UI controller yet; later
- * steps reuse this instance (getSnapshot/applySource) instead of creating a
- * second runtime. A lazy singleton keeps React StrictMode remounts safe:
- * the runtime lives for the lifetime of the app and is never disposed here.
- */
-let sharedPreviewRuntime: NextAppRuntime | null = null;
-let sharedPreviewNavigation: PreviewNavigation | null = null;
-const benchmarkRuntimeEvents: string[] = [];
+export interface PreviewRuntimeHandle {
+  runtime: NextAppRuntime;
+  navigation: PreviewNavigation;
+}
 
-export function getSharedPreviewRuntime(): NextAppRuntime {
-  if (sharedPreviewRuntime === null) {
-    sharedPreviewNavigation = createPreviewNavigation();
-    sharedPreviewRuntime = createRuntimeWithNavigation({
+/**
+ * 每个 Workbench 必须拥有自己的 Preview runtime。把它放在模块单例会让
+ * A 应用的 Spec 在切到 B 应用后继续渲染，且前端工具会读到错误应用的数据。
+ */
+export function createPreviewRuntime(): PreviewRuntimeHandle {
+  const navigation = createPreviewNavigation();
+  const runtime = createRuntimeWithNavigation(
+    {
       catalog,
       registry,
       limits: PREVIEW_RUNTIME_LIMITS,
@@ -63,32 +62,43 @@ export function getSharedPreviewRuntime(): NextAppRuntime {
         ? {
             observer: (event: { name: string }) => {
               benchmarkRuntimeEvents.push(event.name);
-              if (benchmarkRuntimeEvents.length > 200) benchmarkRuntimeEvents.shift();
+              if (benchmarkRuntimeEvents.length > 200)
+                benchmarkRuntimeEvents.shift();
             },
           }
         : {}),
-    }, sharedPreviewNavigation);
+    },
+    navigation,
+  );
+  return { runtime, navigation };
+}
+
+// 基准页没有账户/应用工作台；保留它专用的惰性实例，避免把基准兼容性
+// 误当成产品态的跨应用共享。
+let benchmarkPreview: PreviewRuntimeHandle | null = null;
+const benchmarkRuntimeEvents: string[] = [];
+
+export function getSharedPreviewRuntime(): NextAppRuntime {
+  if (benchmarkPreview === null) {
+    benchmarkPreview = createPreviewRuntime();
     if (typeof window !== "undefined") {
-      // 浏览器测试与后续 AG-UI 控制器的统一入口。
-      (window as unknown as Record<string, unknown>).__previewRuntime =
-        sharedPreviewRuntime;
       if (import.meta.env.VITE_SPEC_BENCHMARK === "1") {
         Object.assign(window as unknown as Record<string, unknown>, {
-          __previewNavigation: sharedPreviewNavigation,
+          __previewNavigation: benchmarkPreview.navigation,
           __previewRuntimeEvents: benchmarkRuntimeEvents,
         });
       }
     }
   }
-  return sharedPreviewRuntime;
+  return benchmarkPreview.runtime;
 }
 
 function getSharedPreviewNavigation(): PreviewNavigation {
   getSharedPreviewRuntime();
-  if (sharedPreviewNavigation === null) {
+  if (benchmarkPreview === null) {
     throw new Error("preview navigation was not initialized");
   }
-  return sharedPreviewNavigation;
+  return benchmarkPreview.navigation;
 }
 
 function BrowserIconButton(props: {
@@ -130,9 +140,14 @@ function AddressLockIcon() {
   );
 }
 
-export function PreviewPanel() {
-  const runtime = getSharedPreviewRuntime();
-  const navigation = getSharedPreviewNavigation();
+export function PreviewPanel(props: Partial<PreviewRuntimeHandle>) {
+  const runtime = props.runtime ?? getSharedPreviewRuntime();
+  const navigation = props.navigation ?? getSharedPreviewNavigation();
+  useEffect(() => {
+    // StrictMode 会探测性地调用 state initializer；仅在已挂载的 Panel 中
+    // 暴露诊断入口，才能保证它是实际渲染的应用实例。
+    (window as unknown as Record<string, unknown>).__previewRuntime = runtime;
+  }, [runtime]);
   const snapshot = useSyncExternalStore(
     runtime.subscribe,
     runtime.getSnapshot,
@@ -167,7 +182,9 @@ export function PreviewPanel() {
       <header className="preview-browser-shell">
         <div className="preview-browser-chrome">
           <span className="preview-browser-dots" aria-hidden="true">
-            <i /><i /><i />
+            <i />
+            <i />
+            <i />
           </span>
           <div className="preview-browser-controls" aria-label="预览导航">
             <BrowserIconButton
@@ -194,7 +211,11 @@ export function PreviewPanel() {
               ↻
             </BrowserIconButton>
           </div>
-          <div data-testid="preview-address" className="preview-address" title={previewAddress}>
+          <div
+            data-testid="preview-address"
+            className="preview-address"
+            title={previewAddress}
+          >
             <AddressLockIcon />
             {previewAddress}
           </div>
@@ -226,13 +247,43 @@ export function PreviewPanel() {
       )}
       <div className="preview-surface">
         <NextAppRuntimeProvider runtime={runtime}>
-          <div
-            key={snapshot.revision}
-            data-testid="preview-content"
-            className="preview-content-enter"
-          >
-            <NextAppRenderer />
-          </div>
+          {snapshot.specStatus === "empty" ? (
+            <div data-testid="preview-empty" className="preview-fallback">
+              <div className="preview-empty-inner">
+                <div className="preview-empty-icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 48 48"
+                    width="44"
+                    height="44"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <rect x="6" y="10" width="36" height="28" rx="3" />
+                    <path d="M6 18h36" />
+                    <path
+                      d="M20 34l4-8 4 4 6-10"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <p className="preview-empty-title">还没有可预览的内容</p>
+                <p className="preview-empty-hint">
+                  在左侧对话中描述你想要的应用，生成并提交后
+                  预览会在这里实时渲染。
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div
+              key={snapshot.revision}
+              data-testid="preview-content"
+              className="preview-content-enter"
+            >
+              <NextAppRenderer />
+            </div>
+          )}
         </NextAppRuntimeProvider>
       </div>
     </section>

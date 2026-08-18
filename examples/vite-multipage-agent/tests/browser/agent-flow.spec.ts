@@ -1,5 +1,10 @@
 import { expect, test } from "@playwright/test";
-import { adminEmailFor, loginCreateAndEnter, sendChat } from "./e2e-helpers.ts";
+import {
+ createAppViaApi,
+ adminEmailFor,
+ loginCreateAndEnter,
+ sendChat,
+} from "./e2e-helpers.ts";
 
 /**
  * Mock 全链路浏览器验收（计划 §10 步骤 7，VMA_AGENT_MODE=mock，不调 LLM）：
@@ -33,6 +38,9 @@ async function runCreationFlow(page: import("@playwright/test").Page) {
   "已更新",
   { timeout: 20_000 },
  );
+ // apply 工具结果不得作为原始协议 JSON 泄漏进对话。
+ await expect(page.getByTestId("chat-panel")).not.toContainText("应用结果：{");
+ await expect(page.getByTestId("chat-panel")).not.toContainText("mock-gen-");
 
  // 预览渲染根路由。
  await expect(page.getByText("欢迎使用 Acme")).toBeVisible();
@@ -66,6 +74,10 @@ test("creation flow: chat -> plan card -> approve -> patch stream -> committed p
   return runtime.getSnapshot().revision;
  });
  expect(revision).toBeGreaterThanOrEqual(1);
+
+ // Draft 是编辑态的恢复事实：刷新后不能丢失刚刚生成的 Preview。
+ await page.reload();
+ await expect(page.getByTestId("preview-panel").getByText("欢迎使用 Acme")).toBeVisible();
 });
 
 test("navigation: built-in Link routes inside preview", async ({ page }) => {
@@ -227,4 +239,42 @@ test("abort: stop mid-stream aborts applySource and keeps last valid preview", a
  await page.getByRole("link", { name: "定价" }).click();
  await expect(preview.getByText("基础版")).toBeVisible();
  await expect(preview.getByText("专业版")).not.toBeVisible();
+});
+
+test("switching apps creates an isolated Preview runtime and does not restore the old app", async ({
+ page,
+}) => {
+ const email = adminEmailFor(test.info().workerIndex);
+ await loginCreateAndEnter(page, email, "runtime-source-app");
+ await runCreationFlow(page);
+ await expect(page.getByTestId("preview-panel").getByText("欢迎使用 Acme")).toBeVisible();
+
+ const targetName = `runtime-target-${Date.now()}`;
+ await createAppViaApi(page, targetName);
+ await page.getByRole("button", { name: "切换应用" }).click();
+
+ // LAST_APP_KEY 若未清除，恢复 effect 会立刻把旧应用重新选中。
+ await expect(page.getByTestId("app-gate")).toBeVisible();
+ await page.getByTestId("app-list").getByRole("button", { name: new RegExp(targetName) }).click();
+ await expect(page.getByTestId("current-app-name")).toHaveText(targetName);
+ await expect(page.getByTestId("preview-empty")).toBeVisible();
+ await expect(page.getByTestId("preview-panel").getByText("欢迎使用 Acme")).toHaveCount(0);
+});
+
+test("login does not claim an OTP was sent when the auth endpoint rejects the request", async ({
+ page,
+}) => {
+ await page.route("**/api/auth/start", async (route) => {
+  await route.fulfill({
+   status: 403,
+   contentType: "application/json",
+   body: JSON.stringify({ error: { message: "请求被安全策略拒绝" } }),
+  });
+ });
+ await page.goto("/");
+ await page.getByTestId("login-page").getByRole("textbox").fill("feedback@example.com");
+ await page.getByRole("button", { name: "发送验证码" }).click();
+ await expect(page.getByTestId("login-error")).toHaveText("请求被安全策略拒绝");
+ await expect(page.getByTestId("otp-hint")).toHaveCount(0);
+ await expect(page.getByTestId("dev-otp")).toHaveCount(0);
 });

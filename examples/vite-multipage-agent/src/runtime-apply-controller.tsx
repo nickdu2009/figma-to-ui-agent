@@ -1,7 +1,10 @@
 import { useEffect, useRef, useSyncExternalStore } from "react";
-import type { SourceResult } from "@next-app-runtime/client";
+import {
+  RuntimeError,
+  type NextAppRuntime,
+  type SourceResult,
+} from "@next-app-runtime/client";
 import { useAgent } from "@copilotkit/react-core/v2";
-import { getSharedPreviewRuntime } from "./preview-panel";
 import { patchLogStore } from "./patch-log-store";
 
 /**
@@ -129,9 +132,26 @@ function settleCancelled(state: GenerationApplyState, revision: number): void {
   for (const waiter of state.waiters.splice(0)) waiter(state.result);
 }
 
-function abortIncompleteGenerations(
-  runtime: ReturnType<typeof getSharedPreviewRuntime>,
+function settlePersistenceRejected(
+  state: GenerationApplyState,
+  revision: number,
 ): void {
+  state.abort.abort();
+  state.status = "settled";
+  const result: SourceResult = {
+    status: "rejected",
+    revision,
+    error: new RuntimeError(
+      "metadata_apply_failed",
+      "预览未能保存，请重试。",
+    ),
+  };
+  state.result = result;
+  applyStateStore.notify();
+  for (const waiter of state.waiters.splice(0)) waiter(result);
+}
+
+function abortIncompleteGenerations(runtime: NextAppRuntime): void {
   for (const state of applyStateStore.abortIncomplete()) {
     settleCancelled(state, runtime.getSnapshot().revision);
   }
@@ -144,7 +164,10 @@ function abortIncompleteGenerations(
  * generationId 不存在，不能留下无限轮询和未解决 interrupt；立即按
  * cancelled 返回，由上层转换成 fail-closed 的 aborted。
  */
-export function waitApplyResult(generationId: string): Promise<SourceResult> {
+export function waitApplyResult(
+  generationId: string,
+  runtime: NextAppRuntime,
+): Promise<SourceResult> {
   const state = applyStateStore.get(generationId);
   if (state?.status === "settled" && state.result) {
     return Promise.resolve(state.result);
@@ -152,7 +175,7 @@ export function waitApplyResult(generationId: string): Promise<SourceResult> {
   if (state?.status === "streaming") {
     return new Promise((resolve) => state.waiters.push(resolve));
   }
-  const revision = getSharedPreviewRuntime().getSnapshot().revision;
+  const revision = runtime.getSnapshot().revision;
   console.warn(
     `[apply-controller] missing generation for await_apply_result generation=${generationId}`,
   );
@@ -173,9 +196,10 @@ function boundedErrorSummary(error: unknown): string {
 export function RuntimeApplyController(props: {
   agentId: string;
   appId: string;
+  runtime: NextAppRuntime;
 }) {
   const { agent, isReady } = useAgent({ agentId: props.agentId });
-  const runtime = getSharedPreviewRuntime();
+  const runtime = props.runtime;
 
   // StrictMode 双挂载防护：effect 内创建/清理订阅即可，状态按 generationId 关联。
   const runtimeRef = useRef(runtime);
@@ -217,6 +241,18 @@ export function RuntimeApplyController(props: {
         const generationId = value?.generationId;
         if (!generationId) return;
         const rt = runtimeRef.current;
+
+        if (name === "spec.patch.persistence_rejected") {
+          const state = applyStateStore.get(generationId);
+          if (state) {
+            settlePersistenceRejected(state, rt.getSnapshot().revision);
+            patchLogStore.append(
+              generationId,
+              "[error] 预览未能保存，请重试。\n",
+            );
+          }
+          return;
+        }
 
         if (name === "spec.patch.start") {
           // 陈旧 generation 防护：同 id 已存在则忽略。

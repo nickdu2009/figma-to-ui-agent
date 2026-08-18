@@ -91,6 +91,51 @@ describe("generation lifecycle (S3)", () => {
     expect(run!.status).toBe("awaiting_preview");
   });
 
+  it("模型生成的复杂 JSON Spec（包含 null）可持久化为草稿", async () => {
+    await lifecycle.startRun({
+      appId,
+      membershipId,
+      generationId: "gen-s3-model-json",
+    });
+    const candidateSpec = {
+      metadata: {
+        title: { default: "项目工作台", template: "%s | 项目工作台" },
+        description: "从模型 Patch 累积得到的候选 Spec",
+      },
+      routes: [
+        {
+          path: "/",
+          title: "概览",
+          blocks: [
+            { type: "stats", values: [12, null, { label: "进行中" }] },
+          ],
+        },
+        { path: "/tasks", title: "任务", blocks: [] },
+      ],
+      optionalModelOutput: null,
+    };
+    await expect(
+      lifecycle.markAwaitingPreview({
+        generationId: "gen-s3-model-json",
+        candidateSpec,
+        candidateBusinessSchema: null,
+        diagnostics: { totalOperations: 5, warnings: null },
+      }),
+    ).resolves.toBe(true);
+    await expect(
+      lifecycle.applyResult({
+        generationId: "gen-s3-model-json",
+        outcome: "committed",
+      }),
+    ).resolves.toBe(true);
+    const run = await releases.findRunByCorrelationRef("gen-s3-model-json");
+    const draft = (await releases.listDrafts(appId)).find(
+      (item) => item.generationRunId === run!.id,
+    );
+    expect(run!.status).toBe("succeeded");
+    expect(draft?.spec).toEqual(candidateSpec);
+  });
+
   it("committed 原子创建草稿并标记 succeeded；重复 committed 被拒且不产生第二草稿", async () => {
     await lifecycle.startRun({
       appId,

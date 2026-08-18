@@ -68,6 +68,12 @@ export class GenerationCoordinator {
     string,
     { appId: string; membershipId: string }
   >();
+  /** 服务端 generation 续租：模型在工具调用之间可长时间无 Patch，不能仅依赖
+   * 浏览器计时器（后台标签会节流）来避免 stale sweep。 */
+  private readonly generationHeartbeats = new Map<
+    string,
+    ReturnType<typeof setInterval>
+  >();
   private lifecycleChain: Promise<void> = Promise.resolve();
 
   constructor(lifecycle?: GenerationLifecyclePort) {
@@ -88,11 +94,41 @@ export class GenerationCoordinator {
     return this.appContexts.get(threadId) ?? null;
   }
 
-  /** 持久化任务排队执行；失败记录日志但不中断事件流（DB 为事实 owner）。 */
-  private track(task: () => Promise<void>): void {
-    this.lifecycleChain = this.lifecycleChain.then(task).catch((error) => {
-      console.error("[generation-lifecycle] 持久化失败：", redactForLog(error));
-    });
+  private startGenerationHeartbeat(threadId: string, generationId: string): void {
+    const context = this.appContext(threadId);
+    if (!this.lifecycle || !context) return;
+    const heartbeatKey = key(threadId, generationId);
+    if (this.generationHeartbeats.has(heartbeatKey)) return;
+    const lifecycle = this.lifecycle;
+    const timer = setInterval(() => {
+      void lifecycle.heartbeat({ generationId }).catch((error) => {
+        console.error(
+          "[generation-lifecycle] 服务端心跳失败：",
+          redactForLog(error),
+        );
+      });
+    }, 10_000);
+    timer.unref?.();
+    this.generationHeartbeats.set(heartbeatKey, timer);
+  }
+
+  private stopGenerationHeartbeat(threadId: string, generationId: string): void {
+    const heartbeatKey = key(threadId, generationId);
+    const timer = this.generationHeartbeats.get(heartbeatKey);
+    if (timer !== undefined) clearInterval(timer);
+    this.generationHeartbeats.delete(heartbeatKey);
+  }
+
+  /** 持久化任务串行化；调用方需要时可等待自身的真实结果。 */
+  private track<T>(task: () => Promise<T>): Promise<T> {
+    const pending = this.lifecycleChain.then(task);
+    this.lifecycleChain = pending.then(
+      () => undefined,
+      (error) => {
+        console.error("[generation-lifecycle] 持久化失败：", redactForLog(error));
+      },
+    );
+    return pending;
   }
 
   /** wrapper 在 run 收尾前等待所有持久化任务完成。 */
@@ -128,6 +164,20 @@ export class GenerationCoordinator {
   ): void {
     const run = this.activeRuns.get(key(threadId, runId));
     run?.events.next({ type: "CUSTOM", name, value } as BaseEvent);
+  }
+
+  /**
+   * 浏览器已接受补丁、但数据库拒绝其提交时，必须把事实回传到当前
+   * resume run；不能只留一条服务端日志而让 UI 显示“已更新”。
+   */
+  emitPersistenceRejected(
+    threadId: string,
+    runId: string,
+    generationId: string,
+  ): void {
+    this.emitCustom(threadId, runId, "spec.patch.persistence_rejected", {
+      generationId,
+    });
   }
 
   // ---- ask_question ----
@@ -176,11 +226,11 @@ export class GenerationCoordinator {
    * 下一 run 中工具结果到达时调用。校验 { threadId, toolCallId } 关联；
    * 不匹配时返回 null（调用方按 fail-closed 处理）。
    */
-  resolveQuestion(
+  async resolveQuestion(
     threadId: string,
     toolCallId: string,
     rawContent: string,
-  ): { question: PendingQuestion; result: AskQuestionResult } | null {
+  ): Promise<{ question: PendingQuestion; result: AskQuestionResult } | null> {
     let parsed: unknown;
     try {
       parsed = JSON.parse(rawContent);
@@ -216,16 +266,27 @@ export class GenerationCoordinator {
         return null;
       }
     }
-    question.result = result;
     if (this.lifecycle) {
       const lifecycle = this.lifecycle;
-      this.track(() =>
-        lifecycle.recordAnswer({
+      try {
+        // resume 后的模型可能马上调用 generate_spec(approved_plan)。必须等
+        // answered 条件更新完成，才能让 consumeApprovedPlan 看到同一事实，
+        // 否则真实 LLM 会在 open 状态被 fail-closed 后失去后续生成路径。
+        await this.track(() =>
+          lifecycle.recordAnswer({
           questionSetId: question.questionSetId,
           answerPayload: result,
-        }),
-      );
+          }),
+        );
+      } catch (error) {
+        console.error(
+          "[generation-lifecycle] 问卷答案持久化失败：",
+          redactForLog(error),
+        );
+        return null;
+      }
     }
+    question.result = result;
     return { question, result };
   }
 
@@ -274,6 +335,7 @@ export class GenerationCoordinator {
           generationId: params.generationId,
         }),
       );
+      this.startGenerationHeartbeat(params.threadId, params.generationId);
     }
     this.emitCustom(
       params.threadId,
@@ -316,12 +378,15 @@ export class GenerationCoordinator {
     if (this.lifecycle && candidate) {
       const lifecycle = this.lifecycle;
       this.track(async () => {
-        await lifecycle.markAwaitingPreview({
+        const marked = await lifecycle.markAwaitingPreview({
           generationId,
           candidateSpec: candidate.spec,
           candidateBusinessSchema: candidate.businessSchema ?? null,
           diagnostics: candidate.diagnostics ?? null,
         });
+        if (!marked) {
+          throw new Error("GenerationRun 未能进入 awaiting_preview");
+        }
       });
     }
     this.emitCustom(threadId, runId, SPEC_PATCH_EVENT_NAMES.finish, {
@@ -337,6 +402,7 @@ export class GenerationCoordinator {
   ): void {
     const generation = this.generations.get(key(threadId, generationId));
     if (!generation) return;
+    this.stopGenerationHeartbeat(threadId, generationId);
     generation.status = "failed";
     if (this.lifecycle) {
       const lifecycle = this.lifecycle;
@@ -384,36 +450,53 @@ export class GenerationCoordinator {
    * 下一 run 中 await_apply_result 工具结果到达时调用。
    * 校验 { threadId, generationId, applyToolCallId }；不匹配一律 aborted。
    */
-  resolveApply(
+  async resolveApply(
     threadId: string,
     toolCallId: string,
     result: ApplyResult,
-  ): PendingGeneration | null {
+  ): Promise<PendingGeneration | null> {
     const generation = this.generations.get(key(threadId, result.generationId));
     if (!generation || generation.applyToolCallId !== toolCallId) return null;
-    generation.applyResult = result;
-    generation.status = result.status;
+    this.stopGenerationHeartbeat(threadId, result.generationId);
+    let effectiveResult = result;
     if (this.lifecycle) {
       const lifecycle = this.lifecycle;
       const outcome = result.status as ApplyOutcome;
       const generationId = result.generationId;
-      this.track(async () => {
-        const ok = await lifecycle.applyResult({
+      let persisted = false;
+      try {
+        persisted = await this.track(() =>
+          lifecycle.applyResult({
           generationId,
           outcome,
           diagnostics:
             outcome === "committed"
               ? undefined
               : { error: result.error ?? outcome },
-        });
-        if (!ok) {
-          // 持久层拒绝（迟到/重复/错配）：DB 保持旧状态，不创建草稿
-          console.error(
-            `[generation-lifecycle] apply 结果被持久层拒绝：${generationId} ${outcome}`,
-          );
-        }
-      });
+          }),
+        );
+      } catch (error) {
+        console.error(
+          "[generation-lifecycle] apply 结果持久化失败：",
+          redactForLog(error),
+        );
+      }
+      if (!persisted) {
+        // 持久层拒绝（迟到/重复/错配）：DB 保持旧状态，不创建草稿。绝不能
+        // 把浏览器的局部 apply 成功继续当作用户可见的成功结果。
+        console.error(
+          `[generation-lifecycle] apply 结果被持久层拒绝：${generationId} ${outcome}`,
+        );
+        effectiveResult = {
+          generationId,
+          status: "failed",
+          revision: result.revision,
+          error: "预览未能保存，请重试。",
+        };
+      }
     }
+    generation.applyResult = effectiveResult;
+    generation.status = effectiveResult.status;
     return generation;
   }
 

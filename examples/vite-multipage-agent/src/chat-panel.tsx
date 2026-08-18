@@ -1,6 +1,7 @@
 import { CopilotChat } from "@copilotkit/react-core/v2";
 import { CopilotKitTools } from "./copilotkit-tools";
 import { RuntimeApplyController } from "./runtime-apply-controller";
+import type { NextAppRuntime } from "@next-app-runtime/client";
 
 /**
  * 聊天面板（计划 §4 左栏）：
@@ -8,12 +9,16 @@ import { RuntimeApplyController } from "./runtime-apply-controller";
  * - CopilotKitTools：四工具前端注册 + interrupt 桥接（不可见）；
  * - RuntimeApplyController：spec.patch.* → applySource 唯一调用点（不可见）。
  */
-export function ChatPanel(props: { agentId: string; appId: string }) {
- const { agentId, appId } = props;
+export function ChatPanel(props: {
+ agentId: string;
+ appId: string;
+ runtime: NextAppRuntime;
+}) {
+ const { agentId, appId, runtime } = props;
  return (
   <section data-testid="chat-panel" className="chat-panel">
-   <CopilotKitTools agentId={agentId} />
-   <RuntimeApplyController agentId={agentId} appId={appId} />
+   <CopilotKitTools agentId={agentId} runtime={runtime} />
+   <RuntimeApplyController agentId={agentId} appId={appId} runtime={runtime} />
    <CopilotChat agentId={agentId} className="chat-thread" />
   </section>
  );

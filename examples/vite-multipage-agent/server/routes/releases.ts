@@ -70,6 +70,32 @@ export function createReleaseRoutes(deps: {
     });
   });
 
+  // 编辑态 Preview 在刷新后需要恢复最新草稿；列表刻意不返回 Spec 正文，
+  // 因此提供一个受同等 editor 授权保护的 current 读模型。
+  routes.get("/apps/:appId/drafts/current", async (c) => {
+    const { user } = requireSession(c);
+    await requireRole(
+      deps.appRepository,
+      c.req.param("appId"),
+      user.id,
+      "editor",
+      { conceal: true },
+    );
+    const draft = (await deps.releaseRepository.listDrafts(
+      c.req.param("appId"),
+    ))[0];
+    if (!draft) return c.json({ current: null });
+    return c.json({
+      current: {
+        draftVersionId: draft.id,
+        generationRunId: draft.generationRunId,
+        createdAt: draft.createdAt,
+        spec: draft.spec,
+        businessSchema: draft.businessSchema,
+      },
+    });
+  });
+
   routes.get("/apps/:appId/releases/published", async (c) => {
     const { user } = requireSession(c);
     await guard(c.req.param("appId"), user.id);

@@ -3,7 +3,7 @@ import { CopilotKit } from "@copilotkit/react-core/v2";
 import "@copilotkit/react-core/v2/styles.css";
 import { useCallback, useEffect, useState } from "react";
 import { ChatPanel } from "./chat-panel";
-import { PreviewPanel } from "./preview-panel";
+import { createPreviewRuntime, PreviewPanel } from "./preview-panel";
 import { PublishedPreviewLoader } from "./release/published-preview-loader";
 import { ReleasePanel } from "./release/release-panel";
 import { BusinessDataPanel } from "./business-data/data-panel";
@@ -61,6 +61,7 @@ export function App() {
   }, []);
 
   const handleSwitchApp = useCallback(() => {
+    localStorage.removeItem(LAST_APP_KEY);
     setApp(null);
     window.history.pushState(null, "", "/");
   }, []);
@@ -128,13 +129,20 @@ export function App() {
 function Workbench(props: { app: AppListItem; onAppDeleted: () => void }) {
   const { app, onAppDeleted } = props;
   const role = app.myRole;
+  const [preview] = useState(createPreviewRuntime);
   const [tab, setTab] = useState<"data" | "release" | "bin" | null>(null);
   return (
     <>
-      <PublishedPreviewLoader appId={app.id} />
+      <PublishedPreviewLoader appId={app.id} runtime={preview.runtime} />
       <div className="app-workbench">
-        {role === "owner" && <ChatPanel agentId="chat" appId={app.id} />}
-        <PreviewPanel />
+        {role === "owner" && (
+          <ChatPanel
+            agentId="chat"
+            appId={app.id}
+            runtime={preview.runtime}
+          />
+        )}
+        <PreviewPanel {...preview} />
         <aside data-testid="workbench-side" className="workbench-side">
           <nav data-testid="workbench-tabs">
             {(role === "owner" || role === "editor") && (

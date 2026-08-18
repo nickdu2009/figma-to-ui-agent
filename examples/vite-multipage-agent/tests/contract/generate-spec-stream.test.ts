@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 
 import { generateSpecInputSchema } from "../../server/contracts.ts";
 import { GenerationCoordinator } from "../../server/generation-coordinator.ts";
+import type { GenerationLifecyclePort } from "../../server/generation/lifecycle.ts";
 import { CoordinatedMastraAgent } from "../../server/coordinated-mastra-agent.ts";
 
 /**
@@ -70,6 +71,18 @@ class GenerationScriptedAgent extends AbstractAgent {
       subscriber.next({ type: EventType.RUN_FINISHED, threadId, runId } as BaseEvent);
       subscriber.complete();
     });
+  }
+}
+
+class HangingAgent extends AbstractAgent {
+  constructor() {
+    super({ agentId: "hanging", description: "", debug: false });
+  }
+  clone(): HangingAgent {
+    return new HangingAgent();
+  }
+  run(): Observable<BaseEvent> {
+    return new Observable<BaseEvent>(() => () => undefined);
   }
 }
 
@@ -227,6 +240,88 @@ describe("generate_spec stream contract", () => {
     const generation = coordinator.snapshot().generations[0];
     expect(generation?.status).toBe("committed"); // 仍是上一次的真实结果
     expect(generation?.applyResult?.revision).toBe(1);
+  });
+
+  it("持久层拒绝 committed 时改写为 failed，不能保留客户端假成功", async () => {
+    const lifecycle: GenerationLifecyclePort = {
+      startRun: async () => undefined,
+      persistQuestion: async () => undefined,
+      recordAnswer: async () => undefined,
+      consumeApprovedPlan: async () => null,
+      markAwaitingPreview: async () => true,
+      applyResult: async () => false,
+      markFailed: async () => undefined,
+      heartbeat: async () => true,
+      abortRun: async () => true,
+      sweepOrphanRuns: async () => 0,
+      sweepStaleRuns: async () => 0,
+    };
+    const coordinator = new GenerationCoordinator(lifecycle);
+    coordinator.setAppContext("t-persist", {
+      appId: "app-persist",
+      membershipId: "member-persist",
+    });
+    coordinator.beginGeneration({
+      threadId: "t-persist",
+      runId: "r-persist",
+      generationId: "gen-persist",
+    });
+    coordinator.armApplyToolCall(
+      "t-persist",
+      "gen-persist",
+      "r-persist-await-apply",
+    );
+
+    const resolved = await coordinator.resolveApply(
+      "t-persist",
+      "r-persist-await-apply",
+      { generationId: "gen-persist", status: "committed", revision: 1 },
+    );
+
+    expect(resolved?.status).toBe("failed");
+    expect(resolved?.applyResult).toMatchObject({
+      status: "failed",
+      error: "预览未能保存，请重试。",
+    });
+  });
+
+  it("resume 无任何模型事件时主动结束，不能无限 Thinking", async () => {
+    const coordinator = new GenerationCoordinator();
+    const agent = new CoordinatedMastraAgent(
+      new HangingAgent(),
+      coordinator,
+      { agentId: "chat", idleTimeoutMs: 10 },
+    );
+    const events = await collect(agent, { threadId: "t-timeout", runId: "r-timeout" });
+    const failure = events.find((event) => event.type === EventType.RUN_ERROR) as
+      | { message?: string }
+      | undefined;
+    expect(failure?.message).toContain("长时间未返回进展");
+  });
+
+  it("停止经任意 clone 调用时结束运行中的 clone", async () => {
+    const coordinator = new GenerationCoordinator();
+    const root = new CoordinatedMastraAgent(
+      new HangingAgent(),
+      coordinator,
+      { agentId: "chat", idleTimeoutMs: 10_000 },
+    );
+    const running = root.clone();
+    const completed = new Promise<void>((resolve, reject) => {
+      running
+        .run({
+          messages: [],
+          tools: [],
+          context: [],
+          state: {},
+          threadId: "t-stop",
+          runId: "r-stop",
+        } as RunAgentInput)
+        .subscribe({ error: reject, complete: resolve });
+    });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    root.abortRun();
+    await completed;
   });
 
   it("generateSpecInputSchema：target 判别联合的硬约束", () => {

@@ -5,8 +5,8 @@ import {
   useRenderTool,
 } from "@copilotkit/react-core/v2";
 import { z } from "zod";
+import type { NextAppRuntime } from "@next-app-runtime/client";
 import type { ApplyResult } from "../server/contracts.ts";
-import { getSharedPreviewRuntime } from "./preview-panel";
 import { summarizeCurrentApp } from "./runtime/summarize-spec";
 import { AskQuestionCard } from "./ask-question-card";
 import { AskQuestionSummary } from "./ask-question-summary";
@@ -62,14 +62,15 @@ function toApplyResult(
  */
 function AwaitApplyInterrupt(props: {
   generationId: string;
+  runtime: NextAppRuntime;
   resolve: (payload?: unknown) => Promise<unknown> | unknown;
 }) {
   const fired = useRef(false);
-  const { generationId, resolve } = props;
+  const { generationId, runtime, resolve } = props;
   useEffect(() => {
     if (fired.current) return;
     fired.current = true;
-    void waitApplyResult(generationId).then((source) => {
+    void waitApplyResult(generationId, runtime).then((source) => {
       const payload = toApplyResult(generationId, source);
       console.warn(
         `[await-apply-interrupt] resolve generation=${generationId} source=${source.status} payload=${payload.status}`,
@@ -85,12 +86,15 @@ function AwaitApplyInterrupt(props: {
           ),
       );
     });
-  }, [generationId, resolve]);
+  }, [generationId, resolve, runtime]);
   return <div data-testid="await-apply-interrupt" style={{ display: "none" }} />;
 }
 
-export function CopilotKitTools(props: { agentId: string }) {
-  const { agentId } = props;
+export function CopilotKitTools(props: {
+  agentId: string;
+  runtime: NextAppRuntime;
+}) {
+  const { agentId, runtime } = props;
 
   // 前端工具：get_current_spec —— 模型编辑前获取 current + revision。
   useFrontendTool({
@@ -99,7 +103,7 @@ export function CopilotKitTools(props: { agentId: string }) {
       "获取当前已提交的应用 Spec 与 revision（无当前 Spec 时 hasCurrentSpec=false）。编辑现有应用前必须调用。",
     parameters: z.object({}),
     handler: async () => {
-      const snapshot = getSharedPreviewRuntime().getSnapshot();
+      const snapshot = runtime.getSnapshot();
       return {
         hasCurrentSpec: snapshot.current != null,
         spec: snapshot.current ?? null,
@@ -114,7 +118,7 @@ export function CopilotKitTools(props: { agentId: string }) {
     description: "获取当前应用的结构化摘要（页面、导航、主要元素），用于回答用户关于当前界面的问题。",
     parameters: z.object({}),
     handler: async () => {
-      const snapshot = getSharedPreviewRuntime().getSnapshot();
+      const snapshot = runtime.getSnapshot();
       return summarizeCurrentApp(snapshot.current ?? null);
     },
   });
@@ -186,6 +190,7 @@ export function CopilotKitTools(props: { agentId: string }) {
           return (
             <AwaitApplyInterrupt
               generationId="__invalid__"
+              runtime={runtime}
               resolve={() =>
                 resolve({
                   generationId: "__invalid__",
@@ -197,7 +202,11 @@ export function CopilotKitTools(props: { agentId: string }) {
           );
         }
         return (
-          <AwaitApplyInterrupt generationId={generationId} resolve={resolve} />
+          <AwaitApplyInterrupt
+            generationId={generationId}
+            runtime={runtime}
+            resolve={resolve}
+          />
         );
       }
       if (interrupt.reason === ASK_QUESTION_TOOL) {

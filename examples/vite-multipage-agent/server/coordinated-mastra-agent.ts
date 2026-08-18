@@ -9,6 +9,10 @@ import { applyResultSchema, askQuestionInputSchema } from "./contracts.ts";
 
 const ASK_QUESTION_TOOL = "ask_question";
 const AWAIT_APPLY_TOOL = "await_apply_result";
+// A real model can spend over a minute selecting and preparing its first tool
+// call. Keep a bounded escape hatch without cutting off healthy long-running
+// generations; the user can still stop the run immediately from the UI.
+const DEFAULT_IDLE_TIMEOUT_MS = 180_000;
 
 /**
  * CoordinatedMastraAgent：CopilotKit Runtime 注册的唯一 AG-UI adapter。
@@ -26,11 +30,19 @@ export class CoordinatedMastraAgent extends AbstractAgent {
   // 注意：不用 TS 参数属性——Node 24 类型剥离（strip-only）不支持该语法。
   private readonly inner: AbstractAgent;
   private readonly coordinator: GenerationCoordinator;
+  private readonly activeRunTeardowns: Map<string, () => void>;
+  private readonly idleTimeoutMs: number;
 
   constructor(
     inner: AbstractAgent,
     coordinator: GenerationCoordinator,
-    config?: { agentId?: string; description?: string },
+    config?: {
+      agentId?: string;
+      description?: string;
+      /** 仅测试可覆盖；生产默认 3 分钟无事件即安全结束。 */
+      idleTimeoutMs?: number;
+    },
+    activeRunTeardowns?: Map<string, () => void>,
   ) {
     super({
       agentId: config?.agentId ?? inner.agentId ?? "chat",
@@ -38,13 +50,16 @@ export class CoordinatedMastraAgent extends AbstractAgent {
     });
     this.inner = inner;
     this.coordinator = coordinator;
+    this.activeRunTeardowns = activeRunTeardowns ?? new Map();
+    this.idleTimeoutMs = config?.idleTimeoutMs ?? DEFAULT_IDLE_TIMEOUT_MS;
   }
 
   clone(): CoordinatedMastraAgent {
     return new CoordinatedMastraAgent(this.inner.clone(), this.coordinator, {
       agentId: this.agentId,
       description: this.description,
-    });
+      idleTimeoutMs: this.idleTimeoutMs,
+    }, this.activeRunTeardowns);
   }
 
   /**
@@ -55,8 +70,6 @@ export class CoordinatedMastraAgent extends AbstractAgent {
    * RUN_FINISHED 与未决工具的 stopped 结果）。CopilotKit 按请求 clone
    * agent，stop 作用于执行该 run 的同一克隆实例。
    */
-  private readonly activeRunTeardowns = new Map<string, () => void>();
-
   override abortRun(): void {
     this.inner.abortRun();
     for (const teardown of this.activeRunTeardowns.values()) teardown();
@@ -184,17 +197,9 @@ export class CoordinatedMastraAgent extends AbstractAgent {
 
   run(input: RunAgentInput): Observable<BaseEvent> {
     const { threadId, runId } = input;
-    // CopilotKit 客户端的 interrupt resolve 走 input.resume 通道；
-    // @ag-ui/mastra 看到 resume 会调用 Mastra 原生 resumeStream（我们的
-    // interrupt 是 AG-UI 协议层的，Mastra 运行时里没有 suspended run）。
-    // 这里把已解决的 resume 项转换为合成工具结果消息（随后走统一的
-    // inspectIncomingToolResults 校验），并从传给内层的输入中剥掉 resume。
-    const preparedInput = this.prepareResumeInput(input);
-    this.inspectIncomingToolResults(preparedInput);
-
-    // S3：服务端鉴证的应用上下文（endpoint 中间件经 Session + Membership
-    // 校验后注入 forwardedProps.__vma；缺失时持久化跳过，关联器退化为
-    // 仅进程内——生产路径必有该上下文）。
+    // S3：服务端鉴证的应用上下文必须先于 resume 工具结果处理注入；否则
+    // 新进程/新 thread 的 await_apply_result 会在没有持久层归属的情况下
+    // 被误判为成功。
     const vma = (input.forwardedProps as Record<string, unknown> | undefined)
       ?.__vma as { appId?: string; membershipId?: string } | undefined;
     if (vma?.appId && vma.membershipId) {
@@ -203,6 +208,13 @@ export class CoordinatedMastraAgent extends AbstractAgent {
         membershipId: vma.membershipId,
       });
     }
+    // CopilotKit 客户端的 interrupt resolve 走 input.resume 通道；
+    // @ag-ui/mastra 看到 resume 会调用 Mastra 原生 resumeStream（我们的
+    // interrupt 是 AG-UI 协议层的，Mastra 运行时里没有 suspended run）。
+    // 这里把已解决的 resume 项转换为合成工具结果消息（随后走统一的
+    // inspectIncomingToolResults 校验），并从传给内层的输入中剥掉 resume。
+    const preparedInput = this.prepareResumeInput(input);
+    const inspectToolResults = this.inspectIncomingToolResults(preparedInput);
 
     // 把 threadId/runId 透传到 Mastra requestContext（经 input.context），
     // 供服务器工具（generate_spec）定位 Coordinator 的活动 run。
@@ -220,6 +232,9 @@ export class CoordinatedMastraAgent extends AbstractAgent {
 
     return new Observable<BaseEvent>((subscriber) => {
       const channel = this.coordinator.openRun(threadId, runId);
+      // 由外层立即建立 AG-UI run 边界。这样 resume 的持久化结果和无进展
+      // 超时都不会在内层模型首个事件之前违反“首事件必须是 RUN_STARTED”。
+      subscriber.next({ type: EventType.RUN_STARTED, threadId, runId } as BaseEvent);
       const pendingInterrupts: Array<{
         id: string;
         reason: string;
@@ -231,6 +246,31 @@ export class CoordinatedMastraAgent extends AbstractAgent {
       let innerErrored: unknown = null;
 
       const toolCallBuffers = new Map<string, { name: string; args: string }>();
+      let startCancelled = false;
+      let innerSub: { unsubscribe(): void } | null = null;
+      let idleTimer: ReturnType<typeof setTimeout> | null = null;
+
+      const clearIdleTimer = () => {
+        if (idleTimer !== null) clearTimeout(idleTimer);
+        idleTimer = null;
+      };
+      const armIdleTimer = () => {
+        clearIdleTimer();
+        idleTimer = setTimeout(() => {
+          if (startCancelled || innerCompleted) return;
+          startCancelled = true;
+          innerSub?.unsubscribe();
+          channelSub.unsubscribe();
+          this.coordinator.closeRun(threadId, runId);
+          subscriber.next({
+            type: EventType.RUN_ERROR,
+            threadId,
+            runId,
+            message: "生成服务长时间未返回进展，已停止本次请求，请重试。",
+          } as BaseEvent);
+          subscriber.complete();
+        }, this.idleTimeoutMs);
+      };
 
       const finalize = () => {
         // 1) Coordinator 确定性收尾：generate_spec 流结束后发出
@@ -298,7 +338,12 @@ export class CoordinatedMastraAgent extends AbstractAgent {
       };
 
       const handleEvent = (event: BaseEvent) => {
+        // 每个内层事件都代表真实进展；只有完全无事件才触发保护性超时。
+        armIdleTimer();
         switch (event.type) {
+          case EventType.RUN_STARTED:
+            // 内层 MastraAgent 也会发 RUN_STARTED；外层已发出权威的唯一一条。
+            return;
           case EventType.TOOL_CALL_START: {
             const e = event as unknown as {
               toolCallId: string;
@@ -398,6 +443,7 @@ export class CoordinatedMastraAgent extends AbstractAgent {
             // S3：先 drain 持久化任务（DB 为事实 owner），再收尾事件流。
             innerFinished = event;
             innerCompleted = true;
+            clearIdleTimer();
             void this.coordinator
               .drain()
               .catch((error) => {
@@ -412,6 +458,7 @@ export class CoordinatedMastraAgent extends AbstractAgent {
           case EventType.RUN_ERROR: {
             innerFinished = event;
             innerCompleted = true;
+            clearIdleTimer();
             this.coordinator.closeRun(threadId, runId);
             // S7：转发给客户端前统一脱敏截断，不泄漏令牌/Spec/记录正文
             const rawMessage = (event as { message?: unknown }).message;
@@ -434,15 +481,23 @@ export class CoordinatedMastraAgent extends AbstractAgent {
         },
       });
 
-      const innerSub = this.inner.run(enrichedInput).subscribe({
+      const startInnerRun = async () => {
+        const persistenceRejected = await inspectToolResults;
+        for (const generationId of persistenceRejected) {
+          this.coordinator.emitPersistenceRejected(threadId, runId, generationId);
+        }
+        if (startCancelled) return;
+        innerSub = this.inner.run(enrichedInput).subscribe({
         next: handleEvent,
         error: (error: unknown) => {
           innerErrored = error;
+          clearIdleTimer();
           this.coordinator.closeRun(threadId, runId);
           channelSub.unsubscribe();
           subscriber.error(error);
         },
         complete: () => {
+          clearIdleTimer();
           channelSub.unsubscribe();
           // 内层正常结束但没有 RUN_FINISHED（异常形态）：补一个失败收尾。
           if (!innerCompleted && !innerErrored) {
@@ -456,6 +511,13 @@ export class CoordinatedMastraAgent extends AbstractAgent {
             subscriber.complete();
           }
         },
+        });
+        armIdleTimer();
+      };
+      void startInnerRun().catch((error: unknown) => {
+        this.coordinator.closeRun(threadId, runId);
+        channelSub.unsubscribe();
+        subscriber.error(error);
       });
 
       // 注册 abort 钩子：abortRun() 被调用时提前 complete（不发终止事件，
@@ -465,7 +527,9 @@ export class CoordinatedMastraAgent extends AbstractAgent {
       this.activeRunTeardowns.set(runKey, () => {
         if (abortFired || innerCompleted) return;
         abortFired = true;
-        innerSub.unsubscribe();
+        startCancelled = true;
+        clearIdleTimer();
+        innerSub?.unsubscribe();
         channelSub.unsubscribe();
         this.coordinator.closeRun(threadId, runId);
         subscriber.complete();
@@ -473,7 +537,9 @@ export class CoordinatedMastraAgent extends AbstractAgent {
 
       return () => {
         this.activeRunTeardowns.delete(runKey);
-        innerSub.unsubscribe();
+        startCancelled = true;
+        clearIdleTimer();
+        innerSub?.unsubscribe();
         channelSub.unsubscribe();
         this.coordinator.closeRun(threadId, runId);
       };
@@ -485,7 +551,10 @@ export class CoordinatedMastraAgent extends AbstractAgent {
    * - await_apply_result 结果 → 校验 { threadId, generationId, applyToolCallId }；
    * 关联不匹配时把内容改写为 aborted（fail closed），模型只能看到失败事实。
    */
-  private inspectIncomingToolResults(input: RunAgentInput): void {
+  private async inspectIncomingToolResults(
+    input: RunAgentInput,
+  ): Promise<string[]> {
+    const persistenceRejected: string[] = [];
     const messages = [...input.messages];
     for (const message of messages) {
       if (message.role !== "tool" || !message.toolCallId) continue;
@@ -497,7 +566,7 @@ export class CoordinatedMastraAgent extends AbstractAgent {
       // await_apply_result 结果
       const applyParsed = applyResultSchema.safeParse(safeJson(content));
       if (applyParsed.success && applyParsed.data.generationId) {
-        const resolved = this.coordinator.resolveApply(
+        const resolved = await this.coordinator.resolveApply(
           input.threadId,
           message.toolCallId,
           applyParsed.data,
@@ -508,12 +577,17 @@ export class CoordinatedMastraAgent extends AbstractAgent {
             status: "aborted",
             error: "correlation mismatch: threadId/generationId/toolCallId",
           });
+        } else if (resolved.applyResult?.status !== applyParsed.data.status) {
+          // DB 是事实 owner。拒绝 committed 时，模型和 UI 都必须收到失败，
+          // 而不是继续拿到客户端的局部成功 JSON。
+          message.content = JSON.stringify(resolved.applyResult);
+          persistenceRejected.push(applyParsed.data.generationId);
         }
         continue;
       }
 
       // ask_question 结果
-      const resolved = this.coordinator.resolveQuestion(
+      const resolved = await this.coordinator.resolveQuestion(
         input.threadId,
         message.toolCallId,
         content,
@@ -525,6 +599,7 @@ export class CoordinatedMastraAgent extends AbstractAgent {
         });
       }
     }
+    return persistenceRejected;
   }
 }
 

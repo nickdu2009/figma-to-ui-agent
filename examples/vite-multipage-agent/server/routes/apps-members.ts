@@ -3,6 +3,7 @@ import type { AuthService } from "../auth/service.ts";
 import { normalizeEmail } from "../auth/email.ts";
 import type { AppRepository } from "../repositories/app-repository.ts";
 import { InvitationNotAcceptableError } from "../repositories/app-repository.ts";
+import { UniqueConstraintError } from "../repositories/errors.ts";
 import type { MailDelivery } from "../auth/dev-mail.ts";
 import type { InvitationRow, MembershipRow } from "../db/schema.ts";
 import {
@@ -69,13 +70,26 @@ export function createAppMemberRoutes(deps: {
     return ctx;
   }
 
-  // 创建应用：需要 CreatorGrant（管理员授予，设计 §4.1）
+  // 创建应用：需要 CreatorGrant（管理员授予，设计 §4.1）。
+  // 管理员自身免手动授予：首次创建时自动自授一份长期 Grant。
   routes.post("/apps", async (c) => {
     try {
       const { user } = requireSession(c);
       const body = createAppInputSchema.safeParse(await c.req.json());
       if (!body.success) throw badRequest("invalid_input", "请求格式不正确");
-      const grant = await depsGrantCheck(user.id);
+      let grant = await depsGrantCheck(user.id);
+      if (!grant && user.isAdmin) {
+        try {
+          grant = await authService.createCreatorGrant({
+            userId: user.id,
+            grantedByUserId: user.id,
+          });
+        } catch (error) {
+          // 竞态下另一请求已授予：重新查询即可
+          if (!(error instanceof UniqueConstraintError)) throw error;
+          grant = await depsGrantCheck(user.id);
+        }
+      }
       if (!grant) {
         throw forbidden("creator_grant_required", "需要应用创建资格");
       }

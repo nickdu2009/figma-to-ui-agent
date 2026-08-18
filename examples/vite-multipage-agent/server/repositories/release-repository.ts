@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { and, desc, eq, inArray, lt, notInArray } from "drizzle-orm";
+import { and, desc, eq, inArray, lt, notInArray, sql } from "drizzle-orm";
 import type { Database } from "../persistence/database.ts";
 import {
   draftVersions,
@@ -257,13 +257,39 @@ export class MysqlReleaseRepository implements ReleaseRepository {
     diagnostics: unknown;
     now: Date;
   }): Promise<boolean> {
+    // Drizzle's mysql JSON update encoder does not accept a JavaScript null
+    // value (it dereferences `value.constructor`).  `null` here means that the
+    // optional payload was not supplied, so leave the column at the null value
+    // installed by createRun instead of serialising a new null parameter.
+    const serialiseJson = (value: unknown, field: string) => {
+      const encoded = JSON.stringify(value);
+      if (encoded === undefined) {
+        throw new Error(`${field} 必须是可序列化的 JSON 值`);
+      }
+      // Bind an already-encoded JSON document. This deliberately avoids the
+      // ORM's object-value mapper, whose handling of model-produced optional
+      // values has caused the successful Preview to be rejected at persistence.
+      return sql`${encoded}`;
+    };
+    const optionalJson = {
+      ...(input.candidateBusinessSchema == null
+        ? {}
+        : {
+            candidateBusinessSchema: serialiseJson(
+              input.candidateBusinessSchema,
+              "candidateBusinessSchema",
+            ),
+          }),
+      ...(input.diagnostics == null
+        ? {}
+        : { diagnostics: serialiseJson(input.diagnostics, "diagnostics") }),
+    };
     const [result] = await this.db
       .update(generationRuns)
       .set({
         status: "awaiting_preview",
-        candidateSpec: input.candidateSpec,
-        candidateBusinessSchema: input.candidateBusinessSchema,
-        diagnostics: input.diagnostics,
+        candidateSpec: serialiseJson(input.candidateSpec, "candidateSpec"),
+        ...optionalJson,
         lastHeartbeatAt: input.now,
         updatedAt: input.now,
       })
