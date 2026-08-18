@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "rootDir": ".",
+    "types": ["node", "react"],
+    "paths": {
+      "@next-app-runtime/client": ["./src/index.ts"],
+      "@next-app-runtime/client/schema": ["./src/schema.ts"],
+      "@next-app-runtime/client/router": ["./src/router.ts"],
+      "@next-app-runtime/client/stream": ["./src/stream.ts"],
+      "@next-app-runtime/client/testing": ["./src/testing.ts"]
+    }
+  },
+  "include": ["src", "tests", "vitest.config.ts", "playwright.config.ts"]
+}

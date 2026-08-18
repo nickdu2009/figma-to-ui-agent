@@ -1,0 +1,31 @@
+# 本地开发 MySQL（GATE-00 决策补充 §5）。
+# 镜像精确锁定；命名卷持久化保证服务重启后数据可恢复（AC1）。
+# 端口默认映射 127.0.0.1:3317 -> 3306，避免与宿主 MySQL 冲突。
+# 凭据为本地开发专用弱凭据，可用环境变量覆盖；不得在此提交真实凭据。
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: vma-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${VMA_MYSQL_ROOT_PASSWORD:-vma-root-local-dev-only}
+      MYSQL_DATABASE: ${VMA_MYSQL_DATABASE:-vite_multipage_agent}
+      MYSQL_USER: ${VMA_MYSQL_USER:-vma}
+      MYSQL_PASSWORD: ${VMA_MYSQL_PASSWORD:-vma-local-dev-only}
+    ports:
+      - "127.0.0.1:${VMA_MYSQL_PORT:-3317}:3306"
+    volumes:
+      - vma-mysql-data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'mysqladmin ping -h 127.0.0.1 -uroot -p"$$MYSQL_ROOT_PASSWORD"',
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+      start_period: 10s
+
+volumes:
+  vma-mysql-data:

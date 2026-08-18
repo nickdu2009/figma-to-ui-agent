@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "title": {
+      "default": "Todo Benchmark",
+      "template": "%s | Todo Benchmark"
+    }
+  },
+  "state": {
+    "saved": false
+  },
+  "layouts": {
+    "root": {
+      "root": "shell",
+      "elements": {
+        "shell": {
+          "type": "Stack",
+          "props": {
+            "direction": "vertical",
+            "gap": "md",
+            "align": null,
+            "justify": null,
+            "className": null
+          },
+          "children": ["homeLink", "settingsLink", "slot"]
+        },
+        "homeLink": {
+          "type": "Link",
+          "props": { "href": "/" },
+          "children": ["homeLabel"]
+        },
+        "homeLabel": {
+          "type": "Text",
+          "props": { "text": "任务", "variant": null },
+          "children": []
+        },
+        "settingsLink": {
+          "type": "Link",
+          "props": { "href": "/settings" },
+          "children": ["settingsLabel"]
+        },
+        "settingsLabel": {
+          "type": "Text",
+          "props": { "text": "设置", "variant": null },
+          "children": []
+        },
+        "slot": {
+          "type": "Slot",
+          "props": {},
+          "children": []
+        }
+      }
+    }
+  },
+  "routes": {
+    "/": {
+      "layout": "root",
+      "metadata": { "title": "任务" },
+      "page": {
+        "root": "content",
+        "elements": {
+          "content": {
+            "type": "Stack",
+            "props": {
+              "direction": "vertical",
+              "gap": "md",
+              "align": null,
+              "justify": null,
+              "className": null
+            },
+            "children": ["heading", "save"]
+          },
+          "heading": {
+            "type": "Heading",
+            "props": { "text": "我的任务", "level": "h1" },
+            "children": []
+          },
+          "save": {
+            "type": "Button",
+            "props": {
+              "label": "保存任务",
+              "variant": "primary",
+              "disabled": null
+            },
+            "children": [],
+            "on": {
+              "press": {
+                "action": "setState",
+                "params": { "statePath": "/saved", "value": true }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings": {
+      "layout": "root",
+      "metadata": { "title": "设置" },
+      "page": {
+        "root": "heading",
+        "elements": {
+          "heading": {
+            "type": "Heading",
+            "props": { "text": "应用设置", "level": "h1" },
+            "children": []
+          }
+        }
+      }
+    }
+  }
+}

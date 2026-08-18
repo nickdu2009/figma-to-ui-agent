@@ -1,29 +1,41 @@
 import { defineConfig } from "@playwright/test";
 
-const probeCase = process.env.M0_PLAYWRIGHT_CASE ?? "default";
+const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE;
+if (!executablePath)
+  throw new Error("PLAYWRIGHT_CHROMIUM_EXECUTABLE is required");
 
 export default defineConfig({
-  testDir: "./tests/probes",
-  testMatch: "**/playwright-diff.spec.ts",
-  outputDir:
-    process.env.M0_PLAYWRIGHT_OUTPUT_DIR ??
-    `./data/probes/playwright/${probeCase}/test-results`,
-  snapshotPathTemplate: `./data/probes/playwright/${probeCase}/snapshots/{projectName}/{testFilePath}/{arg}{ext}`,
+  testDir: "tests/browser",
+  testIgnore: [
+    "agent-flow.spec.ts",
+    "preview.spec.ts",
+    "persistence.spec.ts",
+    "spec-benchmark-candidate.spec.ts",
+  ],
   fullyParallel: false,
-  workers: 1,
-  retries: 0,
-  forbidOnly: true,
-  projects: [
+  timeout: 45_000,
+  use: {
+    baseURL: "http://127.0.0.1:3100",
+    browserName: "chromium",
+    launchOptions: { executablePath },
+    viewport: { width: 1440, height: 900 },
+    locale: "zh-CN",
+    colorScheme: "light",
+    contextOptions: { reducedMotion: "reduce" },
+  },
+  webServer: [
     {
-      name: "chromium",
-      use: {
-        browserName: "chromium",
-        headless: true,
-        viewport: { width: 320, height: 240 },
-        deviceScaleFactor: 1,
-        colorScheme: "light",
-        reducedMotion: "reduce",
-      },
+      command: "node server/index.ts",
+      url: "http://127.0.0.1:3101/api/health",
+      reuseExistingServer: false,
+      timeout: 30_000,
+      env: { VMA_AGENT_MODE: "probe", VMA_SERVER_PORT: "3101" },
+    },
+    {
+      command: "vite --host 127.0.0.1 --port 3100",
+      url: "http://127.0.0.1:3100/probe.html",
+      reuseExistingServer: false,
+      timeout: 30_000,
     },
   ],
 });
