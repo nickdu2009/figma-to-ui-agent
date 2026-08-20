@@ -64,7 +64,6 @@ import {
  resolveProtocolMode,
  computeCompatibilityDigest,
  SERVER_PROTOCOL_VERSION,
- COMPAT_PROTOCOL_VERSION,
 } from "./persistence/protocol-mode.ts";
 import { blobRelativePath } from "./design-assets/blob-store.ts";
 import { fileURLToPath } from "node:url";
@@ -213,9 +212,8 @@ const protocolMode = resolveProtocolMode();
 // S13：协议模式握手端点（设计 §13.2.1/§13.2.3）
 app.get("/api/protocol", (c) => {
  return c.json({
-  protocolMode,
-  serverProtocolVersion:
-   protocolMode === "v2" ? SERVER_PROTOCOL_VERSION : COMPAT_PROTOCOL_VERSION,
+ protocolMode,
+  serverProtocolVersion: SERVER_PROTOCOL_VERSION,
   compatibilityDigest: computeCompatibilityDigest(protocolMode),
  });
 });

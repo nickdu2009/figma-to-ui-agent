@@ -8,7 +8,7 @@
  * 3. CAS 更新（WHERE id = ? AND revision = ? 或 bundle IS NULL），不持有全表锁；
  * 4. 任意 Catalog / Bundle 校验失败立即停止并报错；
  * 5. CLI 默认 dry-run；实际写入必须同时使用 `--confirm` 与显式
- *    `VMA_PROTOCOL_MODE=compat`，避免误写本机开发库或切换中的 v2 库。
+ *    `VMA_PROTOCOL_MODE=v2`，避免误写本机开发库。
  */
 import mysql from "mysql2/promise";
 import { drizzle } from "drizzle-orm/mysql2";
@@ -367,9 +367,9 @@ export async function runBundleBackfill(
 if (import.meta.url === `file://${process.argv[1]}`) {
   const confirmed = process.argv.slice(2).includes("--confirm");
   const mode = process.env.VMA_PROTOCOL_MODE?.trim().toLowerCase();
-  if (confirmed && mode !== "compat") {
+  if (confirmed && mode !== "v2") {
     console.error(
-      "[backfill-fatal] 实际回填要求显式 VMA_PROTOCOL_MODE=compat 与 --confirm",
+      "[backfill-fatal] 实际回填要求显式 VMA_PROTOCOL_MODE=v2 与 --confirm",
     );
     process.exit(2);
   }

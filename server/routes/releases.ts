@@ -176,10 +176,10 @@ export function createReleaseRoutes(deps: {
   routes.post("/apps/:appId/releases/publish", async (c) => {
     const { user } = requireSession(c);
     const membership = await guard(c.req.param("appId"), user.id);
-    assertMutationAllowed(deps.protocolMode ?? "compat", "publish");
+    assertMutationAllowed(deps.protocolMode ?? "v2", "publish");
     const body = publishSchema.parse(await c.req.json());
     assertMutationProtocolVersion(
-      deps.protocolMode ?? "compat",
+      deps.protocolMode ?? "v2",
       "publish",
       body.protocolVersion,
     );
@@ -198,10 +198,10 @@ export function createReleaseRoutes(deps: {
   routes.post("/apps/:appId/releases/rollback", async (c) => {
     const { user } = requireSession(c);
     await guard(c.req.param("appId"), user.id);
-    assertMutationAllowed(deps.protocolMode ?? "compat", "rollback");
+    assertMutationAllowed(deps.protocolMode ?? "v2", "rollback");
     const body = rollbackSchema.parse(await c.req.json());
     assertMutationProtocolVersion(
-      deps.protocolMode ?? "compat",
+      deps.protocolMode ?? "v2",
       "rollback",
       body.protocolVersion,
     );

@@ -20,7 +20,7 @@ test("S13 protocol-mode-compatibility：协议模式握手端点", async ({ page
   compatibilityDigest: string;
  };
 
- expect(["compat", "cutover", "v2", "readonly_recovery"]).toContain(
+ expect(["v2", "readonly_recovery"]).toContain(
   body.protocolMode,
  );
  expect(body.serverProtocolVersion).toBeGreaterThanOrEqual(1);

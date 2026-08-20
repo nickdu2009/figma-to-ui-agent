@@ -69,7 +69,7 @@ describe("S7 应用授权守卫", () => {
     const res = await api(t.app, `/api/apps/${appId}/releases/publish`, {
       method: "POST",
       cookie: ownerCookie,
-      body: JSON.stringify({ draftId: draft.id }),
+      body: JSON.stringify({ draftId: draft.id, protocolVersion: 2 }),
     });
     expect(res.status).toBe(200);
   }

@@ -86,7 +86,7 @@ describe("generation routes & agent context (S3)", () => {
         {
           method: "POST",
           cookie: ownerCookie,
-          body: JSON.stringify({ generationId: "gen-route-1" }),
+          body: JSON.stringify({ generationId: "gen-route-1", protocolVersion: 2 }),
         },
       );
       expect(hb.status).toBe(200);
@@ -97,7 +97,7 @@ describe("generation routes & agent context (S3)", () => {
         {
           method: "POST",
           cookie: ownerCookie,
-          body: JSON.stringify({ generationId: "gen-route-1" }),
+          body: JSON.stringify({ generationId: "gen-route-1", protocolVersion: 2 }),
         },
       );
       expect(abort.status).toBe(200);

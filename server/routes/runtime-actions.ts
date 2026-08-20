@@ -121,7 +121,7 @@ export function createRuntimeActionRoutes(deps: {
     const appId = c.req.param("appId");
     const caller = await resolveCaller(appId, user.id);
     try {
-      assertMutationAllowed(deps.protocolMode ?? "compat", "runtime_action");
+      assertMutationAllowed(deps.protocolMode ?? "v2", "runtime_action");
     } catch (err) {
       if (err instanceof ProtocolFenceError) {
         return c.json(
@@ -165,7 +165,7 @@ export function createRuntimeActionRoutes(deps: {
     const appId = c.req.param("appId");
     const caller = await resolveCaller(appId, user.id);
     try {
-      assertMutationAllowed(deps.protocolMode ?? "compat", "runtime_action");
+      assertMutationAllowed(deps.protocolMode ?? "v2", "runtime_action");
     } catch (err) {
       if (err instanceof ProtocolFenceError) {
         return c.json(

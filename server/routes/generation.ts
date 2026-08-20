@@ -58,7 +58,7 @@ export function createGenerationRoutes(deps: {
     await requireOwnerMembership(c.req.param("appId"), user.id);
     const body = generationIdSchema.parse(await c.req.json());
     assertMutationProtocolVersion(
-      deps.protocolMode ?? "compat",
+      deps.protocolMode ?? "v2",
       "generation",
       body.protocolVersion,
     );
@@ -72,7 +72,7 @@ export function createGenerationRoutes(deps: {
     const { user } = requireSession(c);
     await requireOwnerMembership(c.req.param("appId"), user.id);
     try {
-      assertMutationAllowed(deps.protocolMode ?? "compat", "generation");
+      assertMutationAllowed(deps.protocolMode ?? "v2", "generation");
     } catch (err) {
       if (err instanceof ProtocolFenceError) {
         return c.json(
@@ -84,7 +84,7 @@ export function createGenerationRoutes(deps: {
     }
     const body = generationIdSchema.parse(await c.req.json());
     assertMutationProtocolVersion(
-      deps.protocolMode ?? "compat",
+      deps.protocolMode ?? "v2",
       "generation",
       body.protocolVersion,
     );
@@ -161,7 +161,7 @@ export function createGenerationRoutes(deps: {
     const generationId = c.req.param("generationId");
 
     try {
-      assertMutationAllowed(deps.protocolMode ?? "compat", "generation");
+      assertMutationAllowed(deps.protocolMode ?? "v2", "generation");
     } catch (err) {
       if (err instanceof ProtocolFenceError) {
         return c.json(
@@ -181,7 +181,7 @@ export function createGenerationRoutes(deps: {
     }
     try {
       assertMutationProtocolVersion(
-        deps.protocolMode ?? "compat",
+        deps.protocolMode ?? "v2",
         "generation",
         parsed.data.protocolVersion,
       );

@@ -64,11 +64,6 @@ describe("S15 P1 延迟能力负向门禁", () => {
   });
 
   it("协议模式中不包含未经设计的实验性模式", () => {
-    expect(PROTOCOL_MODES).toEqual([
-      "compat",
-      "cutover",
-      "v2",
-      "readonly_recovery",
-    ]);
+    expect(PROTOCOL_MODES).toEqual(["v2", "readonly_recovery"]);
   });
 });

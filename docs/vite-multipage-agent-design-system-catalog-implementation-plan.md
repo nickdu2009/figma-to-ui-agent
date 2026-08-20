@@ -140,7 +140,7 @@ src/catalog 只允许导入纯 TypeScript、Zod 和 @json-render definitions。�
 
     S2 + S11 --> S12 Recovery --> S13 Release/Migration composition
     S3-S13 complete --> S14 integrated acceptance --> S15 deferred-boundary gate
-    S15 pass --> S16 cutover drill
+    S15 pass --> S16 v2 首次部署演练
 
 允许并行的工作：
 
@@ -821,10 +821,10 @@ Architecture owner 在 evidence 中填写 DS-GATE-00=pass、批准 digest 与各
   - 新增 tests/browser/release-bundle.spec.ts
 - 动作：
   1. server/index.ts 一次性组合 S7-S12 的 Repository、service、route、scheduler 和 maintenance；启动失败必须 fail closed。
-  2. protocol-mode.ts 定义唯一服务端状态机 compat→cutover→v2，以及独立 readonly_recovery 启动模式；默认 compat。compat 不发 protocolVersion:2，cutover 禁止 Generation/Draft/Publish/Rollback/RuntimeAction mutation，v2 只允许新协议 mutation，readonly_recovery 仅允许受权读取与导出。
+  2. protocol-mode.ts 只保留 v2（默认）与 readonly_recovery 两种状态；所有宿主 mutation 显式声明 protocolVersion:2，readonly_recovery 仅允许受权读取与导出。
   3. 服务端 bootstrap 返回 protocolMode、serverProtocolVersion 与 compatibilityDigest；浏览器只在 mode/version/digest 匹配时启用对应消费者，错配显示稳定不可变错误并保持最后有效 Preview，不做猜测降级。
-  4. scripts/backfill-app-ui-bundles.ts 每批≤100，重复扫描 bundle IS NULL 行，按 row revision CAS 写默认 AppUiBundle 与旧 spec 一致性摘要；冲突行留待下一批，任一 Catalog 校验失败停止。compat 期间可重复运行，cutover fence 后执行最终零缺口扫描，不持有全表锁。
-  5. 新写 Repository 在全部 protocol mode 下都只接受 Bundle，并在同一事务派生旧 spec 兼容投影；两者不一致 fail closed。compat 的 legacy Spec 输入先由服务端 compatibility adapter 包装为默认 DesignSystem/空 AssetManifest 的 Catalog 1.x Bundle，再调用同一 Repository 双写，不能产生新的 spec-only 行，也不能伪造 migration edge；只有数据库中的历史旧行使用读时 adapter。
+  4. scripts/backfill-app-ui-bundles.ts 每批≤100，重复扫描 bundle IS NULL 行，按 row revision CAS 写默认 AppUiBundle 与旧 spec 一致性摘要；冲突行留待下一批，任一 Catalog 校验失败停止。首次部署前完成最终零缺口扫描，不持有全表锁。
+  5. 新写 Repository 只接受 Bundle，并在同一事务派生旧 spec 投影；两者不一致 fail closed。历史 spec-only 行仅由离线回填处理，不接受新的 legacy 输入，也不能伪造 migration edge。
   6. Draft/Published 保存 catalogVersion、Bundle、Schema、validation/publishBlocked、migrationEdge/plan。
   7. 新 Bundle 发布不接受客户端迁移覆盖；锁 ReleasePointer，核对 from version/schema/to schema，stale base 无 DDL/数据/指针变化。
   8. 跨 Schema 回滚只允许直接前驱并使用当前版本 reversePlan；多跳逐跳显式确认。
@@ -833,14 +833,14 @@ Architecture owner 在 evidence 中填写 DS-GATE-00=pass、批准 digest 与各
 - 验证：
   - npx vitest run tests/contract/protocol-mode.test.ts tests/integration/persistence/protocol-mode-mutations.test.ts tests/integration/persistence/bundle-backfill.test.ts tests/integration/persistence/release-bundle.test.ts tests/integration/persistence/bundle-migration.test.ts
   - npx playwright test tests/browser/protocol-mode-compatibility.spec.ts tests/browser/release-bundle.spec.ts --config playwright.mock.config.ts
-  - compat server/legacy browser、compat server/v2 browser、cutover 下全部 mutation、v2 server/legacy browser、readonly_recovery 写请求逐一 fail closed；不存在隐式协议降级。
+  - v2 写请求、缺失或未知 protocolVersion、readonly_recovery 写请求逐一验证；不存在隐式协议降级。
   - 未执行/完整/已知部分 migration、并发回填 CAS、最终零缺口、未知 drift、stale base、直接前驱/多跳、投影不一致、发布/回滚资源失败、viewer 篡改。
 - 完成标准：
   - 旧 v1 Published fixture 全部由当前 v1 Renderer 渲染。
   - Catalog 2.x 发布在多 Renderer 前稳定拒绝。
   - 新写入后 spec-only binary 只读，所有 mutation fail closed。
   - 启动迁移、maintenance 和路由无重复 owner。
-  - protocol mode 默认 compat；没有配置或浏览器/服务端版本错配时绝不进入 v2。
+  - protocol mode 默认 v2；没有配置时进入 v2，浏览器/服务端版本错配时 fail closed。
 - 停止条件：
   - 任一旧 Spec 无法确定性回填。
   - 新/旧投影可能独立更新。
@@ -910,40 +910,24 @@ Architecture owner 在 evidence 中填写 DS-GATE-00=pass、批准 digest 与各
 - 回退点：移除误暴露表面；不把 P1 纳入本期。
 - 覆盖 AC：AC8a、AC8b、AC8d、AC8e、AC13f、AC17a、AC18a。
 
-### S16：compatibility release 切换与回退演练
+### S16：v2 首次部署与恢复演练
 
-- 依赖：S15；需要单独切换和 MySQL+VMA_ASSET_ROOT 备份恢复授权。
+- 依赖：S15；首次部署和 MySQL+VMA_ASSET_ROOT 备份恢复须获得单独授权。
 - Owner：Release/Operations owner。
-- 文件：
-  - 新增 docs/vite-multipage-agent-design-system-catalog-cutover-runbook.md
-  - 新增 scripts/verify-bundle-cutover.ts
-  - 修改 docs/vite-multipage-agent-design-system-catalog-test-evidence.md
 - 动作：
-  1. 固化 preflight：DS-GATE-00 digest、S15 negative gate、0005 journal/step ledger、回填计数、Catalog digest、Blob root 可写、资源一致性、protocol mode=compat、旧投影一致性。
-  2. 先部署能读旧 spec+新 Bundle、维护 spec 投影、但不发 protocolVersion:2 的 compatibility release；验证 legacy browser 与 legacy PublishedVersion。
-  3. compat 期间重复运行每批≤100 的 CAS 回填，直到无稳定失败；取得 MySQL+VMA_ASSET_ROOT 联合恢复点。
-  4. 进入 cutover mode：先禁止 Generation/Draft/Publish/Rollback/RuntimeAction mutation，再把 running/validation_running/awaiting_preview 的旧未完成 run 条件更新为 incomplete；不触碰 recovery_pending。验证数据库中旧短时开放 run 为零。
-  5. 在 mutation fence 下运行最终回填与全部 PublishedVersion 读取验证，要求 bundle 缺口、投影错配和未知 drift 均为零。
-  6. 在同一受控切换窗口部署 v2 浏览器客户端并把服务端从 cutover 切为 v2；bootstrap mode/version/digest 匹配后才恢复新协议 mutation。任何一侧健康检查失败立即回到 cutover，不混合启用。
-  7. 执行生成、Preview Commit、受控业务数据写入、发布、直接前驱回滚和资源重新 bootstrap 验证。
-  8. 执行服务回退演练：只回退到理解 Bundle、维护 spec 投影且默认 compat 的 compatibility release；不删除新列、Blob、Bundle 或 ledger。spec-only binary 不作为在线回退目标，只能用只读数据库凭据执行离线导出/恢复。
-  9. 执行 MySQL+VMA_ASSET_ROOT 联合恢复演练并重新验证 0005、Bundle/spec 投影和 Blob hash。
-- 验证：
-  - runbook 的 preflight、compat、cutover fence、v2 switch、post-check、compat rollback、joint restore 七段在隔离环境逐条执行。
-  - scripts/verify-bundle-cutover.ts 对每个阶段输出 protocol mode、open legacy run、bundle gap、projection mismatch、asset health 和 mutation probe 的有界报告。
-  - 验证旧 Published 可读、新 Draft 可刷新、发布/回滚资源完整、未知 drift fail closed；cutover/readonly_recovery 下所有禁止 mutation 返回稳定错误。
+  1. 固化 preflight：DS-GATE-00 digest、S15 negative gate、迁移 journal/step ledger、Catalog digest、Blob root 可写和资源一致性。
+  2. 以默认 v2 部署浏览器和服务端；bootstrap 的 mode/version/digest 必须完全一致，所有宿主 mutation 显式携带 protocolVersion:2。
+  3. 执行生成、Preview Commit、受控业务数据写入、发布、直接前驱回滚和资源重新 bootstrap 验证。
+  4. 验证缺失、旧版或未知 protocolVersion 均 fail closed；进入 readonly_recovery 后全部 mutation 返回稳定 423 错误。
+  5. 执行 MySQL+VMA_ASSET_ROOT 联合恢复演练并重新验证 migration ledger、Bundle/spec 投影和 Blob hash。
 - 完成标准：
-  - 切换前 S15 负向门禁、旧短时开放 run、Bundle 缺口、投影错配和 Blob 健康全部通过。
-  - v2 启用时服务端与浏览器 mode/version/digest 完全一致。
-  - compatibility 回退和联合恢复演练均不会丢 MySQL 或 Asset root 数据，也不会允许 spec-only 写入。
-  - 监控和稳定错误码足够定位 generation/validation/apply/action/release 阶段。
+  - 首次部署前 S15 负向门禁、Bundle 缺口、投影错配和 Blob 健康全部通过。
+  - 服务端与浏览器均以 v2 运行，且没有隐式协议降级。
+  - 联合恢复演练不会丢 MySQL 或 Asset root 数据，也不会允许 spec-only 写入。
 - 停止条件：
   - S15 任一负向检查失败或被 skip。
-  - 联合恢复点不一致。
-  - 旧短时开放 run、回填缺口、投影错配或 Blob 健康存在任何非零异常。
-  - 任一被禁止的 mutation 可在 compat/cutover/readonly_recovery 中绕过 fence。
-  - 浏览器与服务端 mode/version/digest 不能原子对齐。
-- 回退点：v2 mutation 前保持 compat；进入 cutover 后失败则保持 mutation fence；v2 写入后只回退到 compatibility release，或进入 readonly_recovery。任何回退都不执行 destructive cleanup/down migration。
+  - 联合恢复点不一致，或任一写入可在 readonly_recovery 中绕过门禁。
+- 回退点：只进入 readonly_recovery 以保护事实数据；任何恢复不执行 destructive cleanup/down migration。
 - 覆盖 AC：AC11b、AC19e、AC19g、AC21、AC22。
 
 ## 9. 合并增量与每增量验收
@@ -1009,7 +993,7 @@ Architecture owner 在 evidence 中填写 DS-GATE-00=pass、批准 digest 与各
 | finish 截断或伪造 | DS-GATE-00/S11 | 2 MiB、断流、digest/count/sequence 错 | 关闭 v2 mutation |
 | 恢复重放/隐式模型调用 | S12 | 重复决定、GET、重连、expiry 竞争 | 关闭 repair/regenerate |
 | 迁移 drift/回退写入 | S2/S13/S16 | 已知部分、未知差异、spec-only mutation | compatibility 只读 |
-| 协议模式或浏览器版本错配 | S13/S16 | compat/v2 客户端交叉、cutover 绕过、旧 open run | 保持 mutation fence，拒绝混合启用 |
+| 协议版本或浏览器版本错配 | S13/S16 | 缺失/旧/未知 protocolVersion、readonly_recovery 绕过 | 拒绝 mutation，保持事实数据只读 |
 | P1 半实现表面随 P0 上线 | S15/S16 | Action/Prompt/route/capability 静态与运行探针 | 阻断切换并移除误暴露表面 |
 | 模型策略被客户端覆盖 | DS-GATE-00/S10 | provider/model/reasoning/retry 注入 | 停真实 transport |
 | 敏感内容泄漏日志 | DS-GATE-00/S10 | system/user/tool/header/body/stack sentinel | fail closed，禁止上线 |

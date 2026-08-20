@@ -35,7 +35,7 @@ const previewCommitBodySchema = z.object({
   candidateDigest: z.string().min(1),
   uiBundleDigest: z.string().min(1),
   reportDigest: z.string().min(1),
-  /** v2 写入必须显式携带；compat 期间保留缺省 v1 以完成历史回填。 */
+  /** 所有宿主写入必须显式携带 v2。 */
   protocolVersion: z.number().int().optional(),
 }).strict();
 
@@ -128,7 +128,7 @@ export function createPreviewSelectionRoutes(deps: {
       },
     );
     try {
-      assertMutationAllowed(deps.protocolMode ?? "compat", "draft_mutation");
+      assertMutationAllowed(deps.protocolMode ?? "v2", "draft_mutation");
     } catch (err) {
       if (err instanceof ProtocolFenceError) {
         return c.json(
@@ -195,7 +195,7 @@ export function createPreviewSelectionRoutes(deps: {
       },
     );
     try {
-      assertMutationAllowed(deps.protocolMode ?? "compat", "preview_commit");
+      assertMutationAllowed(deps.protocolMode ?? "v2", "preview_commit");
     } catch (err) {
       if (err instanceof ProtocolFenceError) {
         return c.json(
@@ -219,7 +219,7 @@ export function createPreviewSelectionRoutes(deps: {
     const body = parsed.data;
     try {
       assertMutationProtocolVersion(
-        deps.protocolMode ?? "compat",
+        deps.protocolMode ?? "v2",
         "preview_commit",
         body.protocolVersion,
       );

@@ -71,12 +71,7 @@ describe("S14 AC 验收矩阵门禁", () => {
     expect(VALIDATION_RESOURCE_ENVELOPE_V1.ipcReportBytes).toBeGreaterThan(0);
   });
 
-  it("AC13: 协议模式严格包含四种合法状态", () => {
-    expect(PROTOCOL_MODES).toEqual([
-      "compat",
-      "cutover",
-      "v2",
-      "readonly_recovery",
-    ]);
+  it("AC13: 协议模式仅保留 v2 与故障只读恢复", () => {
+    expect(PROTOCOL_MODES).toEqual(["v2", "readonly_recovery"]);
   });
 });

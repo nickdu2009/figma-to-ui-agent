@@ -425,7 +425,7 @@ export class GenerationCoordinator {
    * v2 生成收尾。完整 Candidate 只在服务端 finalise 并通过验证后才发给
    * 浏览器；浏览器只可用回传的 digest 发起 Preview Commit，不能提交 Spec。
    *
-   * 保留 finishPatchStream 仅为 compat/mock 的 await_apply_result 路径，生产
+   * 保留 finishPatchStream 仅为 mock 的 await_apply_result 路径，生产
    * generate_spec 必须调用本方法。
    */
   async finishValidatedCandidate(

@@ -130,7 +130,7 @@ describe("schema migrations & recycle bin (S5b)", () => {
     return api(t.app, `/api/apps/${targetAppId}/releases/publish`, {
       method: "POST",
       cookie: ownerCookie,
-      body: JSON.stringify({ draftId: draft.id }),
+      body: JSON.stringify({ draftId: draft.id, protocolVersion: 2 }),
     });
   }
 
@@ -239,7 +239,7 @@ describe("schema migrations & recycle bin (S5b)", () => {
     const res = await api(t.app, `/api/apps/${appId}/releases/rollback`, {
       method: "POST",
       cookie: ownerCookie,
-      body: JSON.stringify({ publishedVersionId: v1.id }),
+      body: JSON.stringify({ publishedVersionId: v1.id, protocolVersion: 2 }),
     });
     expect(res.status).toBe(200);
     const query = await apiJson<{
@@ -269,7 +269,7 @@ describe("schema migrations & recycle bin (S5b)", () => {
     const rollback = await api(t.app, `/api/apps/${appId}/releases/rollback`, {
       method: "POST",
       cookie: ownerCookie,
-      body: JSON.stringify({ publishedVersionId: v1.id }),
+      body: JSON.stringify({ publishedVersionId: v1.id, protocolVersion: 2 }),
     });
     expect(rollback.status).toBe(409);
     const body = (await rollback.json()) as { error: { code: string } };

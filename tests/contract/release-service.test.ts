@@ -104,7 +104,7 @@ describe("release service (S4)", () => {
     const invalid = await api(t.app, `/api/apps/${appId}/releases/publish`, {
       method: "POST",
       cookie: ownerCookie,
-      body: JSON.stringify({ draftId: invalidDraftId }),
+      body: JSON.stringify({ draftId: invalidDraftId, protocolVersion: 2 }),
     });
     expect(invalid.status).toBe(400);
     const invalidBody = (await invalid.json()) as { error: { code: string } };
@@ -146,7 +146,7 @@ describe("release service (S4)", () => {
       {
         method: "POST",
         cookie: ownerCookie,
-        body: JSON.stringify({ draftId: draft2.id }),
+        body: JSON.stringify({ draftId: draft2.id, protocolVersion: 2 }),
       },
     );
     expect(valid.status).toBe(200);
@@ -160,7 +160,7 @@ describe("release service (S4)", () => {
     const outsider = await api(t.app, `/api/apps/${appId}/releases/publish`, {
       method: "POST",
       cookie: outsiderCookie,
-      body: JSON.stringify({ draftId }),
+      body: JSON.stringify({ draftId, protocolVersion: 2 }),
     });
     expect(outsider.status).toBe(404);
     const published = await apiJson<{ publishedVersionId: string }>(
@@ -169,7 +169,7 @@ describe("release service (S4)", () => {
       {
         method: "POST",
         cookie: ownerCookie,
-        body: JSON.stringify({ draftId }),
+        body: JSON.stringify({ draftId, protocolVersion: 2 }),
       },
     );
     expect(published.status).toBe(200);
@@ -188,6 +188,7 @@ describe("release service (S4)", () => {
         cookie: outsiderCookie,
         body: JSON.stringify({
           publishedVersionId: published.body.publishedVersionId,
+          protocolVersion: 2,
         }),
       },
     );
@@ -203,7 +204,7 @@ describe("release service (S4)", () => {
     const res = await api(t.app, `/api/apps/${appId}/releases/publish`, {
       method: "POST",
       cookie: ownerCookie,
-      body: JSON.stringify({ draftId }),
+      body: JSON.stringify({ draftId, protocolVersion: 2 }),
     });
     expect(res.status).toBe(409);
     const body = (await res.json()) as { error: { code: string } };
@@ -219,7 +220,7 @@ describe("release service (S4)", () => {
       {
         method: "POST",
         cookie: ownerCookie,
-        body: JSON.stringify({ draftId: draftA }),
+        body: JSON.stringify({ draftId: draftA, protocolVersion: 2 }),
       },
     );
     expect(pubA.status).toBe(200);
@@ -230,7 +231,7 @@ describe("release service (S4)", () => {
       {
         method: "POST",
         cookie: ownerCookie,
-        body: JSON.stringify({ draftId: draftB }),
+        body: JSON.stringify({ draftId: draftB, protocolVersion: 2 }),
       },
     );
     expect(pubB.status).toBe(200);
@@ -240,6 +241,7 @@ describe("release service (S4)", () => {
       cookie: ownerCookie,
       body: JSON.stringify({
         publishedVersionId: pubA.body.publishedVersionId,
+        protocolVersion: 2,
       }),
     });
     expect(rollback.status).toBe(200);
@@ -256,6 +258,7 @@ describe("release service (S4)", () => {
       cookie: ownerCookie,
       body: JSON.stringify({
         publishedVersionId: pubA.body.publishedVersionId,
+        protocolVersion: 2,
       }),
     });
     expect(again.status).toBe(200);
@@ -270,7 +273,7 @@ describe("release service (S4)", () => {
       const res = await api(t.app, `/api/apps/${appId}/releases/publish`, {
         method: "POST",
         cookie: ownerCookie,
-        body: JSON.stringify({ draftId }),
+        body: JSON.stringify({ draftId, protocolVersion: 2 }),
       });
       expect(res.status).toBe(200);
     }

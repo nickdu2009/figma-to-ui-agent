@@ -56,7 +56,7 @@ describe("S11 v2 generation protocol", () => {
       assertMutationProtocolVersion("v2", "preview_commit", 2),
     ).not.toThrow();
     expect(() =>
-      assertMutationProtocolVersion("compat", "preview_commit", 99),
+      assertMutationProtocolVersion("v2", "preview_commit", 99),
     ).toThrow(ProtocolFenceError);
   });
 
