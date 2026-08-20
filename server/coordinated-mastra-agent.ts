@@ -24,7 +24,8 @@ const DEFAULT_IDLE_TIMEOUT_MS = 180_000;
  * - ask_question / await_apply_result 的 TOOL_CALL 完成后，以
  *   RUN_FINISHED { outcome: { type: "interrupt", interrupts: [...] } } 结束 run；
  * - 下一 run 的工具结果（绑定 toolCallId 的 ToolMessage）交给 Coordinator
- *   做关联校验；不匹配时改写为 aborted 结果（fail closed）。
+ *   做关联校验；await_apply_result 通过校验后确定性结束，其他结果继续交给
+ *   内层模型处理。
  */
 export class CoordinatedMastraAgent extends AbstractAgent {
   // 注意：不用 TS 参数属性——Node 24 类型剥离（strip-only）不支持该语法。
@@ -214,7 +215,10 @@ export class CoordinatedMastraAgent extends AbstractAgent {
     // 这里把已解决的 resume 项转换为合成工具结果消息（随后走统一的
     // inspectIncomingToolResults 校验），并从传给内层的输入中剥掉 resume。
     const preparedInput = this.prepareResumeInput(input);
-    const inspectToolResults = this.inspectIncomingToolResults(preparedInput);
+    const inspectToolResults = this.inspectIncomingToolResults(
+      preparedInput,
+      resolvedResumeToolCallIds(input),
+    );
 
     // 把 threadId/runId 透传到 Mastra requestContext（经 input.context），
     // 供服务器工具（generate_spec）定位 Coordinator 的活动 run。
@@ -482,16 +486,41 @@ export class CoordinatedMastraAgent extends AbstractAgent {
       });
 
       const startInnerRun = async () => {
-        const persistenceRejected = await inspectToolResults;
+        const { persistenceRejected, terminalApplyResolved } =
+          await inspectToolResults;
         for (const generationId of persistenceRejected) {
           this.coordinator.emitPersistenceRejected(threadId, runId, generationId);
         }
         if (startCancelled) return;
+        if (terminalApplyResolved) {
+          // await_apply_result 是服务端发出的协议收尾回执，并不是模型调用。
+          // 再将它作为 ToolMessage 送入 Mastra 时，适配层找不到对应的模型
+          // TOOL_CALL，最终会以 unknown tool-result 请求上游并造成无意义的
+          // network error。关联校验与持久化已在 inspectToolResults 完成；此处
+          // 确定性结束即可，既不多花一次模型调用，也不污染对话历史。
+          clearIdleTimer();
+          this.coordinator.closeRun(threadId, runId);
+          channelSub.unsubscribe();
+          subscriber.next({
+            type: EventType.RUN_FINISHED,
+            threadId,
+            runId,
+          } as BaseEvent);
+          subscriber.complete();
+          return;
+        }
         innerSub = this.inner.run(enrichedInput).subscribe({
         next: handleEvent,
         error: (error: unknown) => {
           innerErrored = error;
           clearIdleTimer();
+          // 只记录脱敏后的错误摘要。内层 Observable 直接 error 会被
+          // CopilotKit 表现为 network error；该摘要用于区分上游模型失败和
+          // 我们的 AG-UI 映射失败，不能输出请求正文、Spec 或凭据。
+          console.warn(
+            "[coordinated-mastra-agent] inner stream failed:",
+            redactForLog(error),
+          );
           this.coordinator.closeRun(threadId, runId);
           channelSub.unsubscribe();
           subscriber.error(error);
@@ -549,12 +578,18 @@ export class CoordinatedMastraAgent extends AbstractAgent {
    * 检查下一 run 携带的前端工具结果（ToolMessage）：
    * - ask_question 结果 → Coordinator 关联校验并记录；
    * - await_apply_result 结果 → 校验 { threadId, generationId, applyToolCallId }；
-   * 关联不匹配时把内容改写为 aborted（fail closed），模型只能看到失败事实。
+   * 关联不匹配时把内容改写为 aborted（fail closed）。本次 resume 的
+   * await_apply_result 回执完成关联后由外层确定性结束，绝不发送给模型。
    */
   private async inspectIncomingToolResults(
     input: RunAgentInput,
-  ): Promise<string[]> {
+    resumedToolCallIds: ReadonlySet<string>,
+  ): Promise<{
+    persistenceRejected: string[];
+    terminalApplyResolved: boolean;
+  }> {
     const persistenceRejected: string[] = [];
+    let terminalApplyResolved = false;
     const messages = [...input.messages];
     for (const message of messages) {
       if (message.role !== "tool" || !message.toolCallId) continue;
@@ -583,6 +618,11 @@ export class CoordinatedMastraAgent extends AbstractAgent {
           message.content = JSON.stringify(resolved.applyResult);
           persistenceRejected.push(applyParsed.data.generationId);
         }
+        // 只处理本次 interrupt resolve 的回执。历史 ToolMessage 必须仍可
+        // 作为后续正常模型回合的上下文，不能让它们意外终结新的用户请求。
+        if (resolved && resumedToolCallIds.has(message.toolCallId)) {
+          terminalApplyResolved = true;
+        }
         continue;
       }
 
@@ -599,8 +639,27 @@ export class CoordinatedMastraAgent extends AbstractAgent {
         });
       }
     }
-    return persistenceRejected;
+    return { persistenceRejected, terminalApplyResolved };
   }
+}
+
+/** 当前 AG-UI resume 载荷中已解决/取消的 toolCallId 集合。 */
+function resolvedResumeToolCallIds(input: RunAgentInput): ReadonlySet<string> {
+  const resume = (input as RunAgentInput & {
+    resume?: Array<{ status?: string; interruptId?: string }>;
+  }).resume;
+  const ids = new Set<string>();
+  for (const entry of resume ?? []) {
+    if (
+      (entry?.status !== "resolved" && entry?.status !== "cancelled") ||
+      typeof entry.interruptId !== "string"
+    ) {
+      continue;
+    }
+    const sep = entry.interruptId.indexOf("::");
+    ids.add(sep >= 0 ? entry.interruptId.slice(sep + 2) : entry.interruptId);
+  }
+  return ids;
 }
 
 function safeJson(text: string): unknown {

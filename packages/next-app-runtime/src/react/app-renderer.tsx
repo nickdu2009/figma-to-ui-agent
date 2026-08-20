@@ -1,4 +1,5 @@
-import React, { useEffect, useLayoutEffect, useMemo, useSyncExternalStore } from "react";
+import type React from "react";
+import { useEffect, useLayoutEffect, useMemo, useSyncExternalStore } from "react";
 
 import { createHeadController } from "../metadata/head-controller.js";
 import { completeBrowserNavigationScroll } from "../navigation/browser-history.js";
@@ -67,6 +68,7 @@ function RuntimeContent({
     <RuntimeNextAppProvider
       registry={internals.options.registry}
       handlers={internals.options.handlers}
+      actionDispatcher={runtime.getActionDispatcher()}
       navigation={internals.navigation}
     >
       {content}

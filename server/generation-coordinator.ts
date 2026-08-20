@@ -42,6 +42,8 @@ export type PendingGeneration = {
   applyToolCallId?: string;
   status:
     | "patch_streaming"
+    | "awaiting_preview"
+    | "recovery_pending"
     | "awaiting_apply_result"
     | "committed"
     | "failed"
@@ -94,7 +96,10 @@ export class GenerationCoordinator {
     return this.appContexts.get(threadId) ?? null;
   }
 
-  private startGenerationHeartbeat(threadId: string, generationId: string): void {
+  private startGenerationHeartbeat(
+    threadId: string,
+    generationId: string,
+  ): void {
     const context = this.appContext(threadId);
     if (!this.lifecycle || !context) return;
     const heartbeatKey = key(threadId, generationId);
@@ -112,7 +117,10 @@ export class GenerationCoordinator {
     this.generationHeartbeats.set(heartbeatKey, timer);
   }
 
-  private stopGenerationHeartbeat(threadId: string, generationId: string): void {
+  private stopGenerationHeartbeat(
+    threadId: string,
+    generationId: string,
+  ): void {
     const heartbeatKey = key(threadId, generationId);
     const timer = this.generationHeartbeats.get(heartbeatKey);
     if (timer !== undefined) clearInterval(timer);
@@ -125,7 +133,10 @@ export class GenerationCoordinator {
     this.lifecycleChain = pending.then(
       () => undefined,
       (error) => {
-        console.error("[generation-lifecycle] 持久化失败：", redactForLog(error));
+        console.error(
+          "[generation-lifecycle] 持久化失败：",
+          redactForLog(error),
+        );
       },
     );
     return pending;
@@ -274,8 +285,8 @@ export class GenerationCoordinator {
         // 否则真实 LLM 会在 open 状态被 fail-closed 后失去后续生成路径。
         await this.track(() =>
           lifecycle.recordAnswer({
-          questionSetId: question.questionSetId,
-          answerPayload: result,
+            questionSetId: question.questionSetId,
+            answerPayload: result,
           }),
         );
       } catch (error) {
@@ -368,8 +379,14 @@ export class GenerationCoordinator {
     generationId: string,
     candidate?: {
       spec: unknown;
+      bundle?: unknown;
       businessSchema?: unknown;
       diagnostics?: unknown;
+      candidateDigest?: string;
+      uiBundleDigest?: string;
+      reportDigest?: string;
+      publishBlocked?: boolean;
+      fatalVisualIssues?: unknown[];
     },
   ): void {
     const generation = this.generations.get(key(threadId, generationId));
@@ -389,8 +406,66 @@ export class GenerationCoordinator {
         }
       });
     }
+    const totalOps =
+      (candidate?.diagnostics as { totalOperations?: number } | undefined)
+        ?.totalOperations ?? 0;
     this.emitCustom(threadId, runId, SPEC_PATCH_EVENT_NAMES.finish, {
       generationId,
+      operationCount: totalOps,
+      candidateDigest: candidate?.candidateDigest ?? "",
+      uiBundleDigest: candidate?.uiBundleDigest ?? "",
+      reportDigest: candidate?.reportDigest ?? "",
+      bundle: candidate?.bundle ?? null,
+      publishBlocked: candidate?.publishBlocked ?? false,
+      fatalVisualIssues: candidate?.fatalVisualIssues ?? [],
+    });
+  }
+
+  /**
+   * v2 生成收尾。完整 Candidate 只在服务端 finalise 并通过验证后才发给
+   * 浏览器；浏览器只可用回传的 digest 发起 Preview Commit，不能提交 Spec。
+   *
+   * 保留 finishPatchStream 仅为 compat/mock 的 await_apply_result 路径，生产
+   * generate_spec 必须调用本方法。
+   */
+  async finishValidatedCandidate(
+    threadId: string,
+    runId: string,
+    generationId: string,
+    candidate: unknown,
+    diagnostics?: { totalOperations?: number },
+  ): Promise<void> {
+    const generation = this.generations.get(key(threadId, generationId));
+    if (!generation || generation.status !== "patch_streaming") return;
+    if (!this.lifecycle?.finalizeAndValidateCandidate) {
+      throw new Error("v2 generation lifecycle is not configured");
+    }
+
+    const finalized = await this.track(() =>
+      this.lifecycle!.finalizeAndValidateCandidate!({ generationId, candidate }),
+    );
+    this.stopGenerationHeartbeat(threadId, generationId);
+    const totalOperations = diagnostics?.totalOperations ?? 0;
+    if (finalized.status === "recovery_pending") {
+      generation.status = "recovery_pending";
+      this.emitCustom(threadId, runId, SPEC_PATCH_EVENT_NAMES.error, {
+        generationId,
+        error: "候选包含阻塞性视觉问题，等待受控恢复决定。",
+        fatalVisualIssues: finalized.fatalVisualIssues,
+      });
+      return;
+    }
+
+    generation.status = "awaiting_preview";
+    this.emitCustom(threadId, runId, SPEC_PATCH_EVENT_NAMES.finish, {
+      generationId,
+      operationCount: totalOperations,
+      candidateDigest: finalized.candidateDigest,
+      uiBundleDigest: finalized.uiBundleDigest,
+      reportDigest: finalized.reportDigest,
+      bundle: finalized.bundle,
+      publishBlocked: finalized.publishBlocked,
+      fatalVisualIssues: [],
     });
   }
 
@@ -467,12 +542,12 @@ export class GenerationCoordinator {
       try {
         persisted = await this.track(() =>
           lifecycle.applyResult({
-          generationId,
-          outcome,
-          diagnostics:
-            outcome === "committed"
-              ? undefined
-              : { error: result.error ?? outcome },
+            generationId,
+            outcome,
+            diagnostics:
+              outcome === "committed"
+                ? undefined
+                : { error: result.error ?? outcome },
           }),
         );
       } catch (error) {

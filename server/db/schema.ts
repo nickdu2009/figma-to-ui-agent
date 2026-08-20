@@ -1,7 +1,10 @@
 import {
+  bigint,
   boolean,
+  check,
   datetime,
   double,
+  foreignKey,
   index,
   int,
   json,
@@ -10,6 +13,7 @@ import {
   uniqueIndex,
   varchar,
 } from "drizzle-orm/mysql-core";
+import { sql } from "drizzle-orm";
 
 /**
  * 平台表 Schema（S1 范围：账号/成员、应用/发布、工作区、开发收件箱）。
@@ -34,6 +38,8 @@ const createdAt = () =>
 const updatedAt = () =>
   datetime("updated_at", { mode: "date", fsp: 3 }).notNull();
 const revision = () => int("revision").notNull().default(1);
+/** `sha256:` + 64 位小写十六进制 = 71 字符（DS S2 digest 列统一长度）。 */
+const digestCol = (name: string) => varchar(name, { length: 71 });
 
 // ---------- 账号与成员 ----------
 
@@ -162,7 +168,9 @@ export const generationRuns = mysqlTable(
   {
     id: id().primaryKey(),
     appId: varchar("app_id", { length: 36 }).notNull(),
-    // 'running' | 'awaiting_preview' | 'succeeded' | 'failed' | 'incomplete'
+    // 'running' | 'validation_running' | 'awaiting_preview' |
+    // 'recovery_pending' | 'recovery_consumed' | 'succeeded' | 'failed' | 'incomplete'
+    // （设计 §13.2.1 闭合状态机；不增加 validation_failed 状态）
     status: varchar("status", { length: 24 }).notNull(),
     // 生成流水线内的 generationId（关联 AG-UI 事件与持久事实，设计 §4.2）
     correlationRef: varchar("correlation_ref", { length: 128 }),
@@ -171,6 +179,26 @@ export const generationRuns = mysqlTable(
     diagnostics: json("diagnostics"),
     lastHeartbeatAt: datetime("last_heartbeat_at", { mode: "date", fsp: 3 }),
     createdByMembershipId: varchar("created_by_membership_id", { length: 36 }),
+    // ---------- DS S2 扩展（设计 §13.2.1，全部 nullable） ----------
+    candidateBundle: json("candidate_bundle"),
+    catalogVersion: varchar("catalog_version", { length: 16 }),
+    validationIssues: json("validation_issues"),
+    fatalVisualIssues: json("fatal_visual_issues"),
+    publishBlocked: boolean("publish_blocked"),
+    candidateDigest: digestCol("candidate_digest"),
+    uiBundleDigest: digestCol("ui_bundle_digest"),
+    digestVersion: int("digest_version"),
+    validationProfileVersion: varchar("validation_profile_version", { length: 32 }),
+    validationReport: json("validation_report"),
+    reportDigest: digestCol("report_digest"),
+    candidateMigrationPlan: json("candidate_migration_plan"),
+    candidateReverseMigrationPlan: json("candidate_reverse_migration_plan"),
+    migrationFromPublishedVersionId: varchar("migration_from_published_version_id", { length: 36 }),
+    migrationFromSchemaDigest: digestCol("migration_from_schema_digest"),
+    migrationToSchemaDigest: digestCol("migration_to_schema_digest"),
+    // 创建时同事务固定，后续只读
+    brandSourceSnapshot: json("brand_source_snapshot"),
+    generationContextDigest: digestCol("generation_context_digest"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
     revision: revision(),
@@ -190,6 +218,19 @@ export const draftVersions = mysqlTable(
     spec: json("spec").notNull(),
     businessSchema: json("business_schema"),
     status: varchar("status", { length: 16 }).notNull(), // 'ready'
+    // ---------- DS S2 扩展（设计 §13.2.1，全部 nullable） ----------
+    bundle: json("bundle"),
+    catalogVersion: varchar("catalog_version", { length: 16 }),
+    validationIssues: json("validation_issues"),
+    publishBlocked: boolean("publish_blocked"),
+    candidateDigest: digestCol("candidate_digest"),
+    uiBundleDigest: digestCol("ui_bundle_digest"),
+    digestVersion: int("digest_version"),
+    migrationPlan: json("migration_plan"),
+    reversePlan: json("reverse_plan"),
+    migrationFromPublishedVersionId: varchar("migration_from_published_version_id", { length: 36 }),
+    migrationFromSchemaDigest: digestCol("migration_from_schema_digest"),
+    migrationToSchemaDigest: digestCol("migration_to_schema_digest"),
     createdAt: createdAt(),
     revision: revision(),
   },
@@ -216,6 +257,15 @@ export const publishedVersions = mysqlTable(
     // S5b：发布该版本时应用的 DataMigrationPlan 与经验证的反向计划（可回滚前提）
     migrationPlan: json("migration_plan"),
     reversePlan: json("reverse_plan"),
+    // ---------- DS S2 扩展（设计 §13.2.1，全部 nullable） ----------
+    bundle: json("bundle"),
+    catalogVersion: varchar("catalog_version", { length: 16 }),
+    candidateDigest: digestCol("candidate_digest"),
+    uiBundleDigest: digestCol("ui_bundle_digest"),
+    digestVersion: int("digest_version"),
+    migrationFromPublishedVersionId: varchar("migration_from_published_version_id", { length: 36 }),
+    migrationFromSchemaDigest: digestCol("migration_from_schema_digest"),
+    businessSchemaDigest: digestCol("business_schema_digest"),
     publishedByMembershipId: varchar("published_by_membership_id", {
       length: 36,
     }).notNull(),
@@ -486,6 +536,288 @@ export const deletedItems = mysqlTable(
     index("deleted_items_expiry").on(t.expiresAt),
   ],
 );
+
+// ---------- DS S2：预览选择 / 恢复 / 设计资源 / 幂等 / 迁移账本 ----------
+
+/**
+ * PreviewSelection（设计 §13.2.3）：(appId,membershipId) 唯一。
+ * kind='draft' 时保存 versionId/revision；empty/published 两者必须为 NULL
+ * （CHECK 约束）。published 只表示跟随 ReleasePointer，不引用具体版本。
+ */
+export const previewSelections = mysqlTable(
+  "preview_selections",
+  {
+    appId: varchar("app_id", { length: 36 }).notNull(),
+    membershipId: varchar("membership_id", { length: 36 }).notNull(),
+    // 'empty' | 'published' | 'draft'
+    kind: varchar("kind", { length: 16 }).notNull(),
+    versionId: varchar("version_id", { length: 36 }),
+    revision: int("revision"),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    uniqueIndex("preview_selections_app_membership").on(t.appId, t.membershipId),
+    foreignKey({
+      columns: [t.membershipId],
+      foreignColumns: [memberships.id],
+      name: "preview_selections_membership",
+    }),
+    check(
+      "preview_selections_kind_version",
+      sql.raw(
+        "(`kind` = 'draft' AND `version_id` IS NOT NULL AND `revision` IS NOT NULL) OR (`kind` IN ('empty','published') AND `version_id` IS NULL AND `revision` IS NULL)",
+      ),
+    ),
+  ],
+);
+
+/**
+ * GenerationRecoveryRecord（设计 §13.2.4/§10.4）：
+ * (appId,failedGenerationId,failedCandidateDigest) 唯一；
+ * pending → consumed|expired 与原 run 的 recovery_pending → recovery_consumed 同事务；
+ * 数据库时间 + CAS 决定竞争，唯一 CAS 获胜。
+ */
+export const generationRecoveryRecords = mysqlTable(
+  "generation_recovery_records",
+  {
+    id: id().primaryKey(),
+    appId: varchar("app_id", { length: 36 }).notNull(),
+    failedGenerationId: varchar("failed_generation_id", { length: 36 }).notNull(),
+    failedCandidateDigest: digestCol("failed_candidate_digest").notNull(),
+    // 'pending' | 'consumed' | 'expired'
+    status: varchar("status", { length: 16 }).notNull(),
+    // 'repair' | 'regenerate' | 'keep_current'
+    decision: varchar("decision", { length: 16 }),
+    decidedBy: varchar("decided_by", { length: 36 }),
+    decidedAt: datetime("decided_at", { mode: "date", fsp: 3 }),
+    decisionExpiresAt: datetime("decision_expires_at", { mode: "date", fsp: 3 }).notNull(),
+    expiredAt: datetime("expired_at", { mode: "date", fsp: 3 }),
+    successorGenerationId: varchar("successor_generation_id", { length: 36 }),
+    stableResultCode: varchar("stable_result_code", { length: 64 }),
+    createdAt: createdAt(),
+    revision: revision(),
+  },
+  (t) => [
+    uniqueIndex("generation_recovery_records_key").on(
+      t.appId,
+      t.failedGenerationId,
+      t.failedCandidateDigest,
+    ),
+    index("generation_recovery_records_expiry").on(t.status, t.decisionExpiresAt),
+    index("generation_recovery_records_app_expiry").on(
+      t.appId,
+      t.status,
+      t.decisionExpiresAt,
+    ),
+    index("generation_recovery_records_successor").on(t.successorGenerationId),
+    check(
+      "generation_recovery_records_status",
+      sql.raw(
+        "(`status` = 'pending' AND `decision` IS NULL AND `decided_by` IS NULL AND `decided_at` IS NULL AND `successor_generation_id` IS NULL AND `expired_at` IS NULL) OR (`status` = 'consumed' AND `decision` IN ('repair','regenerate','keep_current') AND `decided_by` IS NOT NULL AND `decided_at` IS NOT NULL AND `expired_at` IS NULL) OR (`status` = 'expired' AND `decision` IS NULL AND `expired_at` IS NOT NULL)",
+      ),
+    ),
+  ],
+);
+
+/**
+ * DesignAssetBlob（设计 §5.4）：内容寻址 Blob 元数据；
+ * 正文只存在 VMA_ASSET_ROOT，相对路径由小写 SHA-256 派生。
+ */
+export const designAssetBlobs = mysqlTable(
+  "design_asset_blobs",
+  {
+    contentHash: digestCol("content_hash").primaryKey(),
+    mimeType: varchar("mime_type", { length: 128 }).notNull(),
+    byteLength: bigint("byte_length", { mode: "number" }).notNull(),
+    // 'image' | 'svg' | 'font' | 'pdf'
+    kind: varchar("kind", { length: 16 }).notNull(),
+    // 'ready'（tmp 提升后创建，一期仅 ready）
+    status: varchar("status", { length: 16 }).notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [index("design_asset_blobs_kind").on(t.kind, t.status)],
+);
+
+/**
+ * DesignAssetSource（设计 §5.4）：source→Blob 外键、readyExtractionId 唯一就绪指针、
+ * 7 天删除恢复窗口；不复制原始二进制。
+ */
+export const designAssetSources = mysqlTable(
+  "design_asset_sources",
+  {
+    id: id().primaryKey(),
+    appId: varchar("app_id", { length: 36 }).notNull(),
+    createdByMembershipId: varchar("created_by_membership_id", { length: 36 }).notNull(),
+    blobContentHash: digestCol("blob_content_hash").notNull(),
+    // 'brand_guide_pdf' | 'reference_screenshot' | 'publishable_source'
+    purpose: varchar("purpose", { length: 32 }).notNull(),
+    displayName: varchar("display_name", { length: 255 }).notNull(),
+    // 'uploaded' | 'extracting' | 'ready' | 'failed' | 'deleted'
+    status: varchar("status", { length: 16 }).notNull(),
+    readyExtractionId: varchar("ready_extraction_id", { length: 36 }),
+    createdAt: createdAt(),
+    retentionUntil: datetime("retention_until", { mode: "date", fsp: 3 }),
+    deletedAt: datetime("deleted_at", { mode: "date", fsp: 3 }),
+    revision: revision(),
+  },
+  (t) => [
+    index("design_asset_sources_app_status").on(t.appId, t.status),
+    index("design_asset_sources_blob").on(t.blobContentHash),
+    index("design_asset_sources_ready_extraction").on(t.readyExtractionId),
+    foreignKey({
+      columns: [t.blobContentHash],
+      foreignColumns: [designAssetBlobs.contentHash],
+      name: "design_asset_sources_blob_fk",
+    }),
+    check(
+      "design_asset_sources_ready_extraction",
+      sql.raw(
+        "(`status` = 'ready' AND `ready_extraction_id` IS NOT NULL) OR (`status` IN ('uploaded','extracting','failed','deleted') AND `ready_extraction_id` IS NULL)",
+      ),
+    ),
+  ],
+);
+
+/**
+ * DesignAssetExtraction（设计 §5.4）：提取结果唯一事实；ready 行不可变
+ * （Repository 拒绝 UPDATE）；重新提取新建 extractionId 再 CAS 切换 readyExtractionId。
+ */
+export const designAssetExtractions = mysqlTable(
+  "design_asset_extractions",
+  {
+    id: id().primaryKey(),
+    sourceId: varchar("source_id", { length: 36 }).notNull(),
+    sourceContentHash: digestCol("source_content_hash").notNull(),
+    extractorProfileVersion: varchar("extractor_profile_version", { length: 64 }).notNull(),
+    schemaVersion: int("schema_version").notNull(),
+    structuredSummary: json("structured_summary").notNull(),
+    summaryDigest: digestCol("summary_digest").notNull(),
+    byteLength: int("byte_length").notNull(),
+    // 'ready'（不可变行，一期仅 ready）
+    status: varchar("status", { length: 16 }).notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    index("design_asset_extractions_source").on(t.sourceId),
+    index("design_asset_extractions_blob").on(t.sourceContentHash),
+    foreignKey({
+      columns: [t.sourceId],
+      foreignColumns: [designAssetSources.id],
+      name: "design_asset_extractions_source_fk",
+    }),
+    foreignKey({
+      columns: [t.sourceContentHash],
+      foreignColumns: [designAssetBlobs.contentHash],
+      name: "design_asset_extractions_blob_fk",
+    }),
+  ],
+);
+
+/**
+ * DesignAssetExtractionJob（计划 S2 操作 9）：活动提取任务。
+ * - queued/running 不得有 resultExtractionId；
+ * - succeeded 必须有 resultExtractionId；
+ * - failed 只能保存有界稳定错误码；不保存原始或结构化提取正文。
+ */
+export const designAssetExtractionJobs = mysqlTable(
+  "design_asset_extraction_jobs",
+  {
+    id: id().primaryKey(),
+    appId: varchar("app_id", { length: 36 }).notNull(),
+    sourceId: varchar("source_id", { length: 36 }).notNull(),
+    sourceContentHash: digestCol("source_content_hash").notNull(),
+    extractorProfileVersion: varchar("extractor_profile_version", { length: 64 }).notNull(),
+    // 'queued' | 'running' | 'succeeded' | 'failed'
+    status: varchar("status", { length: 16 }).notNull(),
+    leaseOwner: varchar("lease_owner", { length: 128 }),
+    leaseExpiresAt: datetime("lease_expires_at", { mode: "date", fsp: 3 }),
+    resultExtractionId: varchar("result_extraction_id", { length: 36 }),
+    stableErrorCode: varchar("stable_error_code", { length: 64 }),
+    createdAt: createdAt(),
+    startedAt: datetime("started_at", { mode: "date", fsp: 3 }),
+    completedAt: datetime("completed_at", { mode: "date", fsp: 3 }),
+    revision: revision(),
+  },
+  (t) => [
+    index("design_asset_extraction_jobs_source").on(t.sourceId, t.status),
+    index("design_asset_extraction_jobs_lease").on(t.status, t.leaseExpiresAt),
+    foreignKey({
+      columns: [t.sourceId],
+      foreignColumns: [designAssetSources.id],
+      name: "design_asset_extraction_jobs_source_fk",
+    }),
+    check(
+      "extraction_jobs_status_result",
+      sql.raw(
+        "(`status` IN ('queued','running') AND `result_extraction_id` IS NULL) OR (`status` = 'succeeded' AND `result_extraction_id` IS NOT NULL) OR (`status` = 'failed' AND `result_extraction_id` IS NULL AND `stable_error_code` IS NOT NULL)",
+      ),
+    ),
+  ],
+);
+
+/**
+ * BusinessActionIdempotency（设计 §13.2.6）：
+ * (appId,membershipId,canonicalActionName,idempotencyKey) 唯一；
+ * 只保存 mutation 重放结果引用，不保存 RecordView/CSV/表单输入/业务数据副本；
+ * claim/mutation/终态由同一 BusinessActionUnitOfWork 事务写入。
+ */
+export const businessActionIdempotency = mysqlTable(
+  "business_action_idempotency",
+  {
+    id: id().primaryKey(),
+    appId: varchar("app_id", { length: 36 }).notNull(),
+    membershipId: varchar("membership_id", { length: 36 }).notNull(),
+    canonicalActionName: varchar("canonical_action_name", { length: 64 }).notNull(),
+    idempotencyKey: varchar("idempotency_key", { length: 128 }).notNull(),
+    protocolVersion: int("protocol_version").notNull(),
+    publishedVersionId: varchar("published_version_id", { length: 36 }),
+    requestHash: digestCol("request_hash").notNull(),
+    // 'pending' | 'completed' | 'failed'
+    status: varchar("status", { length: 16 }).notNull(),
+    resultRef: varchar("result_ref", { length: 255 }),
+    resultDigest: digestCol("result_digest"),
+    stableResultCode: varchar("stable_result_code", { length: 64 }),
+    createdAt: createdAt(),
+    completedAt: datetime("completed_at", { mode: "date", fsp: 3 }),
+    expiresAt: datetime("expires_at", { mode: "date", fsp: 3 }).notNull(),
+  },
+  (t) => [
+    uniqueIndex("business_action_idempotency_key").on(
+      t.appId,
+      t.membershipId,
+      t.canonicalActionName,
+      t.idempotencyKey,
+    ),
+    index("business_action_idempotency_expiry").on(t.status, t.expiresAt),
+  ],
+);
+
+/**
+ * 迁移账本（计划 S2 操作 1）：(migrationId,stepId) 唯一；
+ * 每个 additive DDL step 固定 stepId + definitionDigest，支持部分续跑与篡改检测。
+ */
+export const schemaMigrationSteps = mysqlTable(
+  "schema_migration_steps",
+  {
+    migrationId: varchar("migration_id", { length: 64 }).notNull(),
+    stepId: varchar("step_id", { length: 128 }).notNull(),
+    definitionDigest: digestCol("definition_digest").notNull(),
+    appliedAt: datetime("applied_at", { mode: "date", fsp: 3 }).notNull(),
+  },
+  (t) => [uniqueIndex("schema_migration_steps_key").on(t.migrationId, t.stepId)],
+);
+
+export type PreviewSelectionRow = typeof previewSelections.$inferSelect;
+export type GenerationRecoveryRecordRow =
+  typeof generationRecoveryRecords.$inferSelect;
+export type DesignAssetBlobRow = typeof designAssetBlobs.$inferSelect;
+export type DesignAssetSourceRow = typeof designAssetSources.$inferSelect;
+export type DesignAssetExtractionRow = typeof designAssetExtractions.$inferSelect;
+export type DesignAssetExtractionJobRow =
+  typeof designAssetExtractionJobs.$inferSelect;
+export type BusinessActionIdempotencyRow =
+  typeof businessActionIdempotency.$inferSelect;
+export type SchemaMigrationStepRow = typeof schemaMigrationSteps.$inferSelect;
 
 export type UserRow = typeof users.$inferSelect;
 export type SessionRow = typeof sessions.$inferSelect;

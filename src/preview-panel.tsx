@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 import {
   createRuntimeWithNavigation,
@@ -15,8 +15,13 @@ import {
   createPreviewNavigation,
   type PreviewNavigation,
 } from "./runtime/preview-navigation";
+import {
+  createBundlePreviewController,
+  type BundlePreviewController,
+} from "./runtime/bundle-preview-controller.ts";
+import { createBrowserRuntimeActionAdapter } from "./runtime/runtime-action-adapter.ts";
 
-const PREVIEW_RUNTIME_LIMITS: RuntimeLimits = {
+export const PREVIEW_RUNTIME_LIMITS: RuntimeLimits = {
   maxBytes: 1_000_000,
   maxOperations: 1_000,
   maxDepth: 100,
@@ -28,7 +33,7 @@ function PreviewFallback({ children }: { children: ReactNode }) {
   return <div className="preview-fallback">{children}</div>;
 }
 
-const PREVIEW_FALLBACKS: RuntimeFallbacks = {
+export const PREVIEW_FALLBACKS: RuntimeFallbacks = {
   loading: () => <PreviewFallback>加载中…</PreviewFallback>,
   error: ({ snapshot }) => (
     <PreviewFallback>
@@ -71,6 +76,51 @@ export function createPreviewRuntime(): PreviewRuntimeHandle {
     navigation,
   );
   return { runtime, navigation };
+}
+
+/**
+ * S4：工作台的唯一 BundlePreviewController（设计 §5.1.1）。
+ *
+ * 候选/active Runtime 的组装面在此闭合：同一 catalog/registry、同一
+ * Preview 限额与回退、同一 BrowserActionAdapter（custom Action 键与
+ * catalog.data.actions 精确闭合；S4 期间为空集）。执行阶段与身份由
+ * Controller 传入，Adapter handlers 在 Runtime 创建时冻结。
+ */
+export function createWorkbenchPreviewController(
+  appId: string,
+): BundlePreviewController {
+  return createBundlePreviewController({
+    appId,
+    createPreviewRuntime: ({
+      navigation,
+      executionContext,
+      initialSource,
+      hostSurface,
+      downloadIntents,
+    }) => {
+      const catalogActionNames = Object.keys(
+        (catalog.data as { actions?: Record<string, unknown> }).actions ?? {},
+      );
+      const actionAdapter = createBrowserRuntimeActionAdapter({
+        appId,
+        surface: hostSurface,
+        downloadIntents,
+        includeActionNames: catalogActionNames,
+      });
+      return createRuntimeWithNavigation(
+        {
+          catalog,
+          registry,
+          limits: PREVIEW_RUNTIME_LIMITS,
+          fallbacks: PREVIEW_FALLBACKS,
+          actionAdapter,
+          actionExecutionContext: executionContext,
+          initialSource,
+        },
+        navigation,
+      );
+    },
+  });
 }
 
 // 基准页没有账户/应用工作台；保留它专用的惰性实例，避免把基准兼容性
@@ -140,14 +190,57 @@ function AddressLockIcon() {
   );
 }
 
-export function PreviewPanel(props: Partial<PreviewRuntimeHandle>) {
-  const runtime = props.runtime ?? getSharedPreviewRuntime();
-  const navigation = props.navigation ?? getSharedPreviewNavigation();
+const EMPTY_SUBSCRIBE = () => () => undefined;
+
+/** controller 模式的稳定空快照（避免每次渲染新对象触发 useSyncExternalStore 告警）。 */
+const NULL_SNAPSHOT = null;
+
+export function PreviewPanel(
+  props: {
+    controller?: BundlePreviewController;
+  } & Partial<PreviewRuntimeHandle>,
+) {
+  // controller 模式：active 句柄（Runtime/导航/bundleRevision）来自唯一的
+  // BundlePreviewController；无 controller 时退回基准页共享实例。
+  const controllerSnapshot = useSyncExternalStore(
+    props.controller ? props.controller.subscribe : EMPTY_SUBSCRIBE,
+    props.controller
+      ? props.controller.getSnapshot
+      : () => NULL_SNAPSHOT,
+    () => NULL_SNAPSHOT,
+  );
+  const activeHandle = controllerSnapshot?.active ?? null;
+  const runtime =
+    activeHandle?.runtime ?? props.runtime ?? getSharedPreviewRuntime();
+  const navigation =
+    activeHandle?.navigation ?? props.navigation ?? getSharedPreviewNavigation();
+  const bundleRevision = activeHandle?.bundleRevision ?? 0;
+  const designCss = activeHandle?.designCss ?? null;
+  // S6：编译后的应用 CSS 注入 containment root。designCss 是 css-compiler 的
+  // 白名单产物（仅作用域选择器/命名空间 keyframes/blob: URL），不经过 HTML
+  // 解析器：命令式创建 <style> 并赋值 textContent，随 bundleRevision 原子替换。
+  const previewSurfaceRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const surface = previewSurfaceRef.current;
+    if (!surface || designCss === null) return;
+    const style = document.createElement("style");
+    style.setAttribute("data-vma-design-css", "");
+    style.textContent = designCss;
+    surface.insertBefore(style, surface.firstChild);
+    return () => {
+      style.remove();
+    };
+  }, [designCss, bundleRevision]);
   useEffect(() => {
     // StrictMode 会探测性地调用 state initializer；仅在已挂载的 Panel 中
     // 暴露诊断入口，才能保证它是实际渲染的应用实例。
     (window as unknown as Record<string, unknown>).__previewRuntime = runtime;
-  }, [runtime]);
+    // S6：暴露 Controller 诊断入口（浏览器隔离验收用；仅 controller 模式）。
+    if (props.controller) {
+      (window as unknown as Record<string, unknown>).__previewController =
+        props.controller;
+    }
+  }, [runtime, props.controller]);
   const snapshot = useSyncExternalStore(
     runtime.subscribe,
     runtime.getSnapshot,
@@ -245,7 +338,12 @@ export function PreviewPanel(props: Partial<PreviewRuntimeHandle>) {
           {applyError}
         </div>
       )}
-      <div className="preview-surface">
+      <div
+        ref={previewSurfaceRef}
+        className="preview-surface"
+        data-vma-preview-root={designCss === null ? undefined : ""}
+        data-bundle-revision={bundleRevision}
+      >
         <NextAppRuntimeProvider runtime={runtime}>
           {snapshot.specStatus === "empty" ? (
             <div data-testid="preview-empty" className="preview-fallback">
@@ -277,7 +375,7 @@ export function PreviewPanel(props: Partial<PreviewRuntimeHandle>) {
             </div>
           ) : (
             <div
-              key={snapshot.revision}
+              key={`${bundleRevision}:${snapshot.revision}`}
               data-testid="preview-content"
               className="preview-content-enter"
             >

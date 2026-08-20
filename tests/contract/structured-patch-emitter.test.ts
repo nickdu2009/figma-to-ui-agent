@@ -9,10 +9,17 @@ import {
   type SpecGeneratorFactory,
 } from "../../server/generate-spec-tool.ts";
 import { GenerationCoordinator } from "../../server/generation-coordinator.ts";
+import type { GenerationLifecyclePort } from "../../server/generation/lifecycle.ts";
 
 const operationBatches = [
-  [{ op: "add" as const, path: "/metadata", value: { title: "Acme" } }],
-  [{ op: "add" as const, path: "/routes", value: {} }],
+  [
+    {
+      op: "add" as const,
+      path: "/uiBundle/spec/metadata",
+      value: { title: "Acme" },
+    },
+  ],
+  [{ op: "add" as const, path: "/uiBundle/spec/routes", value: {} }],
 ];
 
 function coordinatorRequestContext(threadId: string, runId: string) {
@@ -33,19 +40,42 @@ describe("structured Patch emitter", () => {
   it("uses runtime RFC 6902 validation and adds exactly one newline per operation", async () => {
     const jsonl = serializePatchOperations(operationBatches.flat());
     expect(jsonl).toBe(
-      '{"op":"add","path":"/metadata","value":{"title":"Acme"}}\n' +
-        '{"op":"add","path":"/routes","value":{}}\n',
+      '{"op":"add","path":"/uiBundle/spec/metadata","value":{"title":"Acme"}}\n' +
+        '{"op":"add","path":"/uiBundle/spec/routes","value":{}}\n',
     );
     await expect(
-      compileJsonlPatch({}, jsonl, { maxBytes: 10_000, maxOperations: 10 }),
+      compileJsonlPatch(
+        { uiBundle: { spec: {} } },
+        jsonl,
+        { maxBytes: 10_000, maxOperations: 10 },
+      ),
     ).resolves.toMatchObject({
-      value: { metadata: { title: "Acme" }, routes: {} },
+      value: { uiBundle: { spec: { metadata: { title: "Acme" }, routes: {} } } },
       operations: 2,
     });
   });
 
   it("streams each complete internal-tool batch and never forwards generator text", async () => {
-    const coordinator = new GenerationCoordinator();
+    const coordinator = new GenerationCoordinator({
+      finalizeAndValidateCandidate: async () => ({
+        status: "awaiting_preview",
+        bundle: {
+          bundleVersion: 1,
+          catalogVersion: "p0-v1",
+          specCompatibility: "0.19.0",
+          spec: { metadata: {}, routes: {}, state: { ui: {} } },
+          designSystem: {
+            tokens: { primitive: {}, semantic: {}, component: {} },
+            applicationCss: "",
+          },
+          assets: { entries: [] },
+        },
+        candidateDigest: `sha256:${"a".repeat(64)}`,
+        uiBundleDigest: `sha256:${"b".repeat(64)}`,
+        reportDigest: `sha256:${"c".repeat(64)}`,
+        publishBlocked: false,
+      }),
+    } as unknown as GenerationLifecyclePort);
     const events: BaseEvent[] = [];
     coordinator.openRun("thread-1", "run-1").subscribe((event) => events.push(event));
 

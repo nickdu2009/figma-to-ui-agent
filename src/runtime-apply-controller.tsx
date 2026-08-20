@@ -6,14 +6,16 @@ import {
 } from "@next-app-runtime/client";
 import { useAgent } from "@copilotkit/react-core/v2";
 import { patchLogStore } from "./patch-log-store";
+import type { BundlePreviewController } from "./runtime/bundle-preview-controller.ts";
 
 /**
- * RuntimeApplyController：浏览器侧唯一 applySource 调用点（计划 §7）。
+ * RuntimeApplyController（S4 起）：AG-UI 事件桥（不再直接 applySource）。
  *
  * 订阅 AG-UI CUSTOM 事件 spec.patch.*：
- * - start：记录 generation 与基线，但不触碰 runtime；
+ * - start：记录 generation 与基线，但不触碰预览；
  * - delta：仅缓存 UTF-8 Patch 并追加到 patchLogStore；
- * - finish：将完整缓存一次性交给 runtime.applySource；
+ * - finish：把完整补丁文本交给唯一的 BundlePreviewController（候选 Runtime
+ *   事务：staging→单次 applySource→smoke→原子切换→unsaved）；
  * - error 或中止：abort 并丢弃该 generation，保留最后一份有效预览。
  *
  * 应用结果通过 waitApplyResult(generationId) 提供给 await_apply_result 的
@@ -141,19 +143,18 @@ function settlePersistenceRejected(
   const result: SourceResult = {
     status: "rejected",
     revision,
-    error: new RuntimeError(
-      "metadata_apply_failed",
-      "预览未能保存，请重试。",
-    ),
+    error: new RuntimeError("metadata_apply_failed", "预览未能保存，请重试。"),
   };
   state.result = result;
   applyStateStore.notify();
   for (const waiter of state.waiters.splice(0)) waiter(result);
 }
 
-function abortIncompleteGenerations(runtime: NextAppRuntime): void {
+function abortIncompleteGenerations(controller: BundlePreviewController): void {
+  const runtime = controller.getActiveRuntime();
+  const revision = runtime ? runtime.getSnapshot().revision : 0;
   for (const state of applyStateStore.abortIncomplete()) {
-    settleCancelled(state, runtime.getSnapshot().revision);
+    settleCancelled(state, revision);
   }
 }
 
@@ -166,7 +167,7 @@ function abortIncompleteGenerations(runtime: NextAppRuntime): void {
  */
 export function waitApplyResult(
   generationId: string,
-  runtime: NextAppRuntime,
+  runtime: NextAppRuntime | null,
 ): Promise<SourceResult> {
   const state = applyStateStore.get(generationId);
   if (state?.status === "settled" && state.result) {
@@ -175,13 +176,12 @@ export function waitApplyResult(
   if (state?.status === "streaming") {
     return new Promise((resolve) => state.waiters.push(resolve));
   }
-  const revision = runtime.getSnapshot().revision;
+  const revision = runtime ? runtime.getSnapshot().revision : 0;
   console.warn(
     `[apply-controller] missing generation for await_apply_result generation=${generationId}`,
   );
   return Promise.resolve({ status: "cancelled", revision });
 }
-
 function boundedErrorSummary(error: unknown): string {
   if (!error || typeof error !== "object") return "";
   const candidate = error as { code?: unknown; message?: unknown };
@@ -196,14 +196,14 @@ function boundedErrorSummary(error: unknown): string {
 export function RuntimeApplyController(props: {
   agentId: string;
   appId: string;
-  runtime: NextAppRuntime;
+  controller: BundlePreviewController;
 }) {
   const { agent, isReady } = useAgent({ agentId: props.agentId });
-  const runtime = props.runtime;
+  const controller = props.controller;
 
   // StrictMode 双挂载防护：effect 内创建/清理订阅即可，状态按 generationId 关联。
-  const runtimeRef = useRef(runtime);
-  runtimeRef.current = runtime;
+  const controllerRef = useRef(controller);
+  controllerRef.current = controller;
   const appIdRef = useRef(props.appId);
   appIdRef.current = props.appId;
 
@@ -240,12 +240,16 @@ export function RuntimeApplyController(props: {
         };
         const generationId = value?.generationId;
         if (!generationId) return;
-        const rt = runtimeRef.current;
+        const activeRuntimeOf = () => controllerRef.current.getActiveRuntime();
 
         if (name === "spec.patch.persistence_rejected") {
           const state = applyStateStore.get(generationId);
           if (state) {
-            settlePersistenceRejected(state, rt.getSnapshot().revision);
+            const activeRuntime = controllerRef.current.getActiveRuntime();
+            settlePersistenceRejected(
+              state,
+              activeRuntime ? activeRuntime.getSnapshot().revision : 0,
+            );
             patchLogStore.append(
               generationId,
               "[error] 预览未能保存，请重试。\n",
@@ -258,9 +262,11 @@ export function RuntimeApplyController(props: {
           // 陈旧 generation 防护：同 id 已存在则忽略。
           if (applyStateStore.get(generationId)) return;
           const abort = new AbortController();
-          const base = rt.getSnapshot().current
-            ? ("current" as const)
-            : ("empty" as const);
+          const currentRuntime = activeRuntimeOf();
+          const base =
+            currentRuntime && currentRuntime.getSnapshot().current
+              ? ("current" as const)
+              : ("empty" as const);
           const state: GenerationApplyState = {
             generationId,
             status: "streaming",
@@ -287,21 +293,145 @@ export function RuntimeApplyController(props: {
         if (name === "spec.patch.finish") {
           state.writerClosed = true;
           if (state.abort.signal.aborted) {
-            settleCancelled(state, rt.getSnapshot().revision);
+            const rt0 = activeRuntimeOf();
+            settleCancelled(state, rt0 ? rt0.getSnapshot().revision : 0);
             return;
           }
-          // 不把 readable stream 提前交给 runtime：否则 runtime 会发布每个
-          // 中间 candidate。完整字符串使 runtime 只在 JSONL 到齐后开始事务。
-          void rt
-            .applySource(
-              {
-                kind: "jsonl-patch",
-                base: state.base,
-                value: state.chunks.join(""),
-              },
-              { signal: state.abort.signal },
-            )
-            .then((result) => {
+
+          const finishValue = value as
+            | {
+                generationId?: string;
+                operationCount?: number;
+                candidateDigest?: string;
+                uiBundleDigest?: string;
+                reportDigest?: string;
+                bundle?: unknown;
+                publishBlocked?: boolean;
+                fatalVisualIssues?: unknown[];
+              }
+            | undefined;
+
+          // S11：优先使用服务端发送的权威 Bundle 进行原子事务提交。
+          // bundle 已在服务端 Candidate→Validation 后冻结；客户端只负责渲染
+          // 以及携带 digest 请求 Preview Commit，绝不上传 Spec/patch 作为事实。
+          const authoritativeFinish =
+            finishValue?.bundle &&
+            finishValue.candidateDigest &&
+            finishValue.uiBundleDigest &&
+            finishValue.reportDigest
+              ? {
+                  bundle: finishValue.bundle,
+                  candidateDigest: finishValue.candidateDigest,
+                  uiBundleDigest: finishValue.uiBundleDigest,
+                  reportDigest: finishValue.reportDigest,
+                }
+              : null;
+          let stagedBundleRevision: number | undefined;
+          const stagePromise: Promise<SourceResult> =
+            authoritativeFinish !== null
+              ? controllerRef.current
+                  .stageBundle({
+                    generationId,
+                    bundle: authoritativeFinish.bundle,
+                    expected: {
+                      candidateDigest: authoritativeFinish.candidateDigest,
+                      uiBundleDigest: authoritativeFinish.uiBundleDigest,
+                      reportDigest: authoritativeFinish.reportDigest,
+                    },
+                    signal: state.abort.signal,
+                  })
+                  .then((outcome) => {
+                    const active = activeRuntimeOf();
+                    if (outcome.status === "committed") {
+                      stagedBundleRevision = outcome.bundleRevision;
+                      return {
+                        status: "committed" as const,
+                        revision: outcome.runtimeRevision,
+                        spec: active
+                          ? active.getSnapshot().current!
+                          : ({} as never),
+                      };
+                    }
+                    if (outcome.status === "failed") {
+                      return {
+                        status: "rejected" as const,
+                        revision: active ? active.getSnapshot().revision : 0,
+                        error: new RuntimeError(
+                          "preview_staging_failed",
+                          outcome.code,
+                        ),
+                      };
+                    }
+                    return {
+                      status: "cancelled" as const,
+                      revision: active ? active.getSnapshot().revision : 0,
+                    };
+                  })
+              : controllerRef.current.stageGenerationPatch({
+                  generationId,
+                  base: state.base,
+                  patchText: state.chunks.join(""),
+                  signal: state.abort.signal,
+                });
+
+          void stagePromise
+            .then(async (initialResult: SourceResult) => {
+              let result = initialResult;
+              // v2 Preview Commit 是用户可见“已更新”的必要条件：本地 staging
+              // 成功但服务端拒绝/网络中断时保持 unsaved，不能向聊天层报告成功。
+              if (
+                authoritativeFinish !== null &&
+                result.status === "committed" &&
+                authoritativeFinish &&
+                stagedBundleRevision !== undefined
+              ) {
+                const appId = appIdRef.current;
+                try {
+                  const response = await fetch(
+                    `/api/apps/${encodeURIComponent(appId)}/preview-commit`,
+                    {
+                      method: "POST",
+                      credentials: "include",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        generationId,
+                        candidateDigest: authoritativeFinish.candidateDigest,
+                        uiBundleDigest: authoritativeFinish.uiBundleDigest,
+                        reportDigest: authoritativeFinish.reportDigest,
+                        protocolVersion: 2,
+                      }),
+                    },
+                  );
+                  if (!response.ok) {
+                    throw new Error(`preview_commit_${response.status}`);
+                  }
+                  const committed = (await response.json()) as {
+                    draftVersionId?: string;
+                  };
+                  if (!committed.draftVersionId) {
+                    throw new Error("preview_commit_missing_draft");
+                  }
+                  const confirmed = controllerRef.current.confirmDraftCommitted({
+                    appId,
+                    candidateDigest: authoritativeFinish.candidateDigest,
+                    bundleRevision: stagedBundleRevision,
+                    draftId: committed.draftVersionId,
+                  });
+                  if (!confirmed.ok) {
+                    throw new Error(`preview_commit_confirmation_${confirmed.code}`);
+                  }
+                } catch (cause) {
+                  result = {
+                    status: "rejected",
+                    revision: result.revision,
+                    error: new RuntimeError(
+                      "preview_staging_failed",
+                      "预览已暂存但未能保存为草稿",
+                    ),
+                  };
+                  void cause;
+                }
+              }
               console.warn(
                 `[apply-controller] settled generation=${generationId} status=${result.status} revision=${result.revision} error=${boundedErrorSummary(result.status === "rejected" ? result.error : undefined)}`,
               );
@@ -309,15 +439,17 @@ export function RuntimeApplyController(props: {
               state.result = result;
               applyStateStore.notify();
               for (const waiter of state.waiters.splice(0)) waiter(result);
+
             })
             .catch((cause: unknown) => {
               console.warn(
-                `[apply-controller] applySource threw generation=${generationId} error=${boundedErrorSummary(cause)}`,
+                `[apply-controller] staging threw generation=${generationId} error=${boundedErrorSummary(cause)}`,
               );
+              const rt1 = activeRuntimeOf();
               state.status = "settled";
               state.result = {
                 status: "cancelled",
-                revision: rt.getSnapshot().revision,
+                revision: rt1 ? rt1.getSnapshot().revision : 0,
               };
               applyStateStore.notify();
               const fallback = state.result;
@@ -329,7 +461,8 @@ export function RuntimeApplyController(props: {
 
         if (name === "spec.patch.error") {
           state.abort.abort();
-          settleCancelled(state, rt.getSnapshot().revision);
+          const rt2 = activeRuntimeOf();
+          settleCancelled(state, rt2 ? rt2.getSnapshot().revision : 0);
           patchLogStore.append(
             generationId,
             `[error] ${value?.error ?? "unknown"}\n`,
@@ -338,8 +471,8 @@ export function RuntimeApplyController(props: {
       },
       onRunFailed: () => {
         // 停止按钮/传输中止：只中止补丁流未完成的 generation；
-        // 已收到 finish 的允许 applySource 正常收尾（数据完整）。
-        abortIncompleteGenerations(runtimeRef.current);
+        // 已收到 finish 的允许候选事务正常收尾（数据完整）。
+        abortIncompleteGenerations(controllerRef.current);
       },
       onRunFinishedEvent: () => {
         // 用户停止时 runner 以 stopRequested 语义补 RUN_FINISHED（正常
@@ -347,10 +480,10 @@ export function RuntimeApplyController(props: {
         // generation 永远不会完成了——中止它们让卡片落定“更新失败”。
         // 正常流程下 finish 先于 RUN_FINISHED 到达（writerClosed=true），
         // 不会误伤。
-        abortIncompleteGenerations(runtimeRef.current);
+        abortIncompleteGenerations(controllerRef.current);
       },
       onRunErrorEvent: () => {
-        abortIncompleteGenerations(runtimeRef.current);
+        abortIncompleteGenerations(controllerRef.current);
       },
       onRunFinalized: () => {
         // 停止按钮的唯一可靠信号：CopilotKit 客户端停止会中止本地 fetch，
@@ -361,7 +494,7 @@ export function RuntimeApplyController(props: {
         console.warn(
           `[apply-controller] onRunFinalized latest=${latest?.generationId ?? "none"} status=${latest?.status ?? "none"} writerClosed=${latest?.writerClosed ?? false}`,
         );
-        abortIncompleteGenerations(runtimeRef.current);
+        abortIncompleteGenerations(controllerRef.current);
       },
     });
     return () => subscription.unsubscribe();

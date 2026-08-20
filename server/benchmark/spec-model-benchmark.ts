@@ -1,8 +1,6 @@
 import { appendFile, mkdir, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { dirname, resolve } from "node:path";
-import { createAnthropic } from "@ai-sdk/anthropic";
-import { createOpenAI } from "@ai-sdk/openai";
 import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import {
@@ -15,27 +13,56 @@ import {
 } from "@next-app-runtime/client/testing";
 
 // pi-lens-ignore: ts:5097
-import { emitPatchOperationsInputSchema, emitPatchOperationsOutputSchema, validatePatchGenerationInputSchema, validatePatchGenerationOutputSchema } from "../contracts.ts";
+import {
+  emitPatchOperationsInputSchema,
+  emitPatchOperationsOutputSchema,
+  validatePatchGenerationInputSchema,
+  validatePatchGenerationOutputSchema,
+} from "../contracts.ts";
 // pi-lens-ignore: ts:5097
 import { validatePatchOperations } from "../generate-spec-tool.ts";
 // pi-lens-ignore: ts:5097
-import { modelCatalog } from "../model-catalog.ts";
-// pi-lens-ignore: ts:5097
 import { STRUCTURED_SPEC_GENERATION_SYSTEM_PROMPT } from "../prompt.ts";
 // pi-lens-ignore: ts:5097
-import { SPEC_BENCHMARK_CASES, type SpecBenchmarkCase } from "./spec-benchmark-cases.ts";
+import {
+  SPEC_BENCHMARK_CASES,
+  type SpecBenchmarkCase,
+} from "./spec-benchmark-cases.ts";
 // pi-lens-ignore: ts:5097
-import { estimateCostUsd, extractGatewayCost, parsePriceMap, type BenchmarkUsage } from "./spec-benchmark-cost.ts";
+import {
+  estimateCostUsd,
+  extractGatewayCost,
+  parsePriceMap,
+  type BenchmarkUsage,
+} from "./spec-benchmark-cost.ts";
 // pi-lens-ignore: ts:5097
-import { evaluateSpecQuality, type SpecQuality } from "./spec-benchmark-quality.ts";
+import {
+  evaluateSpecQuality,
+  type SpecQuality,
+} from "./spec-benchmark-quality.ts";
 // pi-lens-ignore: ts:5097
-import { anthropicNativeBaseURL, protocolForSpecBenchmark, providerOptionsForSpecBenchmark, reasoningEffortForSpecBenchmark, type SpecBenchmarkProtocol, type SpecBenchmarkReasoningEffort } from "./spec-benchmark-model-options.ts";
+import {
+  protocolForSpecBenchmark,
+  providerOptionsForSpecBenchmark,
+  reasoningEffortForSpecBenchmark,
+  type SpecBenchmarkProtocol,
+  type SpecBenchmarkReasoningEffort,
+} from "./spec-benchmark-model-options.ts";
 // pi-lens-ignore: ts:5097
-import { BENCHMARK_FALLBACKS, BENCHMARK_RUNTIME_LIMITS, modelBenchmarkRegistry } from "./spec-benchmark-runtime.ts";
+import {
+  BENCHMARK_FALLBACKS,
+  BENCHMARK_RUNTIME_LIMITS,
+  modelBenchmarkCatalog,
+  modelBenchmarkRegistry,
+} from "./spec-benchmark-runtime.ts";
 // pi-lens-ignore: ts:5097
 import { createReasoningSummaryObserver } from "./spec-benchmark-reasoning-output.ts";
+// pi-lens-ignore: ts:5097
+import { createControlledAgentRuntime } from "../agent-runtime.ts";
+// pi-lens-ignore: ts:5097
+import { createLiteLlmModelConfig } from "../model-policy.ts";
 
-const DEFAULT_MODELS = ["claude-opus-4-8", "gpt-5.6-terra"] as const;
+const DEFAULT_MODELS = ["gpt-5.6-sol", "gpt-5.6-terra"] as const;
 const MAX_OPERATIONS = 1_000;
 const MAX_STEPS = 32;
 
@@ -113,8 +140,10 @@ function parseArgs(argv: string[]): CliOptions {
     const value = argv[index + 1];
     if (!value) throw new Error(`Missing value for ${flag}`);
     if (flag === "--models") options.models = value.split(",").filter(Boolean);
-    else if (flag === "--cases") options.caseIds = value.split(",").filter(Boolean);
-    else if (flag === "--repeats") options.repeats = parsePositiveInteger(value, flag);
+    else if (flag === "--cases")
+      options.caseIds = value.split(",").filter(Boolean);
+    else if (flag === "--repeats")
+      options.repeats = parsePositiveInteger(value, flag);
     else if (flag === "--output") options.outputPath = resolve(value);
     else throw new Error(`Unknown argument: ${flag}`);
     index += 1;
@@ -137,14 +166,15 @@ async function evaluateRuntime(
   candidateSpec: unknown,
   quality: SpecQuality,
 ): Promise<BenchmarkResult["runtimeRouteChecks"]> {
-  const routes = quality.signals.staticRoutes.length > 0
-    ? quality.signals.staticRoutes
-    : ["/"];
+  const routes =
+    quality.signals.staticRoutes.length > 0
+      ? quality.signals.staticRoutes
+      : ["/"];
   const checks: BenchmarkResult["runtimeRouteChecks"] = [];
   for (const route of routes) {
     const runtime = createRuntimeWithNavigation(
       {
-        catalog: modelCatalog,
+        catalog: modelBenchmarkCatalog,
         registry: modelBenchmarkRegistry,
         limits: BENCHMARK_RUNTIME_LIMITS,
         fallbacks: BENCHMARK_FALLBACKS,
@@ -152,14 +182,23 @@ async function evaluateRuntime(
       createMemoryNavigation(route),
     );
     try {
-      const applied = await runtime.applySource({ kind: "object", value: candidateSpec });
+      const applied = await runtime.applySource({
+        kind: "object",
+        value: candidateSpec,
+      });
       const snapshot = runtime.getSnapshot();
       checks.push({
         route,
         applyStatus: applied.status,
         routeStatus: snapshot.routeStatus,
         ...(applied.status === "rejected"
-          ? { error: `${applied.error.code}: ${boundedError(applied.error)}`.slice(0, 320) }
+          ? {
+              error:
+                `${applied.error.code}: ${boundedError(applied.error)}`.slice(
+                  0,
+                  320,
+                ),
+            }
           : {}),
       });
     } finally {
@@ -200,11 +239,16 @@ async function runOne(options: {
       if (patchOperations + batch.operations.length > MAX_OPERATIONS) {
         throw new Error("Patch exceeds maxOperations");
       }
-      const operations: JsonPatchOperation[] = validatePatchOperations(batch.operations);
+      const operations: JsonPatchOperation[] = validatePatchOperations(
+        batch.operations,
+      );
       candidateSpec = applyJsonPatch(candidateSpec, operations);
       patchOperations += operations.length;
       catalogValid = false;
-      return { acceptedOperations: operations.length, totalOperations: patchOperations };
+      return {
+        acceptedOperations: operations.length,
+        totalOperations: patchOperations,
+      };
     },
   });
   const validatePatchGeneration = createTool({
@@ -214,7 +258,7 @@ async function runOne(options: {
     outputSchema: validatePatchGenerationOutputSchema,
     execute: async () => {
       validationAttempts += 1;
-      const checked = modelCatalog.validate(candidateSpec);
+      const checked = modelBenchmarkCatalog.validate(candidateSpec);
       catalogValid = checked.success;
       return checked.success
         ? { valid: true }
@@ -222,30 +266,42 @@ async function runOne(options: {
     },
   });
 
+  const runtime = createControlledAgentRuntime();
   try {
     const protocol = protocolForSpecBenchmark(options.model);
-    const model = protocol === "anthropic-native"
-      ? createAnthropic({
-          apiKey: options.apiKey,
-          baseURL: anthropicNativeBaseURL(options.baseUrl),
-        })(options.model)
-      : createOpenAI({ apiKey: options.apiKey, baseURL: options.baseUrl })(options.model);
+    const modelConfig = createLiteLlmModelConfig(options.model, {
+      baseUrl: options.baseUrl,
+      apiKey: options.apiKey,
+    });
     const agent = new Agent({
       id: `spec-benchmark-${options.model}`,
       name: `spec-benchmark-${options.model}`,
       instructions: STRUCTURED_SPEC_GENERATION_SYSTEM_PROMPT,
-      model,
-      tools: { emit_patch_operations: emitPatchOperations, validate_patch_generation: validatePatchGeneration },
-      defaultOptions: { providerOptions: providerOptionsForSpecBenchmark(options.model) },
+      model: modelConfig,
+      maxRetries: 1,
+      tools: {
+        emit_patch_operations: emitPatchOperations,
+        validate_patch_generation: validatePatchGeneration,
+      },
+      defaultOptions: providerOptionsForSpecBenchmark(options.model),
     });
-    streamOutput = await agent.stream(
-      `用户请求：${options.benchmarkCase.request}\n\n创建模式：base=empty。生成完整应用（metadata、layouts、routes）。`,
-      { runId: generationId, maxSteps: MAX_STEPS },
-    );
-    const observeReasoning = createReasoningSummaryObserver(options.model);
-    for await (const chunk of streamOutput.fullStream) observeReasoning(chunk);
 
-    if (patchOperations === 0 || !catalogValid) {
+    const registryKey = `benchmark-${generationId}`;
+    streamOutput = await runtime.withDynamicAgent(
+      agent,
+      registryKey,
+      async (registeredAgent) => {
+        const output = await registeredAgent.stream(
+          `用户请求：${options.benchmarkCase.request}\n\n创建模式：base=empty。生成完整应用（metadata、layouts、routes）。`,
+          { runId: generationId, maxSteps: MAX_STEPS },
+        );
+        const observeReasoning = createReasoningSummaryObserver(options.model);
+        for await (const chunk of output.fullStream) observeReasoning(chunk);
+        return output;
+      },
+    );
+
+    if (patchOperations === 0 || !catalogValid || !streamOutput) {
       throw new Error("Generator ended without a valid NextAppSpec");
     }
     quality = evaluateSpecQuality(candidateSpec, options.benchmarkCase);
@@ -255,13 +311,19 @@ async function runOne(options: {
       `${reviewId}.json`,
     );
     await mkdir(dirname(candidateSpecPath), { recursive: true });
-    await writeFile(candidateSpecPath, `${JSON.stringify(candidateSpec, null, 2)}\n`, "utf8");
+    await writeFile(
+      candidateSpecPath,
+      `${JSON.stringify(candidateSpec, null, 2)}\n`,
+      "utf8",
+    );
     runtimeRouteChecks = await evaluateRuntime(candidateSpec, quality);
     const applyStatus = runtimeRouteChecks.every(
-      (check) => check.applyStatus === "committed" && check.routeStatus === "ready",
+      (check) =>
+        check.applyStatus === "committed" && check.routeStatus === "ready",
     )
       ? "committed"
-      : runtimeRouteChecks.find((check) => check.applyStatus !== "committed")?.applyStatus ?? "rejected";
+      : (runtimeRouteChecks.find((check) => check.applyStatus !== "committed")
+          ?.applyStatus ?? "rejected");
     if (applyStatus !== "committed") {
       throw new Error("NextAppSpec did not commit on every static route");
     }
@@ -277,11 +339,15 @@ async function runOne(options: {
     const stepCosts = steps.map((step) =>
       extractGatewayCost(step.response?.headers, step.providerMetadata),
     );
-    const gatewayCostComplete = stepCosts.length > 0 && stepCosts.every((cost) => cost !== null);
+    const gatewayCostComplete =
+      stepCosts.length > 0 && stepCosts.every((cost) => cost !== null);
     const gatewayCostUsd = gatewayCostComplete
       ? stepCosts.reduce<number>((total, cost) => total + (cost ?? 0), 0)
       : null;
-    const estimatedCostUsd = estimateCostUsd(usage, options.prices[options.model]);
+    const estimatedCostUsd = estimateCostUsd(
+      usage,
+      options.prices[options.model],
+    );
     return {
       experimentId: options.experimentId,
       generationId,
@@ -296,7 +362,12 @@ async function runOne(options: {
       gatewayCostUsd,
       gatewayCostComplete,
       estimatedCostUsd,
-      costSource: gatewayCostUsd !== null ? "gateway" : estimatedCostUsd !== null ? "estimated" : "unavailable",
+      costSource:
+        gatewayCostUsd === null
+          ? estimatedCostUsd === null
+            ? "unavailable"
+            : "estimated"
+          : "gateway",
       modelSteps: steps.length,
       toolCalls: (await streamOutput.toolCalls).length,
       patchOperations,
@@ -310,7 +381,9 @@ async function runOne(options: {
       candidateSpecPath,
     };
   } catch (cause) {
-    const totalUsage = streamOutput ? await streamOutput.totalUsage.catch(() => undefined) : undefined;
+    const totalUsage = streamOutput
+      ? await streamOutput.totalUsage.catch(() => undefined)
+      : undefined;
     const usage: BenchmarkUsage = {
       inputTokens: usageNumber(totalUsage?.inputTokens),
       outputTokens: usageNumber(totalUsage?.outputTokens),
@@ -318,7 +391,10 @@ async function runOne(options: {
       reasoningTokens: usageNumber(totalUsage?.reasoningTokens),
       cachedInputTokens: usageNumber(totalUsage?.cachedInputTokens),
     };
-    const estimatedCostUsd = estimateCostUsd(usage, options.prices[options.model]);
+    const estimatedCostUsd = estimateCostUsd(
+      usage,
+      options.prices[options.model],
+    );
     return {
       experimentId: options.experimentId,
       generationId,
@@ -334,12 +410,18 @@ async function runOne(options: {
       gatewayCostComplete: false,
       estimatedCostUsd,
       costSource: estimatedCostUsd === null ? "unavailable" : "estimated",
-      modelSteps: streamOutput ? (await streamOutput.steps.catch(() => [])).length : 0,
-      toolCalls: streamOutput ? (await streamOutput.toolCalls.catch(() => [])).length : 0,
+      modelSteps: streamOutput
+        ? (await streamOutput.steps.catch(() => [])).length
+        : 0,
+      toolCalls: streamOutput
+        ? (await streamOutput.toolCalls.catch(() => [])).length
+        : 0,
       patchOperations,
       validationAttempts,
       catalogValid,
-      applyStatus: runtimeRouteChecks.find((check) => check.applyStatus !== "committed")?.applyStatus ?? "not_run",
+      applyStatus:
+        runtimeRouteChecks.find((check) => check.applyStatus !== "committed")
+          ?.applyStatus ?? "not_run",
       runtimeRouteChecks,
       quality,
       blindReviewId: reviewId,
@@ -357,7 +439,8 @@ async function main(): Promise<void> {
     if (!benchmarkCase) throw new Error(`Unknown benchmark case: ${id}`);
     return benchmarkCase;
   });
-  const totalRuns = options.models.length * selectedCases.length * options.repeats;
+  const totalRuns =
+    options.models.length * selectedCases.length * options.repeats;
   const plan = {
     models: options.models,
     cases: selectedCases.map((item) => item.id),
@@ -367,12 +450,16 @@ async function main(): Promise<void> {
   };
   process.stdout.write(`${JSON.stringify(plan, null, 2)}\n`);
   if (!options.confirmSpend) {
-    process.stdout.write("Dry run only. Add --confirm-spend to call the configured LLM gateway.\n");
+    process.stdout.write(
+      "Dry run only. Add --confirm-spend to call the configured LLM gateway.\n",
+    );
     return;
   }
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error("OPENAI_API_KEY is required for a paid benchmark run");
-  const baseUrl = process.env.VMA_OPENAI_BASE_URL ?? "https://api.openai.com/v1";
+  if (!apiKey)
+    throw new Error("OPENAI_API_KEY is required for a paid benchmark run");
+  const baseUrl =
+    process.env.VMA_OPENAI_BASE_URL ?? "https://api.openai.com/v1";
   const prices = parsePriceMap(process.env.VMA_BENCHMARK_PRICES_JSON);
   const experimentId = `spec-model-${Date.now().toString(36)}`;
   const results: BenchmarkResult[] = [];
@@ -391,7 +478,11 @@ async function main(): Promise<void> {
           prices,
         });
         results.push(result);
-        await appendFile(options.outputPath, `${JSON.stringify(result)}\n`, "utf8");
+        await appendFile(
+          options.outputPath,
+          `${JSON.stringify(result)}\n`,
+          "utf8",
+        );
         process.stdout.write(
           `${result.model} ${result.caseId} #${result.repeat}: ${result.status}, cost=${result.gatewayCostUsd ?? result.estimatedCostUsd ?? "unknown"}\n`,
         );
@@ -400,18 +491,25 @@ async function main(): Promise<void> {
   }
   const summary = options.models.map((model) => {
     const modelResults = results.filter((result) => result.model === model);
-    const succeeded = modelResults.filter((result) => result.status === "succeeded").length;
+    const succeeded = modelResults.filter(
+      (result) => result.status === "succeeded",
+    ).length;
     const knownCosts = modelResults
       .map((result) => result.gatewayCostUsd ?? result.estimatedCostUsd)
       .filter((cost): cost is number => cost !== null);
-    const totalKnownCostUsd = knownCosts.reduce((total, cost) => total + cost, 0);
+    const totalKnownCostUsd = knownCosts.reduce(
+      (total, cost) => total + cost,
+      0,
+    );
     return {
       model,
       runs: modelResults.length,
       succeeded,
-      successRate: modelResults.length === 0 ? 0 : succeeded / modelResults.length,
+      successRate:
+        modelResults.length === 0 ? 0 : succeeded / modelResults.length,
       costKnownRuns: knownCosts.length,
-      costCoverage: modelResults.length === 0 ? 0 : knownCosts.length / modelResults.length,
+      costCoverage:
+        modelResults.length === 0 ? 0 : knownCosts.length / modelResults.length,
       totalKnownCostUsd,
       averageKnownRunCostUsd:
         knownCosts.length === 0 ? null : totalKnownCostUsd / knownCosts.length,
@@ -422,25 +520,29 @@ async function main(): Promise<void> {
       averageDurationMs:
         modelResults.length === 0
           ? 0
-          : modelResults.reduce((total, result) => total + result.durationMs, 0) /
-            modelResults.length,
+          : modelResults.reduce(
+              (total, result) => total + result.durationMs,
+              0,
+            ) / modelResults.length,
       runtimeApplySuccessRate:
         modelResults.length === 0
           ? 0
-          : modelResults.filter((result) => result.applyStatus === "committed").length /
-            modelResults.length,
+          : modelResults.filter((result) => result.applyStatus === "committed")
+              .length / modelResults.length,
       averageAutomatedQualityScore:
         modelResults.filter((result) => result.quality !== null).length === 0
           ? null
           : modelResults.reduce(
-              (total, result) => total + (result.quality?.automatedQualityScore ?? 0),
+              (total, result) =>
+                total + (result.quality?.automatedQualityScore ?? 0),
               0,
             ) / modelResults.filter((result) => result.quality !== null).length,
       averageRequirementCoverage:
         modelResults.filter((result) => result.quality !== null).length === 0
           ? null
           : modelResults.reduce(
-              (total, result) => total + (result.quality?.requirementCoverage ?? 0),
+              (total, result) =>
+                total + (result.quality?.requirementCoverage ?? 0),
               0,
             ) / modelResults.filter((result) => result.quality !== null).length,
       totalInputTokens: modelResults.reduce(
@@ -454,7 +556,10 @@ async function main(): Promise<void> {
     };
   });
   const summaryPath = options.outputPath.replace(/\.jsonl$/u, ".summary.json");
-  const reviewManifestPath = options.outputPath.replace(/\.jsonl$/u, ".review.json");
+  const reviewManifestPath = options.outputPath.replace(
+    /\.jsonl$/u,
+    ".review.json",
+  );
   const reviewCandidates = results
     .filter((result) => result.candidateSpecPath)
     .map((result) => ({
@@ -462,7 +567,9 @@ async function main(): Promise<void> {
       caseId: result.caseId,
       candidateSpecPath: result.candidateSpecPath!,
     }))
-    .sort((left, right) => left.blindReviewId.localeCompare(right.blindReviewId));
+    .sort((left, right) =>
+      left.blindReviewId.localeCompare(right.blindReviewId),
+    );
   await writeFile(
     reviewManifestPath,
     `${JSON.stringify({ experimentId, candidates: reviewCandidates }, null, 2)}\n`,

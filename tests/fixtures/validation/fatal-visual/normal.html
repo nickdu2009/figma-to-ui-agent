@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="width" content="width=device-width, initial-scale=1" />
+    <title>Normal case</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        color: #1f2937;
+      }
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      nav[data-role="nav"] {
+        width: 220px;
+        background: #f3f4f6;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+      main[data-role="main"] {
+        flex: 1;
+        padding: 24px;
+        max-width: 1100px;
+        box-sizing: border-box;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        min-height: 120px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border-bottom: 1px solid #e5e7eb;
+        padding: 8px 12px;
+        text-align: left;
+      }
+      @media (max-width: 720px) {
+        .shell {
+          flex-direction: column;
+        }
+        nav[data-role="nav"] {
+          width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell" data-role="root">
+      <nav data-role="nav">
+        <strong>App</strong>
+        <ul>
+          <li>Dashboard</li>
+          <li>Records</li>
+          <li>Settings</li>
+        </ul>
+      </nav>
+      <main data-role="main">
+        <h1>Records</h1>
+        <p>
+          A normal multi-record listing with readable paragraphs of text that
+          wrap naturally across the available content width without collapsing
+          into vertical single-character lines or being clipped away.
+        </p>
+        <div class="cards">
+          <div class="card" data-role="critical">Record A — ready</div>
+          <div class="card" data-role="critical">Record B — ready</div>
+          <div class="card" data-role="critical">Record C — ready</div>
+          <div class="card" data-role="critical">Record D — ready</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alpha</td>
+              <td>ready</td>
+              <td>2026-08-01</td>
+            </tr>
+            <tr>
+              <td>Beta</td>
+              <td>ready</td>
+              <td>2026-08-02</td>
+            </tr>
+            <tr>
+              <td>Gamma</td>
+              <td>ready</td>
+              <td>2026-08-03</td>
+            </tr>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </body>
+</html>

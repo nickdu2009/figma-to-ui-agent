@@ -63,11 +63,11 @@ const OPS_BY_TYPE: Record<string, ReadonlySet<string>> = {
   boolean: new Set(["eq"]),
 };
 
-function conditionHash(where: unknown): string {
-  return createHmac("sha256", cursorSecret)
-    .update(JSON.stringify(where ?? []))
-    .digest("hex")
-    .slice(0, 16);
+function conditionHash(where: unknown, binding?: string): string {
+  const hmac = createHmac("sha256", cursorSecret);
+  hmac.update(JSON.stringify(where ?? []));
+  if (binding) hmac.update("|").update(binding);
+  return hmac.digest("hex").slice(0, 16);
 }
 
 export function encodeCursor(payload: {
@@ -76,12 +76,17 @@ export function encodeCursor(payload: {
   orderBy: unknown;
   sortValue: unknown;
   recordId: string;
+  /** S8：可选额外绑定（如 draft 数据视图的 appId/draftId/policy digest）。 */
+  binding?: string;
 }): string {
   const body = Buffer.from(
     JSON.stringify({
       v: 1,
       c: payload.collectionKey,
-      h: conditionHash({ where: payload.where, orderBy: payload.orderBy }),
+      h: conditionHash(
+        { where: payload.where, orderBy: payload.orderBy },
+        payload.binding,
+      ),
       s: payload.sortValue ?? null,
       r: payload.recordId,
     }),
@@ -97,6 +102,8 @@ export function decodeCursor(
   collectionKey: string,
   where: unknown,
   orderBy: unknown,
+  /** S8：与 encodeCursor 配对的可选绑定。 */
+  binding?: string,
 ): { sortValue: unknown; recordId: string } {
   const [body, sig] = cursor.split(".");
   if (!body || !sig) throw new QueryRejected("游标格式非法");
@@ -123,7 +130,7 @@ export function decodeCursor(
   if (parsed.v !== 1 || parsed.c !== collectionKey || !parsed.r) {
     throw new QueryRejected("游标与查询不匹配");
   }
-  if (parsed.h !== conditionHash({ where, orderBy })) {
+  if (parsed.h !== conditionHash({ where, orderBy }, binding)) {
     throw new QueryRejected("游标与查询条件不匹配");
   }
   return { sortValue: parsed.s ?? null, recordId: parsed.r };
@@ -209,6 +216,10 @@ function compileValueClause(
 export function compileQuery(
   collection: BusinessCollection,
   request: DataQueryRequest,
+  options?: {
+    /** S8：服务端侧游标绑定（如 draft 数据视图的 appId/draftId/policy digest）。 */
+    cursorBinding?: string;
+  },
 ): CompiledQuery {
   const conditions: CompiledQuery["conditions"] = [];
   const seenFields = new Set<string>();
@@ -261,6 +272,7 @@ export function compileQuery(
       collection.key,
       request.where ?? [],
       request.orderBy ?? null,
+      options?.cursorBinding,
     );
   }
 

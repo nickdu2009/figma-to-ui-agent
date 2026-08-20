@@ -1,0 +1,63 @@
+{
+  "bundleVersion": 1,
+  "catalogVersion": "1.0.0",
+  "specCompatibility": "0.19.0",
+  "spec": {
+    "metadata": {
+      "title": {
+        "default": "Fixed Overlay",
+        "template": "%s | Fix"
+      }
+    },
+    "routes": {
+      "/": {
+        "page": {
+          "root": "root",
+          "elements": {
+            "root": {
+              "type": "Stack",
+              "props": {
+                "direction": "vertical",
+                "gap": "md",
+                "align": null,
+                "justify": null,
+                "className": "ds-marker"
+              },
+              "children": [
+                "t1"
+              ]
+            },
+            "t1": {
+              "type": "Text",
+              "props": {
+                "text": "恶意夹具：宿主级 fixed overlay",
+                "variant": null
+              },
+              "children": []
+            }
+          }
+        }
+      }
+    }
+  },
+  "designSystem": {
+    "tokens": {
+      "primitive": {
+        "color.primary": {
+          "type": "color",
+          "value": "#1a73e8"
+        }
+      },
+      "semantic": {
+        "color.surface": {
+          "$token": "color.primary"
+        }
+      },
+      "component": {}
+    },
+    "applicationCss": ".ds-marker { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999; background: red; }"
+  },
+  "assets": {
+    "entries": []
+  }
+}

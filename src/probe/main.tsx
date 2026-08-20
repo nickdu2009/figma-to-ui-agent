@@ -10,6 +10,19 @@ import "@copilotkit/react-core/v2/styles.css";
 
 type CustomLogEntry = { name: string; at: number; bytes: number };
 
+/** DSG-04：spec.patch.finish 大载荷传输指标（近 2MiB / 超限探针）。 */
+type Gate00FinishMetrics = {
+  scenario: "probe" | "overflow";
+  generationId: string;
+  utf8Bytes: number;
+  structureOk: boolean;
+  firstEventAt: number;
+  finishAt: number;
+  latencyMs: number;
+  heapUsedBefore: number | null;
+  heapUsedAfter: number | null;
+};
+
 type StreamState = {
   bytes: number;
   finished: boolean;
@@ -65,11 +78,15 @@ function AwaitApplyInterrupt(props: {
 function ProbeApp() {
   const [customLog, setCustomLog] = useState<CustomLogEntry[]>([]);
   const [applyResult, setApplyResult] = useState<string>("");
+  const [gate00Metrics, setGate00Metrics] =
+    useState<Gate00FinishMetrics | null>(null);
   const streamState = useRef<StreamState>({
     bytes: 0,
     finished: false,
     waiters: [],
   });
+  const firstCustomAt = useRef<number | null>(null);
+  const heapBefore = useRef<number | null>(null);
 
   const { agent, isReady } = useAgent({ agentId: "probe" });
 
@@ -79,6 +96,13 @@ function ProbeApp() {
       onCustomEvent: ({ event }) => {
         if (event.type !== "CUSTOM") return;
         const value = (event as { value?: { text?: string } }).value;
+        // 新一代 spec.patch.start 到达时重置计时/堆基准（支持多次探针）。
+        if (event.name === "spec.patch.start") {
+          firstCustomAt.current = performance.now();
+          heapBefore.current = null;
+        } else if (firstCustomAt.current === null) {
+          firstCustomAt.current = performance.now();
+        }
         const bytes = value?.text
           ? new TextEncoder().encode(value.text).length
           : 0;
@@ -93,6 +117,38 @@ function ProbeApp() {
           streamState.current.finished = true;
           for (const resolve of streamState.current.waiters.splice(0))
             resolve();
+          // DSG-04：记录大载荷 finish 的传输指标。
+          const gate00 = (
+            value as { __gate00?: "probe" | "overflow" } | undefined
+          )?.__gate00;
+          if (gate00 && value) {
+            const memory = (
+              performance as Performance & {
+                memory?: { usedJSHeapSize: number };
+              }
+            ).memory;
+            if (heapBefore.current === null && memory) {
+              heapBefore.current = memory.usedJSHeapSize;
+            }
+            const finishValue = value as Record<string, unknown>;
+            const ui = finishValue.ui as { padding?: string } | undefined;
+            setGate00Metrics({
+              scenario: gate00,
+              generationId: String(finishValue.generationId ?? ""),
+              utf8Bytes: new TextEncoder().encode(JSON.stringify(value)).length,
+              structureOk:
+                finishValue.schemaVersion === 2 &&
+                typeof ui?.padding === "string" &&
+                ui.padding.length > 1_000_000,
+              firstEventAt: firstCustomAt.current ?? 0,
+              finishAt: performance.now(),
+              latencyMs:
+                performance.now() -
+                (firstCustomAt.current ?? performance.now()),
+              heapUsedBefore: heapBefore.current,
+              heapUsedAfter: memory?.usedJSHeapSize ?? null,
+            });
+          }
         }
       },
     });
@@ -116,7 +172,11 @@ function ProbeApp() {
           <span>probe decision required</span>
           <button
             data-testid="probe-approve"
-            onClick={() => resolve({ answers: [{ questionId: "continue", value: "continue" }] })}
+            onClick={() =>
+              resolve({
+                answers: [{ questionId: "continue", value: "continue" }],
+              })
+            }
           >
             approve
           </button>
@@ -133,6 +193,11 @@ function ProbeApp() {
         ))}
       </div>
       <div data-testid="probe-apply-result">{applyResult}</div>
+      {gate00Metrics ? (
+        <div data-testid="gate00-finish-metrics">
+          {JSON.stringify(gate00Metrics)}
+        </div>
+      ) : null}
       <CopilotChat agentId="probe" />
     </div>
   );

@@ -1,17 +1,42 @@
-import { defineCatalog } from "@json-render/core";
-import { shadcnComponentDefinitions } from "@json-render/shadcn/catalog";
-import { schema } from "@next-app-runtime/client/schema";
-
 /**
- * 服务端模型 catalog（纯数据，Node 可导入）：
- * 与浏览器 src/runtime/catalog.tsx 的模型侧定义保持同一来源——
- * @json-render/shadcn 0.19.0 全部 36 个定义，移除运行时接管的 Link 后 35 个。
- * 仅供生成器 catalog.prompt() 使用；不包含 React registry。
+ * 服务端模型 catalog（纯数据，Node 可导入）——派生 catalog/prompt 的唯一来源。
+ *
+ * 由 src/catalog 的单一 CatalogContract 派生：
+ * - base = shadcn 36 个定义只移除 Link（35 个）；
+ * - overlays 合并 7 个白名单组件扩展；
+ * - additions 为 P0 新组件；
+ * - customActions 为 10 个受控业务动作（内置动作只进 Prompt/静态约束）。
+ *
+ * 其它模块（benchmark、生成器、契约测试）必须从这里消费，
+ * 不得自行从 @json-render/shadcn 重新组装或过滤。
  */
-const { Link: _runtimeOwnedLink, ...modelComponentDefinitions } =
- shadcnComponentDefinitions;
+import {
+ catalogContract,
+ CATALOG_VERSION,
+ RUNTIME_OWNED_COMPONENTS,
+ SPEC_COMPATIBILITY,
+} from "../src/catalog/catalog-contract.ts";
+import { deriveCatalog } from "../src/catalog/derive-catalog.ts";
+import {
+ buildBundlePromptFragment,
+ buildPromptCatalog,
+} from "./bundle/prompt-projection.ts";
 
-export const modelCatalog = defineCatalog(schema, {
- components: modelComponentDefinitions,
- actions: {},
-});
+/** 冻结的派生结果（进程内单例）。 */
+export const derivedModelCatalog = deriveCatalog(catalogContract);
+
+/** json-render catalog（validate/zodSchema/jsonSchema/prompt 的唯一来源）。 */
+export const modelCatalog = derivedModelCatalog.catalog;
+
+/** 压缩的派生能力摘要（Prompt 用，不含完整 JSON Schema）。 */
+export const modelPromptCatalog = buildPromptCatalog(derivedModelCatalog);
+
+/** ApplicationCandidate Bundle Prompt 片段（AC4b）。 */
+export const bundlePromptFragment = buildBundlePromptFragment();
+
+export {
+ CATALOG_VERSION,
+ catalogContract,
+ RUNTIME_OWNED_COMPONENTS,
+ SPEC_COMPATIBILITY,
+};

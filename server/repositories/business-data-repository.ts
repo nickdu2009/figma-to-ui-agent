@@ -1,4 +1,15 @@
-import { and, asc, desc, eq, gt, inArray, isNotNull, lt, or, sql } from "drizzle-orm";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  gt,
+  inArray,
+  isNotNull,
+  lt,
+  or,
+  sql,
+} from "drizzle-orm";
 import type { SQL } from "drizzle-orm";
 import type { Database } from "../persistence/database.ts";
 import {
@@ -13,6 +24,7 @@ import {
 } from "../db/schema.ts";
 import { randomUUID } from "node:crypto";
 import { isDuplicateEntry } from "./errors.ts";
+import type { UnitOfWork } from "./business-action-idempotency-repository.ts";
 
 /**
  * 业务数据 Repository（S5a，设计 §4.4）。
@@ -51,6 +63,107 @@ export class BusinessDataRepository {
     this.db = db;
   }
 
+  // ---------- S8：UoW transaction-aware primitives ----------
+  // executor 只能调用 *InTransaction 原语（共享调用方事务，禁止嵌套开启）；
+  // 既有 public 方法保留为开启自身事务的兼容 wrapper，供 /data 与
+  // RecycleBinService 继续使用，行为完全不变。
+
+  async insertRecordInTransaction(
+    tx: UnitOfWork,
+    input: {
+      appId: string;
+      collectionKey: string;
+      data: unknown;
+      createdByUserId: string;
+      subjectMembershipId: string | null;
+      indexValues: Array<{
+        fieldKey: string;
+        valueText: string | null;
+        valueNumber: number | null;
+        valueBool: boolean | null;
+        valueDate: Date | null;
+      }>;
+      uniqueValues: Array<{ fieldKey: string; valueNormalized: string }>;
+      principals: string[];
+      now: Date;
+      /** 调用方分配的 recordId（executor 需要先生成 resultRef）。 */
+      recordId?: string;
+    },
+  ): Promise<BusinessRecordRow> {
+    const recordId = input.recordId ?? randomUUID();
+    const row: BusinessRecordRow = {
+      id: recordId,
+      appId: input.appId,
+      collectionKey: input.collectionKey,
+      data: input.data,
+      revision: 1,
+      createdByUserId: input.createdByUserId,
+      updatedByUserId: input.createdByUserId,
+      subjectMembershipId: input.subjectMembershipId,
+      deletedAt: null,
+      createdAt: input.now,
+      updatedAt: input.now,
+    };
+    await tx.insert(businessRecords).values(row);
+    await tx.insert(businessRecordRevisions).values({
+      id: randomUUID(),
+      appId: input.appId,
+      recordId,
+      revision: 1,
+      data: input.data,
+      changedByUserId: input.createdByUserId,
+      changedAt: input.now,
+    });
+    if (input.indexValues.length > 0) {
+      await tx.insert(businessIndexValues).values(
+        input.indexValues.map((v) => ({
+          id: randomUUID(),
+          appId: input.appId,
+          collectionKey: input.collectionKey,
+          recordId,
+          fieldKey: v.fieldKey,
+          valueText: v.valueText,
+          valueNumber: v.valueNumber,
+          valueBool: v.valueBool,
+          valueDate: v.valueDate,
+        })),
+      );
+    }
+    if (input.uniqueValues.length > 0) {
+      try {
+        await tx.insert(businessUniqueValues).values(
+          input.uniqueValues.map((v) => ({
+            id: randomUUID(),
+            appId: input.appId,
+            collectionKey: input.collectionKey,
+            fieldKey: v.fieldKey,
+            valueNormalized: v.valueNormalized,
+            recordId,
+            createdAt: input.now,
+          })),
+        );
+      } catch (error) {
+        if (isDuplicateEntry(error)) {
+          throw new UniqueConflictError(input.collectionKey);
+        }
+        throw error;
+      }
+    }
+    if (input.principals.length > 0) {
+      await tx.insert(recordPrincipals).values(
+        input.principals.map((membershipId) => ({
+          id: randomUUID(),
+          appId: input.appId,
+          collectionKey: input.collectionKey,
+          recordId,
+          principalMembershipId: membershipId,
+          createdAt: input.now,
+        })),
+      );
+    }
+    return row;
+  }
+
   async insertRecord(input: {
     appId: string;
     collectionKey: string;
@@ -67,81 +180,11 @@ export class BusinessDataRepository {
     uniqueValues: Array<{ fieldKey: string; valueNormalized: string }>;
     principals: string[];
     now: Date;
+    recordId?: string;
   }): Promise<BusinessRecordRow> {
-    const recordId = randomUUID();
-    return this.db.transaction(async (tx) => {
-      const row: BusinessRecordRow = {
-        id: recordId,
-        appId: input.appId,
-        collectionKey: input.collectionKey,
-        data: input.data,
-        revision: 1,
-        createdByUserId: input.createdByUserId,
-        updatedByUserId: input.createdByUserId,
-        subjectMembershipId: input.subjectMembershipId,
-        deletedAt: null,
-        createdAt: input.now,
-        updatedAt: input.now,
-      };
-      await tx.insert(businessRecords).values(row);
-      await tx.insert(businessRecordRevisions).values({
-        id: randomUUID(),
-        appId: input.appId,
-        recordId,
-        revision: 1,
-        data: input.data,
-        changedByUserId: input.createdByUserId,
-        changedAt: input.now,
-      });
-      if (input.indexValues.length > 0) {
-        await tx.insert(businessIndexValues).values(
-          input.indexValues.map((v) => ({
-            id: randomUUID(),
-            appId: input.appId,
-            collectionKey: input.collectionKey,
-            recordId,
-            fieldKey: v.fieldKey,
-            valueText: v.valueText,
-            valueNumber: v.valueNumber,
-            valueBool: v.valueBool,
-            valueDate: v.valueDate,
-          })),
-        );
-      }
-      if (input.uniqueValues.length > 0) {
-        try {
-          await tx.insert(businessUniqueValues).values(
-            input.uniqueValues.map((v) => ({
-              id: randomUUID(),
-              appId: input.appId,
-              collectionKey: input.collectionKey,
-              fieldKey: v.fieldKey,
-              valueNormalized: v.valueNormalized,
-              recordId,
-              createdAt: input.now,
-            })),
-          );
-        } catch (error) {
-          if (isDuplicateEntry(error)) {
-            throw new UniqueConflictError(input.collectionKey);
-          }
-          throw error;
-        }
-      }
-      if (input.principals.length > 0) {
-        await tx.insert(recordPrincipals).values(
-          input.principals.map((membershipId) => ({
-            id: randomUUID(),
-            appId: input.appId,
-            collectionKey: input.collectionKey,
-            recordId,
-            principalMembershipId: membershipId,
-            createdAt: input.now,
-          })),
-        );
-      }
-      return row;
-    });
+    return this.db.transaction(async (tx) =>
+      this.insertRecordInTransaction(tx, input),
+    );
   }
 
   async findRecord(
@@ -161,6 +204,67 @@ export class BusinessDataRepository {
       )
       .limit(1);
     return rows[0] ?? null;
+  }
+
+  /** S8 UoW 原语：调用方事务内读取（同事务一致性快照）。 */
+  async findRecordInTransaction(
+    tx: UnitOfWork,
+    appId: string,
+    collectionKey: string,
+    recordId: string,
+  ): Promise<BusinessRecordRow | null> {
+    const rows = await tx
+      .select()
+      .from(businessRecords)
+      .where(
+        and(
+          eq(businessRecords.appId, appId),
+          eq(businessRecords.collectionKey, collectionKey),
+          eq(businessRecords.id, recordId),
+        ),
+      )
+      .limit(1);
+    return rows[0] ?? null;
+  }
+
+  /** S8 UoW 原语：调用方事务内统计集合记录数。 */
+  async countCollectionRecordsInTransaction(
+    tx: UnitOfWork,
+    appId: string,
+    collectionKey: string,
+  ): Promise<number> {
+    const rows = await tx
+      .select({ count: sql<number>`count(*)` })
+      .from(businessRecords)
+      .where(
+        and(
+          eq(businessRecords.appId, appId),
+          eq(businessRecords.collectionKey, collectionKey),
+          sql`${businessRecords.deletedAt} IS NULL`,
+        ),
+      );
+    return Number(rows[0]?.count ?? 0);
+  }
+
+  /** S8 UoW 原语：调用方事务内判定 principal。 */
+  async isPrincipalInTransaction(
+    tx: UnitOfWork,
+    appId: string,
+    recordId: string,
+    membershipId: string,
+  ): Promise<boolean> {
+    const rows = await tx
+      .select({ id: recordPrincipals.id })
+      .from(recordPrincipals)
+      .where(
+        and(
+          eq(recordPrincipals.appId, appId),
+          eq(recordPrincipals.recordId, recordId),
+          eq(recordPrincipals.principalMembershipId, membershipId),
+        ),
+      )
+      .limit(1);
+    return rows.length > 0;
   }
 
   /** expectedRevision 条件更新（409）；同事务重写修订与投影。 */
@@ -183,98 +287,124 @@ export class BusinessDataRepository {
     principals: string[];
     now: Date;
   }): Promise<BusinessRecordRow | null> {
-    return this.db.transaction(async (tx) => {
-      const [result] = await tx
-        .update(businessRecords)
-        .set({
-          data: input.data,
-          revision: input.expectedRevision + 1,
-          updatedByUserId: input.updatedByUserId,
-          subjectMembershipId: input.subjectMembershipId,
-          updatedAt: input.now,
-        })
-        .where(
-          and(
-            eq(businessRecords.id, input.recordId),
-            eq(businessRecords.appId, input.appId),
-            eq(businessRecords.revision, input.expectedRevision),
-            sql`${businessRecords.deletedAt} IS NULL`,
-          ),
-        );
-      if (result.affectedRows !== 1) return null; // 修订冲突：无任何写入
-      await tx.insert(businessRecordRevisions).values({
-        id: randomUUID(),
-        appId: input.appId,
-        recordId: input.recordId,
-        revision: input.expectedRevision + 1,
+    return this.db.transaction(async (tx) =>
+      this.updateRecordInTransaction(tx, input),
+    );
+  }
+
+  /** S8 UoW 原语：调用方事务内的 expectedRevision 条件更新。 */
+  async updateRecordInTransaction(
+    tx: UnitOfWork,
+    input: {
+      appId: string;
+      collectionKey: string;
+      recordId: string;
+      expectedRevision: number;
+      data: unknown;
+      updatedByUserId: string;
+      subjectMembershipId: string | null;
+      indexValues: Array<{
+        fieldKey: string;
+        valueText: string | null;
+        valueNumber: number | null;
+        valueBool: boolean | null;
+        valueDate: Date | null;
+      }>;
+      uniqueValues: Array<{ fieldKey: string; valueNormalized: string }>;
+      principals: string[];
+      now: Date;
+    },
+  ): Promise<BusinessRecordRow | null> {
+    const [result] = await tx
+      .update(businessRecords)
+      .set({
         data: input.data,
-        changedByUserId: input.updatedByUserId,
-        changedAt: input.now,
-      });
-      // 投影重建（同事务）
-      await tx
-        .delete(businessIndexValues)
-        .where(eq(businessIndexValues.recordId, input.recordId));
-      if (input.indexValues.length > 0) {
-        await tx.insert(businessIndexValues).values(
-          input.indexValues.map((v) => ({
+        revision: input.expectedRevision + 1,
+        updatedByUserId: input.updatedByUserId,
+        subjectMembershipId: input.subjectMembershipId,
+        updatedAt: input.now,
+      })
+      .where(
+        and(
+          eq(businessRecords.id, input.recordId),
+          eq(businessRecords.appId, input.appId),
+          eq(businessRecords.revision, input.expectedRevision),
+          sql`${businessRecords.deletedAt} IS NULL`,
+        ),
+      );
+    if (result.affectedRows !== 1) return null; // 修订冲突：无任何写入
+    await tx.insert(businessRecordRevisions).values({
+      id: randomUUID(),
+      appId: input.appId,
+      recordId: input.recordId,
+      revision: input.expectedRevision + 1,
+      data: input.data,
+      changedByUserId: input.updatedByUserId,
+      changedAt: input.now,
+    });
+    // 投影重建（同事务）
+    await tx
+      .delete(businessIndexValues)
+      .where(eq(businessIndexValues.recordId, input.recordId));
+    if (input.indexValues.length > 0) {
+      await tx.insert(businessIndexValues).values(
+        input.indexValues.map((v) => ({
+          id: randomUUID(),
+          appId: input.appId,
+          collectionKey: input.collectionKey,
+          recordId: input.recordId,
+          fieldKey: v.fieldKey,
+          valueText: v.valueText,
+          valueNumber: v.valueNumber,
+          valueBool: v.valueBool,
+          valueDate: v.valueDate,
+        })),
+      );
+    }
+    await tx
+      .delete(businessUniqueValues)
+      .where(eq(businessUniqueValues.recordId, input.recordId));
+    if (input.uniqueValues.length > 0) {
+      try {
+        await tx.insert(businessUniqueValues).values(
+          input.uniqueValues.map((v) => ({
             id: randomUUID(),
             appId: input.appId,
             collectionKey: input.collectionKey,
-            recordId: input.recordId,
             fieldKey: v.fieldKey,
-            valueText: v.valueText,
-            valueNumber: v.valueNumber,
-            valueBool: v.valueBool,
-            valueDate: v.valueDate,
-          })),
-        );
-      }
-      await tx
-        .delete(businessUniqueValues)
-        .where(eq(businessUniqueValues.recordId, input.recordId));
-      if (input.uniqueValues.length > 0) {
-        try {
-          await tx.insert(businessUniqueValues).values(
-            input.uniqueValues.map((v) => ({
-              id: randomUUID(),
-              appId: input.appId,
-              collectionKey: input.collectionKey,
-              fieldKey: v.fieldKey,
-              valueNormalized: v.valueNormalized,
-              recordId: input.recordId,
-              createdAt: input.now,
-            })),
-          );
-        } catch (error) {
-          if (isDuplicateEntry(error)) {
-            throw new UniqueConflictError(input.collectionKey);
-          }
-          throw error;
-        }
-      }
-      await tx
-        .delete(recordPrincipals)
-        .where(eq(recordPrincipals.recordId, input.recordId));
-      if (input.principals.length > 0) {
-        await tx.insert(recordPrincipals).values(
-          input.principals.map((membershipId) => ({
-            id: randomUUID(),
-            appId: input.appId,
-            collectionKey: input.collectionKey,
+            valueNormalized: v.valueNormalized,
             recordId: input.recordId,
-            principalMembershipId: membershipId,
             createdAt: input.now,
           })),
         );
+      } catch (error) {
+        if (isDuplicateEntry(error)) {
+          throw new UniqueConflictError(input.collectionKey);
+        }
+        throw error;
       }
-      const rows = await tx
-        .select()
-        .from(businessRecords)
-        .where(eq(businessRecords.id, input.recordId))
-        .limit(1);
-      return rows[0] ?? null;
-    });
+    }
+    await tx
+      .delete(recordPrincipals)
+      .where(eq(recordPrincipals.recordId, input.recordId));
+    if (input.principals.length > 0) {
+      await tx.insert(recordPrincipals).values(
+        input.principals.map((membershipId) => ({
+          id: randomUUID(),
+          appId: input.appId,
+          collectionKey: input.collectionKey,
+          recordId: input.recordId,
+          principalMembershipId: membershipId,
+          createdAt: input.now,
+        })),
+      );
+    }
+    const rows = await tx
+      .select()
+      .from(businessRecords)
+      .where(eq(businessRecords.id, input.recordId))
+      .limit(1);
+    return rows[0] ?? null;
   }
 
   /** 软删除（expectedRevision 条件 + 回收站条目同事务）。 */
@@ -287,38 +417,54 @@ export class BusinessDataRepository {
     now: Date;
     expiresAt: Date;
   }): Promise<boolean> {
-    return this.db.transaction(async (tx) => {
-      const [result] = await tx
-        .update(businessRecords)
-        .set({ deletedAt: input.now, updatedAt: input.now })
-        .where(
-          and(
-            eq(businessRecords.id, input.recordId),
-            eq(businessRecords.appId, input.appId),
-            eq(businessRecords.revision, input.expectedRevision),
-            sql`${businessRecords.deletedAt} IS NULL`,
-          ),
-        );
-      if (result.affectedRows !== 1) return false;
-      // 唯一投影同步移除（软删除释放唯一值占用）
-      await tx
-        .delete(businessUniqueValues)
-        .where(eq(businessUniqueValues.recordId, input.recordId));
-      await tx
-        .delete(businessIndexValues)
-        .where(eq(businessIndexValues.recordId, input.recordId));
-      await tx.insert(deletedItems).values({
-        id: randomUUID(),
-        appId: input.appId,
-        itemType: "record",
-        itemRef: input.recordId,
-        collectionKey: input.collectionKey,
-        deletedByUserId: input.deletedByUserId,
-        deletedAt: input.now,
-        expiresAt: input.expiresAt,
-      });
-      return true;
+    return this.db.transaction(async (tx) =>
+      this.softDeleteRecordInTransaction(tx, input),
+    );
+  }
+
+  /** S8 UoW 原语：调用方事务内的软删除（回收站条目同事务）。 */
+  async softDeleteRecordInTransaction(
+    tx: UnitOfWork,
+    input: {
+      appId: string;
+      collectionKey: string;
+      recordId: string;
+      expectedRevision: number;
+      deletedByUserId: string;
+      now: Date;
+      expiresAt: Date;
+    },
+  ): Promise<boolean> {
+    const [result] = await tx
+      .update(businessRecords)
+      .set({ deletedAt: input.now, updatedAt: input.now })
+      .where(
+        and(
+          eq(businessRecords.id, input.recordId),
+          eq(businessRecords.appId, input.appId),
+          eq(businessRecords.revision, input.expectedRevision),
+          sql`${businessRecords.deletedAt} IS NULL`,
+        ),
+      );
+    if (result.affectedRows !== 1) return false;
+    // 唯一投影同步移除（软删除释放唯一值占用）
+    await tx
+      .delete(businessUniqueValues)
+      .where(eq(businessUniqueValues.recordId, input.recordId));
+    await tx
+      .delete(businessIndexValues)
+      .where(eq(businessIndexValues.recordId, input.recordId));
+    await tx.insert(deletedItems).values({
+      id: randomUUID(),
+      appId: input.appId,
+      itemType: "record",
+      itemRef: input.recordId,
+      collectionKey: input.collectionKey,
+      deletedByUserId: input.deletedByUserId,
+      deletedAt: input.now,
+      expiresAt: input.expiresAt,
     });
+    return true;
   }
 
   async listPrincipals(
@@ -327,6 +473,31 @@ export class BusinessDataRepository {
   ): Promise<Map<string, string[]>> {
     if (recordIds.length === 0) return new Map();
     const rows = await this.db
+      .select()
+      .from(recordPrincipals)
+      .where(
+        and(
+          eq(recordPrincipals.appId, appId),
+          inArray(recordPrincipals.recordId, recordIds),
+        ),
+      );
+    const map = new Map<string, string[]>();
+    for (const row of rows) {
+      const list = map.get(row.recordId) ?? [];
+      list.push(row.principalMembershipId);
+      map.set(row.recordId, list);
+    }
+    return map;
+  }
+
+  /** S8 UoW 原语：与记录读取保持同一事务快照的 principal 投影。 */
+  async listPrincipalsInTransaction(
+    tx: UnitOfWork,
+    appId: string,
+    recordIds: string[],
+  ): Promise<Map<string, string[]>> {
+    if (recordIds.length === 0) return new Map();
+    const rows = await tx
       .select()
       .from(recordPrincipals)
       .where(
@@ -388,12 +559,29 @@ export class BusinessDataRepository {
     filter: RecordFilter,
     query: CompiledQuery,
   ): Promise<Array<BusinessRecordRow & { __sortValue: unknown }>> {
+    return this.queryRecordsWithExecutor(this.db, filter, query);
+  }
+
+  /** S8 UoW 原语：查询、范围与排序都使用调用方已锁定的同一事务快照。 */
+  async queryRecordsInTransaction(
+    tx: UnitOfWork,
+    filter: RecordFilter,
+    query: CompiledQuery,
+  ): Promise<Array<BusinessRecordRow & { __sortValue: unknown }>> {
+    return this.queryRecordsWithExecutor(tx, filter, query);
+  }
+
+  private async queryRecordsWithExecutor(
+    executor: Database | UnitOfWork,
+    filter: RecordFilter,
+    query: CompiledQuery,
+  ): Promise<Array<BusinessRecordRow & { __sortValue: unknown }>> {
     // 1. 投影交集：满足全部条件的 recordId
     let candidateIds: string[] | null = null;
     if (query.conditions.length > 0) {
       const perCondition: string[][] = [];
       for (const condition of query.conditions) {
-        const rows = await this.db
+        const rows = await executor
           .select({ recordId: businessIndexValues.recordId })
           .from(businessIndexValues)
           .where(
@@ -486,7 +674,7 @@ export class BusinessDataRepository {
         AND __sort.collection_key = ${filter.collectionKey}
         AND __sort.field_key = ${query.orderBy.fieldKey}`
       : sql``;
-    const result = await this.db.execute(sql`
+    const result = await executor.execute(sql`
       SELECT ${businessRecords}.*, ${sortSelect}
       FROM ${businessRecords}
       ${sortJoin}

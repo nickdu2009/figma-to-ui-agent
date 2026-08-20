@@ -167,11 +167,18 @@ export const applyResultSchema = z.object({
 });
 export type ApplyResult = z.infer<typeof applyResultSchema>;
 
-/** spec.patch.* CUSTOM 事件的 value 契约。 */
+/** spec.patch.* CUSTOM 事件的 value 契约（S11 v2 扩展）。 */
 export const specPatchEventValueSchema = z.object({
   generationId: z.string().min(1),
   text: z.string().optional(),
   error: z.string().optional(),
+  operationCount: z.number().optional(),
+  candidateDigest: z.string().optional(),
+  uiBundleDigest: z.string().optional(),
+  reportDigest: z.string().optional(),
+  bundle: z.unknown().optional(),
+  publishBlocked: z.boolean().optional(),
+  fatalVisualIssues: z.array(z.unknown()).optional(),
 });
 export type SpecPatchEventValue = z.infer<typeof specPatchEventValueSchema>;
 

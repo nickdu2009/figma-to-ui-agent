@@ -2,6 +2,7 @@ import React, { createContext, useContext, type ReactNode } from "react";
 import type { ComponentRegistry } from "@json-render/react";
 
 import type { NextAppRuntime } from "../contract/types.js";
+import type { RuntimeActionDispatcher } from "../actions/contracts.js";
 import { navigateBrowser } from "../navigation/browser-history.js";
 import type { NavigationDriver } from "../navigation/location.js";
 
@@ -11,6 +12,8 @@ export interface NextAppContextValue {
     string,
     (params: Record<string, unknown>) => Promise<unknown> | unknown
   >;
+  /** DS S3：custom Action 唯一执行边界（存在时 custom Action 不进入上游 handler path）。 */
+  actionDispatcher?: RuntimeActionDispatcher | null;
   navigate: (href: string) => void;
 }
 
@@ -24,14 +27,15 @@ export interface NextAppProviderProps {
     string,
     (params: Record<string, unknown>) => Promise<unknown> | unknown
   >;
+  actionDispatcher?: RuntimeActionDispatcher | null;
   children: ReactNode;
 }
 
-export function NextAppProvider({ registry, handlers, children }: NextAppProviderProps) {
+export function NextAppProvider({ registry, handlers, actionDispatcher, children }: NextAppProviderProps) {
   const navigate = React.useCallback((href: string) => navigateBrowser(href), []);
   const value = React.useMemo(
-    () => ({ registry, handlers, navigate }),
-    [registry, handlers, navigate],
+    () => ({ registry, handlers, actionDispatcher: actionDispatcher ?? null, navigate }),
+    [registry, handlers, actionDispatcher, navigate],
   );
   const navigation = React.useMemo(
     () => ({
@@ -50,13 +54,14 @@ export function NextAppProvider({ registry, handlers, children }: NextAppProvide
 export function RuntimeNextAppProvider({
   registry,
   handlers,
+  actionDispatcher,
   navigation,
   children,
 }: NextAppProviderProps & { navigation: NavigationDriver }) {
   const navigate = React.useCallback((href: string) => navigation.push(href), [navigation]);
   const value = React.useMemo(
-    () => ({ registry, handlers, navigate }),
-    [registry, handlers, navigate],
+    () => ({ registry, handlers, actionDispatcher: actionDispatcher ?? null, navigate }),
+    [registry, handlers, actionDispatcher, navigate],
   );
   return (
     <NavigationContext.Provider value={navigation}>

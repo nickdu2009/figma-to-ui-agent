@@ -19,27 +19,52 @@ export function viewerEmailFor(workerIndex: number): string {
   return `e2e-viewer-${workerIndex}@example.com`;
 }
 
-async function fetchOtpCode(page: Page, email: string): Promise<string> {
+async function fetchOtpCode(
+  page: Page,
+  email: string,
+  /** 本次发送前收件箱最新邮件 id；轮询直到出现更新的邮件，避免读到旧验证码。 */
+  previousLatestId?: string,
+): Promise<string> {
   await expect
-    .poll(async () => {
-      const res = await page.request.get(
-        `/api/dev/mail-inbox?email=${encodeURIComponent(email)}`,
-      );
-      if (!res.ok()) return null;
-      const body = (await res.json()) as {
-        mails: Array<{ body: string; createdAt: string }>;
-      };
-      const latest = body.mails[0];
-      const match = latest?.body.match(/验证码：(\d{6})/);
-      return match?.[1] ?? null;
-    })
+    .poll(
+      async () => {
+        const res = await page.request.get(
+          `/api/dev/mail-inbox?email=${encodeURIComponent(email)}`,
+        );
+        if (!res.ok()) return null;
+        const body = (await res.json()) as {
+          mails: Array<{ id: string; body: string; createdAt: string }>;
+        };
+        const latest = body.mails[0];
+        if (!latest || latest.id === previousLatestId) return null;
+        const match = latest.body.match(/验证码：(\d{6})/);
+        return match?.[1] ?? null;
+      },
+      // 发送→落库在共享开发库上偶发 5s+（启动扫描/迁移校验排队），
+      // 与冷启动超时同一处置：放宽窗口而非缩短验证。
+      { timeout: 20_000 },
+    )
     .not.toBeNull();
   const res = await page.request.get(
     `/api/dev/mail-inbox?email=${encodeURIComponent(email)}`,
   );
-  const body = (await res.json()) as { mails: Array<{ body: string }> };
+  const body = (await res.json()) as {
+    mails: Array<{ id: string; body: string }>;
+  };
   const match = body.mails[0]!.body.match(/验证码：(\d{6})/);
   return match![1];
+}
+
+async function latestMailId(
+  page: Page,
+  email: string,
+): Promise<string | undefined> {
+  const res = await page.request.get(
+    `/api/dev/mail-inbox?email=${encodeURIComponent(email)}`,
+  );
+  if (!res.ok()) return undefined;
+  const body = (await res.json()) as { mails?: Array<{ id: string }> };
+  return body.mails?.[0]?.id;
 }
 
 /** 通过真实登录页完成 OTP 登录，落到应用门。 */
@@ -48,10 +73,12 @@ export async function uiLogin(page: Page, email: string): Promise<void> {
   const login = page.getByTestId("login-page");
   await expect(login).toBeVisible();
   await login.getByRole("textbox").fill(email);
+  // 记录发送前最新邮件 id：后续以“新邮件到达”为准（页面内联 dev-otp 展示是
+  // 一次性 fetch，与邮件落库存在竞态，不作为登录依赖）。
+  const previousLatestId = await latestMailId(page, email);
   await page.getByRole("button", { name: "发送验证码" }).click();
   await expect(page.getByTestId("otp-hint")).toBeVisible();
-  await expect(page.getByTestId("dev-otp-code")).toHaveText(/\d{6}/);
-  const code = await fetchOtpCode(page, email);
+  const code = await fetchOtpCode(page, email, previousLatestId);
   await login.getByRole("textbox").fill(code);
   await page.getByRole("button", { name: "登录", exact: true }).click();
   await expect(page.getByTestId("app-gate")).toBeVisible();
@@ -141,11 +168,17 @@ export async function loginCreateAndEnter(
 export async function sendChat(page: Page, text: string): Promise<void> {
   const panel = page.getByTestId("chat-panel");
   const input = panel.locator("textarea").first();
+  await expect(input).toBeVisible({ timeout: 15_000 });
   await input.fill(text);
-  await expect
-    .poll(async () => panel.locator("button:not([disabled])").count(), {
-      timeout: 30_000,
-    })
-    .toBeGreaterThan(0);
-  await input.press("Enter");
+  const sendBtn = panel
+    .locator(
+      'button[aria-label*="Send" i], button[type="submit"], button:has-text("Send")',
+    )
+    .first();
+  if ((await sendBtn.count()) > 0) {
+    await expect(sendBtn).toBeEnabled({ timeout: 15_000 });
+    await sendBtn.click();
+  } else {
+    await input.press("Enter");
+  }
 }

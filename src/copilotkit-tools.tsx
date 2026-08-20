@@ -5,8 +5,8 @@ import {
   useRenderTool,
 } from "@copilotkit/react-core/v2";
 import { z } from "zod";
-import type { NextAppRuntime } from "@next-app-runtime/client";
 import type { ApplyResult } from "../server/contracts.ts";
+import type { BundlePreviewController } from "./runtime/bundle-preview-controller.ts";
 import { summarizeCurrentApp } from "./runtime/summarize-spec";
 import { AskQuestionCard } from "./ask-question-card";
 import { AskQuestionSummary } from "./ask-question-summary";
@@ -31,7 +31,9 @@ function parseGenerationId(result: unknown): string | undefined {
   if (typeof result !== "string") return undefined;
   try {
     const parsed = JSON.parse(result) as { generationId?: unknown };
-    return typeof parsed.generationId === "string" ? parsed.generationId : undefined;
+    return typeof parsed.generationId === "string"
+      ? parsed.generationId
+      : undefined;
   } catch {
     return undefined;
   }
@@ -40,7 +42,11 @@ function parseGenerationId(result: unknown): string | undefined {
 /** SourceResult → 协议 ApplyResult（rejected→failed、cancelled→aborted，计划 §6）。 */
 function toApplyResult(
   generationId: string,
-  source: { status: "committed" | "rejected" | "cancelled"; revision: number; error?: { message: string } },
+  source: {
+    status: "committed" | "rejected" | "cancelled";
+    revision: number;
+    error?: { message: string };
+  },
 ): ApplyResult {
   if (source.status === "committed") {
     return { generationId, status: "committed", revision: source.revision };
@@ -58,52 +64,62 @@ function toApplyResult(
 
 /**
  * await_apply_result 的不可见 interrupt 处理器：
- * 等待本地 applySource 落定后程序化 resolve（探针实证模式）。
+ * 等待本地候选事务落定后程序化 resolve（探针实证模式）。
  */
 function AwaitApplyInterrupt(props: {
   generationId: string;
-  runtime: NextAppRuntime;
+  controller: BundlePreviewController;
   resolve: (payload?: unknown) => Promise<unknown> | unknown;
 }) {
   const fired = useRef(false);
-  const { generationId, runtime, resolve } = props;
+  const { generationId, controller, resolve } = props;
   useEffect(() => {
     if (fired.current) return;
     fired.current = true;
-    void waitApplyResult(generationId, runtime).then((source) => {
-      const payload = toApplyResult(generationId, source);
-      console.warn(
-        `[await-apply-interrupt] resolve generation=${generationId} source=${source.status} payload=${payload.status}`,
-      );
-      void Promise.resolve(resolve(payload)).then(
-        () =>
-          console.warn(
-            `[await-apply-interrupt] resolve accepted generation=${generationId}`,
-          ),
-        (cause: unknown) =>
-          console.warn(
-            `[await-apply-interrupt] resolve rejected generation=${generationId} error=${cause instanceof Error ? cause.message.slice(0, 300) : "unknown"}`,
-          ),
-      );
-    });
-  }, [generationId, resolve, runtime]);
-  return <div data-testid="await-apply-interrupt" style={{ display: "none" }} />;
+    // active 在事务间可能被原子替换；等待期间读当前 active 即可
+    //（waitApplyResult 只在缺 state 时用它取 fallback revision；null → 0）。
+    void waitApplyResult(generationId, controller.getActiveRuntime()).then(
+      (source) => {
+        const payload = toApplyResult(generationId, source);
+        console.warn(
+          `[await-apply-interrupt] resolve generation=${generationId} source=${source.status} payload=${payload.status}`,
+        );
+        void Promise.resolve(resolve(payload)).then(
+          () =>
+            console.warn(
+              `[await-apply-interrupt] resolve accepted generation=${generationId}`,
+            ),
+          (cause: unknown) =>
+            console.warn(
+              `[await-apply-interrupt] resolve rejected generation=${generationId} error=${cause instanceof Error ? cause.message.slice(0, 300) : "unknown"}`,
+            ),
+        );
+      },
+    );
+  }, [generationId, resolve, controller]);
+  return (
+    <div data-testid="await-apply-interrupt" style={{ display: "none" }} />
+  );
 }
 
 export function CopilotKitTools(props: {
   agentId: string;
-  runtime: NextAppRuntime;
+  controller: BundlePreviewController;
 }) {
-  const { agentId, runtime } = props;
+  const { agentId, controller } = props;
 
   // 前端工具：get_current_spec —— 模型编辑前获取 current + revision。
+  // 读取的是 Controller 当前 active Runtime（事务间原子切换，无固定引用）。
   useFrontendTool({
     name: "get_current_spec",
     description:
       "获取当前已提交的应用 Spec 与 revision（无当前 Spec 时 hasCurrentSpec=false）。编辑现有应用前必须调用。",
     parameters: z.object({}),
     handler: async () => {
-      const snapshot = runtime.getSnapshot();
+      const runtime = controller.getActiveRuntime();
+      const snapshot = runtime
+        ? runtime.getSnapshot()
+        : { current: null, revision: 0 };
       return {
         hasCurrentSpec: snapshot.current != null,
         spec: snapshot.current ?? null,
@@ -115,10 +131,14 @@ export function CopilotKitTools(props: {
   // 前端工具：summarize_current_app —— 问答路径的结构化摘要（不回传完整 Spec）。
   useFrontendTool({
     name: "summarize_current_app",
-    description: "获取当前应用的结构化摘要（页面、导航、主要元素），用于回答用户关于当前界面的问题。",
+    description:
+      "获取当前应用的结构化摘要（页面、导航、主要元素），用于回答用户关于当前界面的问题。",
     parameters: z.object({}),
     handler: async () => {
-      const snapshot = runtime.getSnapshot();
+      const runtime = controller.getActiveRuntime();
+      const snapshot = runtime
+        ? runtime.getSnapshot()
+        : { current: null, revision: 0 };
       return summarizeCurrentApp(snapshot.current ?? null);
     },
   });
@@ -170,7 +190,10 @@ export function CopilotKitTools(props: {
       }),
       render: ({ status, parameters, result }) =>
         status === "complete" ? (
-          <AskQuestionSummary questions={parameters.questions} result={result} />
+          <AskQuestionSummary
+            questions={parameters.questions}
+            result={result}
+          />
         ) : (
           <div style={{ display: "none" }} />
         ),
@@ -190,7 +213,7 @@ export function CopilotKitTools(props: {
           return (
             <AwaitApplyInterrupt
               generationId="__invalid__"
-              runtime={runtime}
+              controller={controller}
               resolve={() =>
                 resolve({
                   generationId: "__invalid__",
@@ -204,7 +227,7 @@ export function CopilotKitTools(props: {
         return (
           <AwaitApplyInterrupt
             generationId={generationId}
-            runtime={runtime}
+            controller={controller}
             resolve={resolve}
           />
         );

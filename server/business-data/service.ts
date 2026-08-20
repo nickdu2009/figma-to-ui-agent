@@ -40,6 +40,89 @@ import {
 
 const RECYCLE_BIN_DAYS = 30;
 
+/** 导出供 S8 executor 复用（纯函数；行为与既有私有方法一致）。 */
+export function buildIndexValues(
+  collection: BusinessCollection,
+  data: Record<string, unknown>,
+): Array<{
+  fieldKey: string;
+  valueText: string | null;
+  valueNumber: number | null;
+  valueBool: boolean | null;
+  valueDate: Date | null;
+}> {
+  const out: Array<{
+    fieldKey: string;
+    valueText: string | null;
+    valueNumber: number | null;
+    valueBool: boolean | null;
+    valueDate: Date | null;
+  }> = [];
+  for (const field of collection.fields) {
+    if (!field.queryable) continue;
+    const value = data[field.key];
+    if (value === undefined || value === null) continue;
+    out.push({
+      fieldKey: field.key,
+      valueText:
+        field.type === "string" || field.type === "enum"
+          ? String(value)
+          : null,
+      valueNumber: field.type === "number" ? (value as number) : null,
+      valueBool: field.type === "boolean" ? (value as boolean) : null,
+      valueDate: field.type === "date" ? new Date(value as string) : null,
+    });
+  }
+  return out;
+}
+
+/** 导出供 S8 executor 复用。 */
+export function buildUniqueValues(
+  collection: BusinessCollection,
+  data: Record<string, unknown>,
+): Array<{ fieldKey: string; valueNormalized: string }> {
+  const out: Array<{ fieldKey: string; valueNormalized: string }> = [];
+  for (const field of collection.fields) {
+    if (!field.unique) continue;
+    const value = data[field.key];
+    if (value === undefined || value === null) continue;
+    out.push({
+      fieldKey: field.key,
+      valueNormalized: normalizeUniqueValue(field, value),
+    });
+  }
+  return out;
+}
+
+/** 导出供 S8 executor 复用（RecordView 投影）。 */
+export function toRecordView(
+  caller: CallerContext,
+  collection: BusinessCollection,
+  record: {
+    id: string;
+    revision: number;
+    data: unknown;
+    createdByUserId: string;
+    updatedByUserId: string;
+    createdAt: Date;
+    updatedAt: Date;
+  },
+): RecordView {
+  return {
+    recordId: record.id,
+    revision: record.revision,
+    data: projectReadableData(
+      caller,
+      collection,
+      record.data as Record<string, unknown>,
+    ),
+    createdByUserId: record.createdByUserId,
+    updatedByUserId: record.updatedByUserId,
+    createdAt: record.createdAt,
+    updatedAt: record.updatedAt,
+  };
+}
+
 export interface RecordView {
   recordId: string;
   revision: number;
@@ -121,58 +204,6 @@ export class BusinessDataService {
             WHERE principal_membership_id = ${caller.membershipId}
           ))`;
     }
-  }
-
-  private buildIndexValues(
-    collection: BusinessCollection,
-    data: Record<string, unknown>,
-  ): Array<{
-    fieldKey: string;
-    valueText: string | null;
-    valueNumber: number | null;
-    valueBool: boolean | null;
-    valueDate: Date | null;
-  }> {
-    const out: Array<{
-      fieldKey: string;
-      valueText: string | null;
-      valueNumber: number | null;
-      valueBool: boolean | null;
-      valueDate: Date | null;
-    }> = [];
-    for (const field of collection.fields) {
-      if (!field.queryable) continue;
-      const value = data[field.key];
-      if (value === undefined || value === null) continue;
-      out.push({
-        fieldKey: field.key,
-        valueText:
-          field.type === "string" || field.type === "enum"
-            ? String(value)
-            : null,
-        valueNumber: field.type === "number" ? (value as number) : null,
-        valueBool: field.type === "boolean" ? (value as boolean) : null,
-        valueDate: field.type === "date" ? new Date(value as string) : null,
-      });
-    }
-    return out;
-  }
-
-  private buildUniqueValues(
-    collection: BusinessCollection,
-    data: Record<string, unknown>,
-  ): Array<{ fieldKey: string; valueNormalized: string }> {
-    const out: Array<{ fieldKey: string; valueNormalized: string }> = [];
-    for (const field of collection.fields) {
-      if (!field.unique) continue;
-      const value = data[field.key];
-      if (value === undefined || value === null) continue;
-      out.push({
-        fieldKey: field.key,
-        valueNormalized: normalizeUniqueValue(field, value),
-      });
-    }
-    return out;
   }
 
   private async validatePrincipals(
@@ -297,8 +328,8 @@ export class BusinessDataService {
       data: input.data,
       createdByUserId: input.caller.userId,
       subjectMembershipId,
-      indexValues: this.buildIndexValues(collection, input.data),
-      uniqueValues: this.buildUniqueValues(collection, input.data),
+      indexValues: buildIndexValues(collection, input.data),
+      uniqueValues: buildUniqueValues(collection, input.data),
       principals,
       now: new Date(),
     });
@@ -469,8 +500,8 @@ export class BusinessDataService {
       data: merged,
       updatedByUserId: input.caller.userId,
       subjectMembershipId,
-      indexValues: this.buildIndexValues(collection, merged),
-      uniqueValues: this.buildUniqueValues(collection, merged),
+      indexValues: buildIndexValues(collection, merged),
+      uniqueValues: buildUniqueValues(collection, merged),
       principals,
       now: new Date(),
     });

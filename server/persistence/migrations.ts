@@ -2,11 +2,18 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { migrate } from "drizzle-orm/mysql2/migrator";
 import type { Database } from "./database.ts";
+import {
+  postflight0005,
+  postflight0006,
+  preflight0005,
+  preflight0006,
+} from "./additive-migration-verifier.ts";
 
 /**
- * 启动迁移（fail-closed）：
- * - 空库或落后库：应用 server/db/migrations 下的受管迁移；
- * - 迁移失败：抛 BootMigrationError，服务拒绝启动（设计 §9、AC1）。
+ * 启动迁移（fail-closed，计划 S2 操作 3）：
+ * 固定执行 preflight → Drizzle migrate → postflight；0005 账本与 0006
+ * 约束均须完成。任一历史 step digest、Drizzle journal 或实际结构不一致时
+ * 抛 BootMigrationError，服务拒绝启动。
  */
 export class BootMigrationError extends Error {
   readonly code = "boot_migration_failed";
@@ -21,7 +28,14 @@ const MIGRATIONS_FOLDER = join(
   "../db/migrations",
 );
 
+/**
+ * 空库或落后库应用 server/db/migrations 下的受管迁移；
+ * 迁移失败抛出 BootMigrationError（MySQL DDL 不可回滚，可能已应用部分迁移）。
+ */
 export async function runStartupMigrations(db: Database): Promise<void> {
+  const pool = db.$client;
+  await preflight0005(pool);
+  await preflight0006(pool);
   try {
     await migrate(db, { migrationsFolder: MIGRATIONS_FOLDER });
   } catch (error) {
@@ -30,4 +44,6 @@ export async function runStartupMigrations(db: Database): Promise<void> {
       { cause: error },
     );
   }
+  await postflight0005(pool);
+  await postflight0006(pool);
 }

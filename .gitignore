@@ -32,3 +32,4 @@ reports/
 /.worktrail-handoff-v2-backups/
 .worktrail/**/*.bak-*
 # END WORKTRAIL MANAGED BLOCK
+.e2e-assets/

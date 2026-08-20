@@ -2,10 +2,7 @@ import { AbstractAgent } from "@ag-ui/client";
 import type { BaseEvent, RunAgentInput } from "@ag-ui/client";
 import { EventType } from "@ag-ui/client";
 import { Observable } from "rxjs";
-import type {
-  AskQuestionInput,
-  GenerateSpecInput,
-} from "./contracts.ts";
+import type { AskQuestionInput, GenerateSpecInput } from "./contracts.ts";
 import type { GenerationCoordinator } from "./generation-coordinator.ts";
 import {
   brokenPatchLines,
@@ -15,6 +12,11 @@ import {
   editOps,
   editPatchLines,
 } from "./mock-fixtures.ts";
+import type { AppUiBundle } from "../src/catalog/app-ui-bundle.ts";
+import {
+  CATALOG_VERSION,
+  SPEC_COMPATIBILITY,
+} from "../src/catalog/catalog-contract.ts";
 
 // 相对导入使用显式 .ts 扩展名：服务端以 Node 24 类型剥离直接运行。
 // tsconfig 已启用 allowImportingTsExtensions；tsc --noEmit 通过。
@@ -38,7 +40,9 @@ function applyAddOps(base: unknown, ops: MockPatchOp[]): unknown {
     let node: unknown = root;
     for (let i = 0; i < segs.length - 1; i++) {
       const key = segs[i];
-      node = Array.isArray(node) ? node[Number(key)] : (node as Record<string, unknown>)[key];
+      node = Array.isArray(node)
+        ? node[Number(key)]
+        : (node as Record<string, unknown>)[key];
     }
     const last = segs[segs.length - 1];
     if (Array.isArray(node)) {
@@ -64,24 +68,15 @@ const GENERATE_TOOL = "generate_spec";
 const messageText = (content: unknown): string =>
   typeof content === "string" ? content : JSON.stringify(content);
 
-function safeJson(text: string): unknown {
-  try {
-    return JSON.parse(text);
-  } catch {
-    return undefined;
-  }
-}
-
 /**
  * 脚本化 Mock 聊天 Agent（VMA_AGENT_MODE=mock，浏览器 E2E 用，不调 LLM）。
  * 作为 CoordinatedMastraAgent 的内层 agent：只产出标准 AG-UI 事件，
  * 并通过 GenerationCoordinator 驱动 spec.patch.* CUSTOM 事件；
- * ask_question / await_apply_result 的 interrupt outcome 由外层注入。
+ * ask_question 的 interrupt outcome 由外层注入；生成结束与生产路径同样走
+ * Candidate → validation → Preview Commit，绝不模拟 await_apply_result。
  *
  * 场景脚本（按 input 内容判定，优先级从上到下）：
- *   A. 工具消息含 await_apply_result 结果（committed/failed/aborted）
- *      → run3：文本回显后 RUN_FINISHED。
- *   B. 工具消息含 answers 中 approve
+ *   A. 工具消息含 answers 中 approve
  *      → 批准后的生成 run：TOOL_CALL generate_spec（approved_plan, base=empty）
  *        + 经 Coordinator 流出 createPatchLines（delta 间隔 80ms）
  *        + TOOL_CALL_RESULT + RUN_FINISHED（普通）。
@@ -131,23 +126,14 @@ export class MockChatAgent extends AbstractAgent {
       lastUserIndex >= 0 ? input.messages[lastUserIndex] : undefined;
     const lastUserText = lastUser ? messageText(lastUser.content) : "";
 
-    // A：await_apply_result 结果（取最后一条匹配的工具消息）。
-    const applyResultContent = [...recentToolContents]
-      .reverse()
-      .find(
-        (c) =>
-          c.includes('"status":"committed"') ||
-          c.includes('"status":"failed"') ||
-          c.includes('"status":"aborted"'),
-      );
     const isApproved = recentToolContents.some((c) =>
       c.includes('"value":"approve"'),
     );
     const isResponded = recentToolContents.some(
       (c) => c.includes('"value":"other"') || c.includes('"value":"skip"'),
     );
-    const isQuestionnaireAnswered = recentToolContents.some(
-      (c) => c.includes('"questionId":"audience"'),
+    const isQuestionnaireAnswered = recentToolContents.some((c) =>
+      c.includes('"questionId":"audience"'),
     );
 
     return new Observable<BaseEvent>((subscriber) => {
@@ -172,14 +158,12 @@ export class MockChatAgent extends AbstractAgent {
         emit({ type: EventType.RUN_FINISHED, threadId, runId } as BaseEvent);
         subscriber.complete();
       };
-      /**
-       * 模拟 Mastra 适配器执行服务器工具 generate_spec：
-       * TOOL_CALL_START/ARGS/END 之后，经 Coordinator 流出 spec.patch.* CUSTOM
-       * 事件（真实时序：工具执行期间流式输出，故 CUSTOM 早于 TOOL_CALL_RESULT），
-       * 最后发 TOOL_CALL_RESULT 与普通 RUN_FINISHED
-       * （await_apply_result interrupt 由外层自动注入）。
-       */
-      const runGeneration = (args: GenerateSpecInput, lines: string[], candidateSpec?: unknown) => {
+      /** 模拟服务器工具 generate_spec，走与生产相同的 v2 最终收尾。 */
+      const runGeneration = (
+        args: GenerateSpecInput,
+        lines: string[],
+        candidateSpec?: unknown,
+      ) => {
         const toolCallId = `${runId}-generate-spec`;
         const generationId = `mock-gen-${runId}`;
         emit({
@@ -204,45 +188,83 @@ export class MockChatAgent extends AbstractAgent {
             );
           });
         });
-        later(PATCH_DELTA_INTERVAL_MS * (lines.length + 1), () => {
-          this.coordinator.finishPatchStream(
-            threadId,
-            runId,
-            generationId,
-            candidateSpec ? { spec: candidateSpec } : undefined,
-          );
-          emit({
-            type: EventType.TOOL_CALL_RESULT,
-            messageId: `${runId}-generate-spec-result`,
-            toolCallId,
-            content: JSON.stringify({
-              status: "patch_streaming",
+        // 为中止路径保留可观察的流式窗口。两条 edit patch 在本地极快完成，
+        // 若立即进入 validation，浏览器的 stop 事件会落在终态之后而失去验证意义。
+        const completionDelay = Math.max(
+          PATCH_DELTA_INTERVAL_MS * (lines.length + 1),
+          3_000,
+        );
+        later(completionDelay, () => {
+          let candidatePayload: unknown;
+          if (candidateSpec) {
+            const bundle: AppUiBundle = {
+              bundleVersion: 1,
+              catalogVersion: CATALOG_VERSION,
+              specCompatibility: SPEC_COMPATIBILITY,
+              spec: candidateSpec as AppUiBundle["spec"],
+              designSystem: {
+                tokens: { primitive: {}, semantic: {}, component: {} },
+                applicationCss: "",
+              },
+              assets: { entries: [] },
+            };
+            candidatePayload = {
+              uiBundle: bundle,
+              businessSchema: null,
+              migrationEdge: {
+                fromPublishedVersionId: null,
+                fromSchemaDigest:
+                  "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                toSchemaDigest:
+                  "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              },
+            };
+          }
+          const completeToolRun = (status: "patch_streaming" | "failed") => {
+            emit({
+              type: EventType.TOOL_CALL_RESULT,
+              messageId: `${runId}-generate-spec-result`,
+              toolCallId,
+              content: JSON.stringify({ status, generationId }),
+              role: "tool",
+            } as BaseEvent);
+            emit({ type: EventType.RUN_FINISHED, threadId, runId } as BaseEvent);
+            subscriber.complete();
+          };
+          if (!candidatePayload) {
+            this.coordinator.failPatchStream(
+              threadId,
+              runId,
               generationId,
-            }),
-            role: "tool",
-          } as BaseEvent);
-          emit({ type: EventType.RUN_FINISHED, threadId, runId } as BaseEvent);
-          subscriber.complete();
+              "mock_candidate_missing",
+            );
+            completeToolRun("failed");
+            return;
+          }
+          void this.coordinator
+            .finishValidatedCandidate(
+              threadId,
+              runId,
+              generationId,
+              candidatePayload,
+              { totalOperations: lines.length },
+            )
+            .then(() => completeToolRun("patch_streaming"))
+            .catch((error: unknown) => {
+              this.coordinator.failPatchStream(
+                threadId,
+                runId,
+                generationId,
+                error instanceof Error ? error.message : "mock_generation_failed",
+              );
+              completeToolRun("failed");
+            });
         });
       };
 
       emit({ type: EventType.RUN_STARTED, threadId, runId } as BaseEvent);
 
-      // A：run3，应用结果只用安全的产品语言反馈，绝不把 generationId、
-      // revision 或协议状态 JSON 放进聊天记录。
-      if (applyResultContent !== undefined) {
-        const parsed = safeJson(applyResultContent) as { status?: unknown } | undefined;
-        finishTextRun(
-          parsed?.status === "committed"
-            ? "预览已更新并保存为草稿。"
-            : "预览未能保存，请重试。",
-        );
-        return () => {
-          for (const t of timers) clearTimeout(t);
-        };
-      }
-
-      // B：批准后的生成 run（approved_plan, base=empty）。
+      // A：批准后的生成 run（approved_plan, base=empty）。
       if (isApproved) {
         runGeneration(
           {
@@ -316,8 +338,11 @@ export class MockChatAgent extends AbstractAgent {
           },
           editPatchLines,
           (() => {
-            const base = lastSpecByThread.get(threadId);
-            if (!base) return undefined;
+            // CopilotKit 可能为新用户轮换 threadId；Mock 的固定创建夹具在
+            // 这种情况下仍须产生完整、可验证的编辑 Candidate，而不能退化成
+            // 无 Bundle 的旧 await_apply 路径。
+            const base =
+              lastSpecByThread.get(threadId) ?? applyAddOps({}, createOps);
             const spec = applyAddOps(base, editOps);
             lastSpecByThread.set(threadId, spec);
             return spec;
@@ -330,7 +355,11 @@ export class MockChatAgent extends AbstractAgent {
 
       if (lastUserText.includes("多题问卷")) {
         const toolCallId = `${runId}-questionnaire`;
-        emit({ type: EventType.TOOL_CALL_START, toolCallId, toolCallName: QUESTION_TOOL } as BaseEvent);
+        emit({
+          type: EventType.TOOL_CALL_START,
+          toolCallId,
+          toolCallName: QUESTION_TOOL,
+        } as BaseEvent);
         emit({
           type: EventType.TOOL_CALL_ARGS,
           toolCallId,
@@ -338,17 +367,39 @@ export class MockChatAgent extends AbstractAgent {
             message: "先确认两个关键选择。",
             questions: [
               {
-                id: "audience", header: "目标用户", question: "主要给谁使用？",
+                id: "audience",
+                header: "目标用户",
+                question: "主要给谁使用？",
                 options: [
-                  { value: "individual", label: "个人用户", description: "聚焦个人任务管理。", recommended: true },
-                  { value: "team", label: "小团队协作", description: "需要成员与共享任务。" },
+                  {
+                    value: "individual",
+                    label: "个人用户",
+                    description: "聚焦个人任务管理。",
+                    recommended: true,
+                  },
+                  {
+                    value: "team",
+                    label: "小团队协作",
+                    description: "需要成员与共享任务。",
+                  },
                 ],
               },
               {
-                id: "scope", header: "首版范围", question: "首版做到哪一档？",
+                id: "scope",
+                header: "首版范围",
+                question: "首版做到哪一档？",
                 options: [
-                  { value: "mvp", label: "标准 MVP", description: "包含增删改查与筛选。", recommended: true },
-                  { value: "minimal", label: "极简清单", description: "先验证基础任务流。" },
+                  {
+                    value: "mvp",
+                    label: "标准 MVP",
+                    description: "包含增删改查与筛选。",
+                    recommended: true,
+                  },
+                  {
+                    value: "minimal",
+                    label: "极简清单",
+                    description: "先验证基础任务流。",
+                  },
                 ],
                 allowCustom: true,
                 allowSkip: true,
@@ -375,8 +426,17 @@ export class MockChatAgent extends AbstractAgent {
             header: "应用计划",
             question: "是否按这个计划开始生成？",
             options: [
-              { value: "approve", label: "开始生成", description: "按当前计划创建应用。", recommended: true },
-              { value: "revise", label: "调整计划", description: "输入需要修改的方向。" },
+              {
+                value: "approve",
+                label: "开始生成",
+                description: "按当前计划创建应用。",
+                recommended: true,
+              },
+              {
+                value: "revise",
+                label: "调整计划",
+                description: "输入需要修改的方向。",
+              },
             ],
             allowCustom: true,
           },

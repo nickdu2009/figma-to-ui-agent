@@ -16,6 +16,12 @@ import {
 import { HttpError, badRequest } from "../middleware/errors.ts";
 import { MigrationRejected } from "../schema-migrations/plan.ts";
 import { BusinessSchemaError } from "../business-data/schema-contract.ts";
+import {
+  assertMutationAllowed,
+  assertMutationProtocolVersion,
+  ProtocolFenceError,
+  type ProtocolMode,
+} from "../persistence/protocol-mode.ts";
 
 /**
  * 发布路由（S4，设计 §4.2、AC3/AC4）：
@@ -24,21 +30,43 @@ import { BusinessSchemaError } from "../business-data/schema-contract.ts";
  */
 const publishSchema = z.object({
   draftId: z.string().min(1).max(64),
-  migrationPlan: z.unknown().optional(),
-  reversePlan: z.unknown().optional(),
-});
+  protocolVersion: z.number().int().optional(),
+}).strict();
 const rollbackSchema = z.object({
   publishedVersionId: z.string().min(1).max(64),
-});
+  protocolVersion: z.number().int().optional(),
+}).strict();
 
 export function createReleaseRoutes(deps: {
   authService: AuthService;
   appRepository: AppRepository;
   releaseRepository: ReleaseRepository;
   releaseService: ReleaseService;
+  protocolMode?: ProtocolMode;
 }): Hono {
   const routes = new Hono();
   routes.use("*", createSessionMiddleware(deps.authService));
+  routes.onError((err, c) => {
+    if (err instanceof ProtocolFenceError) {
+      return c.json(
+        { error: { code: err.code, message: err.message } },
+        err.status as 423,
+      );
+    }
+    if (err instanceof HttpError) {
+      return c.json(
+        {
+          error: {
+            code: err.code,
+            message: err.message,
+            ...(err.details ? { details: err.details } : {}),
+          },
+        },
+        err.status as 400,
+      );
+    }
+    throw err;
+  });
   const guard = (appId: string, userId: string) =>
     requireOwnerMembership(deps.appRepository, appId, userId, {
       conceal: true,
@@ -81,9 +109,9 @@ export function createReleaseRoutes(deps: {
       "editor",
       { conceal: true },
     );
-    const draft = (await deps.releaseRepository.listDrafts(
-      c.req.param("appId"),
-    ))[0];
+    const draft = (
+      await deps.releaseRepository.listDrafts(c.req.param("appId"))
+    )[0];
     if (!draft) return c.json({ current: null });
     return c.json({
       current: {
@@ -92,6 +120,10 @@ export function createReleaseRoutes(deps: {
         createdAt: draft.createdAt,
         spec: draft.spec,
         businessSchema: draft.businessSchema,
+        bundle: draft.bundle,
+        catalogVersion: draft.catalogVersion,
+        candidateDigest: draft.candidateDigest,
+        uiBundleDigest: draft.uiBundleDigest,
       },
     });
   });
@@ -133,6 +165,10 @@ export function createReleaseRoutes(deps: {
         publishedAt: version.publishedAt,
         spec: version.spec,
         businessSchema: version.businessSchema,
+        bundle: version.bundle,
+        catalogVersion: version.catalogVersion,
+        candidateDigest: version.candidateDigest,
+        uiBundleDigest: version.uiBundleDigest,
       },
     });
   });
@@ -140,14 +176,18 @@ export function createReleaseRoutes(deps: {
   routes.post("/apps/:appId/releases/publish", async (c) => {
     const { user } = requireSession(c);
     const membership = await guard(c.req.param("appId"), user.id);
+    assertMutationAllowed(deps.protocolMode ?? "compat", "publish");
     const body = publishSchema.parse(await c.req.json());
+    assertMutationProtocolVersion(
+      deps.protocolMode ?? "compat",
+      "publish",
+      body.protocolVersion,
+    );
     try {
       const result = await deps.releaseService.publish({
         appId: c.req.param("appId"),
         draftId: body.draftId,
         membershipId: membership.id,
-        migrationPlan: body.migrationPlan,
-        reversePlan: body.reversePlan,
       });
       return c.json(result);
     } catch (error) {
@@ -158,7 +198,13 @@ export function createReleaseRoutes(deps: {
   routes.post("/apps/:appId/releases/rollback", async (c) => {
     const { user } = requireSession(c);
     await guard(c.req.param("appId"), user.id);
+    assertMutationAllowed(deps.protocolMode ?? "compat", "rollback");
     const body = rollbackSchema.parse(await c.req.json());
+    assertMutationProtocolVersion(
+      deps.protocolMode ?? "compat",
+      "rollback",
+      body.protocolVersion,
+    );
     try {
       await deps.releaseService.rollback({
         appId: c.req.param("appId"),
@@ -176,6 +222,9 @@ export function createReleaseRoutes(deps: {
 
 /** 迁移领域错误 → HTTP 映射（不暴露内部细节）。 */
 function mapReleaseDomainError(error: unknown): never {
+  if (error instanceof ProtocolFenceError) {
+    throw new HttpError(error.status, error.code, error.message);
+  }
   if (error instanceof MigrationRejected) {
     throw new HttpError(409, error.code, error.message);
   }

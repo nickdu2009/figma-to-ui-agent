@@ -31,7 +31,45 @@ import { BusinessDataRepository } from "./repositories/business-data-repository.
 import { SchemaMigrationService } from "./schema-migrations/service.ts";
 import { createRecycleBinRoutes } from "./routes/recycle-bin.ts";
 import { RecycleBinService } from "./recycle-bin/service.ts";
+// S7：DesignAsset 管道（设计 §5.4）。
+import { createDesignAssetRoutes } from "./routes/design-assets.ts";
+import { createRuntimeActionRoutes } from "./routes/runtime-actions.ts";
+import { TransactionalBusinessActionExecutor } from "./actions/executor.ts";
+import { DraftDataViewService } from "./draft-data-view/service.ts";
+import { MysqlBusinessActionIdempotencyRepository } from "./repositories/business-action-idempotency-repository.ts";
+import { LocalContentAddressedBlobStore } from "./design-assets/blob-store.ts";
+import { DefaultDesignAssetService } from "./design-assets/service.ts";
+import { DefaultDesignAssetReconciler } from "./design-assets/reconciliation.ts";
+import { createExtractionWorker } from "./design-assets/extraction.ts";
+import { DefaultDesignAssetReadResolver } from "./design-assets/read-resolver.ts";
+import { MysqlDesignAssetRepository } from "./repositories/design-asset-repository.ts";
 import { createAgentContextMiddleware } from "./middleware/agent-context.ts";
+// S9：P0 Validation Scheduler / worker / capability（设计 §11.5）。
+import { ValidationScheduler } from "./validation/scheduler.ts";
+import {
+ ValidationService,
+ ValidationServiceError,
+ createValidationRoutes,
+} from "./validation/service.ts";
+import { ValidationSessionIssuer } from "./validation/session.ts";
+// S11：PreviewSelection 与 Preview Commit 路由（设计 §13.2.3）。
+import { createPreviewSelectionRoutes } from "./routes/preview-selection.ts";
+import { MysqlPreviewSelectionRepository } from "./repositories/preview-selection-repository.ts";
+// S12：Fatal Recovery 仓库、协调器与 30 天到期维护任务（设计 §13.2.4）。
+import { MysqlGenerationRecoveryRepository } from "./repositories/generation-recovery-repository.ts";
+import { RecoveryCoordinator } from "./generation/recovery-coordinator.ts";
+import { RecoveryExpiryMaintenance } from "./generation/recovery-expiry-maintenance.ts";
+// S13：协议模式状态机（设计 §13.2.1/§13.2.3）。
+import {
+ resolveProtocolMode,
+ computeCompatibilityDigest,
+ SERVER_PROTOCOL_VERSION,
+ COMPAT_PROTOCOL_VERSION,
+} from "./persistence/protocol-mode.ts";
+import { blobRelativePath } from "./design-assets/blob-store.ts";
+import { fileURLToPath } from "node:url";
+import { getCookie } from "hono/cookie";
+import { SESSION_COOKIE_NAME } from "./middleware/session.ts";
 
 // 注：服务端以 Node 24 类型剥离直接运行，相对导入必须显式 .ts 扩展名
 //（tsconfig 已启用 allowImportingTsExtensions；tsc --noEmit 通过）。
@@ -144,10 +182,55 @@ app.route(
 );
 const devMailRoutes = createDevMailRoutes({ authRepository });
 if (devMailRoutes) app.route("/api", devMailRoutes);
+// S9：Validation capability 端点（无 Session 中间件；能力即授权）。
+// 必须挂在任何 use("*") 会话中间件的子路由（如 generation）之前——Hono
+// 按注册顺序应用中间件，否则 capability 请求会被 401 拦截。
+// readAssetBytes 惰性解析：S7 块在后方赋值（VMA_ASSET_ROOT 缺省时保持
+// undefined，资产端点 404）。
+const validationSessionIssuer = new ValidationSessionIssuer();
+let validationAssetReader:
+ | ((
+    contentHash: string,
+   ) => Promise<{ bytes: Uint8Array; mimeType: string } | null>)
+ | undefined;
+app.route(
+ "/api",
+ createValidationRoutes({
+  sessionIssuer: validationSessionIssuer,
+  releaseRepository,
+  readAssetBytes: (contentHash) =>
+   validationAssetReader
+    ? validationAssetReader(contentHash)
+    : Promise.resolve(null),
+ }),
+);
 app.route(
  "/api",
  createAppMemberRoutes({ authService, appRepository, mailDelivery }),
 );
+const protocolMode = resolveProtocolMode();
+
+// S13：协议模式握手端点（设计 §13.2.1/§13.2.3）
+app.get("/api/protocol", (c) => {
+ return c.json({
+  protocolMode,
+  serverProtocolVersion:
+   protocolMode === "v2" ? SERVER_PROTOCOL_VERSION : COMPAT_PROTOCOL_VERSION,
+  compatibilityDigest: computeCompatibilityDigest(protocolMode),
+ });
+});
+
+// S12：Recovery 仓库、协调器与到期维护任务
+const generationRecoveryRepository = new MysqlGenerationRecoveryRepository(db);
+const recoveryCoordinator = new RecoveryCoordinator({
+ releaseRepository,
+ recoveryRepository: generationRecoveryRepository,
+});
+const recoveryExpiryMaintenance = new RecoveryExpiryMaintenance({
+ recoveryRepository: generationRecoveryRepository,
+});
+recoveryExpiryMaintenance.start();
+
 app.route(
  "/api",
  createGenerationRoutes({
@@ -155,12 +238,28 @@ app.route(
   appRepository,
   releaseRepository,
   lifecycle: generationLifecycle,
+  recoveryRepository: generationRecoveryRepository,
+  recoveryCoordinator,
+  protocolMode,
+ }),
+);
+// S11：PreviewSelection 与 Preview Commit
+const previewSelectionRepository = new MysqlPreviewSelectionRepository(db);
+app.route(
+ "/api",
+ createPreviewSelectionRoutes({
+  authService,
+  appRepository,
+  releaseRepository,
+  previewSelectionRepository,
+  protocolMode,
  }),
 );
 // S4：草稿/发布/回滚（设计 §4.2，AC3/AC4）
 const releaseService = new ReleaseService(
  releaseRepository,
  new SchemaMigrationService(db),
+ { requireDirectPredecessor: protocolMode === "v2" },
 );
 app.route(
  "/api",
@@ -169,6 +268,7 @@ app.route(
   appRepository,
   releaseRepository,
   releaseService,
+  protocolMode,
  }),
 );
 // S5a：业务数据（设计 §4.4/§4.5，AC1/AC2/AC6/AC12/AC13/AC15/AC16）
@@ -198,6 +298,136 @@ app.route(
   businessData: businessDataService,
  }),
 );
+// S8：生成应用受控业务 Action 分发与 DraftDataView（设计 §9.2/§9.4）
+const businessActionIdempotencyRepository =
+ new MysqlBusinessActionIdempotencyRepository(db);
+const businessActionExecutor = new TransactionalBusinessActionExecutor({
+ db,
+ appRepository,
+ releaseRepository,
+ data: businessDataRepository,
+ idempotency: businessActionIdempotencyRepository,
+});
+const draftDataViewService = new DraftDataViewService({
+ db,
+ releaseRepository,
+ data: businessDataRepository,
+});
+app.route(
+ "/api",
+ createRuntimeActionRoutes({
+  authService,
+  appRepository,
+  executor: businessActionExecutor,
+  draftDataView: draftDataViewService,
+  protocolMode,
+ }),
+);
+
+// S9：Validation Scheduler / Service 编排（capability 端点已在上方挂载）。
+const validationScheduler = new ValidationScheduler({
+ workerEntry: fileURLToPath(new URL("./validation/worker.ts", import.meta.url)),
+});
+const validationService = new ValidationService({
+ releaseRepository,
+ scheduler: validationScheduler,
+ sessionIssuer: validationSessionIssuer,
+ pageBaseUrl:
+  process.env.VMA_VALIDATION_PAGE_BASE_URL ?? "http://127.0.0.1:3100",
+ apiBaseUrl:
+  process.env.VMA_VALIDATION_API_BASE_URL ??
+  process.env.VMA_VALIDATION_BASE_URL ??
+  `http://127.0.0.1:${process.env.VMA_SERVER_PORT ?? "3101"}`,
+ chromiumExecutablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
+});
+// S11：真实生成器只能经 lifecycle 的 v2 收尾进入 validation_running；
+// 未注入时该收尾 fail-closed，绝不回退到浏览器 Spec/await_apply_result。
+generationLifecycle.setValidationRunner(validationService);
+
+// ---------- S7：DesignAsset 管道（设计 §5.4；VMA_ASSET_ROOT 缺失时 fail closed） ----------
+const assetRoot = process.env.VMA_ASSET_ROOT?.trim();
+if (assetRoot) {
+ const SERVER_ID = process.env.VMA_SERVER_ID ?? `srv-${process.pid}`;
+ const designAssetBlobStore = new LocalContentAddressedBlobStore(
+  assetRoot,
+  SERVER_ID,
+ );
+ validationAssetReader = async (contentHash) => {
+  // contentHash 形如 sha256:<hex>
+  const hex = contentHash.startsWith("sha256:")
+   ? contentHash.slice("sha256:".length)
+   : null;
+  if (!hex) return null;
+  try {
+   const bytes = await designAssetBlobStore.read(blobRelativePath(hex));
+   return { bytes, mimeType: "application/octet-stream" };
+  } catch {
+   return null;
+  }
+ };
+ const designAssetRepository = new MysqlDesignAssetRepository(db);
+ const designAssetService = new DefaultDesignAssetService(
+  designAssetRepository,
+  designAssetBlobStore,
+ );
+ const designAssetReadResolver = new DefaultDesignAssetReadResolver(
+  appRepository,
+  releaseRepository,
+  designAssetRepository,
+  designAssetBlobStore,
+ );
+ app.route(
+  "/api",
+  createDesignAssetRoutes({
+   authService,
+   appRepository,
+   service: designAssetService,
+   readResolver: designAssetReadResolver,
+  }),
+ );
+ // 启动清扫：崩溃残留 tmp（有界、幂等；不触发 GC/资产删除）。
+ const designAssetReconciler = new DefaultDesignAssetReconciler(
+  designAssetRepository,
+  designAssetBlobStore,
+  { maxJobsPerRun: 100, maxSourcesPerRun: 200, orphanTmpMaxAgeMs: 3_600_000 },
+ );
+ await designAssetReconciler
+  .reconcile(new Date())
+  .then((report) => {
+   if (report.jobsFailed > 0 || report.sourcesFailed > 0) {
+    console.log(
+     `[vite-multipage-agent] DesignAsset reconciliation：${report.jobsFailed} 个租约丢失 job、${report.sourcesFailed} 个卡死 source 已标记 failed`,
+    );
+   }
+  })
+  .catch(() => undefined);
+ // 提取 worker：有界租约 claim queued job（设计 §5.4；确定性本地提取，
+ // 进程内串行 drain，每 tick 最多 4 个 job，租约丢失由 reconciliation 收尾）。
+ const extractionWorker = createExtractionWorker({
+  repository: designAssetRepository,
+  blobStore: designAssetBlobStore,
+  leaseOwner: SERVER_ID,
+  leaseTtlMs: 60_000,
+ });
+ const extractionPump = setInterval(() => {
+  void (async () => {
+   for (let index = 0; index < 4; index += 1) {
+    const outcome = await extractionWorker.runOnce();
+    if (outcome === "idle") break;
+   }
+  })().catch((error) =>
+   console.error(
+    "[vite-multipage-agent] 提取 worker 失败：",
+    redactForLog(error),
+   ),
+  );
+ }, 1_000);
+ extractionPump.unref();
+} else {
+ console.warn(
+  "[vite-multipage-agent] VMA_ASSET_ROOT 未设置：DesignAsset 路由未挂载（fail closed）",
+ );
+}
 
 // 周期扫描（有界、幂等；普通请求绝不隐式清理）：
 // 1. 生成运行心跳超时 → incomplete；2. 回收站过期条目永久清理（每次 ≤500）。
@@ -234,6 +464,28 @@ if (mode !== "probe") {
 
 if (mode !== "probe") {
  mountCopilotKitRuntime(app, agents);
+}
+
+// S9 验证编排的 E2E 触发面（仅 mock 模式；S11 起由 GenerationCoordinator
+// 进程内调用，该面随之退出）。Session 鉴权 + 应用成员身份由 service 内
+// run/app 归属核对承担。
+if (mode === "mock") {
+ app.post("/api/mock/validation/:runId/run", async (c) => {
+  const token = getCookie(c, SESSION_COOKIE_NAME);
+  const session = token ? await authService.resolveSession(token) : null;
+  if (!session) {
+   return c.json({ error: { code: "unauthenticated" } }, 401);
+  }
+  try {
+   const outcome = await validationService.runValidation(c.req.param("runId"));
+   return c.json(outcome, 200);
+  } catch (error) {
+   if (error instanceof ValidationServiceError) {
+    return c.json({ error: { code: error.code } }, 409);
+   }
+   throw error;
+  }
+ });
 }
 
 const port = Number(process.env.VMA_SERVER_PORT ?? 3101);

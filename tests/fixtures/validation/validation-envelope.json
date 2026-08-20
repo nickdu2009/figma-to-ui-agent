@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "gate": "DS-GATE-00",
+  "probe": "ds-gate-00/validation-runner-probe.ts",
+  "measuredAt": "2026-08-18T08:31:00.000Z",
+  "environment": {
+    "node": "v24.18.0",
+    "platform": "macOS (arm64)",
+    "chromium": "headless shell 1228 (data/playwright-browsers)"
+  },
+  "normalRunBaseline": {
+    "caseCount": 16,
+    "elapsedMs": 14441,
+    "subtreeRssPeakBytes": 472875008,
+    "ipcReportBytes": 3851
+  },
+  "envelopeV1": {
+    "jobTimeoutMs": {
+      "proposedBudget": 120000,
+      "limitOutcome": "completed 16 fatal-visual cases in 14441ms",
+      "limitPlusOneOutcome": "timeout (SIGTERM then SIGKILL)",
+      "stableErrorCode": "validation_timeout"
+    },
+    "workerTerminationGraceMs": {
+      "proposedBudget": 5000,
+      "limitOutcome": "SIGTERM exit within grace",
+      "limitPlusOneOutcome": "escalates to SIGKILL after grace",
+      "stableErrorCode": "validation_timeout"
+    },
+    "workerMaxRssBytes": {
+      "proposedBudget": 2147483648,
+      "limitOutcome": "normal run subtree rss peak 472875008 bytes",
+      "limitPlusOneOutcome": "rss_killed (768MiB allocation held, subtree RSS polled via ps snapshot)",
+      "stableErrorCode": "validation_memory_limit_exceeded"
+    },
+    "workerStdoutStderrBytes": {
+      "proposedBudget": 65536,
+      "limitOutcome": "normal run emits one bounded JSON line",
+      "limitPlusOneOutcome": "stdout_exceeded (spew beyond cap triggers SIGKILL)",
+      "stableErrorCode": "validation_output_limit_exceeded"
+    },
+    "workerTemporaryArtifactBytes": {
+      "proposedBudget": 268435456,
+      "limitOutcome": "normal run writes no artifacts",
+      "limitPlusOneOutcome": "8MiB+4KiB artifact written on demand; parent quota enforcement is S9 scope",
+      "stableErrorCode": "validation_output_limit_exceeded"
+    },
+    "ipcReportBytes": {
+      "proposedBudget": 1048576,
+      "limitOutcome": "normal 16-case report 3851 bytes",
+      "limitPlusOneOutcome": "report_exceeded (oversized report rejected before parse)",
+      "stableErrorCode": "validation_output_limit_exceeded"
+    },
+    "validationSessionTtlSeconds": {
+      "proposedBudget": 600,
+      "limitOutcome": "session used within TTL",
+      "limitPlusOneOutcome": "validation_session_expired",
+      "stableErrorCode": "validation_session_expired"
+    },
+    "validationSessionMaxRequests": {
+      "proposedBudget": 512,
+      "limitOutcome": "requests within budget",
+      "limitPlusOneOutcome": "validation_session_request_limit_exceeded",
+      "stableErrorCode": "validation_session_request_limit_exceeded"
+    }
+  },
+  "approval": {
+    "status": "proposed-by-implementation",
+    "note": "数值由 DS-GATE-00 校准探针测量；正式批准由项目 owner 在证据文档审阅后确认。"
+  }
+}

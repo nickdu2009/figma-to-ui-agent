@@ -54,13 +54,16 @@ function sortKeys(value: unknown): unknown {
 export class ReleaseService {
   private readonly releases: ReleaseRepository;
   private readonly migrations?: SchemaMigrationService;
+  private readonly requireDirectPredecessor: boolean;
 
   constructor(
     releases: ReleaseRepository,
     migrations?: SchemaMigrationService,
+    options: { requireDirectPredecessor?: boolean } = {},
   ) {
     this.releases = releases;
     this.migrations = migrations;
+    this.requireDirectPredecessor = options.requireDirectPredecessor ?? false;
   }
 
   /** 所有者显式发布（AC3）。 */
@@ -68,13 +71,18 @@ export class ReleaseService {
     appId: string;
     draftId: string;
     membershipId: string;
+    /** @deprecated 仅兼容直接服务调用；HTTP 路由永不接受客户端迁移计划。 */
     migrationPlan?: unknown;
+    /** @deprecated 仅兼容直接服务调用；HTTP 路由永不接受客户端迁移计划。 */
     reversePlan?: unknown;
   }): Promise<{ publishedVersionId: string }> {
     const draft = await this.releases.findDraftById(input.draftId);
     if (!draft || draft.appId !== input.appId) throw notFound();
     if (draft.status !== "ready") {
       throw conflict("not_publishable", "草稿不可发布");
+    }
+    if ((draft as { publishBlocked?: boolean }).publishBlocked) {
+      throw conflict("publish_blocked", "草稿包含阻塞性质量问题，禁止发布");
     }
     const pointer = await this.releases.getReleasePointer(input.appId);
     if (pointer) {
@@ -93,17 +101,30 @@ export class ReleaseService {
         if (!this.migrations) {
           throw conflict("migration_unavailable", "迁移服务未启用");
         }
-        if (!input.migrationPlan) {
+        // Candidate 在生成期已由服务端封存并随 Preview Commit 落入 Draft；
+        // 发布路由只传 draftId，绝不信任浏览器临时提交的迁移 JSON。
+        // 形参 fallback 仅保留给旧的服务层测试/调用，不能从 HTTP 到达。
+        const storedPlan = draft.migrationPlan ?? input.migrationPlan;
+        const storedReversePlan = draft.reversePlan ?? input.reversePlan;
+        if (!storedPlan) {
           throw conflict(
             "migration_plan_required",
-            "跨业务 Schema 发布必须提供 DataMigrationPlan",
+            "跨业务 Schema 发布缺少服务端封存的 DataMigrationPlan",
           );
         }
-        const plan: DataMigrationPlan = dataMigrationPlanSchema.parse(
-          input.migrationPlan,
-        );
-        const reversePlan = input.reversePlan
-          ? dataMigrationPlanSchema.parse(input.reversePlan)
+        if (
+          this.requireDirectPredecessor &&
+          draft.migrationFromPublishedVersionId !== null &&
+          draft.migrationFromPublishedVersionId !== current.id
+        ) {
+          throw conflict(
+            "migration_predecessor_mismatch",
+            "草稿的迁移前序版本不是当前发布版本",
+          );
+        }
+        const plan: DataMigrationPlan = dataMigrationPlanSchema.parse(storedPlan);
+        const reversePlan = storedReversePlan
+          ? dataMigrationPlanSchema.parse(storedReversePlan)
           : null;
         const fromSchema: BusinessSchema =
           current.businessSchema == null
@@ -178,6 +199,18 @@ export class ReleaseService {
     if (!current) {
       throw conflict("release_integrity", "当前发布指针无效");
     }
+    if (pointer.publishedVersionId === target.id) return; // 幂等
+    // ReleasePointer 只能沿服务端记录的 migration edge 回退一个版本；允许
+    // 任意历史版本会跳过数据迁移和审计边界。
+    if (
+      this.requireDirectPredecessor &&
+      current.migrationFromPublishedVersionId !== target.id
+    ) {
+      throw conflict(
+        "rollback_predecessor_required",
+        "回滚仅允许回到当前版本的受控直接前序",
+      );
+    }
     if (
       canonicalBusinessSchema(current.businessSchema) !==
       canonicalBusinessSchema(target.businessSchema)
@@ -212,7 +245,6 @@ export class ReleaseService {
       });
       return;
     }
-    if (pointer.publishedVersionId === target.id) return; // 幂等
     const moved = await this.releases.rollbackPointer({
       appId: input.appId,
       publishedVersionId: target.id,

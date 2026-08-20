@@ -1,39 +1,48 @@
+/**
+ * S10 契约测试：Benchmark 模型选项（设计 §4.1，统一 LiteLLM OpenAICompatibleConfig）。
+ */
 import { describe, expect, it } from "vitest";
 
 import {
-  anthropicNativeBaseURL,
-  CLAUDE_SPEC_BENCHMARK_REASONING_EFFORT,
-  GPT_SPEC_BENCHMARK_REASONING_EFFORT,
+  DEFAULT_BENCHMARK_MODEL,
+  DEFAULT_BENCHMARK_REASONING_EFFORT,
   protocolForSpecBenchmark,
   providerOptionsForSpecBenchmark,
   reasoningEffortForSpecBenchmark,
   // pi-lens-ignore: ts:5097
 } from "../../server/benchmark/spec-benchmark-model-options.ts";
 
-describe("spec benchmark model options", () => {
-  it("uses native adaptive xhigh thinking for Claude", () => {
-    expect(CLAUDE_SPEC_BENCHMARK_REASONING_EFFORT).toBe("xhigh");
-    expect(protocolForSpecBenchmark("claude-opus-4-8")).toBe("anthropic-native");
-    expect(reasoningEffortForSpecBenchmark("claude-opus-4-8")).toBe("xhigh");
-    expect(providerOptionsForSpecBenchmark("claude-opus-4-8")).toEqual({
-      anthropic: {
-        thinking: { type: "adaptive", display: "summarized" },
-        effort: "xhigh",
+describe("spec benchmark model options (S10 LiteLLM single path)", () => {
+  it("默认 Benchmark 模型为 gpt-5.6-sol / high", () => {
+    expect(DEFAULT_BENCHMARK_MODEL).toBe("gpt-5.6-sol");
+    expect(DEFAULT_BENCHMARK_REASONING_EFFORT).toBe("high");
+  });
+
+  it("所有模型统一走 openai-compatible 协议（LiteLLM）", () => {
+    expect(protocolForSpecBenchmark("claude-opus-4-8")).toBe(
+      "openai-compatible",
+    );
+    expect(protocolForSpecBenchmark("gpt-5.6-sol")).toBe("openai-compatible");
+    expect(protocolForSpecBenchmark("gpt-5.6-terra")).toBe("openai-compatible");
+  });
+
+  it("providerOptions 统一生成 litellm 命名空间下的 reasoningEffort", () => {
+    expect(providerOptionsForSpecBenchmark("gpt-5.6-sol")).toEqual({
+      providerOptions: {
+        litellm: { reasoningEffort: "high" },
+      },
+    });
+
+    expect(providerOptionsForSpecBenchmark("gpt-5.6-terra")).toEqual({
+      providerOptions: {
+        litellm: { reasoningEffort: "medium" },
       },
     });
   });
 
-  it("uses OpenAI max reasoning for GPT", () => {
-    expect(GPT_SPEC_BENCHMARK_REASONING_EFFORT).toBe("max");
-    expect(protocolForSpecBenchmark("gpt-5.6-terra")).toBe("openai-compatible");
-    expect(reasoningEffortForSpecBenchmark("gpt-5.6-terra")).toBe("max");
-    expect(providerOptionsForSpecBenchmark("gpt-5.6-terra")).toEqual({
-      openai: { reasoningEffort: "max", reasoningSummary: "detailed" },
-    });
-  });
-
-  it("uses the LiteLLM unified native Messages prefix without retaining query data", () => {
-    expect(anthropicNativeBaseURL("https://gateway.example.test/team/v1?ignored=1"))
-      .toBe("https://gateway.example.test/team/v1");
+  it("推理强度按模型类别受控映射", () => {
+    expect(reasoningEffortForSpecBenchmark("claude-opus-4-8")).toBe("high");
+    expect(reasoningEffortForSpecBenchmark("gpt-5.6-sol")).toBe("high");
+    expect(reasoningEffortForSpecBenchmark("gpt-5.6-terra")).toBe("medium");
   });
 });

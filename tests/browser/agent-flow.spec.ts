@@ -24,9 +24,10 @@ async function runCreationFlow(page: import("@playwright/test").Page) {
  await sendChat(page, "创建一个 Acme 产品站点");
 
  // run1：普通聊天消息中的计划 + question 作答控件（ask_question interrupt）。首个用例冷启动
- //（Vite 依赖预构建 + 服务器动态导入）可能超过 5s，给足余量（与 persistence.spec 对齐 30s）。
+ //（Vite 依赖预构建 + 服务器动态导入 + S5 后 81 组件目录派生）可能超过 5s，
+ // 给足余量（与 persistence.spec 对齐；S5 后冷启动变慢，提至 45s）。
  const questionCard = page.getByTestId("ask-question-card");
- await expect(questionCard).toBeVisible({ timeout: 30_000 });
+ await expect(questionCard).toBeVisible({ timeout: 45_000 });
  await expect(page.getByText("构建 Acme 产品站点")).toBeVisible();
  await expect(page.getByText("首页、定价、文档")).toBeVisible();
  await expect(questionCard).toContainText("是否按这个计划开始生成？");
@@ -47,7 +48,7 @@ async function runCreationFlow(page: import("@playwright/test").Page) {
 }
 
 test("creation flow: chat -> plan card -> approve -> patch stream -> committed preview", async ({
- page,
+  page,
 }) => {
  page.on("pageerror", (err) =>
   console.log("[pageerror]", err.message.slice(0, 500)),
@@ -77,7 +78,9 @@ test("creation flow: chat -> plan card -> approve -> patch stream -> committed p
 
  // Draft 是编辑态的恢复事实：刷新后不能丢失刚刚生成的 Preview。
  await page.reload();
- await expect(page.getByTestId("preview-panel").getByText("欢迎使用 Acme")).toBeVisible();
+ await expect(
+  page.getByTestId("preview-panel").getByText("欢迎使用 Acme"),
+ ).toBeVisible();
 });
 
 test("navigation: built-in Link routes inside preview", async ({ page }) => {
@@ -111,8 +114,13 @@ test("edit flow: direct_edit base=current appends a card on /pricing", async ({
  await page.getByRole("link", { name: "定价" }).click();
  await expect(page.getByText("基础版")).toBeVisible();
 
+ const statuses = page.getByTestId("generation-status");
+ const priorGenerationCount = await statuses.count();
  await sendChat(page, "编辑：在定价页增加一张专业版卡片");
- const generationStatus = page.getByTestId("generation-status").last();
+ await expect(statuses).toHaveCount(priorGenerationCount + 1, {
+  timeout: 20_000,
+ });
+ const generationStatus = statuses.last();
  await expect(generationStatus).toBeVisible({ timeout: 20_000 });
  // Patch 尚在流入时，浏览器只缓存它；旧预览不能出现中间 candidate。
  await expect(
@@ -187,7 +195,7 @@ test("ask_question: 多题问卷按页作答并以 answers 恢复 Agent", async 
  );
  await sendChat(page, "多题问卷");
  const card = page.getByTestId("ask-question-card");
- await expect(card).toContainText("主要给谁使用？");
+ await expect(card).toContainText("主要给谁使用？", { timeout: 20_000 });
  await expect(card).toContainText("1 of 2");
  await page.getByTestId("ask-option-audience-individual").click();
  await page.getByTestId("ask-question-continue").click();
@@ -221,8 +229,13 @@ test("abort: stop mid-stream aborts applySource and keeps last valid preview", a
  // 发送/停止是同一个按钮（copilot-send-button）：输入未清空时是发送模式，
  // 运行中才渲染 Square 图标进入停止模式——必须等 svg 出现再点击，
  // 否则会误发一条重复消息而不是中止。
+ const statuses = page.getByTestId("generation-status");
+ const priorGenerationCount = await statuses.count();
  await sendChat(page, "编辑：在定价页增加一张专业版卡片");
- const status = page.getByTestId("generation-status").last();
+ await expect(statuses).toHaveCount(priorGenerationCount + 1, {
+  timeout: 15_000,
+ });
+ const status = statuses.last();
  await expect(status).toBeVisible({ timeout: 15_000 });
  const stopButton = page.getByTestId("copilot-send-button");
  await expect(stopButton.locator("svg")).toBeVisible({ timeout: 10_000 });
@@ -247,7 +260,9 @@ test("switching apps creates an isolated Preview runtime and does not restore th
  const email = adminEmailFor(test.info().workerIndex);
  await loginCreateAndEnter(page, email, "runtime-source-app");
  await runCreationFlow(page);
- await expect(page.getByTestId("preview-panel").getByText("欢迎使用 Acme")).toBeVisible();
+ await expect(
+  page.getByTestId("preview-panel").getByText("欢迎使用 Acme"),
+ ).toBeVisible();
 
  const targetName = `runtime-target-${Date.now()}`;
  await createAppViaApi(page, targetName);
@@ -255,10 +270,15 @@ test("switching apps creates an isolated Preview runtime and does not restore th
 
  // LAST_APP_KEY 若未清除，恢复 effect 会立刻把旧应用重新选中。
  await expect(page.getByTestId("app-gate")).toBeVisible();
- await page.getByTestId("app-list").getByRole("button", { name: new RegExp(targetName) }).click();
+ await page
+  .getByTestId("app-list")
+  .getByRole("button", { name: new RegExp(targetName) })
+  .click();
  await expect(page.getByTestId("current-app-name")).toHaveText(targetName);
  await expect(page.getByTestId("preview-empty")).toBeVisible();
- await expect(page.getByTestId("preview-panel").getByText("欢迎使用 Acme")).toHaveCount(0);
+ await expect(
+  page.getByTestId("preview-panel").getByText("欢迎使用 Acme"),
+ ).toHaveCount(0);
 });
 
 test("login does not claim an OTP was sent when the auth endpoint rejects the request", async ({
@@ -272,7 +292,10 @@ test("login does not claim an OTP was sent when the auth endpoint rejects the re
   });
  });
  await page.goto("/");
- await page.getByTestId("login-page").getByRole("textbox").fill("feedback@example.com");
+ await page
+  .getByTestId("login-page")
+  .getByRole("textbox")
+  .fill("feedback@example.com");
  await page.getByRole("button", { name: "发送验证码" }).click();
  await expect(page.getByTestId("login-error")).toHaveText("请求被安全策略拒绝");
  await expect(page.getByTestId("otp-hint")).toHaveCount(0);

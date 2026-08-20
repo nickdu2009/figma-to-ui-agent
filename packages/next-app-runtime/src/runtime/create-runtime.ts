@@ -29,7 +29,10 @@ import { toRoutePathname, type NavigationDriver } from "../navigation/location.j
 import { matchRoute, routeIdentity } from "../router/match-route.js";
 import { compileJsonlPatch } from "../stream/jsonl-compiler.js";
 import { readSource } from "../stream/source.js";
-import { assertCatalogAndRegistry, assertCatalogSpec } from "../validation/catalog-gate.js";
+import { assertAdapterActionClosure, assertCatalogAndRegistry, assertCatalogSpec } from "../validation/catalog-gate.js";
+import type { RuntimeActionDispatcher } from "../actions/contracts.js";
+import { ActionExecutionGate } from "../actions/execution-gate.js";
+import { createRuntimeActionDispatcher } from "../actions/dispatcher.js";
 import {
   assertRuntimeLimitConfig,
   assertRuntimeLimits,
@@ -160,6 +163,7 @@ class RuntimeImplementation implements NextAppRuntime {
   private readonly unsubscribeNavigation: () => void;
   private applying = false;
   private disposed = false;
+  private readonly actionDispatcher: RuntimeActionDispatcher | null;
   private loaderRun = 0;
   private presentationIdentity = 0;
   private routeTransition = 0;
@@ -179,7 +183,24 @@ class RuntimeImplementation implements NextAppRuntime {
     private readonly options: RuntimeOptions,
     private readonly navigation: NavigationDriver,
   ) {
-    assertCatalogAndRegistry(options.catalog, options.registry, options.handlers);
+    assertCatalogAndRegistry(
+      options.catalog,
+      options.registry,
+      options.handlers,
+      options.actionAdapter
+        ? new Set(Object.keys(options.actionAdapter.handlers))
+        : undefined,
+    );
+    if (options.actionAdapter) {
+      // DS S3：Adapter custom Action 键闭合（内置不进 Adapter、不双重注册、
+      // catalog.actions = handlers ∪ adapterActions）
+      assertAdapterActionClosure(
+        options.catalog,
+        options.handlers,
+        new Set(Object.keys(options.actionAdapter.handlers)),
+      );
+    }
+    this.actionDispatcher = createRuntimeActionDispatcherForOptions(options);
     this.snapshot = Object.freeze({
       current: null,
       candidate: null,
@@ -194,24 +215,7 @@ class RuntimeImplementation implements NextAppRuntime {
     this.unsubscribeNavigation = navigation.subscribe(() => {
       const previousPathname = this.snapshot.location.pathname;
       const location = freezeLocation(navigation.getSnapshot());
-      if (location.pathname !== previousPathname) {
-        const source = this.snapshot.routeSource === "candidate" && this.snapshot.candidate
-          ? "candidate"
-          : "current";
-        this.resolveRoute(
-          source === "candidate" ? this.snapshot.candidate : this.snapshot.current,
-          source,
-          {
-            snapshotPatch: () => ({
-              location,
-              revision: this.snapshot.revision + 1,
-            }),
-            onPublished: (published) => {
-              this.emitEvent("location_changed", { revision: published.revision });
-            },
-          },
-        );
-      } else {
+      if (location.pathname === previousPathname) {
         const next = {
           ...this.snapshot,
           location,
@@ -229,6 +233,23 @@ class RuntimeImplementation implements NextAppRuntime {
         } else {
           this.publish(next, onPublished);
         }
+      } else {
+        const source = this.snapshot.routeSource === "candidate" && this.snapshot.candidate
+          ? "candidate"
+          : "current";
+        this.resolveRoute(
+          source === "candidate" ? this.snapshot.candidate : this.snapshot.current,
+          source,
+          {
+            snapshotPatch: () => ({
+              location,
+              revision: this.snapshot.revision + 1,
+            }),
+            onPublished: (published) => {
+              this.emitEvent("location_changed", { revision: published.revision });
+            },
+          },
+        );
       }
     });
   }
@@ -618,7 +639,9 @@ class RuntimeImplementation implements NextAppRuntime {
           status: "ready",
           data: ownedData,
         };
-        if (this.snapshot.routeSource !== "candidate") {
+        if (this.snapshot.routeSource === "candidate") {
+          this.finishLoaderInvocation(invocation, "loader_succeeded");
+        } else {
           this.publishPresentationSnapshot({
             ...this.snapshot,
             routeStatus: "ready",
@@ -629,8 +652,6 @@ class RuntimeImplementation implements NextAppRuntime {
           }, () => {
             this.finishLoaderInvocation(invocation, "loader_succeeded");
           });
-        } else {
-          this.finishLoaderInvocation(invocation, "loader_succeeded");
         }
       })
       .catch((cause: unknown) => {
@@ -656,7 +677,9 @@ class RuntimeImplementation implements NextAppRuntime {
           status,
           error,
         };
-        if (this.snapshot.routeSource !== "candidate") {
+        if (this.snapshot.routeSource === "candidate") {
+          this.finishLoaderInvocation(invocation, "loader_failed", { code: error.code });
+        } else {
           this.publishPresentationSnapshot({
             ...this.snapshot,
             routeStatus: status,
@@ -664,8 +687,6 @@ class RuntimeImplementation implements NextAppRuntime {
           }, () => {
             this.finishLoaderInvocation(invocation, "loader_failed", { code: error.code });
           });
-        } else {
-          this.finishLoaderInvocation(invocation, "loader_failed", { code: error.code });
         }
       });
   }
@@ -886,9 +907,12 @@ class RuntimeImplementation implements NextAppRuntime {
     });
   };
 
+  getActionDispatcher = (): RuntimeActionDispatcher | null => this.actionDispatcher;
+
   dispose = (): void => {
     if (this.disposed) return;
     this.disposed = true;
+    this.actionDispatcher?.revoke();
     this.sourceController?.abort();
     this.sourceController = null;
     this.loaderRun += 1;
@@ -904,6 +928,32 @@ class RuntimeImplementation implements NextAppRuntime {
     this.disposeListeners.clear();
     this.listeners.clear();
   };
+}
+
+function createRuntimeActionDispatcherForOptions(
+  options: RuntimeOptions,
+): RuntimeActionDispatcher | null {
+  if (!options.actionAdapter) return null;
+  if (!options.actionExecutionContext) {
+    throw new RuntimeError(
+      "contract_invalid",
+      "actionAdapter requires actionExecutionContext",
+    );
+  }
+  const adapter = options.actionAdapter;
+  const context = options.actionExecutionContext;
+  // 双重注册 fail closed：custom Action 不得同时出现在上游 handlers
+  for (const name of Object.keys(adapter.handlers)) {
+    if (options.handlers && Object.hasOwn(options.handlers, name)) {
+      throw new RuntimeError(
+        "contract_invalid",
+        "custom action is dual-registered",
+        { name },
+      );
+    }
+  }
+  const gate = new ActionExecutionGate(context.phase, context.identity);
+  return createRuntimeActionDispatcher({ adapter, gate });
 }
 
 function snapshotCatalog(catalog: Catalog): Catalog {

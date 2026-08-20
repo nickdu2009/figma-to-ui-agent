@@ -86,6 +86,22 @@ class HangingAgent extends AbstractAgent {
   }
 }
 
+class FailIfInvokedAgent extends AbstractAgent {
+  calls = 0;
+  constructor() {
+    super({ agentId: "fail-if-invoked", description: "", debug: false });
+  }
+  clone(): FailIfInvokedAgent {
+    return this;
+  }
+  run(): Observable<BaseEvent> {
+    this.calls += 1;
+    return new Observable<BaseEvent>((subscriber) => {
+      subscriber.error(new Error("apply receipt must not enter the model"));
+    });
+  }
+}
+
 function collect(
   agent: CoordinatedMastraAgent,
   input: Partial<RunAgentInput> & { threadId: string; runId: string },
@@ -240,6 +256,43 @@ describe("generate_spec stream contract", () => {
     const generation = coordinator.snapshot().generations[0];
     expect(generation?.status).toBe("committed"); // 仍是上一次的真实结果
     expect(generation?.applyResult?.revision).toBe(1);
+  });
+
+  it("已解决的 await_apply_result 是终结回执，不再进入模型", async () => {
+    const coordinator = new GenerationCoordinator();
+    const seed = new CoordinatedMastraAgent(
+      new GenerationScriptedAgent(coordinator, ['{"op":"add"}\n']),
+      coordinator,
+      { agentId: "chat" },
+    );
+    await collect(seed, { threadId: "t-apply-terminal", runId: "r1" });
+
+    const inner = new FailIfInvokedAgent();
+    const receiver = new CoordinatedMastraAgent(inner, coordinator, {
+      agentId: "chat",
+    });
+    const events = await collect(receiver, {
+      threadId: "t-apply-terminal",
+      runId: "r2",
+      resume: [
+        {
+          status: "resolved",
+          interruptId: "r1::r1-await-apply",
+          payload: {
+            generationId: "gen-r1",
+            status: "committed",
+            revision: 1,
+          },
+        },
+      ],
+    } as never);
+
+    expect(inner.calls).toBe(0);
+    expect(events.map((event) => event.type)).toEqual([
+      EventType.RUN_STARTED,
+      EventType.RUN_FINISHED,
+    ]);
+    expect(coordinator.snapshot().generations[0]?.status).toBe("committed");
   });
 
   it("持久层拒绝 committed 时改写为 failed，不能保留客户端假成功", async () => {

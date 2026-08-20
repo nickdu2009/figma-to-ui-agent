@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><title>viewport overflow</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      nav[data-role="nav"] { background:#f3f4f6; padding:12px 16px; }
+      /* 致命异常：不可接受横向溢出（表格 1600px 固定宽） */
+      table { width: 1600px; table-layout: fixed; border-collapse: collapse; }
+      th, td { border:1px solid #e5e7eb; padding:8px; white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <nav data-role="nav">App — Records</nav>
+    <main data-role="main">
+      <table data-role="critical">
+        <thead><tr><th>Col 1</th><th>Col 2</th><th>Col 3</th><th>Col 4</th><th>Col 5</th><th>Col 6</th><th>Col 7</th><th>Col 8</th></tr></thead>
+        <tbody><tr><td>value-value-value</td><td>value-value-value</td><td>value-value-value</td><td>value-value-value</td><td>value-value-value</td><td>value-value-value</td><td>value-value-value</td><td>value-value-value</td></tr></tbody>
+      </table>
+    </main>
+  </body>
+</html>

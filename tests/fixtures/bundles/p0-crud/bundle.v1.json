@@ -1,0 +1,123 @@
+{
+  "bundleVersion": 1,
+  "catalogVersion": "1.0.0",
+  "specCompatibility": "0.19.0",
+  "spec": {
+    "metadata": {
+      "title": {
+        "default": "Acme Admin CRUD",
+        "template": "%s | Acme Admin"
+      }
+    },
+    "routes": {
+      "/": {
+        "page": {
+          "root": "shell",
+          "elements": {
+            "shell": {
+              "type": "AppShell",
+              "props": {
+                "title": "Acme Admin Portal",
+                "navigation": [
+                  { "label": "仪表盘", "path": "/" },
+                  { "label": "产品管理", "path": "/products" }
+                ]
+              },
+              "children": ["header", "stats-grid"]
+            },
+            "header": {
+              "type": "PageHeader",
+              "props": {
+                "title": "控制台概览",
+                "description": "查看最新业务指标与系统运行状态"
+              },
+              "children": []
+            },
+            "stats-grid": {
+              "type": "Card",
+              "props": {
+                "title": "关键指标",
+                "variant": "bordered"
+              },
+              "children": ["stat1"]
+            },
+            "stat1": {
+              "type": "Statistic",
+              "props": {
+                "title": "总商品数",
+                "value": "128",
+                "trend": "up"
+              },
+              "children": []
+            }
+          }
+        }
+      },
+      "/products": {
+        "page": {
+          "root": "shell-p",
+          "elements": {
+            "shell-p": {
+              "type": "AppShell",
+              "props": {
+                "title": "Acme Admin Portal",
+                "navigation": [
+                  { "label": "仪表盘", "path": "/" },
+                  { "label": "产品管理", "path": "/products" }
+                ]
+              },
+              "children": ["p-header", "p-table"]
+            },
+            "p-header": {
+              "type": "PageHeader",
+              "props": {
+                "title": "产品列表",
+                "description": "管理系统中的所有商品与SKU"
+              },
+              "children": []
+            },
+            "p-table": {
+              "type": "DataTable",
+              "props": {
+                "columns": [
+                  { "key": "id", "title": "ID" },
+                  { "key": "name", "title": "名称" },
+                  { "key": "price", "title": "价格" }
+                ],
+                "data": [
+                  { "id": "1", "name": "标准版", "price": "¥99" },
+                  { "id": "2", "name": "专业版", "price": "¥299" }
+                ]
+              },
+              "children": []
+            }
+          }
+        }
+      }
+    },
+    "state": {
+      "ui": {}
+    }
+  },
+  "designSystem": {
+    "tokens": {
+      "primitive": {
+        "brand": {
+          "blue": {
+            "500": "#2563eb"
+          }
+        }
+      },
+      "semantic": {
+        "color": {
+          "primary": "var(--ds-brand-blue-500)"
+        }
+      },
+      "component": {}
+    },
+    "applicationCss": ".acme-hero { padding: 1.5rem; }"
+  },
+  "assets": {
+    "entries": []
+  }
+}

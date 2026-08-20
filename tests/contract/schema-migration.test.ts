@@ -11,7 +11,7 @@ import {
   loginViaOtp,
   type TestAppHandle,
 } from "../helpers/test-app.ts";
-import { deletedItems } from "../../server/db/schema.ts";
+import { deletedItems, draftVersions } from "../../server/db/schema.ts";
 import { eq } from "drizzle-orm";
 
 const ADMIN = "s5b-admin@example.com";
@@ -113,10 +113,24 @@ describe("schema migrations & recycle bin (S5b)", () => {
     const run = await t.releaseRepository.findRunByCorrelationRef(gid);
     const drafts = await t.releaseRepository.listDrafts(targetAppId);
     const draft = drafts.find((d) => d.generationRunId === run!.id)!;
+    // 发布请求不能携带 migration JSON。用测试数据库在 Preview Commit 完成后
+    // 写入服务端封存的 Draft 字段，模拟 Candidate → Draft 的权威落库。
+    // 这样测试的发布面与 v2 路由保持一致：只接受 draftId。
+    const migrationPlan = extra.migrationPlan;
+    const reversePlan = extra.reversePlan;
+    if (migrationPlan !== undefined || reversePlan !== undefined) {
+      await handle.db
+        .update(draftVersions)
+        .set({
+          ...(migrationPlan === undefined ? {} : { migrationPlan }),
+          ...(reversePlan === undefined ? {} : { reversePlan }),
+        })
+        .where(eq(draftVersions.id, draft.id));
+    }
     return api(t.app, `/api/apps/${targetAppId}/releases/publish`, {
       method: "POST",
       cookie: ownerCookie,
-      body: JSON.stringify({ draftId: draft.id, ...extra }),
+      body: JSON.stringify({ draftId: draft.id }),
     });
   }
 

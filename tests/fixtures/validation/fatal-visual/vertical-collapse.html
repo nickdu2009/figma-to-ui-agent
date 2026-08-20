@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><title>vertical text collapse</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      nav[data-role="nav"] { background:#f3f4f6; padding:12px 16px; }
+      /* 致命异常：正文逐字纵排 */
+      main[data-role="main"] { padding: 16px; }
+      main p.collapse { width: 14px; word-break: break-all; font-size: 14px; line-height: 22px; }
+    </style>
+  </head>
+  <body>
+    <nav data-role="nav">App — Overview</nav>
+    <main data-role="main">
+      <h1>Overview</h1>
+      <p class="collapse">This entire paragraph collapses vertically one character per line because the container width is too small.</p>
+      <div data-role="critical">Summary card</div>
+    </main>
+  </body>
+</html>

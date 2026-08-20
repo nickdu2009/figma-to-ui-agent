@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "gate": "DS-GATE-00",
+  "measuredAt": "2026-08-18T08:30:00.000Z",
+  "environment": {
+    "node": "v24.18.0",
+    "platform": "macOS (arm64)",
+    "baselineCommit": "1352685872efe17ebe6c251b2ef9f5ab4932414b"
+  },
+  "catalogOwnership": {
+    "shadcnDefinitionCount": 36,
+    "baseCountAfterSingleLinkRemoval": 35,
+    "runtimeOwnedComponents": ["Link", "Slot"],
+    "builtInActionNames": [
+      "navigate",
+      "pushState",
+      "removeState",
+      "setState"
+    ],
+    "builtInActionCount": 4
+  },
+  "overlayFeasibility": {
+    "optionalUndefinedIdentity": true,
+    "baseFirstWideningDeterministic": true,
+    "widenedJsonSchemaBytes": 291,
+    "widenedJsonSchemaSha256": "a412fbdf7330d67bc8ac5323502de90f4ff6e023c0337343ee41263352a29a95",
+    "legacyFixtureHitsBase": true,
+    "preferredFixtureHitsPreferred": true
+  },
+  "performanceBudgets": {
+    "catalogBuildMs": { "measured": 12.77, "budgetMaxMs": 100 },
+    "jsonSchemaDeriveMs": { "measured": 7404.85, "budgetMaxMs": 60000 },
+    "jsonSchemaBytes": { "measured": 31499467, "budgetMaxBytes": 33554432 },
+    "jsonSchemaSha256": "428f6c6f16dd5f4aae5fdc8de20dc286031c068f6e0ac177fe7975381414b768",
+    "promptGenerateMs": { "measured": 0.91, "budgetMaxMs": 500 },
+    "promptBytes": { "measured": 11183, "budgetMaxBytes": 24576 },
+    "promptTokenEstimate": { "measured": 2796, "budgetMaxTokens": 6144 },
+    "validateMs": { "measured": 1.12, "budgetMaxMs": 500 },
+    "rssGrowthBytes": { "measured": 817496064, "budgetMaxBytes": 1610612736 },
+    "viteBuildMs": { "measured": 2937.82, "budgetMaxMs": 120000 }
+  },
+  "transportBaseline": {
+    "finishNearLimit": {
+      "utf8Bytes": 2070000,
+      "structureOk": true,
+      "firstEventToFinishMs": 296,
+      "browserHeapBytes": 65690802
+    },
+    "finishOverLimit": {
+      "utf8Bytes": 2310000,
+      "structureOk": true,
+      "firstEventToFinishMs": 312,
+      "behavior": "transported without truncation; no server-side cap pre-S11 (cap enforcement is S11 scope)"
+    },
+    "serverPeakRssBytes": 415514624
+  },
+  "approval": {
+    "status": "proposed-by-implementation",
+    "note": "数值由 DS-GATE-00 探针测量得出；正式批准由项目 owner 在证据文档审阅后确认。DSG-06（真实 LiteLLM transport）未授权执行，DS-GATE-00 整体未标记通过。"
+  }
+}

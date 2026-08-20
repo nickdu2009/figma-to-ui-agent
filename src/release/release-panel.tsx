@@ -1,5 +1,6 @@
 /**
- * 发布面板（S6，owner）：草稿列表/发布（含迁移计划补充）、发布历史、回滚。
+ * 发布面板（S13，owner）：草稿列表/发布、发布历史、受控前序回滚。
+ * 迁移计划只能在生成阶段封存到 Candidate/Draft；浏览器绝不提交计划 JSON。
  * UI 隐藏无权限操作，但授权事实永远以服务端响应为准。
  */
 import { useCallback, useEffect, useState } from "react";
@@ -24,9 +25,6 @@ export function ReleasePanel(props: { appId: string }) {
   const [versions, setVersions] = useState<VersionItem[]>([]);
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [migrationDraftId, setMigrationDraftId] = useState<string | null>(null);
-  const [migrationPlanText, setMigrationPlanText] = useState("");
-  const [reversePlanText, setReversePlanText] = useState("");
 
   const reload = useCallback(async () => {
     const [draftsRes, versionsRes, currentRes] = await Promise.all([
@@ -56,47 +54,21 @@ export function ReleasePanel(props: { appId: string }) {
     void reload();
   }, [reload]);
 
-  const publish = async (
-    draftId: string,
-    migrationPlan?: unknown,
-    reversePlan?: unknown,
-  ) => {
+  const publish = async (draftId: string) => {
     setError(null);
     const res = await fetch(`/api/apps/${appId}/releases/publish`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ draftId, migrationPlan, reversePlan }),
+      body: JSON.stringify({ draftId, protocolVersion: 2 }),
     });
     if (res.ok) {
-      setMigrationDraftId(null);
-      setMigrationPlanText("");
-      setReversePlanText("");
       await reload();
       notifyReleaseChanged();
       return;
     }
     const body = (await res.json()) as { error?: { code?: string } };
-    if (body.error?.code === "migration_plan_required") {
-      setMigrationDraftId(draftId);
-      return;
-    }
     setError(body.error?.code ?? `发布失败：${res.status}`);
-  };
-
-  const submitWithPlan = async () => {
-    if (!migrationDraftId) return;
-    try {
-      const plan = migrationPlanText.trim()
-        ? (JSON.parse(migrationPlanText) as unknown)
-        : undefined;
-      const reverse = reversePlanText.trim()
-        ? (JSON.parse(reversePlanText) as unknown)
-        : undefined;
-      await publish(migrationDraftId, plan, reverse);
-    } catch {
-      setError("迁移计划 JSON 无法解析");
-    }
   };
 
   const rollback = async (publishedVersionId: string) => {
@@ -105,7 +77,7 @@ export function ReleasePanel(props: { appId: string }) {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ publishedVersionId }),
+      body: JSON.stringify({ publishedVersionId, protocolVersion: 2 }),
     });
     if (res.ok) {
       await reload();
@@ -134,30 +106,6 @@ export function ReleasePanel(props: { appId: string }) {
           </li>
         ))}
       </ul>
-      {migrationDraftId && (
-        <div data-testid="migration-plan-form">
-          <h4>跨 Schema 发布需要迁移计划</h4>
-          <textarea
-            data-testid="migration-plan-input"
-            placeholder='DataMigrationPlan JSON，例如 {"collections":[...]}'
-            value={migrationPlanText}
-            onChange={(e) => setMigrationPlanText(e.target.value)}
-          />
-          <textarea
-            data-testid="reverse-plan-input"
-            placeholder="反向计划 JSON（可选；不提供则该版本不可跨 Schema 回滚）"
-            value={reversePlanText}
-            onChange={(e) => setReversePlanText(e.target.value)}
-          />
-          <button
-            type="button"
-            data-testid="migration-submit"
-            onClick={() => void submitWithPlan()}
-          >
-            带计划发布
-          </button>
-        </div>
-      )}
       <h3>发布历史</h3>
       {versions.length === 0 && <p data-testid="versions-empty">暂无发布</p>}
       <ul>

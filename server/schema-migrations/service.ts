@@ -182,6 +182,12 @@ export class SchemaMigrationService {
       if (!draft || draft.status !== "ready") {
         throw new MigrationRejected("draft", "草稿不存在或不可发布");
       }
+      if (draft.publishBlocked) {
+        throw new MigrationRejected(
+          "draft",
+          "草稿包含阻塞性质量问题，禁止发布",
+        );
+      }
       const publishedVersionId = randomUUID();
       await tx.insert(publishedVersions).values({
         id: publishedVersionId,
@@ -189,6 +195,13 @@ export class SchemaMigrationService {
         draftVersionId: draft.id,
         spec: draft.spec,
         businessSchema: draft.businessSchema,
+        bundle: draft.bundle,
+        catalogVersion: draft.catalogVersion,
+        candidateDigest: draft.candidateDigest,
+        uiBundleDigest: draft.uiBundleDigest,
+        digestVersion: draft.digestVersion,
+        migrationFromPublishedVersionId: draft.migrationFromPublishedVersionId,
+        migrationFromSchemaDigest: draft.migrationFromSchemaDigest,
         migrationPlan: input.plan,
         reversePlan: input.reversePlan,
         publishedByMembershipId: input.publishedByMembershipId,

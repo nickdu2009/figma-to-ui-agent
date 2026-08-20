@@ -1,53 +1,50 @@
-export const CLAUDE_SPEC_BENCHMARK_REASONING_EFFORT = "xhigh" as const;
-export const GPT_SPEC_BENCHMARK_REASONING_EFFORT = "max" as const;
-export type SpecBenchmarkReasoningEffort =
-  | typeof CLAUDE_SPEC_BENCHMARK_REASONING_EFFORT
-  | typeof GPT_SPEC_BENCHMARK_REASONING_EFFORT;
-
-export type SpecBenchmarkProtocol = "anthropic-native" | "openai-compatible";
-type BenchmarkJsonValue = null | boolean | number | string | BenchmarkJsonValue[] | {
-  [key: string]: BenchmarkJsonValue;
-};
-type BenchmarkProviderOptions = Record<string, Record<string, BenchmarkJsonValue>>;
-
-export function protocolForSpecBenchmark(model: string): SpecBenchmarkProtocol {
-  return model.startsWith("claude-") ? "anthropic-native" : "openai-compatible";
-}
-
-export function reasoningEffortForSpecBenchmark(model: string): SpecBenchmarkReasoningEffort {
-  return protocolForSpecBenchmark(model) === "anthropic-native"
-    ? CLAUDE_SPEC_BENCHMARK_REASONING_EFFORT
-    : GPT_SPEC_BENCHMARK_REASONING_EFFORT;
-}
-
-export function anthropicNativeBaseURL(openAICompatibleBaseURL: string): string {
-  const url = new URL(openAICompatibleBaseURL);
-  // LiteLLM's unified /v1/messages endpoint accepts the Anthropic Messages
-  // wire protocol while retaining proxy authentication and model routing.
-  // /anthropic/v1 is provider pass-through and requires an upstream key.
-  url.pathname = url.pathname.replace(/\/$/u, "");
-  url.search = "";
-  url.hash = "";
-  return url.toString().replace(/\/$/u, "");
-}
-
 /**
- * Keep reasoning effort explicit while using each model family's native wire
- * protocol and provider-specific reasoning summary controls.
+ * Benchmark 模型与推理强度策略（设计 §4.1，计划 S10 动作 5）。
+ * 统一改用 Mastra OpenAICompatibleConfig + LiteLLM 单一路径；
+ * Anthropic 等模型同样经过 LiteLLM 的 OpenAI-compatible 通道。
  */
-export function providerOptionsForSpecBenchmark(model: string): BenchmarkProviderOptions {
-  if (protocolForSpecBenchmark(model) === "anthropic-native") {
-    return {
-      anthropic: {
-        thinking: { type: "adaptive", display: "summarized" },
-        effort: reasoningEffortForSpecBenchmark(model),
-      },
-    };
+import {
+  LITELLM_PROVIDER_ID,
+  type ReasoningEffortLevel,
+} from "../model-policy.ts";
+
+export const DEFAULT_BENCHMARK_MODEL = "gpt-5.6-sol" as const;
+export const DEFAULT_BENCHMARK_REASONING_EFFORT: ReasoningEffortLevel = "high";
+
+export type SpecBenchmarkReasoningEffort = ReasoningEffortLevel;
+
+export type SpecBenchmarkProtocol = "openai-compatible";
+
+export function protocolForSpecBenchmark(
+  _model: string,
+): SpecBenchmarkProtocol {
+  // S10：全部模型统一使用 LiteLLM OpenAI-compatible 通道
+  return "openai-compatible";
+}
+
+export function reasoningEffortForSpecBenchmark(
+  model: string,
+): SpecBenchmarkReasoningEffort {
+  if (model.includes("sol") || model.includes("opus")) {
+    return "high";
   }
+  if (model.includes("terra") || model.includes("sonnet")) {
+    return "medium";
+  }
+  return DEFAULT_BENCHMARK_REASONING_EFFORT;
+}
+
+/** 构造 Benchmark 的 providerOptions（providerId: "litellm"）。 */
+export function providerOptionsForSpecBenchmark(
+  model: string,
+  reasoningEffort?: ReasoningEffortLevel,
+): { providerOptions: { litellm: { reasoningEffort: ReasoningEffortLevel } } } {
+  const effort = reasoningEffort ?? reasoningEffortForSpecBenchmark(model);
   return {
-    openai: {
-      reasoningEffort: reasoningEffortForSpecBenchmark(model),
-      reasoningSummary: "detailed",
+    providerOptions: {
+      [LITELLM_PROVIDER_ID]: {
+        reasoningEffort: effort,
+      },
     },
   };
 }

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><title>navigation detached</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      nav[data-role="nav"] { background:#f3f4f6; padding:12px 16px; }
+      /* 致命异常：导航与正文之间出现 720px 空白断裂 */
+      .gap { height: 720px; }
+      main[data-role="main"] { padding: 16px; }
+    </style>
+  </head>
+  <body>
+    <nav data-role="nav">App — Settings</nav>
+    <div class="gap" aria-hidden="true"></div>
+    <main data-role="main">
+      <h1>Settings</h1>
+      <div data-role="critical">Profile settings form</div>
+    </main>
+  </body>
+</html>

@@ -1,22 +1,38 @@
-import { defineCatalog } from "@json-render/core";
+/**
+ * 浏览器侧运行时 Catalog 与 Registry（设计 §10.3，计划 S5）：
+ * - 模型可见 catalog 由 CatalogContract 派生（base 35 + overlay 7 + additions
+ *   46 + customActions 10；任何合同校验失败在模块加载期 throw，fail closed）；
+ * - React 绑定经 catalog-bindings.tsx 组装（同一合同键闭合）；
+ * - registry actions 是永不定局的包装：custom Action 的唯一执行边界是
+ *   RuntimeActionDispatcher（S3 分流；上游 binding onSuccess/onError 不触发）。
+ */
 import { defineRegistry } from "@json-render/react";
-import { shadcnComponents } from "@json-render/shadcn";
-import { shadcnComponentDefinitions } from "@json-render/shadcn/catalog";
-import { schema } from "@next-app-runtime/client/schema";
 
-// The runtime owns Link (and Slot) as built-in components. The model-facing
-// catalog therefore adopts every @json-render/shadcn 0.19.0 definition except
-// Link: exactly 35 components, with no custom business components.
-const { Link: _runtimeOwnedLinkDefinition, ...modelComponentDefinitions } =
-  shadcnComponentDefinitions;
-const { Link: _runtimeOwnedLinkComponent, ...modelComponents } =
-  shadcnComponents;
+import { catalogContract } from "../catalog/catalog-contract.ts";
+import { deriveCatalog } from "../catalog/derive-catalog.ts";
+import { createCatalogBindings } from "./catalog-bindings.tsx";
 
-export const catalog = defineCatalog(schema, {
-  components: modelComponentDefinitions,
-  actions: {},
-});
+export const derivedCatalog = deriveCatalog(catalogContract);
+export const catalog = derivedCatalog.catalog;
+
+const bindings = createCatalogBindings();
+
+/** registry 层的 custom Action 包装：永不定局（执行只属于 Dispatcher）。 */
+function neverSettlingAction(): Promise<void> {
+  return new Promise(() => {});
+}
+
+const registryActions = Object.fromEntries(
+  derivedCatalog.customActionKeys.map((name) => [name, neverSettlingAction]),
+) as unknown as Parameters<typeof defineRegistry>[1]["actions"];
 
 export const { registry } = defineRegistry(catalog, {
-  components: modelComponents,
+  components: bindings.components as unknown as Parameters<
+    typeof defineRegistry
+  >[1]["components"],
+  actions: registryActions,
 });
+
+export const registryKeys = derivedCatalog.registryKeys;
+export const customActionKeys = derivedCatalog.customActionKeys;
+export const compoundStructure = derivedCatalog.compoundStructure;

@@ -1,0 +1,69 @@
+{
+  "bundleVersion": 1,
+  "catalogVersion": "1.0.0",
+  "specCompatibility": "0.19.0",
+  "spec": {
+    "metadata": {
+      "title": {
+        "default": "DS B",
+        "template": "%s | DS B"
+      }
+    },
+    "routes": {
+      "/": {
+        "page": {
+          "root": "root",
+          "elements": {
+            "root": {
+              "type": "Stack",
+              "props": {
+                "direction": "vertical",
+                "gap": "md",
+                "align": null,
+                "justify": null,
+                "className": "ds-marker"
+              },
+              "children": [
+                "t1"
+              ]
+            },
+            "t1": {
+              "type": "Text",
+              "props": {
+                "text": "设计系统 B",
+                "variant": null
+              },
+              "children": []
+            }
+          }
+        }
+      }
+    }
+  },
+  "designSystem": {
+    "tokens": {
+      "primitive": {
+        "color.primary": {
+          "type": "color",
+          "value": "#0f9d58"
+        }
+      },
+      "semantic": {
+        "color.surface": {
+          "$token": "color.primary"
+        }
+      },
+      "component": {
+        "Button": {
+          "background": {
+            "$token": "color.surface"
+          }
+        }
+      }
+    },
+    "applicationCss": ".ds-marker { border-left: 3px dotted var(--vma-st-color-surface); }"
+  },
+  "assets": {
+    "entries": []
+  }
+}

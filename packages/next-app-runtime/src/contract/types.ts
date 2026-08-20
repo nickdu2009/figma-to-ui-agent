@@ -3,6 +3,12 @@ import type { ComponentRegistry } from "@json-render/react";
 import type { ReactNode } from "react";
 
 import { deepFreeze, ownAndDeepFreeze } from "./immutable.js";
+import type {
+  RuntimeActionAdapter,
+  RuntimeActionDispatcher,
+  RuntimeActionIdentity,
+  RuntimeActionPhase,
+} from "../actions/contracts.js";
 
 const RUNTIME_ERROR_INSTANCES = new WeakSet<object>();
 const ROUTE_NOT_FOUND_INSTANCES = new WeakSet<object>();
@@ -99,7 +105,12 @@ export type RuntimeErrorCode =
   | "loader_failed"
   | "route_not_found"
   | "render_failed"
-  | "metadata_apply_failed";
+  | "metadata_apply_failed"
+  | "preview_staging_busy"
+  | "preview_staging_timeout"
+  | "preview_smoke_failed"
+  | "preview_staging_failed"
+  | "stale_generation";
 
 export type SpecStatus =
   | "empty"
@@ -189,6 +200,17 @@ export interface RuntimeOptions {
     string,
     (params: Record<string, unknown>) => Promise<unknown> | unknown
   >;
+  /**
+   * DS S3：custom Action 唯一执行边界（设计 §9.2）。提供时 catalog 的
+   * custom Action 不得同时出现在 handlers（双重注册 fail closed）；
+   * built-in 仍走上游路径，不进入 Adapter。
+   */
+  actionAdapter?: RuntimeActionAdapter;
+  /** Adapter 的 Gate 初始身份与阶段（Controller 独占推进）。 */
+  actionExecutionContext?: {
+    phase: RuntimeActionPhase;
+    identity: RuntimeActionIdentity;
+  };
   loaders?: Record<string, LoaderFn>;
   limits: RuntimeLimits;
   fallbacks: RuntimeFallbacks;
@@ -227,6 +249,8 @@ export interface NextAppRuntime {
   retryLoader(): void;
   getSnapshot(): RuntimeSnapshot;
   subscribe(listener: () => void): () => void;
+  /** DS S3：custom Action 唯一执行边界；未提供 actionAdapter 时为 null。 */
+  getActionDispatcher(): RuntimeActionDispatcher | null;
   dispose(): void;
 }
 

@@ -39,7 +39,12 @@ type ExpectedRuntimeErrorCode =
   | "loader_failed"
   | "route_not_found"
   | "render_failed"
-  | "metadata_apply_failed";
+  | "metadata_apply_failed"
+  | "preview_staging_busy"
+  | "preview_staging_timeout"
+  | "preview_smoke_failed"
+  | "preview_staging_failed"
+  | "stale_generation";
 
 type ExpectedRuntimeEventName =
   | "source_received"
@@ -69,6 +74,7 @@ type ExpectedSourceInput =
 describe("public type contract", () => {
   it("keeps the frozen runtime values and excludes server exports", () => {
     expect(Object.keys(publicApi).sort()).toEqual([
+      "ActionExecutionGate",
       "Link",
       "NextAppProvider",
       "NextAppRenderer",
@@ -79,10 +85,15 @@ describe("public type contract", () => {
       "PageRenderer",
       "RouteNotFound",
       "RuntimeError",
+      "TargetLeaseTable",
       "createNextAppRuntime",
+      "createRuntimeActionDispatcher",
       "createRuntimeWithNavigation",
       "createStateStore",
+      "decidePhaseAction",
+      "normalizeActionError",
       "useNextApp",
+      "useNextAppNavigation",
       "useNextAppRuntime",
     ]);
     expect(publicApi).not.toHaveProperty("createNextApp");
@@ -139,7 +150,12 @@ describe("public type contract", () => {
       [source: NextAppSpecSource, options?: ApplySourceOptions]
     >();
     expectTypeOf<keyof NextAppRuntime>().toEqualTypeOf<
-      "applySource" | "retryLoader" | "getSnapshot" | "subscribe" | "dispose"
+      | "applySource"
+      | "retryLoader"
+      | "getSnapshot"
+      | "subscribe"
+      | "getActionDispatcher"
+      | "dispose"
     >();
   });
 

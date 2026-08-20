@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><title>critical overlap</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; position: relative; }
+      nav[data-role="nav"] { background:#f3f4f6; padding:12px 16px; }
+      /* 致命异常：两个关键卡片重叠超过较小者面积的 50%，文字不可读 */
+      .stage { position: relative; height: 320px; }
+      .card-a, .card-b { position: absolute; width: 420px; height: 160px; padding: 20px; background:#fff; border:1px solid #ccc; box-sizing: border-box; overflow: hidden; }
+      .card-a { left: 40px; top: 20px; }
+      .card-b { left: 160px; top: 60px; }
+    </style>
+  </head>
+  <body>
+    <nav data-role="nav">App — Billing</nav>
+    <main data-role="main">
+      <div class="stage">
+        <div class="card-a" data-role="critical">Invoice summary with payment details and due date information.</div>
+        <div class="card-b" data-role="critical">Payment method editor overlapping the invoice summary completely unreadable.</div>
+      </div>
+    </main>
+  </body>
+</html>

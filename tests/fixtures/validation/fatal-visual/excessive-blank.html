@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><title>excessive blank region</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      nav[data-role="nav"] { background:#f3f4f6; padding:12px 16px; }
+      /* 致命异常：视口中部出现连续 640px 空白带，无任何内容 */
+      .blank { height: 640px; }
+      main[data-role="main"] { padding: 16px; }
+      footer { padding: 12px 16px; background:#f9fafb; }
+    </style>
+  </head>
+  <body>
+    <nav data-role="nav">App — Home</nav>
+    <main data-role="main">
+      <h1>Home</h1>
+      <div data-role="critical">Primary content block</div>
+      <div class="blank" aria-hidden="true"></div>
+      <div data-role="critical">Secondary content block</div>
+    </main>
+    <footer>Footer</footer>
+  </body>
+</html>

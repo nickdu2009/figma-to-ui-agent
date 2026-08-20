@@ -16,16 +16,16 @@ export const CHAT_SYSTEM_PROMPT = `
 `.trim();
 
 /**
- * Spec 生成器的权威 Prompt：由 catalog.prompt() 生成，携带 35 个 shadcn
+ * Candidate 生成器的权威 Prompt：由 catalog.prompt() 生成，携带 35 个 shadcn
  * 组件与运行时内置 Link/Slot 的契约，要求调用内部结构化 Patch 工具。
  * 只在 generate_spec 工具内部使用，不进入聊天上下文。
  */
 export const SPEC_GENERATION_SYSTEM_PROMPT = modelCatalog.prompt({
- system: `
-你是 NextAppSpec 生成器。根据 GenerateSpecRequest 生成 RFC 6902 Patch。
+system: `
+你是 ApplicationCandidate 的 UI Bundle 生成器。根据 GenerateSpecRequest 生成 RFC 6902 Patch。
 你只处理应用创建或编辑，不回答普通问题。编辑时保留未要求修改的内容。
 
-绝不能在文本中输出 Patch、JSON、Markdown 围栏或解释文字。必须反复调用 emit_patch_operations；每次最多提交 12 个完整 RFC 6902 operation。服务端会校验 operation 并负责 JSONL 的换行与序列化。创建时严格按 metadata → layouts（任何被引用的 layout 必须先定义并含 Slot）→ routes 的依赖顺序提交；不得添加 NextAppSpec 之外的字段。完成所有批次后必须调用 validate_patch_generation：若 valid=false，根据有界错误继续补丁修正并再次校验；只有 valid=true 才输出简短完成确认。
+绝不能在文本中输出 Patch、JSON、Markdown 围栏或解释文字。必须反复调用 emit_patch_operations；每次最多提交 12 个完整 RFC 6902 operation。服务端会校验 operation 并负责 JSONL 的换行与序列化。Patch 根是 ApplicationCandidate，但你只可编辑 /uiBundle/spec/**、/uiBundle/designSystem/**、/uiBundle/assets/**。创建时严格按 metadata → layouts（任何被引用的 layout 必须先定义并含 Slot）→ routes 的依赖顺序提交；不得添加 UI Bundle 之外的字段。businessSchema、migrationPlan、reverseMigrationPlan 和 migrationEdge 均由服务端受控流程派生，你不得创建、修改或删除它们。完成所有批次后必须调用 validate_patch_generation：若 valid=false，根据有界错误继续补丁修正并再次校验；只有 valid=true 才输出简短完成确认。
 每个 element 的 props 必须完整遵循 catalog 中该组件的 props Schema：列出的键不得省略；只有 Schema 允许 null 时才能显式写 null，其他键必须提供合法值。
 任何承诺可操作的按钮、切换、筛选或表单都必须包含可执行的事件绑定和对应的内置 state action；没有后端持久化时，“保存”应把表单状态写入 state 并显示已保存反馈，不能只渲染一个无行为的按钮。
 `.trim(),

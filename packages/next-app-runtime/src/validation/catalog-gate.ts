@@ -73,9 +73,10 @@ export function assertCatalogAndRegistry(
   catalog: Catalog,
   registry: ComponentRegistry,
   handlers: Readonly<Record<string, unknown>> | undefined,
+  adapterActionNames?: ReadonlySet<string>,
 ): void {
   for (const name of BUILT_IN_COMPONENTS) {
-    if (Object.prototype.hasOwnProperty.call(registry, name)) {
+    if (Object.hasOwn(registry, name)) {
       throw new RuntimeError(
         "reserved_name_conflict",
         "Registry contains a reserved component name",
@@ -84,7 +85,7 @@ export function assertCatalogAndRegistry(
     }
   }
   for (const name of RESERVED_ACTIONS) {
-    if (handlers && Object.prototype.hasOwnProperty.call(handlers, name)) {
+    if (handlers && Object.hasOwn(handlers, name)) {
       throw new RuntimeError(
         "reserved_name_conflict",
         "Handlers contain a reserved action name",
@@ -104,8 +105,60 @@ export function assertCatalogAndRegistry(
       { declaredCount: declared.length, implementedCount: implemented.length },
     );
   }
+  const declaredActions = [...catalog.actionNames].sort((a, b) =>
+    a.localeCompare(b),
+  );
+  const implementedActions = [
+    ...Object.keys(handlers ?? {}),
+    ...(adapterActionNames ?? new Set<string>()),
+  ].sort((a, b) => a.localeCompare(b));
+  if (
+    declaredActions.length !== implementedActions.length ||
+    declaredActions.some((name, index) => name !== implementedActions[index])
+  ) {
+    throw new RuntimeError(
+      "catalog_registry_mismatch",
+      "Catalog actions and handler implementations do not match",
+      {
+        declaredCount: declaredActions.length,
+        implementedCount: implementedActions.length,
+      },
+    );
+  }
+}
+
+/**
+ * DS S3：RuntimeActionAdapter 冻结的 custom Action 名闭合校验。
+ * 提供 adapter 时键闭合变为 catalog.actions = handlers ∪ adapterActions
+ * （不得重叠）；custom Action 只由 Dispatcher 执行，built-in 不得进入
+ * Adapter handler map。与 assertCatalogAndRegistry 分离调用，保持既有
+ * 3 参签名兼容。
+ */
+export function assertAdapterActionClosure(
+  catalog: Catalog,
+  handlers: Readonly<Record<string, unknown>> | undefined,
+  adapterActionNames: ReadonlySet<string>,
+): void {
+  if (adapterActionNames.size === 0) return;
+  const handlerNames = Object.keys(handlers ?? {});
+  for (const name of adapterActionNames) {
+    if (RESERVED_ACTIONS.has(name)) {
+      throw new RuntimeError(
+        "reserved_name_conflict",
+        "Built-in action must not enter the adapter handler map",
+        { name },
+      );
+    }
+    if (handlerNames.includes(name)) {
+      throw new RuntimeError(
+        "catalog_registry_mismatch",
+        "Custom action is dual-registered",
+        { name },
+      );
+    }
+  }
   const declaredActions = [...catalog.actionNames].sort();
-  const implementedActions = Object.keys(handlers ?? {}).sort();
+  const implementedActions = [...handlerNames, ...adapterActionNames].sort();
   if (
     declaredActions.length !== implementedActions.length ||
     declaredActions.some((name, index) => name !== implementedActions[index])

@@ -1,0 +1,70 @@
+{
+  "valid": {
+    "entries": [
+      {
+        "assetId": "logo",
+        "kind": "image",
+        "contentHash": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "mimeType": "image/png",
+        "byteLength": 12345,
+        "width": 320,
+        "height": 200
+      },
+      {
+        "assetId": "icon-check",
+        "kind": "svg",
+        "contentHash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "mimeType": "image/svg+xml",
+        "byteLength": 2048
+      },
+      {
+        "assetId": "font-inter-400",
+        "kind": "font",
+        "contentHash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "mimeType": "font/woff2",
+        "byteLength": 90000,
+        "font": { "family": "Inter", "weight": 400 }
+      }
+    ]
+  },
+  "duplicateAssetId": {
+    "entries": [
+      {
+        "assetId": "logo",
+        "kind": "image",
+        "contentHash": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "mimeType": "image/png",
+        "byteLength": 100
+      },
+      {
+        "assetId": "logo",
+        "kind": "image",
+        "contentHash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "mimeType": "image/png",
+        "byteLength": 200
+      }
+    ]
+  },
+  "kindMimeMismatch": {
+    "entries": [
+      {
+        "assetId": "icon-check",
+        "kind": "svg",
+        "contentHash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "mimeType": "image/png",
+        "byteLength": 2048
+      }
+    ]
+  },
+  "fontMissingMeta": {
+    "entries": [
+      {
+        "assetId": "font-inter-400",
+        "kind": "font",
+        "contentHash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "mimeType": "font/woff2",
+        "byteLength": 90000
+      }
+    ]
+  }
+}

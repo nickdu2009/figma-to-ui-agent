@@ -1,9 +1,12 @@
 /// <reference types="vite/client" />
 import { CopilotKit } from "@copilotkit/react-core/v2";
 import "@copilotkit/react-core/v2/styles.css";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChatPanel } from "./chat-panel";
-import { createPreviewRuntime, PreviewPanel } from "./preview-panel";
+import {
+  PreviewPanel,
+  createWorkbenchPreviewController,
+} from "./preview-panel";
 import { PublishedPreviewLoader } from "./release/published-preview-loader";
 import { ReleasePanel } from "./release/release-panel";
 import { BusinessDataPanel } from "./business-data/data-panel";
@@ -122,27 +125,41 @@ export function App() {
 }
 
 /**
- * 工作台（S6）：按角色呈现面板——owner 全部；editor 预览+数据；
- * viewer 仅已发布只读预览。UI 隐藏无权限操作，授权事实永远以服务端为准。
- * key={app.id} 保证切换应用后全部状态重载。
+ * 工作台（S6；S4 起预览事务统一由 BundlePreviewController 拥有）：
+ * 按角色呈现面板——owner 全部；editor 预览+数据；viewer 仅已发布只读预览。
+ * UI 隐藏无权限操作，授权事实永远以服务端为准。
+ * key={app.id} 保证切换应用后全部状态重载；Controller 随卸载 dispose
+ *（撤销全部 gate/Runtime，旧闭包稳定拒绝）。
  */
 function Workbench(props: { app: AppListItem; onAppDeleted: () => void }) {
   const { app, onAppDeleted } = props;
   const role = app.myRole;
-  const [preview] = useState(createPreviewRuntime);
+  const [controller] = useState(() => createWorkbenchPreviewController(app.id));
+  // StrictMode 安全的 dispose：cleanup 只调度，真卸载（下轮宏任务前未
+  // 重新 setup）才销毁；模拟卸载被 setup 取消，Controller 不会被误杀。
+  const disposeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (disposeTimerRef.current !== null) {
+      clearTimeout(disposeTimerRef.current);
+      disposeTimerRef.current = null;
+    }
+    return () => {
+      if (disposeTimerRef.current !== null) return;
+      disposeTimerRef.current = setTimeout(() => {
+        disposeTimerRef.current = null;
+        controller.dispose();
+      }, 0);
+    };
+  }, [controller]);
   const [tab, setTab] = useState<"data" | "release" | "bin" | null>(null);
   return (
     <>
-      <PublishedPreviewLoader appId={app.id} runtime={preview.runtime} />
+      <PublishedPreviewLoader appId={app.id} controller={controller} />
       <div className="app-workbench">
         {role === "owner" && (
-          <ChatPanel
-            agentId="chat"
-            appId={app.id}
-            runtime={preview.runtime}
-          />
+          <ChatPanel agentId="chat" appId={app.id} controller={controller} />
         )}
-        <PreviewPanel {...preview} />
+        <PreviewPanel controller={controller} />
         <aside data-testid="workbench-side" className="workbench-side">
           <nav data-testid="workbench-tabs">
             {(role === "owner" || role === "editor") && (

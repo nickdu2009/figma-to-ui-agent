@@ -13,7 +13,21 @@ if (!executablePath)
  */
 export default defineConfig({
   testDir: "tests/browser",
-  testMatch: ["agent-flow.spec.ts", "preview.spec.ts", "persistence.spec.ts"],
+  testMatch: [
+    "agent-flow.spec.ts",
+    "preview.spec.ts",
+    "persistence.spec.ts",
+    "bundle-preview.spec.ts",
+    "design-system-isolation.spec.ts",
+    "design-assets.spec.ts",
+    "runtime-actions.spec.ts",
+    "download-export.spec.ts",
+    "validation-flow.spec.ts",
+    "protocol-mode-compatibility.spec.ts",
+    "release-bundle.spec.ts",
+    "p0-crud-generated-app.spec.ts",
+    "p0-failure-recovery.spec.ts",
+  ],
   fullyParallel: false,
   workers: 2,
   retries: 2,
@@ -35,10 +49,15 @@ export default defineConfig({
       timeout: 30_000,
       env: {
         VMA_AGENT_MODE: "mock",
-          ADMIN_EMAILS: "e2e-admin-0@example.com,e2e-admin-1@example.com,e2e-admin-2@example.com,e2e-admin-3@example.com,e2e-admin-4@example.com",
+        ADMIN_EMAILS:
+          "e2e-admin-0@example.com,e2e-admin-1@example.com,e2e-admin-2@example.com,e2e-admin-3@example.com,e2e-admin-4@example.com",
         VMA_SERVER_PORT: "3101",
+        // S7：DesignAsset 路由与提取 worker（本地内容寻址存储，E2E 专用目录）。
+        VMA_ASSET_ROOT: ".e2e-assets",
         // 加宽流式窗口，让中止测试能在补丁流中途可靠点击停止。
         VMA_MOCK_PATCH_INTERVAL_MS: "300",
+        // S9：Validation worker 子进程启动 Chromium 的可执行路径。
+        PLAYWRIGHT_CHROMIUM_EXECUTABLE: executablePath,
       },
     },
     {

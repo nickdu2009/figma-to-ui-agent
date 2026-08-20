@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "gate": "DS-GATE-00",
+  "profileVersion": "fatal-visual-v1",
+  "fixtureDirectory": "tests/fixtures/validation/fatal-visual/",
+  "measuredAt": "2026-08-18T08:31:00.000Z",
+  "thresholds": {
+    "contentWidthMinRatio": {
+      "rule": "mainWidthRatio < 0.20",
+      "issueCode": "content_width_too_narrow"
+    },
+    "verticalCollapseMinCount": {
+      "rule": "verticalCollapseCount >= 1 (text block >= 30 chars, width < 24px, height > 200px)",
+      "issueCode": "vertical_text_collapse"
+    },
+    "overlapMinRatio": {
+      "rule": "maxOverlapRatio > 0.50 (intersection area / smaller box area)",
+      "issueCode": "critical_overlap"
+    },
+    "overflowMaxPx": {
+      "rule": "horizontalOverflowPx > 24 (scrollWidth - viewportWidth)",
+      "issueCode": "viewport_overflow"
+    },
+    "clippedMinPx": {
+      "rule": "maxClippedPx > 64 (overflow hidden clipped height)",
+      "issueCode": "content_clipped"
+    },
+    "navGapMaxPx": {
+      "rule": "navMainGapPx > 320 (main.top - nav.bottom)",
+      "issueCode": "navigation_content_detached"
+    },
+    "blankBandMaxPx": {
+      "rule": "maxBlankBandPx > 400 (consecutive blank band between first and last content strip)",
+      "issueCode": "excessive_blank_region"
+    }
+  },
+  "viewports": {
+    "desktop": { "width": 1440, "height": 900 },
+    "mobile": { "width": 390, "height": 844 }
+  },
+  "cases": [
+    {
+      "fixture": "normal.html",
+      "viewport": "desktop",
+      "expectedIssue": null,
+      "measured": { "mainWidthRatio": 0.764, "overflowPx": 0, "navGapPx": -900, "blankBandPx": 0, "overlapRatio": 0, "collapseCount": 0, "clippedPx": 0 }
+    },
+    {
+      "fixture": "normal.html",
+      "viewport": "mobile",
+      "expectedIssue": null,
+      "measured": { "mainWidthRatio": 1.0, "overflowPx": 0, "navGapPx": 0, "blankBandPx": 0, "overlapRatio": 0, "collapseCount": 0, "clippedPx": 0 }
+    },
+    {
+      "fixture": "narrow-content.html",
+      "viewport": "desktop",
+      "expectedIssue": "content_width_too_narrow",
+      "measured": { "mainWidthRatio": 0.028 }
+    },
+    {
+      "fixture": "narrow-content.html",
+      "viewport": "mobile",
+      "expectedIssue": "content_width_too_narrow",
+      "measured": { "mainWidthRatio": 0.103 }
+    },
+    {
+      "fixture": "vertical-collapse.html",
+      "viewport": "desktop",
+      "expectedIssue": "vertical_text_collapse",
+      "measured": { "collapseCount": 1 }
+    },
+    {
+      "fixture": "vertical-collapse.html",
+      "viewport": "mobile",
+      "expectedIssue": "vertical_text_collapse",
+      "measured": { "collapseCount": 1 }
+    },
+    {
+      "fixture": "critical-overlap.html",
+      "viewport": "desktop",
+      "expectedIssue": "critical_overlap",
+      "measured": { "overlapRatio": 0.5357 }
+    },
+    {
+      "fixture": "critical-overlap.html",
+      "viewport": "mobile",
+      "expectedIssue": "critical_overlap",
+      "measured": { "overlapRatio": 0.5357, "overflowPx": 190 }
+    },
+    {
+      "fixture": "viewport-overflow.html",
+      "viewport": "desktop",
+      "expectedIssue": "viewport_overflow",
+      "measured": { "overflowPx": 160 }
+    },
+    {
+      "fixture": "viewport-overflow.html",
+      "viewport": "mobile",
+      "expectedIssue": "viewport_overflow",
+      "measured": { "overflowPx": 1210 }
+    },
+    {
+      "fixture": "content-clipped.html",
+      "viewport": "desktop",
+      "expectedIssue": "content_clipped",
+      "measured": { "clippedPx": 200 }
+    },
+    {
+      "fixture": "content-clipped.html",
+      "viewport": "mobile",
+      "expectedIssue": "content_clipped",
+      "measured": { "clippedPx": 344 }
+    },
+    {
+      "fixture": "detached-nav.html",
+      "viewport": "desktop",
+      "expectedIssue": "navigation_content_detached",
+      "measured": { "navGapPx": 720, "blankBandPx": 720 }
+    },
+    {
+      "fixture": "detached-nav.html",
+      "viewport": "mobile",
+      "expectedIssue": "navigation_content_detached",
+      "measured": { "navGapPx": 720, "blankBandPx": 720 }
+    },
+    {
+      "fixture": "excessive-blank.html",
+      "viewport": "desktop",
+      "expectedIssue": "excessive_blank_region",
+      "measured": { "blankBandPx": 640 }
+    },
+    {
+      "fixture": "excessive-blank.html",
+      "viewport": "mobile",
+      "expectedIssue": "excessive_blank_region",
+      "measured": { "blankBandPx": 640 }
+    }
+  ],
+  "calibrationResult": {
+    "correct": true,
+    "caseCount": 16,
+    "summary": "16/16 cases correctly separated (2 normal cases issue-free; 14 fatal cases each detected with the expected issue code on both desktop and mobile viewports)."
+  },
+  "approval": {
+    "status": "proposed-by-implementation",
+    "note": "阈值由 DS-GATE-00 校准探针验证；正式批准由项目 owner 与设计系统 owner 复核后确认。"
+  }
+}

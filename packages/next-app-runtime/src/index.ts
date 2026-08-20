@@ -7,6 +7,7 @@ export {
   NextAppProvider,
   NextAppRuntimeProvider,
   useNextApp,
+  useNextAppNavigation,
   useNextAppRuntime,
   type NextAppContextValue,
   type NextAppProviderProps,
@@ -48,6 +49,31 @@ export {
 } from "./contract/types.js";
 export type { Spec, StateStore } from "@json-render/core";
 export { createStateStore } from "@json-render/core";
+// DS S3：custom Action 唯一执行边界（设计 §9.2）
+export type {
+  RuntimeActionAdapter,
+  RuntimeActionContract,
+  RuntimeActionDispatchResult,
+  RuntimeActionDispatcher,
+  RuntimeActionHandler,
+  RuntimeActionIdentity,
+  RuntimeActionPhase,
+  RuntimeActionPermissionClass,
+  RuntimeActionResult,
+  RuntimeActionTargets,
+  RuntimeHostEffects,
+  RuntimePlatformUiDispatcher,
+  RuntimeStaticCallback,
+  StateStoreLike,
+  ValidatedCustomActionInvocation,
+} from "./actions/contracts.js";
+export {
+  decidePhaseAction,
+  normalizeActionError,
+} from "./actions/contracts.js";
+export { ActionExecutionGate } from "./actions/execution-gate.js";
+export { TargetLeaseTable } from "./actions/target-leases.js";
+export { createRuntimeActionDispatcher } from "./actions/dispatcher.js";
 export type {
   ActionFn,
   Actions,

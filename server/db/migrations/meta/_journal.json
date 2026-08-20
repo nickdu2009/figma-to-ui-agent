@@ -36,6 +36,20 @@
       "when": 1786901262324,
       "tag": "0004_0004_migration_plans",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1787051667526,
+      "tag": "0005_0005_design_system_catalog",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1787209781743,
+      "tag": "0006_0006_recovery_asset_constraints",
+      "breakpoints": true
     }
   ]
 }
