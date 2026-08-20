@@ -50,7 +50,8 @@ test("S13 release-bundle：生成草稿并显式发布为 PublishedVersion", asy
     `/api/apps/${appId}/releases/publish`,
     {
       headers: { Origin: "http://127.0.0.1:3100" },
-      data: { draftId },
+      // S13：宿主发布 mutation 必须明确使用唯一的 v2 线协议。
+      data: { draftId, protocolVersion: 2 },
     },
   );
   expect(pubRes.status()).toBe(200);

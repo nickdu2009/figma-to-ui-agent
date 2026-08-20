@@ -160,11 +160,12 @@ RSS 轮询采用 `ps -axo pid=,ppid=,rss=` 快照对 worker 子树求和（macOS
 3. **abort 场景初判失败（已修复）**：探针初版只 `await fetch`（仅等响应头），未读正文即 resolve，导致 abort 计时失效；改为读取 `arrayBuffer()` 后按 AbortError 判定（156ms 命中）。
 4. **vite build 计时**：DSG-01 每次运行都会执行一次完整 `npm run build`（写入 dist/，属常规构建产物）。
 
-## 10. 尚未验证内容与所需授权（汇总）
+## 10. 后续生命周期边界（汇总）
 
-| 项 | 所需授权 |
+| 项 | 当前状态 |
 | --- | --- |
-| S16 兼容性切换/恢复演练、发布、commit/push | 均未授权，未执行 |
+| S16 v2 首次部署/恢复演练 | 已于 2026-08-20 在随机隔离 schema 与临时 `VMA_ASSET_ROOT` 完成；见 `scripts/s16-v2-first-deployment-rehearsal.mjs` 与实施证据。 |
+| 生产部署、推送 | 未执行，仍须单独授权。 |
 
 ## 11. 工作树变更清单（本门禁新增，未含用户既有修改）
 

@@ -7,7 +7,7 @@
 
 | 步骤 | 状态 | 交付文件 / 核心变更 | 验证命令与结果 |
 | :--- | :--- | :--- | :--- |
-| **DS-GATE-00** | ⚠️ 本地探针通过 / 真实模型待授权 | 探针脚本、基线夹具、资源包络与 fatal 校准 | DSG-01 ~ DSG-05 本地探针全部通过；DSG-06（真实 LLM transport probe）按计划授权边界保持 blocked 等待单独授权 |
+| **DS-GATE-00** | ✅ 已通过 | 探针脚本、基线夹具、资源包络与 fatal 校准 | DSG-01 ~ DSG-06 通过；真实 LiteLLM transport 已获授权并完成。 |
 | **S1** | ✅ 已通过 | 单一 CatalogContract、AppUiBundle、派生合同 | `tests/contract/catalog-contract.test.ts` (7/7 passed) |
 | **S2** | ✅ 已通过 | 0005 增量迁移、表结构与 Repository 骨架 | `tests/integration/persistence/design-system-*.test.ts` 全部通过 |
 | **S3** | ✅ 已通过 | RuntimeActionDispatcher、ExecutionGate、租约 | `packages/next-app-runtime/tests/actions/*.test.ts` (29/29 passed) |
@@ -20,9 +20,10 @@
 | **S10** | ✅ 已通过 | 受控 Mastra Runtime、LiteLLM 单一路径、模型策略 | `tests/integration/mastra-runtime.test.ts` 等全部通过 |
 | **S11** | ✅ 已通过 | ApplicationCandidate、权威 Finish、Preview Commit | `tests/integration/persistence/preview-commit.test.ts` 等全部通过 |
 | **S12** | ✅ 已通过 | GenerationRun 状态机、RecoveryCoordinator、GC | `tests/integration/persistence/recovery.test.ts` (10/10 passed) |
-| **S13** | ✅ 已通过 | 协议模式状态机、发布/回滚、数据迁移、双写兼容 | `tests/integration/persistence/bundle-*.test.ts` (11/11 passed) |
-| **S14** | ✅ 已通过 | 全链路 Mock 验收、性能基线、失败恢复无挂起 | 58 套件 428 测试全绿，Playwright 浏览器验收全通 |
+| **S13** | ✅ 已通过 | v2 协议围栏、发布/回滚、数据迁移与受控回填 | `tests/contract/protocol-mode.test.ts`、`release-bundle.spec.ts` 通过。 |
+| **S14** | ✅ 已通过 | 全链路 Mock 验收、性能基线、失败恢复无挂起 | `npm test` 61 files / 439 tests passed；浏览器验收通过。 |
 | **S15** | ✅ 已通过 | P1 延迟能力封存与负向门禁 | `tests/contract/deferred-capabilities.test.ts` (4/4 passed) |
+| **S16** | ✅ 已通过（隔离演练） | v2 首次部署、DB+资产联合恢复与清理 | `scripts/s16-v2-first-deployment-rehearsal.mjs --confirm`：29 浏览器测试、完整 DDL 恢复、ledger、Bundle/spec、Blob hash 通过。 |
 
 ---
 
@@ -39,15 +40,15 @@
 
 - **命令**: `npm run test`
 - **结果**:
-  - Test Files: 58 passed (58)
-  - Tests: 428 passed (428)
+  - Test Files: 61 passed (61)
+  - Tests: 439 passed (439)
   - Duration: ~100s
 
 ### 2.3 浏览器端 Mock 全链路测试 (Playwright)
 
 - **命令**: `PLAYWRIGHT_CHROMIUM_EXECUTABLE="..." npm run test:browser:mock`
 - **结果**:
-  - 13 个完整端到端验收 Spec 全部通过；
+  - 13 个完整端到端验收 Spec、共 29 项测试全部通过；
   - 覆盖生成、补丁流、错误恢复、预览切换、发布回滚、数据交互、下载导出。
 
 ---
@@ -94,11 +95,12 @@
 
 ---
 
-## 5. 未授权动作与 S16 演练前置提示
+## 5. 生命周期边界与 S16 演练记录
 
 按照目标指引，以下生产性或破坏性动作保持未执行状态，需单独授权：
 
-- 未连接真实 LiteLLM / 真实厂商大模型（所有验收均在 Mock 隔离协议下完成）；
+- 真实 LiteLLM transport 与一次真实 Agent E2E 已获授权并完成；本 S16 以 Mock 浏览器链路复验应用生命周期，不重复消耗模型调用；
 - 未修改 `package.json` / `package-lock.json` 依赖项；
-- 未对现有持久化开发数据库执行生产 DDL 或联合备份恢复；
-- 未执行 S16 兼容性切换演练及正式部署/commit/push。
+- 未对现有持久化开发数据库或用户资产目录执行 DDL、备份或恢复；
+- S16 已在随机隔离 schema 与临时资产目录完成。脚本默认拒绝执行，必须显式传入 `--confirm`；每次结束删除隔离资源；
+- 未执行生产部署或推送。

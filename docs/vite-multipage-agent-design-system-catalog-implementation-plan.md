@@ -1,6 +1,6 @@
 # vite-multipage-agent 设计系统与 Catalog 文件级实施计划
 
-- 状态：专项复审通过（保留可验证机械性假设）；仅完成计划，不授权实施
+- 状态：S1–S16 已在本地隔离环境实施并验收；不代表已上线或已推送
 - 计划日期：2026-08-18
 - 代码基线：1352685872efe17ebe6c251b2ef9f5ab4932414b
 - 设计来源：docs/vite-multipage-agent-design-system-catalog-design.md
@@ -12,7 +12,7 @@
 
 ## 1. 计划结论
 
-本增量可以进入实施准备，但任何生产代码、数据库迁移、依赖切换或真实 Runner 接入都必须先通过 DS-GATE-00。DS-GATE-00 是本计划的 Phase 0，不是编写本计划的前置条件；它是 S1 至 S16 的硬阻断门。
+本计划的实施已完成：DS-GATE-00、S1 至 S15 及 S16 的隔离首次部署/恢复演练均有证据。DS-GATE-00 仍是任何后续变更进入 S1 至 S16 等价范围时的硬阻断门；生产上线、推送与外部部署仍须独立授权。
 
 实施按四个可合并增量交付：
 
@@ -929,6 +929,7 @@ Architecture owner 在 evidence 中填写 DS-GATE-00=pass、批准 digest 与各
   - 联合恢复点不一致，或任一写入可在 readonly_recovery 中绕过门禁。
 - 回退点：只进入 readonly_recovery 以保护事实数据；任何恢复不执行 destructive cleanup/down migration。
 - 覆盖 AC：AC11b、AC19e、AC19g、AC21、AC22。
+- 执行证据（2026-08-20）：`scripts/s16-v2-first-deployment-rehearsal.mjs --confirm` 在两套随机隔离 schema 与 OS 临时资产目录中执行。29 项 Mock 浏览器验收通过；恢复库以完整 `SHOW CREATE TABLE` DDL 与数据克隆后重新通过迁移 preflight/postflight，源/恢复逐表计数一致，Draft/Published Bundle 均无 NULL，1 个 ready Blob SHA-256/长度一致；两套 schema 与目录均已清理。该演练不触碰默认开发库，不构成真实生产部署。
 
 ## 9. 合并增量与每增量验收
 
