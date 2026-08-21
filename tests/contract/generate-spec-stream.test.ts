@@ -6,7 +6,10 @@ import { Observable } from "rxjs";
 import { generateSpecInputSchema } from "../../server/contracts.ts";
 import { GenerationCoordinator } from "../../server/generation-coordinator.ts";
 import type { GenerationLifecyclePort } from "../../server/generation/lifecycle.ts";
-import { CoordinatedMastraAgent } from "../../server/coordinated-mastra-agent.ts";
+import {
+  CoordinatedMastraAgent,
+  resolveGenerationIdleTimeoutMs,
+} from "../../server/coordinated-mastra-agent.ts";
 
 /**
  * generate_spec 流式协议契约（计划 §6/§7）：
@@ -86,6 +89,75 @@ class HangingAgent extends AbstractAgent {
   }
 }
 
+class ReasoningScriptedAgent extends AbstractAgent {
+  constructor() {
+    super({ agentId: "reasoning-scripted", description: "", debug: false });
+  }
+  clone(): ReasoningScriptedAgent {
+    return new ReasoningScriptedAgent();
+  }
+  run(input: RunAgentInput): Observable<BaseEvent> {
+    return new Observable<BaseEvent>((subscriber) => {
+      subscriber.next({
+        type: EventType.RUN_STARTED,
+        threadId: input.threadId,
+        runId: input.runId,
+      } as BaseEvent);
+      for (const messageId of ["empty", "visible"] as const) {
+        subscriber.next({
+          type: EventType.REASONING_START,
+          messageId,
+        } as BaseEvent);
+        subscriber.next({
+          type: EventType.REASONING_MESSAGE_START,
+          messageId,
+          role: "reasoning",
+        } as BaseEvent);
+        if (messageId === "visible") {
+          subscriber.next({
+            type: EventType.REASONING_MESSAGE_CONTENT,
+            messageId,
+            delta: "可展示摘要",
+          } as BaseEvent);
+        }
+        subscriber.next({
+          type: EventType.REASONING_MESSAGE_END,
+          messageId,
+        } as BaseEvent);
+        subscriber.next({
+          type: EventType.REASONING_END,
+          messageId,
+        } as BaseEvent);
+      }
+      subscriber.next({
+        type: EventType.RUN_FINISHED,
+        threadId: input.threadId,
+        runId: input.runId,
+      } as BaseEvent);
+      subscriber.complete();
+    });
+  }
+}
+
+describe("生成无进度保护配置", () => {
+  it("默认给复杂真实生成十分钟，并拒绝无界或非法覆盖", () => {
+    expect(resolveGenerationIdleTimeoutMs({})).toBe(600_000);
+    expect(
+      resolveGenerationIdleTimeoutMs({
+        VMA_GENERATION_IDLE_TIMEOUT_MS: "900000",
+      }),
+    ).toBe(900_000);
+    expect(() =>
+      resolveGenerationIdleTimeoutMs({ VMA_GENERATION_IDLE_TIMEOUT_MS: "1" }),
+    ).toThrow("VMA_GENERATION_IDLE_TIMEOUT_MS");
+    expect(() =>
+      resolveGenerationIdleTimeoutMs({
+        VMA_GENERATION_IDLE_TIMEOUT_MS: "unbounded",
+      }),
+    ).toThrow("VMA_GENERATION_IDLE_TIMEOUT_MS");
+  });
+});
+
 class FailIfInvokedAgent extends AbstractAgent {
   calls = 0;
   constructor() {
@@ -130,6 +202,38 @@ function customEvents(events: BaseEvent[]) {
 }
 
 describe("generate_spec stream contract", () => {
+  it("丢弃没有可展示 delta 的 reasoning 段，避免空 Thought 卡片", async () => {
+    const coordinator = new GenerationCoordinator();
+    const agent = new CoordinatedMastraAgent(
+      new ReasoningScriptedAgent(),
+      coordinator,
+      { agentId: "chat" },
+    );
+    const events = await collect(agent, {
+      threadId: "t-reasoning",
+      runId: "r-reasoning",
+    });
+    const reasoning = events.filter((event) =>
+      String(event.type).startsWith("REASONING"),
+    ) as Array<BaseEvent & { messageId?: string; delta?: string }>;
+
+    expect(reasoning.map((event) => event.messageId)).toEqual([
+      "visible",
+      "visible",
+      "visible",
+      "visible",
+      "visible",
+    ]);
+    expect(reasoning.map((event) => event.type)).toEqual([
+      EventType.REASONING_START,
+      EventType.REASONING_MESSAGE_START,
+      EventType.REASONING_MESSAGE_CONTENT,
+      EventType.REASONING_MESSAGE_END,
+      EventType.REASONING_END,
+    ]);
+    expect(reasoning[2]?.delta).toBe("可展示摘要");
+  });
+
   it("CUSTOM 顺序：start→delta→finish 早于 TOOL_CALL_RESULT 与 RUN_FINISHED", async () => {
     const coordinator = new GenerationCoordinator();
     const agent = new CoordinatedMastraAgent(

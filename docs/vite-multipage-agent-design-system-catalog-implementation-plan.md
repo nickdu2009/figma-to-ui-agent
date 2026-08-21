@@ -686,13 +686,14 @@ Architecture owner 在 evidence 中填写 DS-GATE-00=pass、批准 digest 与各
   - 新增 tests/contract/agent-runtime-policy.test.ts
   - 新增 tests/integration/mastra-runtime.test.ts
 - 动作：
-  1. 用 @mastra/core 的 OpenAICompatibleConfig 统一 Chat、Spec、repair、benchmark 到 LiteLLM。
+  1. 用 @mastra/core `OpenAICompatibleConfig` 的内建 OpenAI router 统一 Chat、Spec、repair、benchmark 到 LiteLLM `/responses`；模型配置不携带 `url`，受控启动配置把 `OPENAI_BASE_URL` 锁定到 LiteLLM。
   2. 生产固定 Chat=gpt-5.6-terra/medium、Spec=gpt-5.6-sol/high、repair=xhigh；客户端模型/provider/endpoint/reasoning/retry 字段不参与选择。
   3. 建立 logger:false 的受控 Runtime 工厂；静态 Chat Agent 常驻，动态 Spec/benchmark 使用唯一 registry key 并在完整流终态后注销。
   4. maxRetries:1 只放 Agent 构造器顶层；响应/Patch 开始后不重放，不跨模型降级。
   5. benchmark CLI 允许受控候选模型/推理强度，但不能修改生产策略。
   6. 移除直接 @ai-sdk/openai、@ai-sdk/anthropic、createOpenAI/createAnthropic；不创建自定义 MastraModelGateway。
   7. 错误和日志只输出 allowlist ID/稳定码，过滤 system/user/tool、headers、upstream body 和 stack。
+  8. 服务端固定 `reasoningSummary:detailed` 并把 Responses summary delta 映射为标准 AG-UI reasoning 事件；Chat 由 `@ag-ui/mastra` 转换，内部 Spec Agent 由 GenerationCoordinator 中继。不转发 encrypted content/provider metadata。
 - 验证：
   - npm install 后 npm ls 核对唯一依赖树
   - npm run typecheck
@@ -1026,7 +1027,7 @@ Architecture owner 在 evidence 中填写 DS-GATE-00=pass、批准 digest 与各
 2. 当前 MySQL 8.4 能支持所需条件更新、锁序、数据库时间和 additive DDL；由 S2 实测。
 3. 当前 Drizzle MySQL migrator 能在 0005 的 statement breakpoint 下执行带固定 stepId 的条件化 SQL；S2 必须分别从空库、0004、每个已知部分 DDL 状态验证。若不成立，停止 S2 并返回迁移设计，不绕过 verifier。
 4. Playwright 1.61.1 能支持 worker/Chromium DownloadIntent probe；由 DS-GATE-00 实测。
-5. @mastra/core 1.51.0 的 OpenAICompatibleConfig、reasoningEffort 和动态 registry 行为以真实 probe 为准。
+5. @mastra/core 1.51.0 的 OpenAICompatibleConfig、内建 OpenAI Responses router、reasoning summary 事件和动态 registry 行为以真实 probe 为准。
 6. 0005 必须一次容纳设计所需字段/表；后续发现遗漏先回到 S2，不连续追加补丁迁移掩盖计划缺口。
 7. 现有 180ms Preview 淡入保留；不新增第二动画状态机。
 8. P0 不实现任意网络、任意代码、业务附件、独立 Origin 或完整质量矩阵。

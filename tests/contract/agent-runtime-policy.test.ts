@@ -3,18 +3,20 @@
  *
  * 验证不变式：
  * 1. 生产固定 Chat=gpt-5.6-terra/medium、Spec=gpt-5.6-sol/high、repair=xhigh；
- * 2. 统一使用 LiteLLM OpenAICompatibleConfig（providerId="litellm"）；
+ * 2. 项目侧仅使用 Mastra OpenAI router，经 LiteLLM `/responses`；
  * 3. ControlledAgentRuntime logger: false；
  * 4. 静态 Agent 常驻；动态 Agent 终态后注销且禁止复用键；
  * 5. 动态 Agent 数量超限抛出稳定容量异常；
  * 6. 错误与日志脱敏：归一化为稳定 code，只输出 allowlist 字段。
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Agent } from "@mastra/core/agent";
+import { ModelRouterLanguageModel } from "@mastra/core/llm";
 import {
-  LITELLM_PROVIDER_ID,
+  MASTRA_OPENAI_PROVIDER_ID,
   MODEL_ERROR_CODES,
   PRODUCTION_MODEL_POLICY,
+  configureMastraOpenAiRouterForLiteLlm,
   createLiteLlmExecutionOptions,
   createLiteLlmModelConfig,
   formatSafeModelLog,
@@ -43,23 +45,87 @@ describe("S10 模型策略契约 (model-policy)", () => {
     expect(PRODUCTION_MODEL_POLICY.repair.maxRetries).toBe(1);
   });
 
-  it("createLiteLlmModelConfig 构造原生 OpenAICompatibleConfig", () => {
+  it("createLiteLlmModelConfig 构造 Mastra 内建 OpenAI router 配置", () => {
     const config = createLiteLlmModelConfig("gpt-5.6-terra", {
       baseUrl: "http://127.0.0.1:4000/v1",
       apiKey: "sk-test-key",
     });
-    expect(config.providerId).toBe(LITELLM_PROVIDER_ID);
+    expect(config.providerId).toBe(MASTRA_OPENAI_PROVIDER_ID);
     expect(config.modelId).toBe("gpt-5.6-terra");
-    expect(config.url).toBe("http://127.0.0.1:4000/v1");
     expect(config.apiKey).toBe("sk-test-key");
+    expect("url" in config).toBe(false);
   });
 
-  it("createLiteLlmExecutionOptions 生成正确的 providerOptions 结构", () => {
+  it("createLiteLlmExecutionOptions 显式开启 Responses reasoning summary", () => {
     const chatOpts = createLiteLlmExecutionOptions("medium");
-    expect(chatOpts.providerOptions.litellm.reasoningEffort).toBe("medium");
+    expect(chatOpts.providerOptions.openai).toEqual({
+      reasoningEffort: "medium",
+      reasoningSummary: "detailed",
+      store: false,
+    });
 
     const specOpts = createLiteLlmExecutionOptions("high");
-    expect(specOpts.providerOptions.litellm.reasoningEffort).toBe("high");
+    expect(specOpts.providerOptions.openai.reasoningEffort).toBe("high");
+  });
+
+  it("Mastra router 向 LiteLLM /responses 发送 summary 流请求", async () => {
+    const originalBaseUrl = process.env.OPENAI_BASE_URL;
+    const requests: Array<{ url: string; body: Record<string, unknown> }> = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+        requests.push({
+          url: String(input),
+          body: JSON.parse(String(init?.body ?? "{}")) as Record<
+            string,
+            unknown
+          >,
+        });
+        // 返回稳定上游错误即可结束流；本测试只验证出站契约，
+        // 不调用真实 LiteLLM/LLM。
+        return new Response(
+          JSON.stringify({ error: { message: "stop", type: "test_error" } }),
+          { status: 500, headers: { "content-type": "application/json" } },
+        );
+      }),
+    );
+
+    try {
+      const serverConfig = {
+        baseUrl: "http://proxy.test/v1/",
+        apiKey: "sk-test-key",
+      };
+      configureMastraOpenAiRouterForLiteLlm(serverConfig);
+      const model = new ModelRouterLanguageModel(
+        createLiteLlmModelConfig("gpt-5.6-terra", serverConfig),
+      );
+      try {
+        const result = await model.doStream({
+          prompt: [
+            { role: "user", content: [{ type: "text", text: "hello" }] },
+          ],
+          ...createLiteLlmExecutionOptions("medium"),
+        } as never);
+        for await (const part of result.stream) {
+          if (part.type === "error") break;
+        }
+      } catch {
+        // 上游 500 是测试夹具的预期终态；请求契约在下方断言。
+      }
+
+      expect(requests).toHaveLength(1);
+      expect(requests[0]?.url).toBe("http://proxy.test/v1/responses");
+      expect(requests[0]?.body).toMatchObject({
+        model: "gpt-5.6-terra",
+        stream: true,
+        store: false,
+        reasoning: { effort: "medium", summary: "detailed" },
+      });
+    } finally {
+      vi.unstubAllGlobals();
+      if (originalBaseUrl === undefined) delete process.env.OPENAI_BASE_URL;
+      else process.env.OPENAI_BASE_URL = originalBaseUrl;
+    }
   });
 
   it("resolveLiteLlmConfig 从环境读取凭据并支持默认回退", () => {
@@ -73,6 +139,20 @@ describe("S10 模型策略契约 (model-policy)", () => {
     const empty = resolveLiteLlmConfig({});
     expect(empty.apiKey).toBe("");
     expect(empty.baseUrl).toBe("http://127.0.0.1:4000/v1");
+
+    const env: NodeJS.ProcessEnv = {};
+    configureMastraOpenAiRouterForLiteLlm(
+      { baseUrl: "http://proxy.local:4000/v1/", apiKey: "not-copied" },
+      env,
+    );
+    expect(env.OPENAI_BASE_URL).toBe("http://proxy.local:4000/v1");
+    expect(env.OPENAI_API_KEY).toBeUndefined();
+    expect(() =>
+      configureMastraOpenAiRouterForLiteLlm(
+        { baseUrl: "file:///tmp/not-http", apiKey: "x" },
+        env,
+      ),
+    ).toThrow("HTTP(S) URL");
   });
 
   it("normalizeModelError 将上游异常归一化为稳定错误码（无泄露）", () => {

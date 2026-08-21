@@ -67,9 +67,9 @@ flowchart LR
   Runtime --> Chat["Mastra Chat Agent\ngpt-5.6-terra / medium"]
   Chat -->|"普通问答直接流式回复"| User
   Chat -->|"仅通过 generate_spec"| Generate["动态注册的 Mastra Spec Agent\ngpt-5.6-sol / high"]
-  Chat --> ModelAccess["Mastra OpenAICompatibleConfig"]
+  Chat --> ModelAccess["Mastra 内建 OpenAI router\nOpenAI Responses"]
   Generate --> ModelAccess
-  ModelAccess --> LiteLLM["LiteLLM Gateway\n统一 OpenAI-compatible API"]
+  ModelAccess --> LiteLLM["LiteLLM Gateway\nOpenAI Responses API"]
   LiteLLM --> Vendors["OpenAI / Anthropic / 其他上游"]
   Catalog["CatalogContract\n组件 + built-in/custom Action + Prompt"] --> Generate
   Generate --> Candidate["服务端组装完整 ApplicationCandidate\nAppUiBundle + BusinessSchema + Migration"]
@@ -103,7 +103,7 @@ flowchart LR
 
 ### 4.1 Agent、模型与 LiteLLM 接入契约
 
-模型编排由 Mastra 负责，LiteLLM 只负责把不同上游模型厂商统一为 OpenAI-compatible API。Hono、CopilotKit、AG-UI、工具协调器和生成协议均不得直接调用 LiteLLM，也不得在项目代码中自行实现模型 Provider 或 Gateway。
+模型编排由 Mastra 负责，LiteLLM 只负责把不同上游模型厂商统一到 OpenAI Responses API。Hono、CopilotKit、AG-UI、工具协调器和生成协议均不得直接调用 LiteLLM，也不得在项目代码中自行实现模型 Provider 或 Gateway。
 
 模型职责固定分离：
 
@@ -112,7 +112,7 @@ flowchart LR
 | Chat Agent | 普通问答、需求理解、`ask_question`、决定是否调用一次 `generate_spec` | `gpt-5.6-terra` | `medium` |
 | Spec Agent | 只在 `generate_spec` 内生成 ApplicationCandidate/Patch，不承担普通聊天 | `gpt-5.6-sol` | `high` |
 
-两个 Agent 都使用 `@mastra/core` 已有的 `OpenAICompatibleConfig` 指向同一个 LiteLLM endpoint；模型 ID、推理强度和 endpoint 由服务端配置拥有，浏览器请求、用户消息和前端工具参数均不能覆盖。LiteLLM 再按服务端运维配置把模型别名路由到 OpenAI、Anthropic 或其他上游。这里选择的是 Mastra 原生兼容配置，不新增 `MastraModelGateway` 子类，不维护第二份 provider registry。
+两个 Agent 都使用 `@mastra/core` 已有的 `OpenAICompatibleConfig`，但必须选择 Mastra 内建 `providerId: "openai"` router，并故意不在模型配置中携带 `url`。服务端在创建 Agent 前把 `OPENAI_BASE_URL` 锁定为同一 LiteLLM endpoint；Mastra 因此使用内建 OpenAI Responses provider 请求 `${OPENAI_BASE_URL}/responses`。若配置自定义 `providerId + url`，当前 Mastra 会选择 Chat Completions transport，无法产生本方案要求的 reasoning summary 流。模型 ID、推理强度、endpoint 和凭据由服务端拥有，浏览器不能覆盖。不新增 `MastraModelGateway` 子类，不维护第二份 provider registry。
 
 目标配置的语义形态如下；具体环境变量名继续由服务端配置模块统一解析，密钥不得进入日志、AG-UI 事件或浏览器。`maxRetries` 是 `Agent` 构造器的顶层配置，不属于 `defaultOptions`；`reasoningEffort` 才放在执行 options 的 `providerOptions` 中：
 
@@ -122,28 +122,37 @@ import type { OpenAICompatibleConfig } from "@mastra/core/llm";
 import { Mastra } from "@mastra/core/mastra";
 
 const chatModel = {
-  providerId: "litellm",
+  providerId: "openai",
   modelId: "gpt-5.6-terra",
-  url: serverConfig.liteLlmBaseUrl,
   apiKey: serverConfig.liteLlmApiKey,
 } satisfies OpenAICompatibleConfig;
 
 const specModel = {
-  providerId: "litellm",
+  providerId: "openai",
   modelId: "gpt-5.6-sol",
-  url: serverConfig.liteLlmBaseUrl,
   apiKey: serverConfig.liteLlmApiKey,
 } satisfies OpenAICompatibleConfig;
 
+// 服务启动时由受控配置函数注入；不从浏览器读取。
+process.env.OPENAI_BASE_URL = serverConfig.liteLlmBaseUrl;
+
 const chatExecutionOptions = {
   providerOptions: {
-    litellm: { reasoningEffort: "medium" },
+    openai: {
+      reasoningEffort: "medium",
+      reasoningSummary: "detailed",
+      store: false,
+    },
   },
 } as const;
 
 const specExecutionOptions = {
   providerOptions: {
-    litellm: { reasoningEffort: "high" },
+    openai: {
+      reasoningEffort: "high",
+      reasoningSummary: "detailed",
+      store: false,
+    },
   },
 } as const;
 
@@ -164,7 +173,7 @@ const mastraRuntime = new Mastra({
 });
 ```
 
-`providerOptions` 的键必须与 `providerId: "litellm"` 一致；Mastra 的 OpenAI-compatible adapter 把 `reasoningEffort` 映射为 LiteLLM 请求中的 `reasoning_effort`。Chat Agent 使用 `chatExecutionOptions`，Spec Agent 使用 `specExecutionOptions`；两个 Agent 都在构造器顶层设置 `maxRetries: 1`，Chat Agent 另在 `defaultOptions` 中保留自己的 `maxSteps` 上限。客户端和单次调用 options 都不能覆盖模型、推理强度或重试边界。现有真实交互已经观察到 Chat `high` 在完整 resume 历史上可能长时间无事件，因此没有新的基准证据前不得把 Chat 从 `medium` 提升为 `high`。
+`providerOptions` 必须使用 Mastra 内建 OpenAI provider 识别的 `openai` 命名空间。`reasoningEffort` 映射为 Responses `reasoning.effort`，`reasoningSummary: "detailed"` 开启可展示摘要增量，`store:false` 不把响应作为上游持久会话依赖。Chat Agent 使用 `chatExecutionOptions`，Spec Agent 使用 `specExecutionOptions`；两个 Agent 都在构造器顶层设置 `maxRetries: 1`，Chat Agent 另在 `defaultOptions` 中保留自己的 `maxSteps` 上限。客户端和单次调用 options 都不能覆盖模型、推理强度或重试边界。
 
 所有生产和 benchmark Agent 必须由同一 Runtime 工厂/策略创建的受控 `Mastra` Runtime 注册后取用，Runtime 固定 `logger: false`，禁止直接调用未注册的裸 `new Agent(...)`。生产服务进程共享一个 Runtime；独立 benchmark CLI 进程创建自己的受控 Runtime，不能跨进程共享实例，但必须复用相同的 logger 与注册生命周期策略。这是日志安全边界：Mastra 默认 ConsoleLogger 在上游错误对象中可能包含请求正文，项目现有日志脱敏器不能拦截框架内部输出。Chat Agent 使用静态注册；每次 `generate_spec` 创建带唯一 `generationId` 的 Spec Agent 后，使用公开 `mastraRuntime.addAgent(agent, registryKey)` 注册并经 `getAgent(registryKey)` 执行，在服务端完整消费其流、完成终态处理后于 `finally` 调用 `removeAgent(registryKey)`。不得把尚未消费的惰性流返回到 `finally` 之外，也不得复用并发 generation 的 registry key。Benchmark 动态 Agent 使用同一注册/移除规则。服务进程崩溃时注册表随内存丢失，符合既定的“中断生成不恢复、不重放”语义。
 
@@ -181,7 +190,7 @@ const mastraRuntime = new Mastra({
 5. LiteLLM 必须分别保持 Chat `reasoning_effort=medium` 与 Spec `reasoning_effort=high` 的工具调用、流式增量、结束原因和错误语义；兼容性由真实 transport probe 验证，不由调用方针对具体上游编写分支。
 6. 每次模型请求只允许 Mastra 对同一模型最多重试 1 次，禁止跨模型或跨 provider 自动降级。该重试只覆盖尚未接受任何响应增量或工具副作用的请求失败；一旦 Chat 文本流、工具调用或 Spec Patch operation 开始，后续失败直接终止本次 run，不重放已接收内容。
 
-模型 benchmark 是管理员/开发者使用的离线评测入口，不是产品用户的模型选择能力。它统一改用 Mastra `OpenAICompatibleConfig` + LiteLLM，默认评测 `gpt-5.6-sol`/`high`，同时保留受控 CLI 的候选模型和推理强度选择，用于比较模型质量；CLI 输入不得进入 Hono、CopilotKit、AG-UI 或生产 Agent 配置。Benchmark 输出必须记录请求模型别名、推理强度、LiteLLM 返回的实际模型标识与协议结果。Anthropic 等模型同样经过 LiteLLM 的 OpenAI-compatible 通道，不再保留项目侧 Anthropic 原生 Provider 路径。
+模型 benchmark 是管理员/开发者使用的离线评测入口，不是产品用户的模型选择能力。它统一使用 Mastra 内建 OpenAI Responses router + LiteLLM，默认评测 `gpt-5.6-sol`/`high`，同时保留受控 CLI 的候选模型和推理强度选择，用于比较模型质量；CLI 输入不得进入 Hono、CopilotKit、AG-UI 或生产 Agent 配置。Benchmark 输出必须记录请求模型别名、推理强度、LiteLLM 返回的实际模型标识与协议结果。其他厂商的 LiteLLM 别名也经过同一 Responses 边界，项目侧不保留原生 Provider 路径。
 
 ## 5. AppUiBundle 与设计系统
 
@@ -1543,9 +1552,9 @@ RecoveryRecord 的 `pending → consumed|expired` 与原 GenerationRun 的 `reco
 - AC4c：candidateDigest 由服务端稳定 serializer + UTF-8 SHA-256 对完整 ApplicationCandidate 计算；UI Bundle、BusinessSchema 内嵌权限或任一迁移计划变化都会改变 digest。uiBundleDigest 只覆盖 AppUiBundle，服务端与浏览器共享 serializer/夹具并能检出 finish 工件篡改；浏览器只把 candidateDigest 作为服务端签发值回传，不能用 uiBundleDigest 代替 Candidate 身份。
 - AC4d：四个 runtime built-in Action 不进入 `catalog.data.actions` 或 Adapter handler map；第一阶段 10 个 customActions、Catalog actions 与 `RuntimeActionAdapter.handlers` 键精确相等，碰撞、缺失或多余均使构建/启动失败。
 - AC4k：已有组件 overlay 的 Prop addition 必须是无 default/catch/coerce/effect、可确定性导出 JSON Schema，且 `safeParse(undefined)` 返回严格 `undefined`；已有 Prop 只可以 `z.union([base,preferred])` 且 base 优先机械扩宽。children 只能 `preserveBase:true` 后扩展，新 compound 必需关系仅在出现新 child key 时生效；Event/publicStylePart 只做并集，Token binding 只加新 key。Table/Select/Accordion/Popover/Carousel/Button/Image 的 legacy/preferred 夹具都通过同一 merged Catalog Schema、Prompt/JSON Schema 派生和当前 v1 Renderer。新增 required、默认值、effect、旧 children/事件/样式失效、旧 Token 重绑、同名 addition 或双 binding 均使构建失败。
-- AC4e：普通问答的真实 transport 只调用固定的 `gpt-5.6-terra`/`medium`；`generate_spec` 内部真实 transport 只调用固定的 `gpt-5.6-sol`/`high`。两个 Agent 的 `providerOptions.litellm.reasoningEffort` 分别固定为 `medium` 和 `high`；客户端提交模型、provider、endpoint、推理强度或重试字段时不会改变服务端选择。
-- AC4f：生产和模型基准测试路径都通过 Mastra `OpenAICompatibleConfig` 接入 LiteLLM；仓库源码和直接依赖中不存在 `@ai-sdk/openai`、`@ai-sdk/anthropic`、`createOpenAI`、`createAnthropic`，也不存在项目自定义 `MastraModelGateway`。
-- AC4g：LiteLLM 真实 transport probe 分别证明 Chat Agent 文本流和 Spec Agent 工具/Patch 流可用，并观察到服务端固定的模型别名与各自的 `reasoning_effort=medium/high`；故障 probe 证明 Agent 构造器顶层 `maxRetries:1` 在响应开始前产生至多 2 次同模型请求，而把 `maxRetries` 放入 `defaultOptions` 的错误形态不得出现在源码；响应或 Patch 开始后不重放，任何故障都不跨模型降级。上游厂商切换不改变 Hono、Mastra Agent、工具或 AG-UI 契约。
+- AC4e：普通问答的真实 transport 只调用固定的 `gpt-5.6-terra`/`medium`；`generate_spec` 内部真实 transport 只调用固定的 `gpt-5.6-sol`/`high`。两个 Agent 的 `providerOptions.openai` 分别固定 `reasoningEffort=medium/high`、`reasoningSummary=detailed`、`store=false`；客户端提交模型、provider、endpoint、推理强度或重试字段时不会改变服务端选择。
+- AC4f：生产和模型基准测试路径都通过 Mastra `OpenAICompatibleConfig` 的内建 OpenAI router 接入 LiteLLM `/responses`；模型配置不携带 `url`，进程 `OPENAI_BASE_URL` 由服务端锁定。仓库源码和直接依赖中不存在 `@ai-sdk/openai`、`@ai-sdk/anthropic`、`createOpenAI`、`createAnthropic`，也不存在项目自定义 `MastraModelGateway`。
+- AC4g：LiteLLM 真实 transport probe 分别证明 Chat Agent 文本流和 Spec Agent 工具/Patch 流可用，两者均请求 `/responses`，并观察到服务端固定的模型别名、`reasoning.effort=medium/high` 与 `response.reasoning_summary_text.delta`。summary delta 实时映射为标准 AG-UI reasoning message，而 encrypted content/provider metadata 不进入浏览器。故障 probe 证明 Agent 构造器顶层 `maxRetries:1` 在响应开始前产生至多 2 次同模型请求；响应或 Patch 开始后不重放，任何故障都不跨模型降级。
 - AC4h：管理员 benchmark 默认使用 `gpt-5.6-sol`/`high`，可通过受控 CLI 选择候选模型与推理强度，但全部请求仍经过 Mastra + LiteLLM；CLI 配置不能改变生产 Chat/Spec Agent，结果保存请求别名、推理强度、实际模型标识和协议结果。
 - AC4i：Chat、Spec 和 benchmark Agent 都通过同一 Runtime 工厂/策略创建且 `logger:false` 的受控 Mastra Runtime 注册后取用；并发 Spec/benchmark run 使用唯一 registry key，完整流消费和终态处理后各进程的注册表恢复到仅含其静态 Agent。故障测试向 system/user/tool 参数、headers 和上游错误正文分别注入 sentinel，捕获 stdout/stderr、应用日志和 HTTP/AG-UI 错误，断言不存在 sentinel、`requestBodyValues`、原始 headers/正文/stack，只存在有界 allowlist 字段与稳定错误码。
 - AC4j：每次 CatalogContract 变更都记录完整 JSON Schema 字节数、实际 Prompt 字节/token、派生耗时、峰值 RSS、校验耗时和构建耗时；相对批准基线增长超过 25% 或单一 JSON 派生物超过 64 MiB 时门禁失败并要求重新确认，不能仅凭构建成功放行。
@@ -1687,5 +1696,5 @@ RecoveryRecord 的 `pending → consumed|expired` 与原 GenerationRun 的 `reco
 1. 基于第 17 节依赖顺序制定一份独立、文件级实施计划；计划头必须记录仓库 commit、本文 SHA-256、数据库迁移基线、锁定依赖版本和生成日期，使后续审阅能够识别工作树漂移。不得把步骤追加到已经完成的持久化发布计划尾部。
 2. 实施计划的 Phase 0 固定为 DS-GATE-00：确认 fatal visual 正常/异常夹具和阈值，批准 `ValidationResourceEnvelopeV1`，跑通 Chat `medium`/Spec `high` transport probe、接近 2 MiB 的真实 AG-UI finish/断流/内存探针，以及 Chromium 同步 DownloadIntent + 异步有界 CSV 探针，并记录当前 Catalog 派生物、生成、RSS、校验和构建基线。该 Gate 未通过时不得开始受影响的生产实现、协议切换或组件批量落地。
 3. 实施计划必须为每阶段定义输入契约、迁移边界、窄门禁、浏览器验收、故障注入与回退点；重点单列 Link 单次过滤、overlay 单调兼容、RuntimeActionDispatcher 单终态/target lease/callback、可信 path appId、TransactionalBusinessActionExecutor 固定锁序与 submitForm 单 UoW、PublishedVersion header、form hydration epoch/dirty CAS、CSV 中和、Patch v2 finish 摘要、candidate runtime 与 ResolvedAssetHandle 原子切换、DesignAssetStructuredSummaryV1/Source/immutable Extraction/GenerationRun input snapshot/GC、GenerationRun 闭合状态机、RecoveryExpiryMaintenance、CSS/portal 逃逸夹具、Blob/MySQL 恢复演练、strict new-run fatal recovery、migrationEdge/直接前驱回滚、PreviewSelection 哨兵和 Catalog/Validation 性能预算。
-4. 模型接入实施必须先建立 `logger:false` 的受控 Mastra Runtime，把生产与 benchmark 路径迁移到注册后取用的 `OpenAICompatibleConfig` Agent，落实顶层 `maxRetries:1` 与动态 Agent `finally/removeAgent` 生命周期；保留 benchmark 的受控管理员评测能力，通过 Chat/Spec 两条 LiteLLM transport probe、故障/重试 probe、注册表归零测试和 sentinel 无泄露测试后，再移除项目侧 AI SDK 直接依赖。
+4. 模型接入实施必须先建立 `logger:false` 的受控 Mastra Runtime，把生产与 benchmark 路径迁移到注册后取用的内建 OpenAI Responses router Agent，落实顶层 `maxRetries:1` 与动态 Agent `finally/removeAgent` 生命周期；保留 benchmark 的受控管理员评测能力，通过 Chat/Spec 两条 LiteLLM `/responses` transport probe、summary 事件、故障/重试 probe、注册表归零测试和 sentinel 无泄露测试。项目侧 AI SDK 直接依赖必须移除。
 5. 本文修订不创建 ADR/Worktrail 候选、不修改代码，也不授权提交或发布；如需持久化设计决策，应在实施计划审阅完成后按候选与审阅流程单独执行。

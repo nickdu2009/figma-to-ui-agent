@@ -428,6 +428,12 @@ export class MysqlReleaseRepository implements ReleaseRepository {
             run.candidateReverseMigrationPlan,
             "candidateReverseMigrationPlan",
           ),
+          // 与迁移计划一样，前驱边也是生成期由服务端固定的事实。草稿和
+          // 后续 PublishedVersion 必须保留它，才能在 v2 下验证受控直接回滚。
+          migrationFromPublishedVersionId:
+            run.migrationFromPublishedVersionId,
+          migrationFromSchemaDigest: run.migrationFromSchemaDigest,
+          migrationToSchemaDigest: run.migrationToSchemaDigest,
           status: "ready",
           createdAt: input.now,
           revision: 1,

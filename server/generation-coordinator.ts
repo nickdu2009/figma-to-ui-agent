@@ -1,4 +1,4 @@
-import type { BaseEvent } from "@ag-ui/client";
+import { EventType, type BaseEvent } from "@ag-ui/client";
 import { Subject } from "rxjs";
 import { redactForLog } from "./log-redact.ts";
 
@@ -175,6 +175,61 @@ export class GenerationCoordinator {
   ): void {
     const run = this.activeRuns.get(key(threadId, runId));
     run?.events.next({ type: "CUSTOM", name, value } as BaseEvent);
+  }
+
+  /**
+   * 把内部 Spec Agent 的 OpenAI Responses reasoning summary 接入当前
+   * AG-UI run。这里只接收 Mastra 解析后的可展示 summary 文本；
+   * provider metadata / encrypted reasoning 不进入此通道。
+   */
+  emitReasoningSummaryStart(
+    threadId: string,
+    runId: string,
+    messageId: string,
+  ): void {
+    const run = this.activeRuns.get(key(threadId, runId));
+    if (!run) return;
+    run.events.next({
+      type: EventType.REASONING_START,
+      messageId,
+    } as BaseEvent);
+    run.events.next({
+      type: EventType.REASONING_MESSAGE_START,
+      messageId,
+      role: "reasoning",
+    } as BaseEvent);
+  }
+
+  emitReasoningSummaryDelta(
+    threadId: string,
+    runId: string,
+    messageId: string,
+    delta: string,
+  ): void {
+    if (!delta) return;
+    const run = this.activeRuns.get(key(threadId, runId));
+    run?.events.next({
+      type: EventType.REASONING_MESSAGE_CONTENT,
+      messageId,
+      delta,
+    } as BaseEvent);
+  }
+
+  emitReasoningSummaryEnd(
+    threadId: string,
+    runId: string,
+    messageId: string,
+  ): void {
+    const run = this.activeRuns.get(key(threadId, runId));
+    if (!run) return;
+    run.events.next({
+      type: EventType.REASONING_MESSAGE_END,
+      messageId,
+    } as BaseEvent);
+    run.events.next({
+      type: EventType.REASONING_END,
+      messageId,
+    } as BaseEvent);
   }
 
   /**

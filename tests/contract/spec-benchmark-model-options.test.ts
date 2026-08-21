@@ -1,5 +1,5 @@
 /**
- * S10 契约测试：Benchmark 模型选项（设计 §4.1，统一 LiteLLM OpenAICompatibleConfig）。
+ * S10 契约测试：Benchmark 模型选项（设计 §4.1，统一 LiteLLM Responses）。
  */
 import { describe, expect, it } from "vitest";
 
@@ -18,24 +18,32 @@ describe("spec benchmark model options (S10 LiteLLM single path)", () => {
     expect(DEFAULT_BENCHMARK_REASONING_EFFORT).toBe("high");
   });
 
-  it("所有模型统一走 openai-compatible 协议（LiteLLM）", () => {
+  it("所有模型统一走 openai-responses 协议（LiteLLM）", () => {
     expect(protocolForSpecBenchmark("claude-opus-4-8")).toBe(
-      "openai-compatible",
+      "openai-responses",
     );
-    expect(protocolForSpecBenchmark("gpt-5.6-sol")).toBe("openai-compatible");
-    expect(protocolForSpecBenchmark("gpt-5.6-terra")).toBe("openai-compatible");
+    expect(protocolForSpecBenchmark("gpt-5.6-sol")).toBe("openai-responses");
+    expect(protocolForSpecBenchmark("gpt-5.6-terra")).toBe("openai-responses");
   });
 
-  it("providerOptions 统一生成 litellm 命名空间下的 reasoningEffort", () => {
+  it("providerOptions 统一生成 Responses summary 选项", () => {
     expect(providerOptionsForSpecBenchmark("gpt-5.6-sol")).toEqual({
       providerOptions: {
-        litellm: { reasoningEffort: "high" },
+        openai: {
+          reasoningEffort: "high",
+          reasoningSummary: "detailed",
+          store: false,
+        },
       },
     });
 
     expect(providerOptionsForSpecBenchmark("gpt-5.6-terra")).toEqual({
       providerOptions: {
-        litellm: { reasoningEffort: "medium" },
+        openai: {
+          reasoningEffort: "medium",
+          reasoningSummary: "detailed",
+          store: false,
+        },
       },
     });
   });

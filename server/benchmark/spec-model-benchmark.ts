@@ -60,7 +60,10 @@ import { createReasoningSummaryObserver } from "./spec-benchmark-reasoning-outpu
 // pi-lens-ignore: ts:5097
 import { createControlledAgentRuntime } from "../agent-runtime.ts";
 // pi-lens-ignore: ts:5097
-import { createLiteLlmModelConfig } from "../model-policy.ts";
+import {
+  configureMastraOpenAiRouterForLiteLlm,
+  createLiteLlmModelConfig,
+} from "../model-policy.ts";
 
 const DEFAULT_MODELS = ["gpt-5.6-sol", "gpt-5.6-terra"] as const;
 const MAX_OPERATIONS = 1_000;
@@ -269,6 +272,10 @@ async function runOne(options: {
   const runtime = createControlledAgentRuntime();
   try {
     const protocol = protocolForSpecBenchmark(options.model);
+    configureMastraOpenAiRouterForLiteLlm({
+      baseUrl: options.baseUrl,
+      apiKey: options.apiKey,
+    });
     const modelConfig = createLiteLlmModelConfig(options.model, {
       baseUrl: options.baseUrl,
       apiKey: options.apiKey,

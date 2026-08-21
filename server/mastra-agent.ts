@@ -20,6 +20,7 @@ import { CoordinatedMastraAgent } from "./coordinated-mastra-agent.ts";
 // pi-lens-ignore: ts:5097
 import {
   PRODUCTION_MODEL_POLICY,
+  configureMastraOpenAiRouterForLiteLlm,
   createLiteLlmExecutionOptions,
   createLiteLlmModelConfig,
   resolveLiteLlmConfig,
@@ -49,6 +50,7 @@ export function createChatAgent(
       "LITELLM_API_KEY (or OPENAI_API_KEY) is required for VMA_AGENT_MODE=openai (use VMA_AGENT_MODE=probe|mock for local runs without a key)",
     );
   }
+  configureMastraOpenAiRouterForLiteLlm(config);
 
   // 模型与推理强度是服务端固定策略，客户端请求和本地环境都不能覆盖。
   const chatModel = createLiteLlmModelConfig(

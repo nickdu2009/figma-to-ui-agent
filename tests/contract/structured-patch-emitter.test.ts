@@ -78,7 +78,6 @@ describe("structured Patch emitter", () => {
     } as unknown as GenerationLifecyclePort);
     const events: BaseEvent[] = [];
     coordinator.openRun("thread-1", "run-1").subscribe((event) => events.push(event));
-
     const generatorFactory: SpecGeneratorFactory = (tools) =>
       ({
         stream: async () => {
@@ -91,6 +90,20 @@ describe("structured Patch emitter", () => {
           await tools.validate_patch_generation.execute?.({}, {} as never);
           return {
             fullStream: (async function* () {
+              yield { type: "reasoning-start", payload: { id: "summary-1" } };
+              yield {
+                type: "reasoning-delta",
+                payload: { id: "summary-1", text: "先构建路由和数据视图。" },
+              };
+              yield {
+                type: "reasoning-end",
+                payload: {
+                  id: "summary-1",
+                  providerMetadata: {
+                    openai: { reasoningEncryptedContent: "must-not-leak" },
+                  },
+                },
+              };
               yield { type: "text-delta", payload: { text: "not a patch" } };
             })(),
           } as never;
@@ -121,6 +134,26 @@ describe("structured Patch emitter", () => {
     expect(customs[1]?.value.text).toContain('"/metadata"');
     expect(customs[2]?.value.text).toContain('"/routes"');
     expect(customs.some((event) => event.value.text === "not a patch")).toBe(false);
+
+    const reasoningEvents = events.filter((event) =>
+      String(event.type).startsWith("REASONING"),
+    );
+    expect(reasoningEvents.map((event) => event.type)).toEqual([
+      "REASONING_START",
+      "REASONING_MESSAGE_START",
+      "REASONING_MESSAGE_CONTENT",
+      "REASONING_MESSAGE_END",
+      "REASONING_END",
+    ]);
+    expect(
+      (
+        reasoningEvents[2] as unknown as {
+          delta?: string;
+          providerMetadata?: unknown;
+        }
+      ).delta,
+    ).toBe("先构建路由和数据视图。");
+    expect(JSON.stringify(reasoningEvents)).not.toContain("must-not-leak");
   });
 
   it("does not finish when the generator skips final catalog validation", async () => {

@@ -219,7 +219,9 @@ export function RuntimeApplyController(props: {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ generationId }),
+            // generation 路由在 v2 下与 Preview Commit 一样要求显式版本；
+            // 心跳缺失版本会被拒绝，使长时间生成无法续租。
+            body: JSON.stringify({ generationId, protocolVersion: 2 }),
           },
         ).catch(() => {
           /* 心跳失败不中断前端流程；超时由服务端扫描兜底 */

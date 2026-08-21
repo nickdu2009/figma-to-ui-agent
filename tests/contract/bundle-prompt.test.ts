@@ -17,6 +17,9 @@ describe("S11 系统提示词与生成协议契约 (bundle-prompt)", () => {
   it("CHAT_SYSTEM_PROMPT 包含计划确认与 generate_spec 协议约束", () => {
     expect(CHAT_SYSTEM_PROMPT).toContain("generate_spec");
     expect(CHAT_SYSTEM_PROMPT).toContain("ask_question");
+    expect(CHAT_SYSTEM_PROMPT).toContain(
+      "用户最新一条自然语言消息的主要语言",
+    );
   });
 
   it("STRUCTURED_SPEC_GENERATION_SYSTEM_PROMPT 包含所有 P0 组件（81 个）与补丁工具契约", () => {
@@ -26,6 +29,7 @@ describe("S11 系统提示词与生成协议契约 (bundle-prompt)", () => {
     expect(STRUCTURED_SPEC_GENERATION_SYSTEM_PROMPT).toContain(
       "validate_patch_generation",
     );
+    expect(STRUCTURED_SPEC_GENERATION_SYSTEM_PROMPT).toContain("简短完成确认");
 
     // 验证所有 81 个组件（35 base + 46 additions）都包含在生成的结构化提示词中
     const componentNames = derivedModelCatalog.registryKeys;

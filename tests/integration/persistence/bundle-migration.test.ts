@@ -139,7 +139,11 @@ describe("S13 跨 Schema 发布与反向迁移回滚集成测试", () => {
     releaseRepo = new MysqlReleaseRepository(handle.db);
     migrationService = new SchemaMigrationService(handle.db);
     dataRepo = new BusinessDataRepository(handle.db);
-    releaseService = new ReleaseService(releaseRepo, migrationService);
+    // v2 只能回到当前版本的服务端记录直接前驱；覆盖生成 → Preview
+    // Commit → 发布 → 回滚时，迁移边必须从 GenerationRun 保留到 Draft。
+    releaseService = new ReleaseService(releaseRepo, migrationService, {
+      requireDirectPredecessor: true,
+    });
   });
 
   afterAll(async () => {
@@ -258,6 +262,13 @@ describe("S13 跨 Schema 发布与反向迁移回滚集成测试", () => {
       now,
     });
     if (!commit2.ok) return;
+
+    const draft2 = await releaseRepo.findDraftById(commit2.draftVersionId);
+    expect(draft2?.migrationFromPublishedVersionId).toBe(
+      pub1.publishedVersionId,
+    );
+    expect(draft2?.migrationFromSchemaDigest).toBe("cd-v1");
+    expect(draft2?.migrationToSchemaDigest).toBe("cd-v2");
 
     // 更新 draft2 的 businessSchema 为 SCHEMA_V2
     await pool.query(

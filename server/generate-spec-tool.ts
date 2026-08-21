@@ -324,6 +324,28 @@ export function createGenerateSpecTool(
         validate_patch_generation: validatePatchGeneration,
       });
 
+      // Responses API 把可展示的 reasoning summary 解析为 Mastra
+      // reasoning-start/delta/end。内部 Generator 不经过 @ag-ui/mastra
+      // adapter，因此在这里显式中继成标准 AG-UI reasoning 事件。
+      // 不转发 providerMetadata、signature 或 encrypted content。
+      const activeReasoning = new Map<string, string>();
+      let reasoningSequence = 0;
+      const ensureReasoningStarted = (sourceId: string): string => {
+        const existing = activeReasoning.get(sourceId);
+        if (existing) return existing;
+        reasoningSequence += 1;
+        const messageId = `${generationId}-reasoning-${reasoningSequence}`;
+        activeReasoning.set(sourceId, messageId);
+        coordinator.emitReasoningSummaryStart(threadId, runId, messageId);
+        return messageId;
+      };
+      const finishReasoning = (sourceId: string): void => {
+        const messageId = activeReasoning.get(sourceId);
+        if (!messageId) return;
+        coordinator.emitReasoningSummaryEnd(threadId, runId, messageId);
+        activeReasoning.delete(sourceId);
+      };
+
       try {
         const stream = await generatorAgent.stream(
           buildGeneratorUserMessage(input, plan),
@@ -331,8 +353,36 @@ export function createGenerateSpecTool(
           // 自由文本绕过结构化 Patch 边界。
           { runId: `${runId}-generator`, maxSteps: 32 },
         );
-        for await (const chunk of stream.fullStream) {
-          void chunk;
+        try {
+          for await (const chunk of stream.fullStream) {
+            const reasoningChunk = chunk as unknown as {
+              type?: string;
+              payload?: { id?: string; text?: string };
+            };
+            const sourceId = reasoningChunk.payload?.id || "default";
+            if (reasoningChunk.type === "reasoning-start") {
+              ensureReasoningStarted(sourceId);
+            } else if (
+              reasoningChunk.type === "reasoning-delta" &&
+              reasoningChunk.payload?.text
+            ) {
+              const messageId = ensureReasoningStarted(sourceId);
+              coordinator.emitReasoningSummaryDelta(
+                threadId,
+                runId,
+                messageId,
+                reasoningChunk.payload.text,
+              );
+            } else if (reasoningChunk.type === "reasoning-end") {
+              finishReasoning(sourceId);
+            }
+          }
+        } finally {
+          // 异常/取消时也闭合已开始的 AG-UI reasoning message，
+          // 避免客户端留下永久的 streaming 卡片。
+          for (const sourceId of [...activeReasoning.keys()]) {
+            finishReasoning(sourceId);
+          }
         }
         await emissionQueue;
         if (totalOperations === 0 || !finalValidationSucceeded) {

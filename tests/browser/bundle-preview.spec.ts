@@ -1,5 +1,9 @@
 import { expect, test } from "@playwright/test";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { adminEmailFor, loginCreateAndEnter, sendChat } from "./e2e-helpers.ts";
+
+const execFileAsync = promisify(execFile);
 
 /**
  * S4 BundlePreviewController 浏览器验收（Mock，不调 LLM）：
@@ -92,6 +96,42 @@ test("bundle preview: reload restores draft via stagePersisted", async ({
 
   await page.reload();
   // Draft 是编辑态的恢复事实：刷新后从 DraftVersion 重建（stagePersisted）。
+  await expect(
+    page.getByTestId("preview-panel").getByText("欢迎使用 Acme"),
+  ).toBeVisible({ timeout: 15_000 });
+});
+
+test("bundle preview: runtime rebuild plus re-entry preserves the draft", async ({
+  page,
+}) => {
+  const appName = `bpc-app-reenter-${Date.now()}`;
+  await loginCreateAndEnter(
+    page,
+    adminEmailFor(test.info().workerIndex),
+    appName,
+  );
+  await runCreationFlow(page);
+  await expect(
+    page.getByTestId("preview-panel").getByText("欢迎使用 Acme"),
+  ).toBeVisible();
+
+  // 后端重启/typecheck 等命令可能并行重建 workspace runtime。Vite 开发
+  // 服务必须消费源码，不能在 dist 被清空的窗口卸载当前 Preview。
+  await execFileAsync("npm", ["run", "build:runtime"], {
+    cwd: process.cwd(),
+  });
+  await expect(
+    page.getByTestId("preview-panel").getByText("欢迎使用 Acme"),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "切换应用" }).click();
+  await expect(page.getByTestId("app-gate")).toBeVisible();
+  await page
+    .getByTestId("app-list")
+    .getByRole("button", { name: new RegExp(appName) })
+    .click();
+
+  await expect(page.getByTestId("current-app-name")).toHaveText(appName);
   await expect(
     page.getByTestId("preview-panel").getByText("欢迎使用 Acme"),
   ).toBeVisible({ timeout: 15_000 });

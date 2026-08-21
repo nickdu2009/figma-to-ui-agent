@@ -4,7 +4,8 @@
  * 核心不变式：
  * 1. 生产固定 Chat=gpt-5.6-terra/medium、Spec=gpt-5.6-sol/high、repair=xhigh；
  * 2. 客户端请求、用户消息、前端工具参数均不能覆盖模型/provider/endpoint/reasoning/retry；
- * 3. 统一使用 @mastra/core 的 OpenAICompatibleConfig 指向 LiteLLM；
+ * 3. 项目侧仅使用 @mastra/core 的 OpenAICompatibleConfig；通过
+ *    Mastra 内建 OpenAI router 把 LiteLLM 当作 Responses endpoint；
  * 4. maxRetries: 1 只放 Agent 构造器顶层，禁止跨模型或跨 provider 降级；
  * 5. 错误/日志只输出 allowlist 字段与稳定码，严格脱敏。
  */
@@ -12,7 +13,12 @@ import type { OpenAICompatibleConfig } from "@mastra/core/llm";
 
 export type { OpenAICompatibleConfig };
 
-export const LITELLM_PROVIDER_ID = "litellm" as const;
+/**
+ * 必须使用 Mastra 内建 OpenAI provider。自定义 providerId + url 会被
+ * ModelRouter 解析为 OpenAI-compatible Chat Completions，无法收到
+ * Responses reasoning summary 流。
+ */
+export const MASTRA_OPENAI_PROVIDER_ID = "openai" as const;
 
 /** 生产固定模型与推理强度。 */
 export const PRODUCTION_MODEL_POLICY = {
@@ -55,32 +61,74 @@ export function resolveLiteLlmConfig(
 }
 
 export interface LiteLlmModelConfig {
-  providerId: typeof LITELLM_PROVIDER_ID;
+  providerId: typeof MASTRA_OPENAI_PROVIDER_ID;
   modelId: string;
-  url: string;
   apiKey: string;
 }
 
-/** 构造 @mastra/core 原生 OpenAICompatibleConfig。 */
+/**
+ * 把 Mastra 内建 OpenAI router 的服务端 endpoint 锁定到 LiteLLM。
+ *
+ * OpenAICompatibleConfig 一旦直接携带 url，Mastra 就会选择
+ * OpenAI-compatible Chat Completions transport。因此 endpoint 必须由
+ * Mastra 内建 OpenAI provider 认可的 OPENAI_BASE_URL 注入，而 API Key
+ * 仍由每个服务端模型配置显式持有。
+ */
+export function configureMastraOpenAiRouterForLiteLlm(
+  config: LiteLlmServerConfig,
+  env: NodeJS.ProcessEnv = process.env,
+): void {
+  const baseUrl = config.baseUrl.replace(/\/+$/, "");
+  let parsed: URL;
+  try {
+    parsed = new URL(baseUrl);
+  } catch {
+    throw new Error("VMA_LITELLM_BASE_URL 必须是有效的 HTTP(S) URL");
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error("VMA_LITELLM_BASE_URL 必须是有效的 HTTP(S) URL");
+  }
+  env.OPENAI_BASE_URL = baseUrl;
+}
+
+/**
+ * 构造 Mastra 原生 OpenAI router 配置。故意不携带 url：这会让
+ * Mastra 内部选择 OpenAI Responses provider，并请求
+ * `${OPENAI_BASE_URL}/responses`。
+ */
 export function createLiteLlmModelConfig(
   modelId: string,
   config: LiteLlmServerConfig = resolveLiteLlmConfig(),
 ): LiteLlmModelConfig {
   return {
-    providerId: LITELLM_PROVIDER_ID,
+    providerId: MASTRA_OPENAI_PROVIDER_ID,
     modelId,
-    url: config.baseUrl,
     apiKey: config.apiKey,
   };
 }
 
-/** 构造 providerOptions（键必须与 providerId="litellm" 一致）。 */
+/**
+ * Responses providerOptions。reasoning-delta 只来自上游可展示的
+ * reasoning summary；加密 reasoning 项不会转发给浏览器。
+ */
 export function createLiteLlmExecutionOptions(
   reasoningEffort: ReasoningEffortLevel,
-): { providerOptions: { litellm: { reasoningEffort: ReasoningEffortLevel } } } {
+): {
+  providerOptions: {
+    openai: {
+      reasoningEffort: ReasoningEffortLevel;
+      reasoningSummary: "detailed";
+      store: false;
+    };
+  };
+} {
   return {
     providerOptions: {
-      litellm: { reasoningEffort },
+      openai: {
+        reasoningEffort,
+        reasoningSummary: "detailed",
+        store: false,
+      },
     },
   };
 }

@@ -9,10 +9,38 @@ import { applyResultSchema, askQuestionInputSchema } from "./contracts.ts";
 
 const ASK_QUESTION_TOOL = "ask_question";
 const AWAIT_APPLY_TOOL = "await_apply_result";
-// A real model can spend over a minute selecting and preparing its first tool
-// call. Keep a bounded escape hatch without cutting off healthy long-running
-// generations; the user can still stop the run immediately from the UI.
-const DEFAULT_IDLE_TIMEOUT_MS = 180_000;
+// 真实模型在复杂 Candidate 生成阶段可能长时间没有可发给浏览器的 AG-UI 事件。
+// 保持有界保护，但不能因固定短阈值中断健康的高推理生成；用户仍可随时停止。
+const DEFAULT_IDLE_TIMEOUT_MS = 10 * 60_000;
+const MIN_IDLE_TIMEOUT_MS = 60_000;
+const MAX_IDLE_TIMEOUT_MS = 30 * 60_000;
+
+/**
+ * 解析真实生成的无进度保护阈值。只允许明确、有限的毫秒数，防止把保护
+ * 静默关闭；测试可通过构造器显式注入更短阈值。
+ */
+export function resolveGenerationIdleTimeoutMs(
+  env: NodeJS.ProcessEnv = process.env,
+): number {
+  const raw = env.VMA_GENERATION_IDLE_TIMEOUT_MS?.trim();
+  if (!raw) return DEFAULT_IDLE_TIMEOUT_MS;
+  if (!/^\d+$/.test(raw)) {
+    throw new Error(
+      "VMA_GENERATION_IDLE_TIMEOUT_MS 必须是介于 60000 和 1800000 的整数毫秒数",
+    );
+  }
+  const timeoutMs = Number(raw);
+  if (
+    !Number.isSafeInteger(timeoutMs) ||
+    timeoutMs < MIN_IDLE_TIMEOUT_MS ||
+    timeoutMs > MAX_IDLE_TIMEOUT_MS
+  ) {
+    throw new Error(
+      "VMA_GENERATION_IDLE_TIMEOUT_MS 必须是介于 60000 和 1800000 的整数毫秒数",
+    );
+  }
+  return timeoutMs;
+}
 
 /**
  * CoordinatedMastraAgent：CopilotKit Runtime 注册的唯一 AG-UI adapter。
@@ -40,7 +68,7 @@ export class CoordinatedMastraAgent extends AbstractAgent {
     config?: {
       agentId?: string;
       description?: string;
-      /** 仅测试可覆盖；生产默认 3 分钟无事件即安全结束。 */
+      /** 仅测试可覆盖；生产默认 10 分钟，可由受限环境变量调整。 */
       idleTimeoutMs?: number;
     },
     activeRunTeardowns?: Map<string, () => void>,
@@ -52,7 +80,8 @@ export class CoordinatedMastraAgent extends AbstractAgent {
     this.inner = inner;
     this.coordinator = coordinator;
     this.activeRunTeardowns = activeRunTeardowns ?? new Map();
-    this.idleTimeoutMs = config?.idleTimeoutMs ?? DEFAULT_IDLE_TIMEOUT_MS;
+    this.idleTimeoutMs =
+      config?.idleTimeoutMs ?? resolveGenerationIdleTimeoutMs();
   }
 
   clone(): CoordinatedMastraAgent {
@@ -250,6 +279,64 @@ export class CoordinatedMastraAgent extends AbstractAgent {
       let innerErrored: unknown = null;
 
       const toolCallBuffers = new Map<string, { name: string; args: string }>();
+      // Mastra/OpenAI Responses 可能发出只有 start/end、没有任何可展示
+      // summary delta 的 reasoning 段。CopilotChat 一旦收到 START 就会创建
+      // Thought 卡片，因此先在服务端缓存边界事件；直到首个非空 delta
+      // 到达才整体释放。纯空段被完整丢弃。
+      const pendingReasoningStarts = new Map<string, BaseEvent[]>();
+      const visibleReasoningMessages = new Set<string>();
+      const forwardDisplayEvent = (event: BaseEvent): void => {
+        const reasoningEvent = event as BaseEvent & {
+          messageId?: unknown;
+          delta?: unknown;
+        };
+        const messageId =
+          typeof reasoningEvent.messageId === "string"
+            ? reasoningEvent.messageId
+            : null;
+        if (!messageId) {
+          subscriber.next(event);
+          return;
+        }
+
+        switch (event.type) {
+          case EventType.REASONING_START:
+            pendingReasoningStarts.set(messageId, [event]);
+            return;
+          case EventType.REASONING_MESSAGE_START: {
+            const pending = pendingReasoningStarts.get(messageId) ?? [];
+            pending.push(event);
+            pendingReasoningStarts.set(messageId, pending);
+            return;
+          }
+          case EventType.REASONING_MESSAGE_CONTENT:
+            if (
+              typeof reasoningEvent.delta !== "string" ||
+              reasoningEvent.delta.trim().length === 0
+            ) {
+              return;
+            }
+            if (!visibleReasoningMessages.has(messageId)) {
+              for (const pending of pendingReasoningStarts.get(messageId) ?? []) {
+                subscriber.next(pending);
+              }
+              pendingReasoningStarts.delete(messageId);
+              visibleReasoningMessages.add(messageId);
+            }
+            subscriber.next(event);
+            return;
+          case EventType.REASONING_MESSAGE_END:
+            pendingReasoningStarts.delete(messageId);
+            if (visibleReasoningMessages.has(messageId)) subscriber.next(event);
+            return;
+          case EventType.REASONING_END:
+            pendingReasoningStarts.delete(messageId);
+            if (visibleReasoningMessages.delete(messageId)) subscriber.next(event);
+            return;
+          default:
+            subscriber.next(event);
+        }
+      };
       let startCancelled = false;
       let innerSub: { unsubscribe(): void } | null = null;
       let idleTimer: ReturnType<typeof setTimeout> | null = null;
@@ -474,14 +561,14 @@ export class CoordinatedMastraAgent extends AbstractAgent {
             return;
           }
           default:
-            subscriber.next(event);
+            forwardDisplayEvent(event);
         }
       };
 
       const channelSub = channel.subscribe({
         next: (event) => {
           // CUSTOM 事件必须早于 RUN_FINISHED；finalize 后 channel 已关闭。
-          if (!innerCompleted) subscriber.next(event);
+          if (!innerCompleted) forwardDisplayEvent(event);
         },
       });
 

@@ -102,6 +102,9 @@ describe("S11 Preview Commit 与 PreviewSelection 集成测试", () => {
   it("commitPreview 正常路径：同一事务落库草稿、更新 run 与 PreviewSelection", async () => {
     const candidateDig = `sha256:${randomUUID().slice(0, 32)}`;
     const reportDig = `sha256:${randomUUID().slice(0, 32)}`;
+    const predecessorId = randomUUID();
+    const fromSchemaDigest = `sha256:${randomUUID().slice(0, 32)}`;
+    const toSchemaDigest = `sha256:${randomUUID().slice(0, 32)}`;
     const bDigest = uiBundleDigest(SAMPLE_BUNDLE);
     const now = new Date();
 
@@ -118,9 +121,9 @@ describe("S11 Preview Commit 与 PreviewSelection 集成测试", () => {
       candidateDigest: candidateDig,
       uiBundleDigest: bDigest,
       digestVersion: 1,
-      migrationFromPublishedVersionId: null,
-      migrationFromSchemaDigest: candidateDig,
-      migrationToSchemaDigest: candidateDig,
+      migrationFromPublishedVersionId: predecessorId,
+      migrationFromSchemaDigest: fromSchemaDigest,
+      migrationToSchemaDigest: toSchemaDigest,
       now,
     });
 
@@ -163,6 +166,9 @@ describe("S11 Preview Commit 与 PreviewSelection 集成测试", () => {
     expect(draft?.publishBlocked).toBe(false);
     expect(draft?.spec).toEqual(SAMPLE_BUNDLE.spec);
     expect(draft?.bundle).toEqual(SAMPLE_BUNDLE);
+    expect(draft?.migrationFromPublishedVersionId).toBe(predecessorId);
+    expect(draft?.migrationFromSchemaDigest).toBe(fromSchemaDigest);
+    expect(draft?.migrationToSchemaDigest).toBe(toSchemaDigest);
 
     // 验证 run 状态变更为 succeeded
     const runRow = await releaseRepo.findRunById(run.id);
